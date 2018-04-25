@@ -1,5 +1,4 @@
 import { LiveStockType } from './livestock-type.model';
-import { debuglog, debug } from 'util';
 
 export class Livestock {
   constructor (
@@ -16,9 +15,22 @@ export class Livestock {
 
   public getAge(): string {
     const today = new Date();
-    const year = Math.abs(today.getFullYear() - this.birthDate.getFullYear());
-    const month = Math.abs(today.getMonth() - this.birthDate.getMonth());
-    const day = Math.abs(today.getDate() - this.birthDate.getDate());
+    let year = today.getFullYear() - this.birthDate.getFullYear();
+    let month = today.getMonth() - this.birthDate.getMonth();
+    let day = today.getDate() - this.birthDate.getDate();
+
+    if (month > 0 && day < 0) {
+      month--;
+      const birthMonth = this.birthDate.getMonth() + 1; // add 1 becuase for some stupid reason month is 0 based
+      const birthYear = this.birthDate.getFullYear();
+      const daysInMonth = Date.daysInMonth(birthMonth, birthYear);
+      day = daysInMonth + day;
+    }
+
+    if (year > 0 && month < 0) {
+      year--;
+      month = 12 + month;
+    }
 
     let displayAge = this.addAgeSection(year, 'year');
     displayAge += this.addAgeSection(month, 'month');
@@ -46,4 +58,17 @@ export class Livestock {
 
     return displayAge;
   }
+}
+
+declare global {
+  interface DateConstructor {
+    daysInMonth(month, year): number;
+  }
+}
+
+Date.daysInMonth = daysInMonth;
+
+function daysInMonth(month, year): number {
+  var date = new Date(year, month, 0);
+  return date.getDate();
 }

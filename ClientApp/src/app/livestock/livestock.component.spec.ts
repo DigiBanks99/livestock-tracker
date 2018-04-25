@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LivestockComponent } from './livestock.component';
+import { LivestockListComponent } from './livestock-list/livestock-list.component';
+import { LivestockDetailComponent } from './livestock-detail/livestock-detail.component';
 
 describe('LivestockComponent', () => {
   let component: LivestockComponent;
@@ -8,9 +10,13 @@ describe('LivestockComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LivestockComponent ]
+      declarations: [
+        LivestockComponent,
+        LivestockListComponent,
+        LivestockDetailComponent
+      ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

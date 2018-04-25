@@ -1,16 +1,16 @@
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a [routerLink]="['/']" class="navbar-brand">Livestock Tracker</a>
+      <a routerLink="'/'" class="navbar-brand">Livestock Tracker</a>
     </div>
 
     <div class="collapse navbar-collapse">
       <ul class="nav navbar-nav">
         <li routerLinkActive="active">
-          <a [routerLink]="['livestock']">Livestock</a>
+          <a routerLink="'livestock'">Livestock</a>
         </li>
         <li routerLinkActive="active">
-          <a [routerLink]="['reports']">Reports</a>
+          <a routerLink="'reports'">Reports</a>
         </li>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown" appDropdown>
