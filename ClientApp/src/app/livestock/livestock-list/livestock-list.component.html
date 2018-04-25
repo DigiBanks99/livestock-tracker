@@ -1,3 +1,5 @@
-<p>
-  livestock-list works!
-</p>
+<ul class="list-group">
+  <li class="list-group-item" *ngFor="let livestock of livestockList">
+    {{livestock.number}} {{livestock.type}} {{livestock.subspecies}} {{livestock.birthDate | date}}
+  </li>
+</ul>

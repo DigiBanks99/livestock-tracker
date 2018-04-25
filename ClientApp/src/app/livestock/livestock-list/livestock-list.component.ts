@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Livestock } from '../livestock.model';
+import { LivestockService } from '../livestock.service';
 
 @Component({
   selector: 'app-livestock-list',
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./livestock-list.component.css']
 })
 export class LivestockListComponent implements OnInit {
+  public livestockList: Livestock[];
 
-  constructor() { }
+  constructor(private livestockService: LivestockService) { }
 
   ngOnInit() {
+    this.livestockList = this.livestockService.getLivestock();
   }
 
 }

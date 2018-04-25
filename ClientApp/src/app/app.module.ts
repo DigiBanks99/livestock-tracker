@@ -12,6 +12,7 @@ import { LivestockComponent } from './livestock/livestock.component';
 import { ReportsComponent } from './reports/reports.component';
 import { LivestockListComponent } from './livestock/livestock-list/livestock-list.component';
 import { LivestockDetailComponent } from './livestock/livestock-detail/livestock-detail.component';
+import { LivestockService } from './livestock/livestock.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,7 @@ import { LivestockDetailComponent } from './livestock/livestock-detail/livestock
     FormsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [LivestockService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { LivestockComponent } from './livestock.component';
 import { LivestockListComponent } from './livestock-list/livestock-list.component';
 import { LivestockDetailComponent } from './livestock-detail/livestock-detail.component';
+import { LivestockService, MockLivestockService } from './livestock.service';
 
 describe('LivestockComponent', () => {
   let component: LivestockComponent;
@@ -14,7 +15,8 @@ describe('LivestockComponent', () => {
         LivestockComponent,
         LivestockListComponent,
         LivestockDetailComponent
-      ]
+      ],
+      providers: [ {provide: LivestockService, useClass: MockLivestockService}]
     })
       .compileComponents();
   }));

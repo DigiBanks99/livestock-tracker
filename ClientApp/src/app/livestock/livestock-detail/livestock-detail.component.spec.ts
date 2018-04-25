@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LivestockDetailComponent } from './livestock-detail.component';
+import { LivestockService, MockLivestockService } from '../livestock.service';
 
 describe('LivestockDetailComponent', () => {
   let component: LivestockDetailComponent;
@@ -8,7 +9,8 @@ describe('LivestockDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LivestockDetailComponent ]
+      declarations: [ LivestockDetailComponent ],
+      providers: [ {provide: LivestockService, useClass: MockLivestockService}]
     })
     .compileComponents();
   }));
