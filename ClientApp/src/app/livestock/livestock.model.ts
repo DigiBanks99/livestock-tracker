@@ -23,8 +23,8 @@ export class Livestock {
       month--;
       const birthMonth = this.birthDate.getMonth() + 1; // add 1 becuase for some stupid reason month is 0 based
       const birthYear = this.birthDate.getFullYear();
-      const daysInMonth = Date.daysInMonth(birthMonth, birthYear);
-      day = daysInMonth + day;
+      const daysInMnth = Date.daysInMonth(birthMonth, birthYear);
+      day = daysInMnth + day;
     }
 
     if (year > 0 && month < 0) {
@@ -69,6 +69,6 @@ declare global {
 Date.daysInMonth = daysInMonth;
 
 function daysInMonth(month, year): number {
-  var date = new Date(year, month, 0);
+  const date = new Date(year, month, 0);
   return date.getDate();
 }
