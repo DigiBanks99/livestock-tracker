@@ -1,5 +1,8 @@
-<ul class="list-group">
-  <li class="list-group-item" *ngFor="let livestock of livestockList">
-    {{livestock.number}} {{livestock.type}} {{livestock.subspecies}} {{livestock.birthDate | date}}
-  </li>
-</ul>
+<div class="livestock-list-container">
+  <mat-toolbar>Menu goes here</mat-toolbar>
+  <mat-list>
+    <mat-list-item *ngFor="let livestock of livestockList">
+      {{livestock.number}} {{livestock.type}} {{livestock.subspecies}} {{livestock.birthDate | date}}
+    </mat-list-item>
+  </mat-list>
+</div>

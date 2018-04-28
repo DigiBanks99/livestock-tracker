@@ -1,0 +1,9 @@
+.livestock-list-container {
+  margin: 0;
+  padding: 0;
+  min-height: 1000px;
+}
+
+.livestock-list-container * {
+  height: 100%;
+}
