@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule } from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule, MatSelectModule, MatDividerModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, NativeDateModule, MatCheckboxModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -31,12 +31,19 @@ import { LivestockService } from './livestock/livestock.service';
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     MatToolbarModule,
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    MatDividerModule,
+    MatSelectModule,
+    MatInputModule,
+    NativeDateModule,
+    MatDatepickerModule,
+    MatCheckboxModule
   ],
   providers: [LivestockService],
   bootstrap: [AppComponent]

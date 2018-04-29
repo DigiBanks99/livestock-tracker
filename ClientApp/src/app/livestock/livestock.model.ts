@@ -1,20 +1,20 @@
 import { LiveStockType } from './livestock-type.model';
 
 export class Livestock {
-  constructor(
-    protected id: number,
-    protected type: LiveStockType,
-    protected subspecies: string,
-    protected number: number,
-    protected birthDate: Date,
-    protected purchaseDate: Date,
-    protected purchasePrice: number,
-    protected sellPrice: number,
-    protected arrivalWeight: number,
-    protected batchNumber: number) { }
+  public sold: boolean;
 
-  public getId(): number {
-    return this.id;
+  constructor(
+    public id: number,
+    public type: LiveStockType,
+    public subspecies: string,
+    public number: number,
+    public birthDate: Date,
+    public purchaseDate: Date,
+    public purchasePrice: number,
+    public sellPrice: number,
+    public arrivalWeight: number,
+    public batchNumber: number) {
+    this.sold = false;
   }
 
   public getAge(): string {

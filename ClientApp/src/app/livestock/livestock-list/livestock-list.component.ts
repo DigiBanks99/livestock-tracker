@@ -52,6 +52,10 @@ export class LivestockListComponent implements OnInit, OnDestroy {
     }
   }
 
+  onEditItem(id: number) {
+    this.livestockService.editingStarted.next(id);
+  }
+
   ngOnDestroy() {
     this.livestockChanged.unsubscribe();
   }

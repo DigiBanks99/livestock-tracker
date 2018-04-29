@@ -11,16 +11,17 @@
     </button>
   </mat-toolbar>
   <mat-selection-list #animals>
-    <mat-list-option *ngFor="let animal of livestockList; let i = index" [value]="animal.getId()">
+    <mat-list-option *ngFor="let animal of livestockList; let i = index" [value]="animal.id" (click)="onEditItem(animal.id)">
       <div class="mat-list-item-content">
         <mat-icon matListIcon svgIcon="{{getSvgIcon(animal.type)}}"></mat-icon>
         <div class="mat-list-text">
           <h3 matLine>{{animal.number}}</h3>
           <p matLine>{{animal.subspecies}}</p>
           <p matLine>{{animal.birthDate | date:'dd MMMM yyyy'}}</p>
+          <p matLine>{{animal.getAge()}}</p>
         </div>
       </div>
-      <mat-divider *ngIf="i > 0"></mat-divider>
+      <mat-divider></mat-divider>
     </mat-list-option>
   </mat-selection-list>
 </div>
