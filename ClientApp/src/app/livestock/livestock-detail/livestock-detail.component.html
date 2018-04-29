@@ -1,44 +1,65 @@
-<div class="form-container">
-  <form [formGroup]="livestockForm">
-    <mat-form-field>
-      <mat-label for="type">Type</mat-label>
-      <mat-select id="type" formControlName="type" placeholder="Select">
-        <mat-option [value]="0"><mat-icon svgIcon="cow"></mat-icon></mat-option>
-        <mat-option [value]="1"><mat-icon svgIcon="chicken"></mat-icon></mat-option>
-        <mat-option><mat-icon svgIcon="pig"></mat-icon></mat-option>
-        <mat-option><mat-icon svgIcon="sheep"></mat-icon></mat-option>
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field>
-      <input formControlName="subspecies" matInput placeholder="Subspecies">
-    </mat-form-field>
-    <mat-form-field>
-      <input type="number" formControlName="number" matInput placeholder="Number">
-    </mat-form-field>
-    <mat-form-field>
-      <input formControlName="birthDate" matInput [matDatepicker]="bd" placeholder="Birth Date">
-      <mat-datepicker-toggle matSuffix [for]="bd"></mat-datepicker-toggle>
-      <mat-datepicker #bd></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <input formControlName="purchaseDate" matInput [matDatepicker]="pd" placeholder="Purchase Date">
-      <mat-datepicker-toggle matSuffix [for]="pd"></mat-datepicker-toggle>
-      <mat-datepicker #pd></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field>
-      <span matPrefix>R &nbsp;</span>
-      <input type="number" formControlName="purchasePrice" matInput placeholder="Purchase Price">
-    </mat-form-field>
+<div>
+  <form [formGroup]="livestockForm" class="form-container">
+    <div class="form-container-inline">
+      <mat-form-field>
+        <mat-label for="type">Type</mat-label>
+        <mat-select id="type" formControlName="type" placeholder="Select">
+          <mat-option [value]="0">
+            <mat-icon svgIcon="cow"></mat-icon> Cow
+          </mat-option>
+          <mat-option [value]="1">
+            <mat-icon svgIcon="chicken"></mat-icon> Chicken
+          </mat-option>
+          <mat-option [value]="2">
+            <mat-icon svgIcon="pig"></mat-icon> Pig
+          </mat-option>
+          <mat-option [value]="3">
+            <mat-icon svgIcon="sheep"></mat-icon> Sheep
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="subspecies" matInput placeholder="Subspecies">
+      </mat-form-field>
+    </div>
+    <div class="form-container-inline">
+      <mat-form-field>
+        <input type="number" formControlName="number" matInput placeholder="Number">
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="batchNumber" matInput placeholder="Batch Number">
+      </mat-form-field>
+    </div>
+    <div class="form-container-inline">
+      <mat-form-field>
+        <input formControlName="birthDate" matInput [matDatepicker]="bd" placeholder="Birth Date">
+        <mat-datepicker-toggle matSuffix [for]="bd"></mat-datepicker-toggle>
+        <mat-datepicker #bd></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="age" matInput placeholder="Age">
+      </mat-form-field>
+    </div>
+    <div class="form-container-inline">
+      <mat-form-field>
+        <input formControlName="purchaseDate" matInput [matDatepicker]="pd" placeholder="Purchase Date">
+        <mat-datepicker-toggle matSuffix [for]="pd"></mat-datepicker-toggle>
+        <mat-datepicker #pd></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <span matPrefix>R &nbsp;</span>
+        <input type="number" formControlName="purchasePrice" matInput placeholder="Purchase Price" class="currency-input">
+      </mat-form-field>
+    </div>
     <mat-form-field>
       <input type="number" formControlName="arrivalWeight" matInput placeholder="Arrival Weight">
     </mat-form-field>
-    <mat-form-field>
-      <input formControlName="batchNumber" matInput placeholder="Batch Number">
-    </mat-form-field>
-    <mat-form-field>
-      <span matPrefix>R &nbsp;</span>
-      <input type="number" formControlName="sellPrice" matInput placeholder="Sell Price">
-    </mat-form-field>
-    <mat-checkbox formControlName="sold">Sold</mat-checkbox>
+    <div class="form-container-inline">
+      <mat-checkbox formControlName="sold">Sold</mat-checkbox>
+      <mat-form-field>
+        <input type="number" formControlName="sellPrice" matInput placeholder="Sell Price" class="currency-input">
+        <span matPrefix>R&nbsp;</span>
+      </mat-form-field>
+    </div>
   </form>
 </div>

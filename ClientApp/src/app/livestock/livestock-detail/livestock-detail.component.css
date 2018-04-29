@@ -1,20 +1,53 @@
 .form-container {
   display: flex;
   flex-direction: column;
+  padding: 20px;
 }
 
-.form-container > * {
-  width: 100%;
+.form-container-inline {
+  display: flex;
+  flex-direction: row;
 }
 
-.form-container form {
+@media (min-width: 1000px) {
+  .form-container>*,
+  .form-container-inline>* {
+    width: 50%;
+    padding: 5px 5px;
+  }
+}
+
+@media (max-width: 1000px) {
+  .form-container>*,
+  .form-container-inline>* {
+    width: 100%;
+    padding: 5px 5px;
+  }
+}
+
+.form-container form,
+.form-container-inline form {
   margin-bottom: 20px;
 }
 
-.form-container form > * {
+.form-container form>*,
+.form-container-inline form>* {
   margin: 5px 0;
 }
 
 .form-container .mat-radio-button {
   margin: 0 5px;
+}
+
+.currency-input {
+  text-align: right;
+}
+
+input.currency-input::-webkit-outer-spin-button,
+input.currency-input::-webkit-inner-spin-button {
+  display: none;
+}
+
+input.currency-input {
+  -moz-appearance: textfield;
 }

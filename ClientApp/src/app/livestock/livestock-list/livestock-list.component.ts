@@ -47,13 +47,21 @@ export class LivestockListComponent implements OnInit, OnDestroy {
   }
 
   removeLivestock(selectedItems: MatListOption[]) {
-    for (const item of selectedItems) {
-      this.livestockService.removeLivestock(item.value);
+    try {
+      for (const item of selectedItems) {
+        this.livestockService.removeLivestock(item.value);
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 
   onEditItem(id: number) {
-    this.livestockService.editingStarted.next(id);
+    try {
+      this.livestockService.editingStarted.next(id);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   ngOnDestroy() {

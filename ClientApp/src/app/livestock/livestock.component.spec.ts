@@ -1,11 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatSidenavModule, MatIconModule, MatToolbarModule, MatDividerModule, MatListModule, MatInputModule, MatCheckboxModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 
 import { LivestockComponent } from './livestock.component';
 import { LivestockListComponent } from './livestock-list/livestock-list.component';
 import { LivestockDetailComponent } from './livestock-detail/livestock-detail.component';
 import { LivestockService, MockLivestockService } from './livestock.service';
-import { MatSidenavModule, MatIconModule, MatToolbarModule, MatDividerModule, MatListModule } from '@angular/material';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('LivestockComponent', () => {
   let component: LivestockComponent;
@@ -18,8 +21,27 @@ describe('LivestockComponent', () => {
         LivestockListComponent,
         LivestockDetailComponent
       ],
-      providers: [ {provide: LivestockService, useClass: MockLivestockService}],
-      imports: [MatSidenavModule, MatIconModule, MatToolbarModule, MatDividerModule, MatListModule, BrowserAnimationsModule]
+      providers: [{ provide: LivestockService, useClass: MockLivestockService }],
+      imports: [
+        MatSidenavModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatDividerModule,
+        MatListModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatListModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSelectModule,
+        HttpClientModule
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+      ]
     })
       .compileComponents();
   }));

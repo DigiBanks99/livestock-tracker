@@ -6,7 +6,10 @@ import { Subject } from 'rxjs/Subject';
 
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
+  editingStarted: Subject<number>;
   getLivestock(): Livestock[];
+  getAnimal(id: number): Livestock;
+  removeLivestock(id: number);
 }
 
 @Injectable()
@@ -43,7 +46,7 @@ export class LivestockService implements ILivestockService, OnInit {
     return this.livestock.slice();
   }
 
-  public getAnimal(id: number) {
+  public getAnimal(id: number): Livestock {
     if (id === undefined || id === null) {
       return;
     }
@@ -87,7 +90,16 @@ export class LivestockService implements ILivestockService, OnInit {
 
 export class MockLivestockService implements ILivestockService {
   public livestockChanged = new Subject<Livestock[]>();
+  public editingStarted = new Subject<number>();
   public getLivestock(): Livestock[] {
     return [];
+  }
+
+  public getAnimal(id: number): Livestock {
+    return new Livestock(1, LiveStockType.Cattle, '', 0, new Date(), new Date(), 0, 0, 0, 0);
+  }
+
+  public  removeLivestock(id: number) {
+
   }
 }

@@ -23,7 +23,7 @@ export const MY_FORMATS = {
   templateUrl: './livestock-detail.component.html',
   styleUrls: ['./livestock-detail.component.css'],
   providers: [
-    {provide: MAT_DATE_FORMATS, useValue: MY_FORMATS}
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }
   ]
 })
 export class LivestockDetailComponent implements OnInit, OnDestroy {
@@ -36,11 +36,15 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   constructor(private livestockService: LivestockService) { }
 
   ngOnInit() {
-    this.initForm();
-    this.editingStartedSubscription = this.livestockService.editingStarted.subscribe((id: number) => {
-      this.editID = id;
+    try {
       this.initForm();
-    });
+      this.editingStartedSubscription = this.livestockService.editingStarted.subscribe((id: number) => {
+        this.editID = id;
+        this.initForm();
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   initForm() {
@@ -54,6 +58,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     let batchNumber: number = null;
     let sellPrice = 0;
     let sold = false;
+    let age: string = null;
 
     const animal = this.livestockService.getAnimal(this.editID);
     if (animal != null) {
@@ -67,6 +72,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       batchNumber = animal.batchNumber;
       sellPrice = animal.sellPrice;
       sold = animal.sold;
+      age = animal.getAge();
     }
 
     this.livestockForm = new FormGroup({
@@ -79,7 +85,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       'arrivalWeight': new FormControl(arrivalWeight, [Validators.required]),
       'batchNumber': new FormControl(batchNumber, [Validators.required]),
       'sellPrice': new FormControl(sellPrice, []),
-      'sold': new FormControl(sold, [Validators.required])
+      'sold': new FormControl(sold, [Validators.required]),
+      'age': new FormControl({ value: age, disabled: true })
     });
   }
 
