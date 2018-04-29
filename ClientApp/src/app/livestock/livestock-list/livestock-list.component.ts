@@ -1,17 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { Livestock } from '../livestock.model';
-import { LivestockService } from '../livestock.service';
-import { MatIconRegistry } from '@angular/material';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatIconRegistry, MatListOption } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Subscription } from 'rxjs/Subscription';
+
 import { LiveStockType } from '../livestock-type.model';
+import { LivestockService } from '../livestock.service';
+import { Livestock } from '../livestock.model';
 
 @Component({
   selector: 'app-livestock-list',
   templateUrl: './livestock-list.component.html',
   styleUrls: ['./livestock-list.component.css']
 })
-export class LivestockListComponent implements OnInit {
+export class LivestockListComponent implements OnInit, OnDestroy {
   public livestockList: Livestock[];
+
+  private livestockChanged: Subscription;
 
   constructor(private livestockService: LivestockService, private matIconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) { }
 
@@ -21,6 +25,10 @@ export class LivestockListComponent implements OnInit {
     this.matIconRegistry.addSvgIcon('chicken', this.sanitizer.bypassSecurityTrustResourceUrl('./../../../assets/cock.svg'));
     this.matIconRegistry.addSvgIcon('pig', this.sanitizer.bypassSecurityTrustResourceUrl('./../../../assets/pig.svg'));
     this.matIconRegistry.addSvgIcon('sheep', this.sanitizer.bypassSecurityTrustResourceUrl('./../../../assets/sheep.svg'));
+
+    this.livestockChanged = this.livestockService.livestockChanged.subscribe((livestockList: Livestock[]) => {
+      this.livestockList = livestockList;
+    });
   }
 
   getSvgIcon(type: LiveStockType) {
@@ -36,5 +44,15 @@ export class LivestockListComponent implements OnInit {
       default:
         throw Error(type + ' not implemented');
     }
+  }
+
+  removeLivestock(selectedItems: MatListOption[]) {
+    for (const item of selectedItems) {
+      this.livestockService.removeLivestock(item.value);
+    }
+  }
+
+  ngOnDestroy() {
+    this.livestockChanged.unsubscribe();
   }
 }

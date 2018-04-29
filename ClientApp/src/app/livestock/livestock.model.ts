@@ -1,7 +1,7 @@
 import { LiveStockType } from './livestock-type.model';
 
 export class Livestock {
-  constructor (
+  constructor(
     protected id: number,
     protected type: LiveStockType,
     protected subspecies: string,
@@ -12,6 +12,10 @@ export class Livestock {
     protected sellPrice: number,
     protected arrivalWeight: number,
     protected batchNumber: number) { }
+
+  public getId(): number {
+    return this.id;
+  }
 
   public getAge(): string {
     const today = new Date();

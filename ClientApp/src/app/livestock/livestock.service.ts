@@ -39,6 +39,23 @@ export class LivestockService implements ILivestockService, OnInit {
     return this.livestock.slice();
   }
 
+  public removeLivestock(id: number) {
+    if (this.livestock.length === 0) {
+      return;
+    }
+
+    const index = this.livestock.map((animal) => {
+      return animal.getId();
+    }).indexOf(id);
+
+    if (index < 0) {
+      throw Error('Item not found');
+    }
+
+    this.livestock.splice(index, 1);
+    this.emitLivestockChanged();
+  }
+
   private emitLivestockChanged() {
     this.livestockChanged.next(this.getLivestock());
   }

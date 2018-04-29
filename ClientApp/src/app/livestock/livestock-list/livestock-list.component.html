@@ -3,21 +3,21 @@
     <button type="button" mat-button title="Add animal">
       <mat-icon>add</mat-icon>
     </button>
-    <button type="button" mat-button title="Remove selected">
+    <button type="button" mat-button title="Remove selected" (click)="removeLivestock(animals.selectedOptions.selected)">
       <mat-icon>remove</mat-icon>
     </button>
     <button type="button" mat-button title="Filter">
       <mat-icon>search</mat-icon>
     </button>
   </mat-toolbar>
-  <mat-selection-list>
-    <mat-list-option *ngFor="let animal of livestockList; let i = index">
+  <mat-selection-list #animals>
+    <mat-list-option *ngFor="let animal of livestockList; let i = index" [value]="animal.getId()">
       <div class="mat-list-item-content">
         <mat-icon matListIcon svgIcon="{{getSvgIcon(animal.type)}}"></mat-icon>
         <div class="mat-list-text">
           <h3 matLine>{{animal.number}}</h3>
           <p matLine>{{animal.subspecies}}</p>
-          <p matLine>{{animal.birthDate | date}}</p>
+          <p matLine>{{animal.birthDate | date:'dd MMMM yyyy'}}</p>
         </div>
       </div>
       <mat-divider *ngIf="i > 0"></mat-divider>
