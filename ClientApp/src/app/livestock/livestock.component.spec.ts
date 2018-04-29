@@ -4,6 +4,8 @@ import { LivestockComponent } from './livestock.component';
 import { LivestockListComponent } from './livestock-list/livestock-list.component';
 import { LivestockDetailComponent } from './livestock-detail/livestock-detail.component';
 import { LivestockService, MockLivestockService } from './livestock.service';
+import { MatSidenavModule, MatIconModule, MatToolbarModule, MatDividerModule, MatListModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('LivestockComponent', () => {
   let component: LivestockComponent;
@@ -16,7 +18,8 @@ describe('LivestockComponent', () => {
         LivestockListComponent,
         LivestockDetailComponent
       ],
-      providers: [ {provide: LivestockService, useClass: MockLivestockService}]
+      providers: [ {provide: LivestockService, useClass: MockLivestockService}],
+      imports: [MatSidenavModule, MatIconModule, MatToolbarModule, MatDividerModule, MatListModule, BrowserAnimationsModule]
     })
       .compileComponents();
   }));

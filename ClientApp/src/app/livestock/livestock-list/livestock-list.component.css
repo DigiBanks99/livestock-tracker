@@ -1,9 +1,16 @@
 .livestock-list-container {
-  margin: 0;
-  padding: 0;
-  min-height: 1000px;
+  overflow: auto;
 }
 
-.livestock-list-container * {
+.livestock-list-container mat-toolbar {
+  padding: 0;
   height: 100%;
+}
+
+.livestock-list-container mat-selection-list {
+  padding: 0;
+}
+
+.livestock-list-container .mat-list-text {
+  padding-left: 16px;
 }
