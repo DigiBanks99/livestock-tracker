@@ -1,5 +1,5 @@
 <div class="livestock-list-container">
-  <mat-toolbar>
+  <mat-toolbar color="primary">
     <button type="button" mat-button title="Add animal">
       <mat-icon>add</mat-icon>
     </button>
@@ -13,7 +13,7 @@
   <mat-selection-list #animals>
     <mat-list-option *ngFor="let animal of livestockList; let i = index" [value]="animal.id" (click)="onEditItem(animal.id)">
       <div class="mat-list-item-content">
-        <mat-icon matListIcon svgIcon="{{getSvgIcon(animal.type)}}"></mat-icon>
+        <mat-icon matListIcon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
         <div class="mat-list-text">
           <h3 matLine>{{animal.number}}</h3>
           <p matLine>{{animal.subspecies}}</p>

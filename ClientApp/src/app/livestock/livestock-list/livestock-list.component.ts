@@ -31,19 +31,8 @@ export class LivestockListComponent implements OnInit, OnDestroy {
     });
   }
 
-  getSvgIcon(type: LiveStockType) {
-    switch (type) {
-      case LiveStockType.Cattle:
-        return 'cow';
-      case LiveStockType.Chicken:
-        return 'chicken';
-      case LiveStockType.Pig:
-        return 'pig';
-      case LiveStockType.Sheep:
-        return 'sheep';
-      default:
-        throw Error(type + ' not implemented');
-    }
+  public getSvgIcon(animal: Livestock): string {
+    return this.livestockService.getSvgIcon(animal);
   }
 
   removeLivestock(selectedItems: MatListOption[]) {

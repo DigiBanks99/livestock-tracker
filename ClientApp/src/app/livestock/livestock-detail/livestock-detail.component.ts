@@ -3,8 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Subscription } from 'rxjs/Subscription';
 
-import { LiveStockType } from '../livestock-type.model';
+import { Livestock } from './../livestock.model';
+import { LiveStockType } from './../livestock-type.model';
 import { LivestockService } from '../livestock.service';
+import { isNullOrUndefined } from 'util';
 
 export const MY_FORMATS = {
   parse: {
@@ -28,12 +30,21 @@ export const MY_FORMATS = {
 })
 export class LivestockDetailComponent implements OnInit, OnDestroy {
   public livestockForm: FormGroup;
-  public livestockTypes: LiveStockType;
+  public livestockTypes = LiveStockType;
+  public currentAnimal: Livestock;
+  public keys: number[];
 
   private editID: number;
   private editingStartedSubscription: Subscription;
+  public soldChanged: Subscription;
 
-  constructor(private livestockService: LivestockService) { }
+  constructor(private livestockService: LivestockService) {
+    this.keys = [0];
+    const strKeys = Object.keys(this.livestockTypes).filter(Number);
+    strKeys.forEach((strKey: string) => {
+      this.keys.push(parseInt(strKey, 10));
+    });
+   }
 
   ngOnInit() {
     try {
@@ -60,8 +71,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     let sold = false;
     let age: string = null;
 
-    const animal = this.livestockService.getAnimal(this.editID);
+    const animal: Livestock = this.livestockService.getAnimal(this.editID);
     if (animal != null) {
+      this.currentAnimal = animal;
       type = animal.type;
       subspecies = animal.subspecies;
       number = animal.number;
@@ -73,10 +85,12 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       sellPrice = animal.sellPrice;
       sold = animal.sold;
       age = animal.getAge();
+    } else {
+      this.currentAnimal = null;
     }
 
     this.livestockForm = new FormGroup({
-      'type': new FormControl(LiveStockType.Cattle, [Validators.required]),
+      'type': new FormControl(type, [Validators.required]),
       'subspecies': new FormControl(subspecies, []),
       'number': new FormControl(number, [Validators.required]),
       'birthDate': new FormControl(birthDate, [Validators.required]),
@@ -88,9 +102,42 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       'sold': new FormControl(sold, [Validators.required]),
       'age': new FormControl({ value: age, disabled: true })
     });
+
+    this.soldChanged = this.livestockForm.get('sold').valueChanges.subscribe((value: any) => {
+      const validators = [];
+      if (value) {
+        validators.push(Validators.required);
+      }
+
+      const sellPriceCtrl = this.livestockForm.get('sellPrice');
+      sellPriceCtrl.setValidators(validators);
+      sellPriceCtrl.updateValueAndValidity();
+      sellPriceCtrl.markAsTouched();
+    });
+  }
+
+  public getSvgIcon(animal: Livestock): string {
+    return this.livestockService.getSvgIcon(animal);
+  }
+
+  public getSvgIconByType(type: string): string {
+    return this.livestockService.getSvgIconByString(type);
+  }
+
+  public getValueOrDefault(lookup) {
+    if (isNullOrUndefined(lookup)) {
+      return LiveStockType.Cattle;
+    }
+
+    return lookup;
+  }
+
+  public submit() {
+    console.log(this.livestockForm.value);
   }
 
   ngOnDestroy() {
     this.editingStartedSubscription.unsubscribe();
+    this.soldChanged.unsubscribe();
   }
 }

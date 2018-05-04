@@ -3,6 +3,7 @@ import { OnInit, Injectable } from '@angular/core';
 import { LiveStockType } from './livestock-type.model';
 
 import { Subject } from 'rxjs/Subject';
+import { isNullOrUndefined } from 'util';
 
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
@@ -21,19 +22,20 @@ export class LivestockService implements ILivestockService, OnInit {
 
   constructor() {
     this.livestock = [
-      new Livestock(1, LiveStockType.Cattle, 'Brahman', 1, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, 1400, 120, 1),
-      new Livestock(2, LiveStockType.Cattle, 'Brahman', 2, new Date(2018, 3, 23), new Date(2018, 4, 1), 1000, 1400, 120, 1),
-      new Livestock(8, LiveStockType.Chicken, null, 8, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, 1400, 120, 1),
-      new Livestock(3, LiveStockType.Cattle, 'Fries', 3, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, 1400, 120, 1),
-      new Livestock(4, LiveStockType.Cattle, 'Jersey', 4, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, 1400, 120, 1),
-      new Livestock(9, LiveStockType.Pig, null, 9, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, 1400, 120, 1),
-      new Livestock(5, LiveStockType.Cattle, 'Brahman', 5, new Date(2018, 3, 23), new Date(2018, 4, 1), 1000, 1400, 120, 1),
-      new Livestock(10, LiveStockType.Sheep, null, 10, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, 1400, 120, 1),
-      new Livestock(6, LiveStockType.Cattle, 'Gurnsey', 6, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, 1400, 120, 1),
-      new Livestock(7, LiveStockType.Cattle, 'Fries', 7, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, 1400, 120, 1)
+      new Livestock(1, LiveStockType.Cattle, 'Brahman', 1, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
+      new Livestock(2, LiveStockType.Cattle, 'Brahman', 2, new Date(2018, 3, 23), new Date(2018, 4, 1), 1000, null, 120, 1),
+      new Livestock(8, LiveStockType.Chicken, null, 8, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
+      new Livestock(3, LiveStockType.Cattle, 'Fries', 3, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
+      new Livestock(4, LiveStockType.Cattle, 'Jersey', 4, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
+      new Livestock(9, LiveStockType.Pig, null, 9, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
+      new Livestock(5, LiveStockType.Cattle, 'Brahman', 5, new Date(2018, 3, 23), new Date(2018, 4, 1), 1000, null, 120, 1),
+      new Livestock(10, LiveStockType.Sheep, null, 10, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
+      new Livestock(6, LiveStockType.Cattle, 'Guernsey', 6, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
+      new Livestock(7, LiveStockType.Cattle, 'Fries', 7, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1)
     ];
 
     this.livestock[4].sold = true;
+    this.livestock[4].sellPrice = 1400;
 
     this.livestockChanged = new Subject<Livestock[]>();
     this.editingStarted = new Subject<number>();
@@ -81,6 +83,43 @@ export class LivestockService implements ILivestockService, OnInit {
 
     this.livestock.splice(index, 1);
     this.emitLivestockChanged();
+  }
+
+  public getSvgIcon(animal: Livestock): string {
+    if (isNullOrUndefined(animal)) {
+      return null;
+    }
+
+    return this.getSvgIconByType(animal.type);
+  }
+
+  public getSvgIconByType(type: LiveStockType): string {
+    switch (type) {
+      case LiveStockType.Cattle:
+        return 'cow';
+      case LiveStockType.Chicken:
+        return 'chicken';
+      case LiveStockType.Pig:
+        return 'pig';
+      case LiveStockType.Sheep:
+        return 'sheep';
+      default:
+        throw Error(type + ' not implemented');
+    }
+  }
+
+  public getSvgIconByString(type: string): string {
+    if (type === 'Cattle') {
+        return 'cow';
+    } else if (type === 'Chicken') {
+        return 'chicken';
+    } else if (type === 'Pig') {
+        return 'pig';
+    } else if (type === 'Sheep') {
+        return 'sheep';
+    } else {
+        throw Error(type + ' not implemented');
+    }
   }
 
   private emitLivestockChanged() {
