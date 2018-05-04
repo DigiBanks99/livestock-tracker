@@ -11,6 +11,9 @@ interface ILivestockService {
   getLivestock(): Livestock[];
   getAnimal(id: number): Livestock;
   removeLivestock(id: number);
+  getSvgIcon(animal: Livestock): string;
+  getSvgIconByType(type: LiveStockType): string;
+  getSvgIconByString(type: string): string;
 }
 
 @Injectable()
@@ -138,7 +141,9 @@ export class MockLivestockService implements ILivestockService {
     return new Livestock(1, LiveStockType.Cattle, '', 0, new Date(), new Date(), 0, 0, 0, 0);
   }
 
-  public  removeLivestock(id: number) {
+  public  removeLivestock(id: number) { }
 
-  }
+  getSvgIcon(animal: Livestock): string { return null; }
+  getSvgIconByType(type: LiveStockType): string { return null; }
+  getSvgIconByString(type: string): string { return null; }
 }
