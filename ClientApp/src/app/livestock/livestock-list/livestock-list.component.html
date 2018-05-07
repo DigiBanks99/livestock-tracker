@@ -11,8 +11,12 @@
     </button>
   </mat-toolbar>
   <mat-selection-list #animals>
-    <mat-list-item mat-ripple class="livestock-selectable-list-item mat-ripple" *ngFor="let animal of livestockList; let i = index" [routerLink]="['edit']"
-      [queryParams]="{id: animal.id}">
+    <mat-list-item
+     matRipple
+     class="livestock-selectable-list-item"
+     *ngFor="let animal of livestockList; let i = index"
+     [routerLink]="['edit']"
+     [queryParams]="{id: animal.id}">
       <mat-icon matListIcon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
       <h3 matLine>{{animal.number}}</h3>
       <p matLine>{{animal.subspecies}}</p>

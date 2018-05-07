@@ -4,7 +4,21 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatToolbarModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule, MatSelectModule, MatDividerModule, MatInputModule, MatDatepickerModule, MatNativeDateModule, NativeDateModule, MatCheckboxModule } from '@angular/material';
+import {
+  MatToolbarModule,
+  MatButtonModule,
+  MatSidenavModule,
+  MatListModule,
+  MatIconModule,
+  MatSelectModule,
+  MatDividerModule,
+  MatInputModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  NativeDateModule,
+  MatCheckboxModule,
+  MatRippleModule
+ } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -43,7 +57,8 @@ import { LivestockService } from './livestock/livestock.service';
     MatInputModule,
     NativeDateModule,
     MatDatepickerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatRippleModule
   ],
   providers: [LivestockService],
   bootstrap: [AppComponent]
