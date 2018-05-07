@@ -1,10 +1,5 @@
-.livestock-list-container {
-  overflow: auto;
-}
-
 .livestock-list-container mat-toolbar {
   padding: 0;
-  height: 100%;
 }
 
 .livestock-list-container mat-selection-list {
@@ -13,4 +8,34 @@
 
 .livestock-list-container .mat-list-text {
   padding-left: 16px;
+}
+
+.livestock-selectable-list-item {
+  display: flex;
+  flex: 1 1 auto;
+  cursor: pointer;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  width: 100%;
+}
+
+.livestock-selectable-list-item:hover {
+  background: rgba(0,0,0,.04);
+}
+
+.livestock-selectable-list-item:focus {
+  border: none;
+  outline: none;
+  background: rgba(0,0,0,.08);
+}
+
+.livestock-selectable-list-item *:hover {
+  background: rgba(0,0,0,0);
+}
+
+.livestock-selectable-list-item *:focus {
+  background: rgba(0,0,0,0);
 }

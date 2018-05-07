@@ -55,13 +55,4 @@ input.currency-input {
 
 .container mat-toolbar {
   flex: 1 1 auto;
-  height: 100%;
-}
-
-.container mat-toolbar button {
-  padding: 0 14px;
-}
-
-.fill-remaining-space {
-  flex: 1 1 auto;
 }

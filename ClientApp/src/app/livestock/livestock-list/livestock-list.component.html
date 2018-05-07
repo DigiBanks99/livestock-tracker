@@ -11,21 +11,15 @@
     </button>
   </mat-toolbar>
   <mat-selection-list #animals>
-    <mat-list-option
-    *ngFor="let animal of livestockList; let i = index"
-    [value]="animal.id"
-    [routerLink]="['edit']"
-    [queryParams]="{id: animal.id}">
-      <div class="mat-list-item-content">
-        <mat-icon matListIcon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
-        <div class="mat-list-text">
-          <h3 matLine>{{animal.number}}</h3>
-          <p matLine>{{animal.subspecies}}</p>
-          <p matLine>{{animal.birthDate | date:'dd MMMM yyyy'}}</p>
-          <p matLine>{{animal.getAge()}}</p>
-        </div>
-      </div>
+    <mat-list-item mat-ripple class="livestock-selectable-list-item mat-ripple" *ngFor="let animal of livestockList; let i = index" [routerLink]="['edit']"
+      [queryParams]="{id: animal.id}">
+      <mat-icon matListIcon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
+      <h3 matLine>{{animal.number}}</h3>
+      <p matLine>{{animal.subspecies}}</p>
+      <p matLine>{{animal.birthDate | date:'dd MMMM yyyy'}}</p>
+      <p matLine>{{animal.getAge()}}</p>
+      <mat-list-option [value]="animal.id" class="select-box"></mat-list-option>
       <mat-divider></mat-divider>
-    </mat-list-option>
+    </mat-list-item>
   </mat-selection-list>
 </div>

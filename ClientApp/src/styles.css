@@ -5,3 +5,20 @@ body {
   padding: 0;
   margin: 0;
 }
+
+app-header {
+  display: block;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+mat-toolbar button {
+  padding: 0 14px;
+  height: 100%;
+}
+
+app-livestock .mat-drawer {
+  overflow-y: scroll;
+}

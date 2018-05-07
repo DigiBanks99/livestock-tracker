@@ -70,10 +70,10 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     let number: number = null;
     let birthDate = new Date();
     let purchaseDate = new Date();
-    let purchasePrice = 0;
-    let arrivalWeight = 0;
+    let purchasePrice: number = null;
+    let arrivalWeight: number = null;
     let batchNumber: number = null;
-    let sellPrice = 0;
+    let sellPrice: number = null;
     let sold = false;
     let age: string = null;
 
