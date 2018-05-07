@@ -2,6 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatIconModule, MatToolbarModule, MatDividerModule, MatListModule, MatCheckboxModule, MatDatepickerModule, NativeDateModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { LivestockListComponent } from './livestock-list.component';
 import { LivestockService, MockLivestockService } from '../livestock.service';
@@ -37,7 +38,8 @@ describe('LivestockListComponent', () => {
         MatCheckboxModule,
         NativeDateModule,
         MatFormFieldModule,
-        MatInputModule
+        MatInputModule,
+        RouterTestingModule
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA

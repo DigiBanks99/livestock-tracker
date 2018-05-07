@@ -1,7 +1,10 @@
 <div>
   <form [formGroup]="livestockForm" class="container" (ngSubmit)="submit()">
     <mat-toolbar color="primary">
-      <span><mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(livestockForm.get('type').value)])}}"></mat-icon></span>
+      <span>
+        <mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(livestockForm.get('type').value)])}}"></mat-icon>
+        {{getHeaderText()}}
+      </span>
       <span class="fill-remaining-space"></span>
       <button mat-button type="reset" title="Reset changes" [disabled]="!livestockForm.dirty"><mat-icon>cancel</mat-icon></button>
       <button mat-button type="submit" title="Submit changes" [disabled]="livestockForm.invalid || !livestockForm.dirty">

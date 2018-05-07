@@ -53,7 +53,7 @@ export class LivestockService implements ILivestockService, OnInit {
 
   public getAnimal(id: number): Livestock {
     if (id === undefined || id === null) {
-      return;
+      return null;
     }
 
     if (this.livestock.length === 0) {
@@ -138,6 +138,10 @@ export class MockLivestockService implements ILivestockService {
   }
 
   public getAnimal(id: number): Livestock {
+    if (isNullOrUndefined(id)) {
+      return null;
+    }
+
     return new Livestock(1, LiveStockType.Cattle, '', 0, new Date(), new Date(), 0, 0, 0, 0);
   }
 

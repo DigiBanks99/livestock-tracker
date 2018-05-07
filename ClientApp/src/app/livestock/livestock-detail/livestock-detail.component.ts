@@ -130,12 +130,29 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     return this.livestockService.getSvgIconByString(type);
   }
 
-  public getValueOrDefault(lookup) {
+  public getValueOrDefault(lookup: LiveStockType) {
     if (isNullOrUndefined(lookup)) {
       return LiveStockType.Cattle;
     }
 
     return lookup;
+  }
+
+  public getHeaderText() {
+    if (isNullOrUndefined(this.editID)) {
+      return '(New)';
+    } else {
+      if (isNullOrUndefined(this.currentAnimal)) {
+        const animal: Livestock = this.livestockService.getAnimal(this.editID);
+        if (animal == null) {
+          throw new Error('animal should not be null');
+        } else {
+          this.currentAnimal = animal;
+        }
+      }
+
+      return this.currentAnimal.number + ' - ' + this.livestockTypes[this.currentAnimal.type];
+    }
   }
 
   public submit() {

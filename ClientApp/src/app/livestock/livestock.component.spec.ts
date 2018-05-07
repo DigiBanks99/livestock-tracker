@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterTestingModule } from '@angular/router/testing';
 
 import { LivestockComponent } from './livestock.component';
 import { LivestockListComponent } from './livestock-list/livestock-list.component';
@@ -37,7 +38,8 @@ describe('LivestockComponent', () => {
         MatDatepickerModule,
         MatNativeDateModule,
         MatSelectModule,
-        HttpClientModule
+        HttpClientModule,
+        RouterTestingModule
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
