@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatIconRegistry, MatListOption } from '@angular/material';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
 import { LiveStockType } from '../livestock-type.model';
@@ -17,7 +18,12 @@ export class LivestockListComponent implements OnInit, OnDestroy {
 
   private livestockChanged: Subscription;
 
-  constructor(private livestockService: LivestockService, private matIconRegistry: MatIconRegistry, private sanitizer: DomSanitizer) { }
+  constructor(
+    private livestockService: LivestockService,
+    private matIconRegistry: MatIconRegistry,
+    private sanitizer: DomSanitizer,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
     this.livestockList = this.livestockService.getLivestock();
@@ -47,7 +53,11 @@ export class LivestockListComponent implements OnInit, OnDestroy {
 
   onEditItem(id: number) {
     try {
-      this.livestockService.editingStarted.next(id);
+      const navigationExtras: NavigationExtras = {
+        queryParams: { 'id': id },
+        relativeTo: this.route
+      };
+      this.router.navigate(['edit'], navigationExtras);
     } catch (error) {
       console.log(error);
     }

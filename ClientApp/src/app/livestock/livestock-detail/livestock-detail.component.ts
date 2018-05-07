@@ -1,12 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Params } from '@angular/router';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Subscription } from 'rxjs/Subscription';
+import { isNullOrUndefined } from 'util';
 
 import { Livestock } from './../livestock.model';
 import { LiveStockType } from './../livestock-type.model';
 import { LivestockService } from '../livestock.service';
-import { isNullOrUndefined } from 'util';
 
 export const MY_FORMATS = {
   parse: {
@@ -38,7 +39,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   private editingStartedSubscription: Subscription;
   public soldChanged: Subscription;
 
-  constructor(private livestockService: LivestockService) {
+  constructor(private route: ActivatedRoute, private livestockService: LivestockService) {
     this.keys = [0];
     const strKeys = Object.keys(this.livestockTypes).filter(Number);
     strKeys.forEach((strKey: string) => {
@@ -49,8 +50,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   ngOnInit() {
     try {
       this.initForm();
-      this.editingStartedSubscription = this.livestockService.editingStarted.subscribe((id: number) => {
-        this.editID = id;
+
+      this.editingStartedSubscription = this.route.queryParams.subscribe((params: Params) => {
+        this.editID = +params['id'];
         this.initForm();
       });
     } catch (error) {

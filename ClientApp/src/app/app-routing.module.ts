@@ -1,3 +1,4 @@
+import { LivestockDetailComponent } from './livestock/livestock-detail/livestock-detail.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
@@ -8,7 +9,10 @@ import { ReportsComponent } from './reports/reports.component';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'livestock', component: LivestockComponent },
+  { path: 'livestock', component: LivestockComponent, children: [
+    { path: 'new', component: LivestockDetailComponent },
+    { path: 'edit', component: LivestockDetailComponent }
+  ] },
   { path: 'reports', component: ReportsComponent }
 ];
 
