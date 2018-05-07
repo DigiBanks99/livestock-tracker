@@ -11,7 +11,11 @@
     </button>
   </mat-toolbar>
   <mat-selection-list #animals>
-    <mat-list-option *ngFor="let animal of livestockList; let i = index" [value]="animal.id" (click)="onEditItem(animal.id)">
+    <mat-list-option
+    *ngFor="let animal of livestockList; let i = index"
+    [value]="animal.id"
+    [routerLink]="['edit']"
+    [queryParams]="{id: animal.id}">
       <div class="mat-list-item-content">
         <mat-icon matListIcon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
         <div class="mat-list-text">

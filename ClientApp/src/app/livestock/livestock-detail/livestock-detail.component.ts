@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Subscription } from 'rxjs/Subscription';
+import { map } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
 import { Livestock } from './../livestock.model';
@@ -49,11 +50,14 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     try {
-      this.initForm();
-
-      this.editingStartedSubscription = this.route.queryParams.subscribe((params: Params) => {
-        this.editID = +params['id'];
-        this.initForm();
+      const idParamObservable = this.route.queryParamMap.pipe(map(params => params.get('id') || 'None'));
+      this.editingStartedSubscription = idParamObservable.subscribe((idParam: string) => {
+        if (idParam === 'None') {
+          this.initForm();
+        } else {
+          this.editID = +idParam;
+          this.initForm();
+        }
       });
     } catch (error) {
       console.error(error);

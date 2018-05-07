@@ -54,8 +54,7 @@ export class LivestockListComponent implements OnInit, OnDestroy {
   onEditItem(id: number) {
     try {
       const navigationExtras: NavigationExtras = {
-        queryParams: { 'id': id },
-        relativeTo: this.route
+        queryParams: { 'id': id }
       };
       this.router.navigate(['edit'], navigationExtras);
     } catch (error) {

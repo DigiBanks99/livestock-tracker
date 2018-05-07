@@ -1,12 +1,12 @@
 <mat-toolbar color="primary" role="header">
   <span>
-    <button type="button" mat-button routerLink="/" title="Home">Livestock Tracker</button>
+    <button type="button" mat-button [routerLink]="['/']" title="Home">Livestock Tracker</button>
   </span>
   <span>
-    <button type="button" mat-button routerLink="livestock" title="Manage Livestock">Livestock</button>
+    <button type="button" mat-button [routerLink]="['livestock']" title="Manage Livestock">Livestock</button>
   </span>
   <span>
-    <button type="button" mat-button routerLink="reports" title="View reports">Reports</button>
+    <button type="button" mat-button [routerLink]="['reports']" title="View reports">Reports</button>
   </span>
   <span class="fill-remaining-space"></span>
   <span>

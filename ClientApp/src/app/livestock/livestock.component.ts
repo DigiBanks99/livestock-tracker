@@ -1,3 +1,4 @@
+import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LivestockComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+  }
+
+  onAddAnimal() {
+    this.router.navigate(['new']);
   }
 
 }
