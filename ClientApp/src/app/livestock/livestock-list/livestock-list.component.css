@@ -20,6 +20,7 @@
   right: 0;
   justify-content: center;
   width: 100%;
+  position: relative;
 }
 
 .livestock-selectable-list-item:hover {
