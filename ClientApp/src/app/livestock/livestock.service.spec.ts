@@ -44,4 +44,35 @@ describe('livestockService', () => {
       service.getSvgIconByString('donkey');
     }).toThrowError('donkey not implemented');
   });
+
+  it('#getAnimal should return the correct value', () => {
+    expect(service.getAnimal(null)).toBeNull();
+    expect(service.getAnimal(undefined)).toBeNull();
+
+    expect(service.getAnimal(4).id).toBe(4);
+    expect(function () {
+      service.getAnimal(33);
+    }).toThrowError('Item not found');
+
+    const list = service.getLivestock();
+    for (const animal of list) {
+      service.removeLivestock(animal.id);
+    }
+
+    expect(function () {
+      service.getAnimal(model.id);
+    }).toThrowError('Item not found');
+  });
+
+  it('#removeLivestock should remove items when possible', () => {
+    expect(service.getAnimal(1).id).toBe(1);
+    service.removeLivestock(1);
+    expect(function() {
+      service.getAnimal(1);
+    }).toThrowError(null);
+
+    expect(function () {
+      service.removeLivestock(1);
+    }).toThrowError('Item not found');
+  });
 });
