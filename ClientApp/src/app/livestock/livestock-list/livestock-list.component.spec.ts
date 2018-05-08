@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatIconModule, MatToolbarModule, MatDividerModule, MatListModule, MatCheckboxModule, MatDatepickerModule, NativeDateModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
+import { MatIconModule, MatToolbarModule, MatDividerModule, MatListModule, MatCheckboxModule, MatDatepickerModule, NativeDateModule, MatFormFieldModule, MatInputModule, MatSelectModule, MatSnackBarModule } from '@angular/material';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
@@ -39,7 +39,8 @@ describe('LivestockListComponent', () => {
         NativeDateModule,
         MatFormFieldModule,
         MatInputModule,
-        RouterTestingModule
+        RouterTestingModule,
+        MatSnackBarModule
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA
