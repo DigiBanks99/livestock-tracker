@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router, NavigationExtras } from '@angular/router';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Subscription } from 'rxjs/Subscription';
 import { map } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { isNullOrUndefined } from 'util';
 import { Livestock } from './../livestock.model';
 import { LiveStockType } from './../livestock-type.model';
 import { LivestockService } from '../livestock.service';
+import { MatSnackBar } from '@angular/material';
 
 export const MY_FORMATS = {
   parse: {
@@ -40,7 +41,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   private editingStartedSubscription: Subscription;
   public soldChanged: Subscription;
 
-  constructor(private route: ActivatedRoute, private livestockService: LivestockService) {
+  constructor(private route: ActivatedRoute, private router: Router, private livestockService: LivestockService, private snackbarSerive: MatSnackBar) {
     this.keys = [0];
     const strKeys = Object.keys(this.livestockTypes).filter(Number);
     strKeys.forEach((strKey: string) => {
@@ -168,18 +169,20 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       this.livestockForm.get('birthDate').value,
       this.livestockForm.get('purchaseDate').value,
       +this.livestockForm.get('purchasePrice').value,
+      +this.livestockForm.get('sellPrice').value,
       +this.livestockForm.get('arrivalWeight').value,
-      +this.livestockForm.get('batchNumber').value,
-      +this.livestockForm.get('sellPrice').value
+      +this.livestockForm.get('batchNumber').value
     );
     animal.sold = this.livestockForm.get('sold').value;
 
-    console.log(animal);
     if (this.editID > 0) {
       this.livestockService.updateAnimal(animal);
     } else {
       this.livestockService.addAnimal(animal);
     }
+
+    this.snackbarSerive.open('Item added!', 'Ok', { duration: 4000});
+    this.router.navigate(['livestock']);
   }
 
   ngOnDestroy() {

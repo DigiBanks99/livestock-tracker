@@ -17,7 +17,8 @@ import {
   MatNativeDateModule,
   NativeDateModule,
   MatCheckboxModule,
-  MatRippleModule
+  MatRippleModule,
+  MatSnackBarModule
  } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -58,7 +59,8 @@ import { LivestockService } from './livestock/livestock.service';
     NativeDateModule,
     MatDatepickerModule,
     MatCheckboxModule,
-    MatRippleModule
+    MatRippleModule,
+    MatSnackBarModule
   ],
   providers: [LivestockService],
   bootstrap: [AppComponent]
