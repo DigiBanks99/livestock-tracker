@@ -6,10 +6,10 @@
         {{getHeaderText()}}
       </span>
       <span class="fill-remaining-space"></span>
-      <button mat-button type="reset" title="Reset changes" [disabled]="!livestockForm.dirty">
+      <button mat-icon-button type="button" title="Reset changes" [disabled]="!livestockForm.dirty" (click)="reset()">
         <mat-icon>cancel</mat-icon>
       </button>
-      <button mat-button type="submit" title="Submit changes" [disabled]="livestockForm.invalid || !livestockForm.dirty">
+      <button mat-icon-button type="submit" title="Submit changes" [disabled]="livestockForm.invalid || !livestockForm.dirty">
         <mat-icon>save</mat-icon>
       </button>
     </mat-toolbar>

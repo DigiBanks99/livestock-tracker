@@ -61,3 +61,7 @@ input.currency-input {
   position: relative;
   top: 5px;
 }
+
+.mat-icon-button .mat-icon {
+  top: 0;
+}

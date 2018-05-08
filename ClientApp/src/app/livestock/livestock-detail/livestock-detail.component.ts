@@ -151,6 +151,50 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       });
   }
 
+  public reset() {
+    let type = LiveStockType.Cattle;
+    let subspecies: string = null;
+    let number: number = null;
+    let birthDate = new Date();
+    let purchaseDate = new Date();
+    let purchasePrice: number = null;
+    let arrivalWeight: number = null;
+    let batchNumber: number = null;
+    let sellPrice: number = null;
+    let sold = false;
+    let age = '0 days';
+
+    const animal: Livestock = this.livestockService.getAnimal(this.editID);
+    if (animal != null) {
+      this.currentAnimal = animal;
+      type = animal.type;
+      subspecies = animal.subspecies;
+      number = animal.number;
+      birthDate = animal.birthDate;
+      purchaseDate = animal.purchaseDate;
+      purchasePrice = animal.purchasePrice;
+      arrivalWeight = animal.arrivalWeight;
+      batchNumber = animal.batchNumber;
+      sellPrice = animal.sellPrice;
+      sold = animal.sold;
+      age = animal.getAge();
+    } else {
+      this.currentAnimal = null;
+    }
+
+    this.livestockForm.get('type').setValue(type);
+    this.livestockForm.get('subspecies').setValue(subspecies);
+    this.livestockForm.get('number').setValue(number);
+    this.livestockForm.get('birthDate').setValue(birthDate);
+    this.livestockForm.get('purchaseDate').setValue(purchaseDate);
+    this.livestockForm.get('purchasePrice').setValue(purchasePrice);
+    this.livestockForm.get('arrivalWeight').setValue(arrivalWeight);
+    this.livestockForm.get('batchNumber').setValue(batchNumber);
+    this.livestockForm.get('sellPrice').setValue(sellPrice);
+    this.livestockForm.get('sold').setValue(sold);
+    this.livestockForm.get('age').setValue(age);
+  }
+
   public getSvgIcon(animal: Livestock): string {
     return this.livestockService.getSvgIcon(animal);
   }
