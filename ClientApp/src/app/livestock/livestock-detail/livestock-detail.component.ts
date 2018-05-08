@@ -157,8 +157,10 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   }
 
   public submit() {
+    let message = 'updated';
     if (isNullOrUndefined(this.editID)) {
       this.editID = 0;
+      message = 'added';
     }
 
     const animal = new Livestock(
@@ -181,7 +183,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       this.livestockService.addAnimal(animal);
     }
 
-    this.snackbarSerive.open('Item added!', 'Ok', { duration: 4000});
+    this.snackbarSerive.open('Item ' + message + '!', 'Dismiss', { duration: 4000});
     this.router.navigate(['livestock']);
   }
 

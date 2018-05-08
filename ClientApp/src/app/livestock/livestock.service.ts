@@ -124,6 +124,8 @@ export class LivestockService implements ILivestockService, OnInit {
       throw new Error('Animal does not exist in list. Use addAnimal instead.');
     }
     this.livestock[index] = animal;
+
+    this.emitLivestockChanged();
   }
 
   public getSvgIcon(animal: Livestock): string {
