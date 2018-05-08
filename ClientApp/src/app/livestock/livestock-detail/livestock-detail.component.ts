@@ -139,12 +139,12 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   }
 
   public getHeaderText() {
-    if (isNullOrUndefined(this.editID)) {
+    if (isNullOrUndefined(this.editID) || this.editID === 0) {
       return '(New)';
     } else {
       if (isNullOrUndefined(this.currentAnimal)) {
         const animal: Livestock = this.livestockService.getAnimal(this.editID);
-        if (animal == null) {
+        if (animal === null) {
           throw new Error('animal should not be null');
         } else {
           this.currentAnimal = animal;
@@ -156,7 +156,30 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   }
 
   public submit() {
-    console.log(this.livestockForm.value);
+    if (isNullOrUndefined(this.editID)) {
+      this.editID = 0;
+    }
+
+    const animal = new Livestock(
+      this.editID,
+      +this.livestockForm.get('type').value,
+      this.livestockForm.get('subspecies').value,
+      +this.livestockForm.get('number').value,
+      this.livestockForm.get('birthDate').value,
+      this.livestockForm.get('purchaseDate').value,
+      +this.livestockForm.get('purchasePrice').value,
+      +this.livestockForm.get('arrivalWeight').value,
+      +this.livestockForm.get('batchNumber').value,
+      +this.livestockForm.get('sellPrice').value
+    );
+    animal.sold = this.livestockForm.get('sold').value;
+
+    console.log(animal);
+    if (this.editID > 0) {
+      this.livestockService.updateAnimal(animal);
+    } else {
+      this.livestockService.addAnimal(animal);
+    }
   }
 
   ngOnDestroy() {

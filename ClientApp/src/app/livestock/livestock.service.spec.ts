@@ -48,6 +48,7 @@ describe('livestockService', () => {
   it('#getAnimal should return the correct value', () => {
     expect(service.getAnimal(null)).toBeNull();
     expect(service.getAnimal(undefined)).toBeNull();
+    expect(service.getAnimal(0)).toBeNull();
 
     expect(service.getAnimal(4).id).toBe(4);
     expect(function () {
@@ -74,5 +75,51 @@ describe('livestockService', () => {
     expect(function () {
       service.removeLivestock(1);
     }).toThrowError('Item not found');
+  });
+
+  it('#addAnimal should add animal if it does not exist and throw and error if it does exist', () => {
+    model.id = 12;
+    model.type = LiveStockType.Cattle;
+    let list = service.getLivestock();
+    expect(list.length).toBe(10);
+    service.addAnimal(model);
+    list = service.getLivestock();
+    let lastItem = list[list.length - 1];
+    expect(list.length).toBe(11);
+    expect(lastItem.id).toBe(-1);
+    expect(lastItem.type).toBe(LiveStockType.Cattle);
+
+    model.type = LiveStockType.Pig;
+    expect(function () {
+      service.addAnimal(model);
+    }).toThrowError('Animal already exists. Use updateAnimal instead.');
+
+    const newAnimal = new Livestock(0, LiveStockType.Chicken, 'cockadoodle', 55, new Date(), new Date(), 20, null, 1, 2);
+    service.addAnimal(newAnimal);
+    list = service.getLivestock();
+    expect(list.length).toBe(12);
+    lastItem = list[list.length - 1];
+    expect(lastItem.id).toBe(-2);
+    expect(lastItem.type).toBe(LiveStockType.Chicken);
+    expect(lastItem.subspecies).toBe('cockadoodle');
+  });
+
+  it('#updateAnimal should update the existing item or throw an error if it does not exist.', () => {
+    model.id = 12;
+    expect(function () {
+      service.updateAnimal(model);
+    }).toThrowError('Animal does not exist in list. Use addAnimal instead.');
+
+    model.id = 1;
+    let list = service.getLivestock();
+    expect(list.length).toBe(10);
+    let existingAnimal = service.getAnimal(model.id);
+    expect(existingAnimal.type).toBe(LiveStockType.Cattle);
+    model.type = LiveStockType.Pig;
+    service.updateAnimal(model);
+    list = service.getLivestock();
+    expect(list.length).toBe(10);
+    existingAnimal = service.getAnimal(model.id);
+    expect(existingAnimal.type).toBe(LiveStockType.Pig);
   });
 });

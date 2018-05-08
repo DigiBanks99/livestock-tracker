@@ -1,9 +1,9 @@
-import { Livestock } from './livestock.model';
 import { OnInit, Injectable } from '@angular/core';
-import { LiveStockType } from './livestock-type.model';
-
 import { Subject } from 'rxjs/Subject';
 import { isNullOrUndefined } from 'util';
+
+import { Livestock } from './livestock.model';
+import { LiveStockType } from './livestock-type.model';
 
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
@@ -11,6 +11,8 @@ interface ILivestockService {
   getLivestock(): Livestock[];
   getAnimal(id: number): Livestock;
   removeLivestock(id: number);
+  addAnimal(animal: Livestock);
+  updateAnimal(animal: Livestock);
   getSvgIcon(animal: Livestock): string;
   getSvgIconByType(type: LiveStockType): string;
   getSvgIconByString(type: string): string;
@@ -19,6 +21,7 @@ interface ILivestockService {
 @Injectable()
 export class LivestockService implements ILivestockService, OnInit {
   private livestock: Livestock[];
+  private lastNewID: number;
 
   public livestockChanged: Subject<Livestock[]>;
   public editingStarted: Subject<number>;
@@ -37,6 +40,7 @@ export class LivestockService implements ILivestockService, OnInit {
       new Livestock(7, LiveStockType.Cattle, 'Fries', 7, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1)
     ];
 
+    this.lastNewID = -1;
     this.livestock[4].sold = true;
     this.livestock[4].sellPrice = 1400;
 
@@ -52,7 +56,7 @@ export class LivestockService implements ILivestockService, OnInit {
   }
 
   public getAnimal(id: number): Livestock {
-    if (id === undefined || id === null) {
+    if (isNullOrUndefined(id) || id === 0) {
       return null;
     }
 
@@ -86,6 +90,40 @@ export class LivestockService implements ILivestockService, OnInit {
 
     this.livestock.splice(index, 1);
     this.emitLivestockChanged();
+  }
+
+  public addAnimal(animal: Livestock) {
+    if (isNullOrUndefined(animal)) {
+      throw new Error('Animal is required');
+    }
+
+    let existingAnimal: Livestock;
+    try {
+     existingAnimal = this.getAnimal(animal.id);
+    } catch (e) {
+      if (e.message === 'Item not found') {
+        existingAnimal = null;
+      }
+    }
+
+    if (existingAnimal !== null) {
+      throw new Error('Animal already exists. Use updateAnimal instead.');
+    } else {
+      animal.id = this.lastNewID--;
+      this.livestock.push(animal);
+    }
+    this.emitLivestockChanged();
+  }
+
+  public updateAnimal(animal: Livestock) {
+    const index = this.livestock.map((existingAnimal) => {
+      return existingAnimal.id;
+    }).indexOf(animal.id);
+
+    if (index < 0) {
+      throw new Error('Animal does not exist in list. Use addAnimal instead.');
+    }
+    this.livestock[index] = animal;
   }
 
   public getSvgIcon(animal: Livestock): string {
@@ -145,9 +183,10 @@ export class MockLivestockService implements ILivestockService {
     return new Livestock(1, LiveStockType.Cattle, '', 0, new Date(), new Date(), 0, 0, 0, 0);
   }
 
-  public  removeLivestock(id: number) { }
-
-  getSvgIcon(animal: Livestock): string { return null; }
-  getSvgIconByType(type: LiveStockType): string { return null; }
-  getSvgIconByString(type: string): string { return null; }
+  public removeLivestock(id: number) { }
+  public addAnimal(animal: Livestock) { }
+  public updateAnimal(animal: Livestock) { }
+  public getSvgIcon(animal: Livestock): string { return null; }
+  public getSvgIconByType(type: LiveStockType): string { return null; }
+  public getSvgIconByString(type: string): string { return null; }
 }
