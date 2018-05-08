@@ -4,6 +4,12 @@ import { LiveStockType } from './livestock-type.model';
 describe('LivestockModel', () => {
   let model: Livestock;
 
+  it('#getAge should return 0 days', () => {
+    const now = new Date();
+    model = new Livestock(1, LiveStockType.Cattle, '', 1, now, null, null, null, null, null);
+    expect(model.getAge()).toBe('0 days');
+  });
+
   it('#getAge should return 1 day', () => {
     const now = new Date();
     const newYear = now.getFullYear();

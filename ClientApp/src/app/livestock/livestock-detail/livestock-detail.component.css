@@ -56,3 +56,8 @@ input.currency-input {
 .container mat-toolbar {
   flex: 1 1 auto;
 }
+
+.mat-icon {
+  position: relative;
+  top: 5px;
+}

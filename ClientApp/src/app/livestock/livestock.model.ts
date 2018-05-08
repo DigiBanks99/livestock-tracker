@@ -13,7 +13,8 @@ export class Livestock {
     public purchasePrice: number,
     public sellPrice: number,
     public arrivalWeight: number,
-    public batchNumber: number) {
+    public batchNumber: number
+  ) {
     this.sold = false;
   }
 
@@ -22,6 +23,14 @@ export class Livestock {
     let year = today.getFullYear() - this.birthDate.getFullYear();
     let month = today.getMonth() - this.birthDate.getMonth();
     let day = today.getDate() - this.birthDate.getDate();
+
+    if (
+      this.birthDate.getFullYear() === today.getFullYear() &&
+      this.birthDate.getMonth() === today.getMonth() &&
+      this.birthDate.getDate() === today.getDate()
+    ) {
+      return '0 days';
+    }
 
     if (month > 0 && day < 0) {
       month--;

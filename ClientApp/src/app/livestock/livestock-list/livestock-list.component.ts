@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatIconRegistry, MatListOption } from '@angular/material';
-import { DomSanitizer } from '@angular/platform-browser';
+import { MatListOption } from '@angular/material';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -19,18 +18,10 @@ export class LivestockListComponent implements OnInit, OnDestroy {
   private livestockChanged: Subscription;
 
   constructor(
-    private livestockService: LivestockService,
-    private matIconRegistry: MatIconRegistry,
-    private sanitizer: DomSanitizer,
-    private route: ActivatedRoute,
-    private router: Router) { }
+    private livestockService: LivestockService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.livestockList = this.livestockService.getLivestock();
-    this.matIconRegistry.addSvgIcon('cow', this.sanitizer.bypassSecurityTrustResourceUrl('./../../../assets/cow.svg'));
-    this.matIconRegistry.addSvgIcon('chicken', this.sanitizer.bypassSecurityTrustResourceUrl('./../../../assets/cock.svg'));
-    this.matIconRegistry.addSvgIcon('pig', this.sanitizer.bypassSecurityTrustResourceUrl('./../../../assets/pig.svg'));
-    this.matIconRegistry.addSvgIcon('sheep', this.sanitizer.bypassSecurityTrustResourceUrl('./../../../assets/sheep.svg'));
 
     this.livestockChanged = this.livestockService.livestockChanged.subscribe((livestockList: Livestock[]) => {
       this.livestockList = livestockList;
