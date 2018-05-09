@@ -1,42 +1,92 @@
-.livestock-list-container mat-toolbar {
-  padding: 0;
+.livestock-list-container {
+  position: relative;
+  display: block;
 }
 
-.livestock-list-container mat-selection-list {
-  padding: 0;
-}
-
-.livestock-list-container .mat-list-text {
-  padding-left: 16px;
-}
-
-.livestock-selectable-list-item {
+.livestock-list-container .livestock-toolbar,
+.livestock-list-container .livestock-item-list {
+  margin: auto;
+  width: 695px;
+  min-width: 695px;
   display: flex;
-  flex: 1 1 auto;
-  cursor: pointer;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  justify-content: center;
-  width: 100%;
   position: relative;
 }
 
-.livestock-selectable-list-item:hover {
-  background: rgba(0,0,0,.04);
+.livestock-list-container .livestock-item-list {
+  flex-direction: column;
+  padding: 0;
+  height: auto;
 }
 
-.livestock-selectable-list-item:focus {
-  border: none;
-  outline: none;
-  background: rgba(0,0,0,.08);
+@media only screen and (min-width: 1100px) {
+  .livestock-list-container .livestock-toolbar,
+  .livestock-list-container .livestock-item-list {
+    margin: auto;
+    width: 920px;
+  }
 }
 
-.livestock-selectable-list-item *:hover {
-  background: rgba(0,0,0,0);
+@media only screen and (min-width: 1400px) {
+  .livestock-list-container .livestock-toolbar,
+  .livestock-list-container .livestock-item-list {
+    margin: auto;
+    width: 1150px;
+  }
 }
 
-.livestock-selectable-list-item *:focus {
-  background: rgba(0,0,0,0);
+.livestock-card .livestock-card__type,
+.livestock-card .livestock-card__number,
+.livestock-card .livestock-card__age,
+.livestock-card .livestock-card__sold,
+.livestock-toolbar__type,
+.livestock-toolbar__number,
+.livestock-toolbar__age,
+.livestock-toolbar__sold {
+  position: relative;
+}
+
+.livestock-card .livestock-card__type,
+.livestock-toolbar__type {
+  width: 50%;
+  min-width: 300px;
+}
+
+.livestock-card .livestock-card__age,
+.livestock-toolbar__age {
+  width: 30%;
+  min-width: 195px;
+}
+
+.livestock-card .livestock-card__number,
+.livestock-card .livestock-card__sold,
+.livestock-toolbar__number,
+.livestock-toolbar__sold {
+  float: left;
+  width: 10%;
+  min-width: 50px;
+}
+
+.livestock-item-list__item {
+  display: flex;
+  position: relative;
+  padding: 0;
+  height: auto;
+}
+
+.livestock-item-list__card {
+  width: 100%;
+  margin-left: -16px;
+  margin-right: -16px;
+  border-radius: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.livestock-card {
+  display: flex;
+  min-height: 72px;
+}
+
+.livestock-card .livestock-card__type-desc {
+  padding-left: 8px;
 }

@@ -1,18 +1,22 @@
-import { LivestockDetailComponent } from './livestock/livestock-detail/livestock-detail.component';
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { HomeComponent } from './home/home.component';
+import { LivestockDetailComponent } from './livestock/livestock-detail/livestock-detail.component';
 import { LivestockComponent } from './livestock/livestock.component';
 import { ReportsComponent } from './reports/reports.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  { path: 'livestock', component: LivestockComponent, children: [
-    { path: 'new', component: LivestockDetailComponent },
-    { path: 'edit', component: LivestockDetailComponent }
-  ] },
+  {
+    path: 'livestock',
+    component: LivestockComponent,
+    children: [
+      { path: 'new', component: LivestockDetailComponent },
+      { path: 'edit', component: LivestockDetailComponent },
+    ]
+  },
   { path: 'reports', component: ReportsComponent }
 ];
 

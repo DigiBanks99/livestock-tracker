@@ -1,12 +1,1 @@
-<mat-drawer-container class="livestock-container">
-  <mat-drawer position="start" mode="side" opened>
-    <app-livestock-list></app-livestock-list>
-  </mat-drawer>
-  <mat-drawer-content>
-    <router-outlet></router-outlet>
-  </mat-drawer-content>
-</mat-drawer-container>
-
-<button mat-fab class="add-animal" [routerLink]="['new']" title="Add new animal">
-  <mat-icon>add</mat-icon>
-</button>
+<app-livestock-list></app-livestock-list>

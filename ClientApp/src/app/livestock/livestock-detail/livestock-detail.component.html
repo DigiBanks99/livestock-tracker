@@ -1,73 +1,71 @@
-<div>
-  <form [formGroup]="livestockForm" class="container" (ngSubmit)="submit()">
-    <mat-toolbar color="primary">
-      <span>
-        <mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(livestockForm.get('type').value)])}}"></mat-icon>
-        {{getHeaderText()}}
-      </span>
-      <span class="fill-remaining-space"></span>
-      <button mat-icon-button type="button" title="Reset changes" [disabled]="!livestockForm.dirty" (click)="reset()">
-        <mat-icon>cancel</mat-icon>
-      </button>
-      <button mat-icon-button type="submit" title="Submit changes" [disabled]="livestockForm.invalid || !livestockForm.dirty">
-        <mat-icon>save</mat-icon>
-      </button>
-    </mat-toolbar>
-    <div class="form-container">
-      <div class="form form-container-inline">
-        <mat-form-field>
-          <mat-label for="type">Type</mat-label>
-          <mat-select id="type" formControlName="type" placeholder="Select">
-            <mat-option *ngFor="let key of keys" [value]="key">
-              <mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(key)])}}"></mat-icon>
-              <span>{{livestockTypes[getValueOrDefault(key)]}}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <input formControlName="subspecies" matInput placeholder="Subspecies">
-        </mat-form-field>
-      </div>
-      <div class="form-container-inline">
-        <mat-form-field>
-          <input type="number" formControlName="number" matInput placeholder="Number">
-        </mat-form-field>
-        <mat-form-field>
-          <input formControlName="batchNumber" matInput placeholder="Batch Number">
-        </mat-form-field>
-      </div>
-      <div class="form-container-inline">
-        <mat-form-field>
-          <input formControlName="birthDate" matInput [matDatepicker]="bd" placeholder="Birth Date">
-          <mat-datepicker-toggle matSuffix [for]="bd"></mat-datepicker-toggle>
-          <mat-datepicker #bd></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-          <input formControlName="age" matInput placeholder="Age">
-        </mat-form-field>
-      </div>
-      <div class="form-container-inline">
-        <mat-form-field>
-          <input formControlName="purchaseDate" matInput [matDatepicker]="pd" placeholder="Purchase Date">
-          <mat-datepicker-toggle matSuffix [for]="pd"></mat-datepicker-toggle>
-          <mat-datepicker #pd></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-          <span matPrefix>R &nbsp;</span>
-          <input type="number" formControlName="purchasePrice" matInput placeholder="Purchase Price" class="currency-input">
-        </mat-form-field>
-      </div>
+<form [formGroup]="livestockForm" class="container" (ngSubmit)="submit()">
+  <mat-toolbar color="primary">
+    <span>
+      <mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(livestockForm.get('type').value)])}}"></mat-icon>
+      {{getHeaderText()}}
+    </span>
+    <span class="fill-remaining-space"></span>
+    <button mat-icon-button type="button" title="Reset changes" [disabled]="!livestockForm.dirty" (click)="reset()">
+      <mat-icon>cancel</mat-icon>
+    </button>
+    <button mat-icon-button type="submit" title="Submit changes" [disabled]="livestockForm.invalid || !livestockForm.dirty">
+      <mat-icon>save</mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-card class="form-container">
+    <div class="form form-container-inline">
       <mat-form-field>
-        <input type="number" formControlName="arrivalWeight" matInput placeholder="Arrival Weight" class="currency-input">
-        <span matSuffix>&nbsp;kg</span>
+        <mat-label for="type">Type</mat-label>
+        <mat-select id="type" formControlName="type" placeholder="Select">
+          <mat-option *ngFor="let key of keys" [value]="key">
+            <mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(key)])}}"></mat-icon>
+            <span>{{livestockTypes[getValueOrDefault(key)]}}</span>
+          </mat-option>
+        </mat-select>
       </mat-form-field>
-      <div class="form-container-inline">
-        <mat-checkbox formControlName="sold">Sold</mat-checkbox>
-        <mat-form-field>
-          <input type="number" formControlName="sellPrice" matInput placeholder="Sell Price" class="currency-input">
-          <span matPrefix>R&nbsp;</span>
-        </mat-form-field>
-      </div>
+      <mat-form-field>
+        <input formControlName="subspecies" matInput placeholder="Subspecies">
+      </mat-form-field>
     </div>
-  </form>
-</div>
+    <div class="form-container-inline">
+      <mat-form-field>
+        <input type="number" formControlName="number" matInput placeholder="Number">
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="batchNumber" matInput placeholder="Batch Number">
+      </mat-form-field>
+    </div>
+    <div class="form-container-inline">
+      <mat-form-field>
+        <input formControlName="birthDate" matInput [matDatepicker]="bd" placeholder="Birth Date">
+        <mat-datepicker-toggle matSuffix [for]="bd"></mat-datepicker-toggle>
+        <mat-datepicker #bd></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <input formControlName="age" matInput placeholder="Age">
+      </mat-form-field>
+    </div>
+    <div class="form-container-inline">
+      <mat-form-field>
+        <input formControlName="purchaseDate" matInput [matDatepicker]="pd" placeholder="Purchase Date">
+        <mat-datepicker-toggle matSuffix [for]="pd"></mat-datepicker-toggle>
+        <mat-datepicker #pd></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field>
+        <span matPrefix>R &nbsp;</span>
+        <input type="number" formControlName="purchasePrice" matInput placeholder="Purchase Price" class="currency-input">
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <input type="number" formControlName="arrivalWeight" matInput placeholder="Arrival Weight" class="currency-input">
+      <span matSuffix>&nbsp;kg</span>
+    </mat-form-field>
+    <div class="form-container-inline">
+      <mat-checkbox formControlName="sold">Sold</mat-checkbox>
+      <mat-form-field>
+        <input type="number" formControlName="sellPrice" matInput placeholder="Sell Price" class="currency-input">
+        <span matPrefix>R&nbsp;</span>
+      </mat-form-field>
+    </div>
+  </mat-card>
+</form>

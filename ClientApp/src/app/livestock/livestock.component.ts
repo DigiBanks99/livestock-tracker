@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,14 +7,25 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./livestock.component.css']
 })
 export class LivestockComponent implements OnInit {
+  public showLandingPage = true;
+  public toggle = false;
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor( private router: Router) { }
 
   ngOnInit() {
   }
 
-  onAddAnimal() {
+  public onAddAnimal() {
     this.router.navigate(['new']);
+  }
+
+  onActivate(event: any) {
+    this.showLandingPage = false;
+    console.log(event);
+  }
+
+  onDeactivate(event: any) {
+    this.showLandingPage = true;
   }
 
 }

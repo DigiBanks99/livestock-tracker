@@ -3,9 +3,13 @@
   min-height: calc(100vh - 64px);
 }
 
+.button-row {
+  position: relative;
+}
+
 .mat-fab {
-  position:  fixed;
-  bottom: 24px;
+  position: absolute;
+  bottom: -24px;
   right: 24px;
-  z-index: 1000;
+  z-index: 6;
 }

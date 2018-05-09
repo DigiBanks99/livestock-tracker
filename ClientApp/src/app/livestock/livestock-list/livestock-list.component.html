@@ -1,27 +1,23 @@
 <div class="livestock-list-container">
-  <mat-toolbar color="primary">
-    <span class="fill-remaining-space"></span>
-    <button type="button" mat-icon-button title="Remove selected" (click)="removeLivestock(animals.selectedOptions.selected)">
-      <mat-icon>delete</mat-icon>
-    </button>
-    <button type="button" mat-icon-button title="Filter">
-      <mat-icon>search</mat-icon>
-    </button>
+  <mat-toolbar class="livestock-toolbar">
+    <span class="livestock-toolbar__type">Type</span>
+    <span class="livestock-toolbar__number">Number</span>
+    <span class="livestock-toolbar__age">Age</span>
+    <span class="livestock-toolbar__sold">Sold</span>
   </mat-toolbar>
-  <mat-selection-list #animals>
-    <mat-list-item
-     mat-ripple
-     class="livestock-selectable-list-item"
-     *ngFor="let animal of livestockList; let i = index"
-     [routerLink]="['edit']"
-     [queryParams]="{id: animal.id}">
-      <mat-icon matListIcon class="mat-icon-button mat-accent" svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
-      <h3 matLine>{{animal.number}}</h3>
-      <p matLine>{{animal.subspecies}}</p>
-      <p matLine>{{animal.birthDate | date:'dd MMMM yyyy'}}</p>
-      <p matLine>{{animal.getAge()}}</p>
-      <mat-list-option [value]="animal.id" class="select-box" mat-ripple [matRippleDisabled]="true"></mat-list-option>
-      <mat-divider></mat-divider>
+  <mat-selection-list class="livestock-item-list">
+    <mat-list-item class="livestock-item-list__item" *ngFor="let animal of livestockList; let i = index">
+      <mat-card class="livestock-card livestock-item-list__card" [routerLink]="['edit']" [queryParams]="{id: animal.id}">
+        <span class="livestock-card__type">
+          <mat-icon matListIcon class="mat-icon-button mat-accent" svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
+          <span class="livestock-card__type-desc">{{animal.subspecies}}</span>
+        </span>
+        <span class="livestock-card__number">{{animal.number}}</span>
+        <span class="livestock-card__age">{{animal.getAge()}}</span>
+        <span class="livestock-card__sold">{{animal.sold}}</span>
+      </mat-card>
     </mat-list-item>
   </mat-selection-list>
 </div>
+
+<router-outlet></router-outlet>
