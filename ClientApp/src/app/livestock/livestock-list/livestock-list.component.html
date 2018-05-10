@@ -5,17 +5,21 @@
     <span class="livestock-toolbar__age">Age</span>
     <span class="livestock-toolbar__sold">Sold</span>
   </mat-toolbar>
-  <mat-selection-list class="livestock-item-list">
-    <mat-list-item class="livestock-item-list__item" *ngFor="let animal of livestockList; let i = index">
-      <mat-card class="livestock-card livestock-item-list__card" [routerLink]="['edit']" [queryParams]="{id: animal.id}">
-        <span class="livestock-card__type">
-          <mat-icon matListIcon class="mat-icon-button mat-accent" svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
-          <span class="livestock-card__type-desc">{{animal.subspecies}}</span>
-        </span>
-        <span class="livestock-card__number">{{animal.number}}</span>
-        <span class="livestock-card__age">{{animal.getAge()}}</span>
-        <span class="livestock-card__sold">{{animal.sold}}</span>
-      </mat-card>
+  <mat-selection-list class="livestock-item-list mat-elevation-z1">
+    <mat-list-item class="livestock-item-list__item"
+      *ngFor="let animal of livestockList; let i = index"
+      [routerLink]="['edit']"
+      [queryParams]="{id: animal.id}">
+      <span class="livestock-card__type">
+        <mat-icon matListIcon class="mat-icon-button mat-accent" svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
+        <span class="livestock-card__type-desc">{{animal.subspecies}}</span>
+      </span>
+      <span class="livestock-card__number">{{animal.number}}</span>
+      <span class="livestock-card__age">{{animal.getAge()}}</span>
+      <span class="livestock-card__sold">
+        <mat-checkbox [(ngModel)]="animal.sold" color="primary"></mat-checkbox>
+      </span>
+      <mat-divider></mat-divider>
     </mat-list-item>
   </mat-selection-list>
 </div>

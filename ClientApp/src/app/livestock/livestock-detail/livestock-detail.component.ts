@@ -1,16 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {
-  ActivatedRoute,
-  Params,
-  Router,
-  NavigationExtras
-} from '@angular/router';
-import {
-  DateAdapter,
-  MAT_DATE_FORMATS,
-  MAT_DATE_LOCALE
-} from '@angular/material/core';
+import { ActivatedRoute,  Params,  Router,  NavigationExtras } from '@angular/router';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Subscription } from 'rxjs/Subscription';
 import { map } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
@@ -31,11 +22,10 @@ export const MY_FORMATS = {
     monthYearA11yLabel: 'MMMM YYYY'
   }
 };
-
 @Component({
   selector: 'app-livestock-detail',
   templateUrl: './livestock-detail.component.html',
-  styleUrls: ['./livestock-detail.component.css'],
+  styleUrls: ['./livestock-detail.component.scss'],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }]
 })
 export class LivestockDetailComponent implements OnInit, OnDestroy {

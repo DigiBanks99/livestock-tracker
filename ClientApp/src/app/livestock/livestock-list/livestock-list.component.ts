@@ -10,7 +10,7 @@ import { Livestock } from '../livestock.model';
 @Component({
   selector: 'app-livestock-list',
   templateUrl: './livestock-list.component.html',
-  styleUrls: ['./livestock-list.component.css']
+  styleUrls: ['./livestock-list.component.scss']
 })
 export class LivestockListComponent implements OnInit, OnDestroy {
   public livestockList: Livestock[];

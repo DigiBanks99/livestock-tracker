@@ -12,6 +12,14 @@
   position: relative;
 }
 
+.livestock-list-container .livestock-toolbar {
+  background-color: #fafafa;
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
 .livestock-list-container .livestock-item-list {
   flex-direction: column;
   padding: 0;
@@ -34,31 +42,32 @@
   }
 }
 
-.livestock-card .livestock-card__type,
-.livestock-card .livestock-card__number,
-.livestock-card .livestock-card__age,
-.livestock-card .livestock-card__sold,
+.livestock-card__type,
+.livestock-card__number,
+.livestock-card__age,
+.livestock-card__sold,
 .livestock-toolbar__type,
 .livestock-toolbar__number,
 .livestock-toolbar__age,
 .livestock-toolbar__sold {
   position: relative;
+  display: flex;
 }
 
-.livestock-card .livestock-card__type,
+.livestock-card__type,
 .livestock-toolbar__type {
   width: 50%;
   min-width: 300px;
 }
 
-.livestock-card .livestock-card__age,
+.livestock-card__age,
 .livestock-toolbar__age {
   width: 30%;
   min-width: 195px;
 }
 
-.livestock-card .livestock-card__number,
-.livestock-card .livestock-card__sold,
+.livestock-card__number,
+.livestock-card__sold,
 .livestock-toolbar__number,
 .livestock-toolbar__sold {
   float: left;
@@ -71,22 +80,16 @@
   position: relative;
   padding: 0;
   height: auto;
+  border-radius: 0;
 }
 
 .livestock-item-list__card {
   width: 100%;
-  margin-left: -16px;
-  margin-right: -16px;
   border-radius: 0;
   padding-top: 15px;
   padding-bottom: 15px;
 }
 
-.livestock-card {
-  display: flex;
-  min-height: 72px;
-}
-
-.livestock-card .livestock-card__type-desc {
+.livestock-card__type-desc {
   padding-left: 8px;
 }
