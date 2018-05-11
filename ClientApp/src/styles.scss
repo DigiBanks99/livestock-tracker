@@ -1,6 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~@angular/material/theming";
+@import "~/../app-theme.scss";
+
+@include mat-core();
+
+
 
 body {
   padding: 0;
@@ -8,12 +13,28 @@ body {
   font-family: Roboto, Arial, sans-serif;
 }
 
-app-header {
-  display: block;
+.app-background {
+  background-color: mat-color($candy-app-primary, 100);
 }
 
 .fill-remaining-space {
   flex: 1 1 auto;
+}
+
+.livestock-item-list.mat-selection-list {
+  .livestock-item-list__item.mat-list-item {
+    .mat-list-item-content {
+      padding: 8px;
+
+      &:focus {
+        outline: unset;
+      }
+    }
+  }
+}
+
+/*app-header {
+  display: block;
 }
 
 mat-toolbar button {
@@ -27,4 +48,4 @@ app-livestock .mat-drawer {
 
 .select-box.mat-list-item .mat-list-item-content .mat-ripple {
   display: none;
-}
+}*/

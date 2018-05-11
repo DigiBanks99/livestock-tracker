@@ -8,8 +8,10 @@
   <mat-selection-list class="livestock-item-list mat-elevation-z1">
     <mat-list-item class="livestock-item-list__item"
       *ngFor="let animal of livestockList; let i = index"
+      mat-ripple
       [routerLink]="['edit']"
-      [queryParams]="{id: animal.id}">
+      [queryParams]="{id: animal.id}"
+      [routerLinkActive]="['livestock-item-list__item-active']">
       <span class="livestock-card__type">
         <mat-icon matListIcon class="mat-icon-button mat-accent" svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
         <span class="livestock-card__type-desc">{{animal.subspecies}}</span>
@@ -21,7 +23,7 @@
       </span>
       <mat-divider></mat-divider>
     </mat-list-item>
+    <router-outlet></router-outlet>
   </mat-selection-list>
 </div>
 
-<router-outlet></router-outlet>

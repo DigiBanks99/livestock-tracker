@@ -1,3 +1,6 @@
+@import "~@angular/material/theming";
+@import "~/../../../../app-theme.scss";
+
 .livestock-list-container {
   position: relative;
   display: block;
@@ -13,7 +16,8 @@
 }
 
 .livestock-list-container .livestock-toolbar {
-  background-color: #fafafa;
+  background-color: mat-color($candy-app-primary, 100);
+  color: mat-color($candy-app-primary, '100-contrast');
   font-size: 14px;
   font-weight: 500;
   padding-left: 16px;
@@ -76,11 +80,31 @@
 }
 
 .livestock-item-list__item {
+  cursor: pointer;
   display: flex;
   position: relative;
   padding: 0;
   height: auto;
   border-radius: 0;
+  flex-direction: column;
+  background-color: mat-color($candy-app-primary, 200);
+
+  &:focus {
+    outline: unset;
+  }
+
+  &:hover {
+    background-color: mat-color($candy-app-primary, 300);
+  }
+
+  .mat-list-icon {
+    background-color: mat-color($candy-app-accent, 400);
+    font-size: unset;
+  }
+}
+
+.livestock-item-list__item-active {
+  background-color: mat-color($candy-app-primary, 300, 0.8);
 }
 
 .livestock-item-list__card {
@@ -92,4 +116,6 @@
 
 .livestock-card__type-desc {
   padding-left: 8px;
+  margin-top: auto;
+  margin-bottom: auto;
 }

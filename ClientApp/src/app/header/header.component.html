@@ -1,10 +1,12 @@
-<mat-toolbar color="primary" role="header">
-  <button type="button" class="logo" mat-button [routerLink]="['/']" title="Home">
-    <mat-icon class="logo-image" svgIcon="farmer"></mat-icon>
-    Livestock Tracker
-  </button>
-  <button type="button" mat-button [routerLink]="['livestock']" title="Manage Livestock">Livestock</button>
-  <button type="button" mat-button [routerLink]="['reports']" title="View reports">Reports</button>
-  <span class="fill-remaining-space"></span>
-  <button type="button" mat-button>Manage</button>
+<mat-toolbar class="app-toolbar" color="primary" role="header">
+  <mat-nav-list>
+    <a mat-list-item class="logo" [routerLink]="['/']" title="Home">
+      <mat-icon svgIcon="farmer"></mat-icon>
+      Livestock Tracker
+    </a>
+    <a mat-list-item [routerLink]="['livestock']" title="Manage Livestock">Livestock</a>
+    <a mat-list-item [routerLink]="['reports']" title="View reports">Reports</a>
+    <span class="fill-remaining-space"></span>
+    <a mat-list-item>Manage</a>
+  </mat-nav-list>
 </mat-toolbar>
