@@ -5,8 +5,6 @@
 
 @include mat-core();
 
-
-
 body {
   padding: 0;
   margin: 0;
@@ -15,6 +13,45 @@ body {
 
 .app-background {
   background-color: mat-color($candy-app-primary, 100);
+}
+
+.mat-toolbar {
+  .mat-nav-list {
+    display: flex;
+    position: relative;
+
+    .mat-list-item {
+      color: $light-primary-text;
+    }
+  }
+
+  .mat-list-item,
+  .mat-list-item .mat-list-item-content,
+  .mat-button,
+  a,
+  span {
+    color: $light-primary-text;
+    font-size: 22px;
+    font-weight: 400;
+
+    &:hover {
+      color: $light-secondary-text;
+      background-color: unset;
+    }
+
+    .mat-icon {
+      padding-right: 8px;
+    }
+  }
+
+  a {
+    cursor: pointer;
+  }
+
+  *[disabled],
+  *[disabled] * {
+    color: $light-disabled-text;
+  }
 }
 
 .fill-remaining-space {
@@ -33,19 +70,67 @@ body {
   }
 }
 
-/*app-header {
-  display: block;
+.nav {
+  font-size: 22px;
+
+  .nav-secondary,
+  .nav-secondary .mat-list-item-content {
+    font-size: 16px;
+  }
 }
 
-mat-toolbar button {
-  padding: 0 14px;
-  height: 100%;
+.currency-input {
+  text-align: right;
 }
 
-app-livestock .mat-drawer {
-  overflow-y: scroll;
-}
-
-.select-box.mat-list-item .mat-list-item-content .mat-ripple {
+input.currency-input::-webkit-outer-spin-button,
+input.currency-input::-webkit-inner-spin-button {
   display: none;
-}*/
+}
+
+input.currency-input {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.mat-checkbox {
+  margin: auto 4px;
+  display: flex;
+  flex-direction: column;
+
+  &.mat-checkbox-label-before .mat-checkbox-inner-container {
+    margin-left: auto;
+    margin-right: 0;
+  }
+}
+
+.mat-form-field {
+  &.mat-focused {
+    .mat-input-wrapper.mat-form-field-wrapper {
+      .mat-form-field-flex {
+        background-color: mat-color($candy-app-primary, 200, 0.8);
+        padding: 3px 0 0 3px;
+        border-radius: 3px 3px 0 0;
+      }
+
+      .mat-input-subscript-wrapper,
+      .mat-input-underline {
+        padding-right: 3px;
+      }
+    }
+  }
+}
+
+.mat-card {
+  background-color: mat-color($candy-app-primary, 100);
+
+  .mat-card-header {
+    display: flex;
+  }
+
+  .mat-card-actions {
+    .mat-button {
+      text-transform: uppercase;
+    }
+  }
+}

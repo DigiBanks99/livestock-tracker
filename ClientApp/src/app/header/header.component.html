@@ -1,12 +1,12 @@
 <mat-toolbar class="app-toolbar" color="primary" role="header">
   <mat-nav-list>
-    <a mat-list-item class="logo" [routerLink]="['/']" title="Home">
+    <a mat-list-item class="logo" [routerLink]="['/']" title="Home" class="nav nav-home">
       <mat-icon svgIcon="farmer"></mat-icon>
       Livestock Tracker
     </a>
-    <a mat-list-item [routerLink]="['livestock']" title="Manage Livestock">Livestock</a>
-    <a mat-list-item [routerLink]="['reports']" title="View reports">Reports</a>
-    <span class="fill-remaining-space"></span>
-    <a mat-list-item>Manage</a>
+    <a mat-list-item [routerLink]="['livestock']" title="Manage Livestock" class="nav nav-secondary">Livestock</a>
+    <a mat-list-item [routerLink]="['reports']" title="View reports" class="nav nav-secondary">Reports</a>
   </mat-nav-list>
+  <span class="fill-remaining-space"></span>
+  <a mat-list-item class="nav nav-secondary">Manage</a>
 </mat-toolbar>

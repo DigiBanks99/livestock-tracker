@@ -1,71 +1,102 @@
-<form [formGroup]="livestockForm" class="container" (ngSubmit)="submit()">
-  <mat-toolbar color="primary">
-    <span>
-      <mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(livestockForm.get('type').value)])}}"></mat-icon>
-      {{getHeaderText()}}
-    </span>
-    <span class="fill-remaining-space"></span>
-    <button mat-icon-button type="button" title="Reset changes" [disabled]="!livestockForm.dirty" (click)="reset()">
-      <mat-icon>cancel</mat-icon>
-    </button>
-    <button mat-icon-button type="submit" title="Submit changes" [disabled]="livestockForm.invalid || !livestockForm.dirty">
-      <mat-icon>save</mat-icon>
-    </button>
+<form [formGroup]="livestockForm" class="container livestock-detail-container app-background" (ngSubmit)="submit()">
+  <mat-toolbar color="primary" class="livestock-detail-toolbar app-toolbar" role="header">
+    <mat-toolbar-row>
+      <mat-nav-list class="livestock-detail-toolbar__nav">
+        <a mat-list-item class="livestock-detail-toolbar__nav__icon-container" [routerLink]="['../']">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <a mat-list-item matRippleDisabled class="livestock-detail-toolbar__nav__desc">
+          {{getHeaderText()}}
+        </a>
+      </mat-nav-list>
+      <span class="fill-remaining-space"></span>
+      <button mat-icon-button type="button" title="Reset changes" [disabled]="!livestockForm.dirty" (click)="reset()">
+        <mat-icon>cancel</mat-icon>
+      </button>
+      <button mat-icon-button type="submit" title="Submit changes" [disabled]="livestockForm.invalid || !livestockForm.dirty">
+        <mat-icon>save</mat-icon>
+      </button>
+    </mat-toolbar-row>
+    <mat-toolbar-row class="livestock-detail-toolbar__header-top">
+      <div class="livestock-detail-toolbar__header-top"></div>
+    </mat-toolbar-row>
   </mat-toolbar>
-  <mat-card class="form-container">
-    <div class="form form-container-inline">
-      <mat-form-field>
-        <mat-label for="type">Type</mat-label>
-        <mat-select id="type" formControlName="type" placeholder="Select">
-          <mat-option *ngFor="let key of keys" [value]="key">
-            <mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(key)])}}"></mat-icon>
-            <span>{{livestockTypes[getValueOrDefault(key)]}}</span>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <input formControlName="subspecies" matInput placeholder="Subspecies">
-      </mat-form-field>
-    </div>
-    <div class="form-container-inline">
-      <mat-form-field>
-        <input type="number" formControlName="number" matInput placeholder="Number">
-      </mat-form-field>
-      <mat-form-field>
-        <input formControlName="batchNumber" matInput placeholder="Batch Number">
-      </mat-form-field>
-    </div>
-    <div class="form-container-inline">
-      <mat-form-field>
-        <input formControlName="birthDate" matInput [matDatepicker]="bd" placeholder="Birth Date">
-        <mat-datepicker-toggle matSuffix [for]="bd"></mat-datepicker-toggle>
-        <mat-datepicker #bd></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <input formControlName="age" matInput placeholder="Age">
-      </mat-form-field>
-    </div>
-    <div class="form-container-inline">
-      <mat-form-field>
-        <input formControlName="purchaseDate" matInput [matDatepicker]="pd" placeholder="Purchase Date">
-        <mat-datepicker-toggle matSuffix [for]="pd"></mat-datepicker-toggle>
-        <mat-datepicker #pd></mat-datepicker>
-      </mat-form-field>
-      <mat-form-field>
-        <span matPrefix>R &nbsp;</span>
-        <input type="number" formControlName="purchasePrice" matInput placeholder="Purchase Price" class="currency-input">
-      </mat-form-field>
-    </div>
-    <mat-form-field>
-      <input type="number" formControlName="arrivalWeight" matInput placeholder="Arrival Weight" class="currency-input">
-      <span matSuffix>&nbsp;kg</span>
-    </mat-form-field>
-    <div class="form-container-inline">
-      <mat-checkbox formControlName="sold">Sold</mat-checkbox>
-      <mat-form-field>
-        <input type="number" formControlName="sellPrice" matInput placeholder="Sell Price" class="currency-input">
-        <span matPrefix>R&nbsp;</span>
-      </mat-form-field>
-    </div>
-  </mat-card>
+  <div class="livestock-detail-content">
+    <mat-card class="form-container livestock-detail-content__card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(livestockForm.get('type').value)])}}"></mat-icon>
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form form-container-inline">
+          <mat-form-field>
+            <mat-label for="type">Type</mat-label>
+            <mat-select id="type" formControlName="type" placeholder="Select">
+              <mat-option *ngFor="let key of keys" [value]="key">
+                <mat-icon svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(key)])}}"></mat-icon>
+                <span>{{livestockTypes[getValueOrDefault(key)]}}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="subspecies" matInput placeholder="Subspecies">
+          </mat-form-field>
+        </div>
+        <div class="form-container-inline">
+          <mat-form-field>
+            <input type="number" formControlName="number" matInput placeholder="Number" class="currency-input">
+          </mat-form-field>
+          <mat-form-field>
+            <input type="number" formControlName="batchNumber" matInput placeholder="Batch Number" class="currency-input">
+          </mat-form-field>
+        </div>
+        <div class="form-container-inline">
+          <mat-form-field>
+            <input formControlName="birthDate" matInput [matDatepicker]="bd" placeholder="Birth Date">
+            <mat-datepicker-toggle matSuffix [for]="bd"></mat-datepicker-toggle>
+            <mat-datepicker #bd></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <input formControlName="age" matInput placeholder="Age">
+          </mat-form-field>
+        </div>
+        <div class="form-container-inline">
+          <mat-form-field>
+            <input formControlName="purchaseDate" matInput [matDatepicker]="pd" placeholder="Purchase Date">
+            <mat-datepicker-toggle matSuffix [for]="pd"></mat-datepicker-toggle>
+            <mat-datepicker #pd></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <span matPrefix>R &nbsp;</span>
+            <input type="number" formControlName="purchasePrice" matInput placeholder="Purchase Price" class="currency-input">
+          </mat-form-field>
+        </div>
+        <div class="form-container-inline">
+          <mat-form-field>
+            <input type="number" formControlName="arrivalWeight" matInput placeholder="Arrival Weight" class="currency-input">
+            <span matSuffix>&nbsp;kg</span>
+          </mat-form-field>
+        </div>
+        <div class="form-container-inline">
+          <mat-checkbox formControlName="sold" labelPosition="before">Sold</mat-checkbox>
+          <mat-form-field>
+            <input type="number" formControlName="sellPrice" matInput placeholder="Sell Price" class="currency-input">
+            <span matPrefix>R&nbsp;</span>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <button type="button" mat-button title="Reset changes" [disabled]="!livestockForm.dirty" (click)="reset()">Cancel</button>
+        <button type="submit" mat-button color="primary" title="Submit changes" [disabled]="livestockForm.invalid || !livestockForm.dirty">Save</button>
+        <span class="fill-remaining-space"></span>
+        <button type="button" mat-icon-button color="primary" (click)="sell()">
+            <mat-icon class="mat-18">{{livestockForm.get('sold').value ? 'money_off' : 'attach_money'}}</mat-icon>
+        </button>
+        <button type="button" mat-icon-button color="primary" (click)="kill()">
+            <mat-icon class="mat-18">local_hospital</mat-icon>
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
 </form>

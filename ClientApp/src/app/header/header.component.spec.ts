@@ -3,6 +3,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MatListModule } from '@angular/material';
 
 import { HeaderComponent } from './header.component';
 
@@ -13,7 +14,7 @@ describe('HeaderComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ HeaderComponent ],
-      imports: [MatToolbarModule, MatButtonModule, RouterTestingModule, MatIconModule]
+      imports: [MatToolbarModule, MatButtonModule, RouterTestingModule, MatIconModule, MatListModule]
     })
     .compileComponents();
   }));

@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatSidenavModule, MatIconModule, MatToolbarModule, MatDividerModule, MatListModule, MatInputModule, MatCheckboxModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatSnackBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -40,7 +40,8 @@ describe('LivestockComponent', () => {
         MatSelectModule,
         HttpClientModule,
         RouterTestingModule,
-        MatSnackBarModule
+        MatSnackBarModule,
+        FormsModule // required for MatCheckbox without forms
       ],
       schemas: [
         CUSTOM_ELEMENTS_SCHEMA

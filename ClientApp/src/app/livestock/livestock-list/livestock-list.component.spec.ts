@@ -13,13 +13,6 @@ describe('LivestockListComponent', () => {
   let fixture: ComponentFixture<LivestockListComponent>;
 
   beforeEach(async(() => {
-    let livestockServiceStub: Partial<LivestockService>;
-    livestockServiceStub = {
-      getLivestock: function (): Livestock[] {
-        return [];
-      }
-    };
-
     TestBed.configureTestingModule({
       declarations: [LivestockListComponent],
       providers: [{ provide: LivestockService, useClass: MockLivestockService }],

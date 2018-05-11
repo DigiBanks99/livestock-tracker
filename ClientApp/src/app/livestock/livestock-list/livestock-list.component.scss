@@ -1,9 +1,13 @@
 @import "~@angular/material/theming";
-@import "~/../../../../app-theme.scss";
+@import "~/../../../../app-theme";
 
 .livestock-list-container {
   position: relative;
   display: block;
+}
+
+.mat-toolbar * {
+  font-size: 16px;
 }
 
 .livestock-list-container .livestock-toolbar,
@@ -22,6 +26,10 @@
   font-weight: 500;
   padding-left: 16px;
   padding-right: 16px;
+
+  * {
+    color: inherit;
+  }
 }
 
 .livestock-list-container .livestock-item-list {

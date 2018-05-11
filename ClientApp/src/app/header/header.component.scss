@@ -1,25 +1,5 @@
 @import "~@angular/material/theming";
 
-.mat-toolbar {
-  .mat-nav-list {
-    display: flex;
-    position: relative;
-
-    .mat-list-item {
-      color: $light-primary-text;
-
-      &:hover {
-        color: $light-secondary-text;
-        background-color: unset;
-      }
-
-      .mat-icon {
-        padding-right: 8px;
-      }
-    }
-  }
-}
-
 .mat-nav-list .mat-list-item {
   height: auto;
 }

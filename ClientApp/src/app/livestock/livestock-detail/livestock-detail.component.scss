@@ -1,67 +1,64 @@
-.form-container {
+@import "~@angular/material/theming";
+@import "~/../../../../app-theme";
+
+.livestock-detail-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+
+  .livestock-detail-toolbar__header-top {
+    height: 30vh;
+  }
 }
 
-.form-container-inline {
+.mat-list-icon {
+  background-color: mat-color($candy-app-accent, 400);
+  font-size: unset;
+}
+
+.livestock-detail-toolbar__nav__desc {
+  .mat-icon {
+    padding-right: 4px;
+    background-color: $light-primary-text;
+  }
+
+  .livestock-detail-toolbar__nav__desc-text {
+    padding-left: 8px;
+  }
+}
+
+.livestock-detail-content {
   display: flex;
-  flex-direction: row;
-}
-
-@media (min-width: 1000px) {
-  .form-container>*,
-  .form-container-inline>* {
-    width: 50%;
-    padding: 5px 5px;
-  }
-}
-
-@media (max-width: 1000px) {
-  .form-container>*,
-  .form-container-inline>* {
-    width: 100%;
-    padding: 5px 5px;
-  }
-}
-
-.form-container form,
-.form-container-inline form {
-  margin-bottom: 20px;
-}
-
-.form-container form>*,
-.form-container-inline form>* {
-  margin: 5px 0;
-}
-
-.form-container .mat-radio-button {
-  margin: 0 5px;
-}
-
-.currency-input {
-  text-align: right;
-}
-
-input.currency-input::-webkit-outer-spin-button,
-input.currency-input::-webkit-inner-spin-button {
-  display: none;
-}
-
-input.currency-input {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
-.container mat-toolbar {
-  flex: 1 1 auto;
-}
-
-.mat-icon {
+  flex-direction: column;
   position: relative;
-  top: 5px;
-}
 
-.mat-icon-button .mat-icon {
-  top: 0;
+  .livestock-detail-content__card {
+    position: relative;
+    top: -15vh;
+    margin: auto;
+    min-width: 40vw;
+    background-color: mat-color($candy-app-primary, 200);
+
+    .form-container-inline {
+      display: flex;
+    }
+
+    .mat-form-field,
+    .mat-checkbox {
+      flex: 1 1 auto;
+      width: 50%;
+    }
+
+    .mat-form-field {
+      margin: 0 4px;
+    }
+
+    .mat-card-actions {
+      display: flex;
+    }
+  }
 }
