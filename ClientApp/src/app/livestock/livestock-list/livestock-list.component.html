@@ -6,12 +6,8 @@
     <span class="livestock-toolbar__sold">Sold</span>
   </mat-toolbar>
   <mat-selection-list class="livestock-item-list mat-elevation-z1">
-    <mat-list-item class="livestock-item-list__item"
-      *ngFor="let animal of livestockList; let i = index"
-      mat-ripple
-      [routerLink]="['edit']"
-      [queryParams]="{id: animal.id}"
-      [routerLinkActive]="['livestock-item-list__item-active']">
+    <mat-list-item class="livestock-item-list__item" *ngFor="let animal of livestockList; let i = index" mat-ripple [routerLink]="['edit']"
+      [queryParams]="{id: animal.id}" [routerLinkActive]="['livestock-item-list__item-active']">
       <span class="livestock-card__type">
         <mat-icon matListIcon class="mat-icon-button mat-accent" svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
         <span class="livestock-card__type-desc">{{animal.subspecies}}</span>
@@ -19,11 +15,14 @@
       <span class="livestock-card__number">{{animal.number}}</span>
       <span class="livestock-card__age">{{animal.getAge()}}</span>
       <span class="livestock-card__sold">
-        <mat-checkbox [(ngModel)]="animal.sold" color="primary"></mat-checkbox>
+        <mat-checkbox [(ngModel)]="animal.sold"></mat-checkbox>
       </span>
       <mat-divider></mat-divider>
     </mat-list-item>
   </mat-selection-list>
+  <button mat-fab class="mat-fab-bottom-right" type="button" (click)="onAddAnimal()" left>
+    <mat-icon>add</mat-icon>
+  </button>
 </div>
 
 <router-outlet></router-outlet>

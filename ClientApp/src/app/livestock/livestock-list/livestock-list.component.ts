@@ -32,7 +32,7 @@ export class LivestockListComponent implements OnInit, OnDestroy {
     return this.livestockService.getSvgIcon(animal);
   }
 
-  removeLivestock(selectedItems: MatListOption[]) {
+  public removeLivestock(selectedItems: MatListOption[]) {
     try {
       for (const item of selectedItems) {
         this.livestockService.removeLivestock(item.value);
@@ -42,7 +42,7 @@ export class LivestockListComponent implements OnInit, OnDestroy {
     }
   }
 
-  onEditItem(id: number) {
+  public onEditItem(id: number) {
     try {
       const navigationExtras: NavigationExtras = {
         queryParams: { 'id': id }
@@ -51,6 +51,10 @@ export class LivestockListComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  public onAddAnimal() {
+    this.router.navigate(['/livestock', 'new']);
   }
 
   ngOnDestroy() {
