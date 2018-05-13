@@ -114,6 +114,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     this.livestockForm.get('sellPrice').setValue(sellPrice);
     this.livestockForm.get('sold').setValue(sold);
     this.livestockForm.get('age').setValue(age);
+    this.livestockForm.markAsPristine();
   }
 
   public getSvgIcon(animal: Livestock): string {
@@ -134,22 +135,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
 
   public getHeaderText() {
     if (isNullOrUndefined(this.editID) || this.editID === 0) {
-      return '(New)';
+      return 'New Animal';
     } else {
-      if (isNullOrUndefined(this.currentAnimal)) {
-        const animal: Livestock = this.livestockService.getAnimal(this.editID);
-        if (animal === null) {
-          throw new Error('animal should not be null');
-        } else {
-          this.currentAnimal = animal;
-        }
-      }
-
-      return (
-        this.currentAnimal.number +
-        ' - ' +
-        this.livestockTypes[this.currentAnimal.type]
-      );
+      return 'Editing Animal';
     }
   }
 
@@ -211,7 +199,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     sellPriceCtrl.markAsTouched();
   }
 
-  private initForm() {
+  public initForm() {
     let type = LiveStockType.Cattle;
     let subspecies: string = null;
     let number: number = null;

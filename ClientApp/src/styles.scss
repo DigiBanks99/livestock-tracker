@@ -126,6 +126,12 @@ input.currency-input {
 
   .mat-card-header {
     display: flex;
+    .mat-icon {
+      background-color: mat-color($candy-app-accent, 400);
+      border-radius: 50%;
+      padding: 4px;
+      font-size: unset;
+    }
   }
 
   .mat-card-actions {

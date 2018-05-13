@@ -8,6 +8,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { LivestockDetailComponent } from './livestock-detail.component';
 import { LivestockService, MockLivestockService } from '../livestock.service';
 import { LiveStockType } from '../livestock-type.model';
+import { ActivatedRoute } from '@angular/router';
 
 describe('LivestockDetailComponent', () => {
   let component: LivestockDetailComponent;
@@ -49,8 +50,13 @@ describe('LivestockDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it ('#getHeaderText should return (New)', () => {
-    expect(component.getHeaderText()).toBe('(New)');
+  it ('#getHeaderText should return New Animal', () => {
+    expect(component.getHeaderText()).toBe('New Animal');
+  });
+
+  it ('#getHeaderText should return Editing Animal', () => {
+    component['editID'] = 1;
+    expect(component.getHeaderText()).toBe('Editing Animal');
   });
 
   it ('#getValueOrDefault should return correct value', () => {

@@ -60,5 +60,12 @@
     .mat-card-actions {
       display: flex;
     }
+
+    .mat-card-header .mat-card-header-text .mat-card-title {
+      .mat-icon {
+        background-color: mat-color($candy-app-accent, 400);
+        font-size: unset;
+      }
+    }
   }
 }
