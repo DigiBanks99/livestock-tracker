@@ -59,7 +59,7 @@
             <mat-label for="birthDate">Birth Date</mat-label>
             <input id="birthDate" formControlName="birthDate" matInput [matDatepicker]="bd" required>
             <mat-datepicker-toggle matSuffix [for]="bd"></mat-datepicker-toggle>
-            <mat-datepicker #bd></mat-datepicker>
+            <mat-datepicker #bd disabled="false"></mat-datepicker>
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label for="age">Age</mat-label>
@@ -71,7 +71,7 @@
             <mat-label for="purchaseDate">Purchase Date</mat-label>
             <input id="purchaseDate" formControlName="purchaseDate" matInput [matDatepicker]="pd" placeholder="Purchase Date" required>
             <mat-datepicker-toggle matSuffix [for]="pd"></mat-datepicker-toggle>
-            <mat-datepicker #pd></mat-datepicker>
+            <mat-datepicker #pd disabled="false"></mat-datepicker>
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label for="purchasePrice">Purchase Price</mat-label>

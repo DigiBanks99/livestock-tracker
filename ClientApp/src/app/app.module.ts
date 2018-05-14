@@ -22,6 +22,7 @@ import {
   MatCardModule,
   MatPaginatorModule
  } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -59,6 +60,7 @@ import { LivestockService } from './livestock/livestock.service';
     MatSelectModule,
     MatInputModule,
     NativeDateModule,
+    MatMomentDateModule,
     MatDatepickerModule,
     MatCheckboxModule,
     MatRippleModule,

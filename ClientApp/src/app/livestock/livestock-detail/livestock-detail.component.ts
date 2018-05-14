@@ -1,22 +1,24 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute,  Params,  Router,  NavigationExtras } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
+import * as moment from 'moment';
+
 import { Livestock } from './../livestock.model';
 import { LiveStockType } from './../livestock-type.model';
 import { LivestockService } from '../livestock.service';
-import { MatSnackBar } from '@angular/material';
 
 export const MY_FORMATS = {
   parse: {
     dateInput: 'LL'
   },
   display: {
-    dateInput: 'LL',
+    dateInput: 'DD MMMM YYYY',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY'
@@ -106,8 +108,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     this.livestockForm.get('type').setValue(type);
     this.livestockForm.get('subspecies').setValue(subspecies);
     this.livestockForm.get('number').setValue(number);
-    this.livestockForm.get('birthDate').setValue(birthDate);
-    this.livestockForm.get('purchaseDate').setValue(purchaseDate);
+    this.livestockForm.get('birthDate').setValue(moment(birthDate));
+    this.livestockForm.get('purchaseDate').setValue(moment(purchaseDate));
     this.livestockForm.get('purchasePrice').setValue(purchasePrice);
     this.livestockForm.get('arrivalWeight').setValue(arrivalWeight);
     this.livestockForm.get('batchNumber').setValue(batchNumber);
@@ -254,8 +256,8 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       type: new FormControl(type, [Validators.required]),
       subspecies: new FormControl(subspecies, []),
       number: new FormControl(number, [Validators.required]),
-      birthDate: new FormControl(birthDate, [Validators.required]),
-      purchaseDate: new FormControl(purchaseDate, [Validators.required]),
+      birthDate: new FormControl(moment(birthDate), [Validators.required]),
+      purchaseDate: new FormControl(moment(purchaseDate), [Validators.required]),
       purchasePrice: new FormControl(purchasePrice, [Validators.required]),
       arrivalWeight: new FormControl(arrivalWeight, [Validators.required]),
       batchNumber: new FormControl(batchNumber, [Validators.required]),

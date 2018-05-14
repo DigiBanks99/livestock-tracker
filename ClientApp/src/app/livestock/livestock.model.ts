@@ -1,5 +1,7 @@
 import { LiveStockType } from './livestock-type.model';
 
+import * as moment from 'moment';
+
 export class Livestock {
   public sold: boolean;
 
@@ -19,23 +21,24 @@ export class Livestock {
   }
 
   public getAge(): string {
-    const today = new Date();
-    let year = today.getFullYear() - this.birthDate.getFullYear();
-    let month = today.getMonth() - this.birthDate.getMonth();
-    let day = today.getDate() - this.birthDate.getDate();
+    const today = moment();
+    const birthDate = moment(this.birthDate);
+    let year = today.year() - birthDate.year();
+    let month = today.month() - birthDate.month();
+    let day = today.date() - birthDate.date();
 
     if (
-      this.birthDate.getFullYear() === today.getFullYear() &&
-      this.birthDate.getMonth() === today.getMonth() &&
-      this.birthDate.getDate() === today.getDate()
+      birthDate.year() === today.year() &&
+      birthDate.month() === today.month() &&
+      birthDate.date() === today.date()
     ) {
       return '0 days';
     }
 
     if (month > 0 && day < 0) {
       month--;
-      const birthMonth = this.birthDate.getMonth() + 1; // add 1 becuase for some stupid reason month is 0 based
-      const birthYear = this.birthDate.getFullYear();
+      const birthMonth = birthDate.month() + 1; // add 1 becuase for some stupid reason month is 0 based
+      const birthYear = birthDate.year();
       const daysInMnth = Date.daysInMonth(birthMonth, birthYear);
       day = daysInMnth + day;
     }
