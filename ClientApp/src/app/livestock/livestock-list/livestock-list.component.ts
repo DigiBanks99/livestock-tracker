@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatListOption } from '@angular/material';
+import { MatListOption, PageEvent } from '@angular/material';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
@@ -14,17 +14,25 @@ import { Livestock } from '../livestock.model';
 })
 export class LivestockListComponent implements OnInit, OnDestroy {
   public livestockList: Livestock[];
+  public filteredLivestockList: Livestock[];
+  public pageSize: number;
 
   private livestockChanged: Subscription;
+  private lastPage: number;
 
   constructor(
     private livestockService: LivestockService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
+    this.pageSize = 10;
+    this.lastPage = 0;
+    this.filteredLivestockList = [];
     this.livestockList = this.livestockService.getLivestock();
+    this.filterList(this.pageSize, this.lastPage);
 
     this.livestockChanged = this.livestockService.livestockChanged.subscribe((livestockList: Livestock[]) => {
       this.livestockList = livestockList;
+      this.filterList(this.pageSize, this.lastPage);
     });
   }
 
@@ -55,6 +63,23 @@ export class LivestockListComponent implements OnInit, OnDestroy {
 
   public onAddAnimal() {
     this.router.navigate(['/livestock', 'new']);
+  }
+
+  public onPage(pageEvent: PageEvent) {
+    this.lastPage = pageEvent.pageIndex;
+    this.filterList(pageEvent.pageSize, pageEvent.pageIndex);
+  }
+
+  private filterList(pageSize: number, pageIndex: number) {
+    this.filteredLivestockList.splice(0);
+    const startIndex = pageSize * pageIndex;
+    for (let i = startIndex; i < startIndex + pageSize; i++) {
+      // if we passed the last item, let's not continue
+      if (i >= this.livestockList.length) {
+        return;
+      }
+      this.filteredLivestockList.push(this.livestockList[i]);
+    }
   }
 
   ngOnDestroy() {

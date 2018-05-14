@@ -5,6 +5,8 @@
   position: relative;
   display: block;
   min-height: calc(100vh - 64px);
+  margin-left: auto;
+  margin-right: auto;
 
   .mat-fab-bottom-right {
     position: fixed;
@@ -15,6 +17,11 @@
 
 .mat-toolbar * {
   font-size: 16px;
+}
+
+.mat-accent-background {
+  background-color: mat-color($candy-app-accent);
+  color: mat-color($candy-app-accent, '600-contrast', 0.6);
 }
 
 .livestock-list-container .livestock-toolbar,

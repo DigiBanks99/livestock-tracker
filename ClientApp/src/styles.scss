@@ -11,6 +11,11 @@ body {
   font-family: Roboto, Arial, sans-serif;
 }
 
+app-livestock-list {
+  display: flex;
+  position: relative;
+}
+
 .app-background {
   background-color: mat-color($candy-app-primary, 100);
 }
@@ -127,7 +132,7 @@ input.currency-input {
   .mat-card-header {
     display: flex;
     .mat-icon {
-      background-color: mat-color($candy-app-accent, 400);
+      background-color:mat-color($candy-app-accent, 400);
       border-radius: 50%;
       padding: 4px;
       font-size: unset;
@@ -138,5 +143,20 @@ input.currency-input {
     .mat-button {
       text-transform: uppercase;
     }
+  }
+}
+
+.mat-accent,
+*.mat-accent {
+  color: mat-color($candy-app-accent);
+}
+
+.mat-accent-background,
+*.mat-accent-background {
+  background-color: mat-color($candy-app-accent);
+  color: mat-color($candy-app-accent, '50-contrast');
+
+  .mat-icon {
+    color: mat-color($candy-app-accent, '50-contrast');
   }
 }

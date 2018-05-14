@@ -19,7 +19,8 @@ import {
   MatCheckboxModule,
   MatRippleModule,
   MatSnackBarModule,
-  MatCardModule
+  MatCardModule,
+  MatPaginatorModule
  } from '@angular/material';
 
 import { AppComponent } from './app.component';
@@ -62,7 +63,8 @@ import { LivestockService } from './livestock/livestock.service';
     MatCheckboxModule,
     MatRippleModule,
     MatSnackBarModule,
-    MatCardModule
+    MatCardModule,
+    MatPaginatorModule
   ],
   providers: [LivestockService],
   bootstrap: [AppComponent]
