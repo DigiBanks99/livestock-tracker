@@ -109,23 +109,6 @@ input.currency-input {
   }
 }
 
-.mat-form-field {
-  &.mat-focused {
-    .mat-input-wrapper.mat-form-field-wrapper {
-      .mat-form-field-flex {
-        background-color: mat-color($candy-app-primary, 200, 0.8);
-        padding: 3px 0 0 3px;
-        border-radius: 3px 3px 0 0;
-      }
-
-      .mat-input-subscript-wrapper,
-      .mat-input-underline {
-        padding-right: 3px;
-      }
-    }
-  }
-}
-
 .mat-card {
   background-color: mat-color($candy-app-primary, 100);
 

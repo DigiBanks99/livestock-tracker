@@ -38,10 +38,14 @@
 
   .livestock-detail-content__card {
     position: relative;
-    top: -15vh;
+    top: -20vh;
     margin: auto;
     min-width: 40vw;
     background-color: mat-color($candy-app-primary, 200);
+
+    .livestock-detail-content__card-content {
+      margin-bottom: 0;
+    }
 
     .form-container-inline {
       display: flex;

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatListOption, PageEvent } from '@angular/material';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 
 import { LiveStockType } from '../livestock-type.model';
 import { LivestockService } from '../livestock.service';

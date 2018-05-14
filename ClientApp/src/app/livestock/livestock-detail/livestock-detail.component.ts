@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute,  Params,  Router,  NavigationExtras } from '@angular/router';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
@@ -180,6 +180,26 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
 
   public kill() {
 
+  }
+
+  public showPrefix(elementID: string): boolean {
+    if (isNullOrUndefined(elementID)) {
+      return false;
+    }
+
+    const elem = document.querySelector('#' + elementID);
+    if (isNullOrUndefined(elem)) {
+      return false;
+    } else if (elem === document.activeElement) {
+      return true;
+    }
+
+    const value = this.livestockForm.get(elementID).value;
+    if (isNullOrUndefined(value)) {
+      return false;
+    }
+
+    return true;
   }
 
   private updateSellPriceCtrl(value: boolean) {

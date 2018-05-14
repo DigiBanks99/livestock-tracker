@@ -1,5 +1,5 @@
 import { OnInit, Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 
 import { Livestock } from './livestock.model';
