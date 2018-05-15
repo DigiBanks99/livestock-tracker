@@ -1,14 +1,17 @@
 import { OnInit, Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Subject, Observable, throwError } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 
-import { Livestock } from './livestock.model';
+import { Animal, Livestock } from './livestock.model';
 import { LiveStockType } from './livestock-type.model';
+import { Config } from 'protractor';
+import { catchError, retry } from 'rxjs/operators';
 
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
   editingStarted: Subject<number>;
-  getLivestock(): Livestock[];
+  getLivestock(); // : Livestock[];
   getAnimal(id: number): Livestock;
   removeLivestock(id: number);
   addAnimal(animal: Livestock);
@@ -22,11 +25,12 @@ interface ILivestockService {
 export class LivestockService implements ILivestockService, OnInit {
   private livestock: Livestock[];
   private lastNewID: number;
+  private readonly apiRoute = 'http://localhost:51372/api/';
 
   public livestockChanged: Subject<Livestock[]>;
   public editingStarted: Subject<number>;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.livestock = [
       new Livestock(1, LiveStockType.Cattle, 'Brahman', 1, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
       new Livestock(2, LiveStockType.Cattle, 'Brahman', 2, new Date(2018, 3, 23), new Date(2018, 4, 1), 1000, null, 120, 1),
@@ -51,8 +55,31 @@ export class LivestockService implements ILivestockService, OnInit {
   ngOnInit() {
   }
 
-  public getLivestock(): Livestock[] {
-    return this.livestock.slice();
+  public getLivestock() {
+    this.livestock = [];
+    const obsrvble = new Subject<Livestock[]>();
+    this.http.get<Livestock[]>(this.apiRoute + 'animal').subscribe((animals: Livestock[]) => {
+      for (const animal of animals) {
+        this.livestock.push(this.cloneAnimal(animal));
+      }
+      obsrvble.next(this.livestock);
+    });
+    return obsrvble;
+  }
+
+  public getLivestockType(typeNumber: number): LiveStockType {
+    switch (typeNumber) {
+      case 0:
+        return LiveStockType.Cattle;
+      case 1:
+        return LiveStockType.Sheep;
+      case 2:
+        return LiveStockType.Pig;
+      case 3:
+        return LiveStockType.Chicken;
+      default:
+        throw new Error('Not implemented LivestockType: ' + typeNumber);
+    }
   }
 
   public getAnimal(id: number): Livestock {
@@ -111,8 +138,12 @@ export class LivestockService implements ILivestockService, OnInit {
     } else {
       animal.id = this.lastNewID--;
       this.livestock.push(animal);
+      this.http.post(this.apiRoute + 'animal', animal).subscribe(() => {
+        this.getLivestock().subscribe((animals: Livestock[]) => {
+          this.emitLivestockChanged();
+        });
+      });
     }
-    this.emitLivestockChanged();
   }
 
   public updateAnimal(animal: Livestock) {
@@ -123,9 +154,11 @@ export class LivestockService implements ILivestockService, OnInit {
     if (index < 0) {
       throw new Error('Animal does not exist in list. Use addAnimal instead.');
     }
-    this.livestock[index] = animal;
-
-    this.emitLivestockChanged();
+    this.http.put(this.apiRoute + 'animal', animal).subscribe(() => {
+      this.getLivestock().subscribe((animals: Livestock[]) => {
+        this.emitLivestockChanged();
+      });
+    });
   }
 
   public getSvgIcon(animal: Livestock): string {
@@ -165,8 +198,39 @@ export class LivestockService implements ILivestockService, OnInit {
     }
   }
 
+  public cloneAnimal(animal: Livestock): Livestock {
+    return new Livestock(
+      animal.id,
+      animal.type,
+      animal.subspecies,
+      animal.number,
+      animal.birthDate,
+      animal.purchaseDate,
+      animal.purchasePrice,
+      animal.sellPrice,
+      animal.arrivalWeight,
+      animal.batchNumber
+    );
+  }
+
   private emitLivestockChanged() {
-    this.livestockChanged.next(this.getLivestock());
+    this.livestockChanged.next(this.livestock.slice());
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong,
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // return an observable with a user-facing error message
+    return throwError(
+      'Something bad happened; please try again later.');
   }
 }
 

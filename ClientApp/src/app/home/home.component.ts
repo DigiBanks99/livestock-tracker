@@ -17,7 +17,10 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.animals = this.livestockService.getLivestock();
+    this.animals = [];
+    this.livestockService.getLivestock().subscribe((animals: Livestock[]) => {
+      this.animals = animals;
+    });
     this.animalsChangedSubscription = this.livestockService.livestockChanged.subscribe((animals: Livestock[]) =>  {
       this.animals = animals;
     });

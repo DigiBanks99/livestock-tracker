@@ -7,7 +7,7 @@ describe('livestockService', () => {
   let service: LivestockService;
 
   beforeEach(() => {
-    service = new LivestockService();
+    service = new LivestockService(null);
     model = new Livestock(1, LiveStockType.Cattle, '', 1, new Date(), null, null, null, null, null);
   });
 
@@ -55,14 +55,15 @@ describe('livestockService', () => {
       service.getAnimal(33);
     }).toThrowError('Item not found');
 
-    const list = service.getLivestock();
-    for (const animal of list) {
-      service.removeLivestock(animal.id);
-    }
+    service.getLivestock().subscribe((animals: Livestock[]) => {
+      for (const animal of animals) {
+        service.removeLivestock(animal.id);
+      }
 
-    expect(function () {
-      service.getAnimal(model.id);
-    }).toThrowError('Item not found');
+      expect(function () {
+        service.getAnimal(model.id);
+      }).toThrowError('Item not found');
+    });
   });
 
   it('#removeLivestock should remove items when possible', () => {
@@ -80,29 +81,35 @@ describe('livestockService', () => {
   it('#addAnimal should add animal if it does not exist and throw and error if it does exist', () => {
     model.id = 12;
     model.type = LiveStockType.Cattle;
-    let list = service.getLivestock();
-    expect(list.length).toBe(10);
-    service.addAnimal(model);
-    list = service.getLivestock();
-    let lastItem = list[list.length - 1];
-    expect(list.length).toBe(11);
-    expect(lastItem.id).toBe(-1);
-    expect(lastItem.type).toBe(LiveStockType.Cattle);
-
-    model.type = LiveStockType.Pig;
-    expect(function () {
+    let list: Livestock[];
+    service.getLivestock().subscribe((animals: Livestock[]) => {
+      list = animals;
+      expect(list.length).toBe(10);
       service.addAnimal(model);
-    }).toThrowError('Animal already exists. Use updateAnimal instead.');
+      service.getLivestock().subscribe((animals2: Livestock[]) => {
+        list = animals2;
+        let lastItem = list[list.length - 1];
+        expect(list.length).toBe(11);
+        expect(lastItem.id).toBe(-1);
+        expect(lastItem.type).toBe(LiveStockType.Cattle);
+        model.type = LiveStockType.Pig;
+        expect(function () {
+          service.addAnimal(model);
+        }).toThrowError('Animal already exists. Use updateAnimal instead.');
 
-    const newAnimal = new Livestock(0, LiveStockType.Chicken, 'cockadoodle', 55, new Date(), new Date(), 20, null, 1, 2);
-    service.addAnimal(newAnimal);
-    list = service.getLivestock();
-    expect(list.length).toBe(12);
-    lastItem = list[list.length - 1];
-    expect(lastItem.id).toBe(-2);
-    expect(lastItem.type).toBe(LiveStockType.Chicken);
-    expect(lastItem.subspecies).toBe('cockadoodle');
+        const newAnimal = new Livestock(0, LiveStockType.Chicken, 'cockadoodle', 55, new Date(), new Date(), 20, null, 1, 2);
+        service.addAnimal(newAnimal);
+        service.getLivestock().subscribe((animals3: Livestock[]) => {
+          list = animals3;
+        expect(list.length).toBe(12);
+        lastItem = list[list.length - 1];
+        expect(lastItem.id).toBe(-2);
+        expect(lastItem.type).toBe(LiveStockType.Chicken);
+        expect(lastItem.subspecies).toBe('cockadoodle');
+      });
+    });
   });
+});
 
   it('#updateAnimal should update the existing item or throw an error if it does not exist.', () => {
     model.id = 12;

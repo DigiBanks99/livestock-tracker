@@ -3,6 +3,8 @@ import { MatListOption, PageEvent } from '@angular/material';
 import { Router, NavigationExtras, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
+import * as moment from 'moment';
+
 import { LiveStockType } from '../livestock-type.model';
 import { LivestockService } from '../livestock.service';
 import { Livestock } from '../livestock.model';
@@ -26,8 +28,12 @@ export class LivestockListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.pageSize = 10;
     this.lastPage = 0;
+    this.livestockList = [];
     this.filteredLivestockList = [];
-    this.livestockList = this.livestockService.getLivestock();
+    this.livestockService.getLivestock().subscribe((animals: Livestock[]) => {
+      this.livestockList = animals;
+      this.filterList(this.pageSize, this.lastPage);
+    });
     this.filterList(this.pageSize, this.lastPage);
 
     this.livestockChanged = this.livestockService.livestockChanged.subscribe((livestockList: Livestock[]) => {

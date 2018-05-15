@@ -163,6 +163,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       +this.livestockForm.get('batchNumber').value
     );
     animal.sold = this.livestockForm.get('sold').value;
+    if (!animal.sold) {
+      animal.sellPrice = null;
+    }
 
     if (this.editID > 0) {
       this.livestockService.updateAnimal(animal);
@@ -248,6 +251,10 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       sellPrice = animal.sellPrice;
       sold = animal.sold;
       age = animal.getAge();
+
+      if (!sold) {
+        sellPrice = null;
+      }
     } else {
       this.currentAnimal = null;
     }

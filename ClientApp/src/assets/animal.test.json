@@ -1,0 +1,5 @@
+{
+  "animals": [
+    { "id": 1, "type": 0, "subspecies": "Brahman", "number": 1, "birthDate": "2018-05-01T00:00:00.000", "purchaseDate": "2018-05-04T00:00:00.000", "purchasePrice": 600, "sellPrice": null, "arrivalWeight": 120, "batchNumber": 1 }
+  ]
+}

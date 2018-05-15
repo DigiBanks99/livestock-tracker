@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace livestock_tracker.Controllers
+namespace LivestockTracker.Controllers
 {
     [Route("api/[controller]")]
     public class SampleDataController : Controller
