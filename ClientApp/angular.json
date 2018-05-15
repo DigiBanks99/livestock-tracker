@@ -42,6 +42,13 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ]
+            },
+            "serve": {
+              "extractCss": true,
+              "namedChunks": true,
+              "vendorChunk": true,
+              "commonChunk": true,
+              "verbose": true
             }
           }
         },
