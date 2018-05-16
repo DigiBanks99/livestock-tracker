@@ -1,12 +1,15 @@
 import { OnInit, Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Subject, Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
+import { Config } from 'protractor';
+
+import * as moment from 'moment';
 
 import { Animal, Livestock } from './livestock.model';
 import { LiveStockType } from './livestock-type.model';
-import { Config } from 'protractor';
-import { catchError, retry } from 'rxjs/operators';
+import { Extensions } from '../extensions';
 
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
@@ -199,7 +202,7 @@ export class LivestockService implements ILivestockService, OnInit {
   }
 
   public cloneAnimal(animal: Livestock): Livestock {
-    return new Livestock(
+    const clonedAnimal = new Livestock(
       animal.id,
       animal.type,
       animal.subspecies,
@@ -211,6 +214,18 @@ export class LivestockService implements ILivestockService, OnInit {
       animal.arrivalWeight,
       animal.batchNumber
     );
+    clonedAnimal.sold = animal.sold;
+    if (clonedAnimal.sold) {
+      clonedAnimal.sellPrice = animal.sellPrice;
+      clonedAnimal.sellDate = moment(animal.sellDate).toDate();
+    }
+
+    clonedAnimal.deceased = animal.deceased;
+    if (clonedAnimal.deceased) {
+      clonedAnimal.dateOfDeath = moment(animal.dateOfDeath).toDate();
+    }
+
+    return clonedAnimal;
   }
 
   private emitLivestockChanged() {

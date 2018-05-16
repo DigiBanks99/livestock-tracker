@@ -87,11 +87,30 @@
           </mat-form-field>
         </div>
         <div class="form-container-inline">
-          <mat-checkbox formControlName="sold" labelPosition="before">Sold</mat-checkbox>
+          <mat-checkbox id="sold" formControlName="sold" labelPosition="before">Sold</mat-checkbox>
+        </div>
+        <div class="form-container-inline" *ngIf="livestockForm.get('sold').value">
           <mat-form-field appearance="fill">
             <mat-label for="sellPrice">Sell Price</mat-label>
             <input type="number" id="sellPrice" formControlName="sellPrice" matInput placeholder="Sell Price" class="currency-input" [required]="livestockForm.get('sold').value">
             <span matPrefix *ngIf="showPrefix('sellPrice')">R&nbsp;</span>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label for="sellDate">Sell Date</mat-label>
+            <input id="sellDate" formControlName="sellDate" matInput [matDatepicker]="sd">
+            <mat-datepicker-toggle matSuffix [for]="sd"></mat-datepicker-toggle>
+            <mat-datepicker #sd></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="form-container-inline">
+          <mat-checkbox formControlName="deceased" labelPosition="before">Deceased</mat-checkbox>
+        </div>
+        <div class="form-container-inline" *ngIf="livestockForm.get('deceased').value">
+          <mat-form-field appearance="fill">
+            <mat-label for="dateOfDeath">Date of Death</mat-label>
+            <input id="dateOfDeath" formControlName="dateOfDeath" matInput [matDatepicker]="dod">
+            <mat-datepicker-toggle matSuffix [for]="dod"></mat-datepicker-toggle>
+            <mat-datepicker #dod></mat-datepicker>
           </mat-form-field>
         </div>
       </mat-card-content>

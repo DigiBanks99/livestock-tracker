@@ -5,6 +5,10 @@
 
 @include mat-core();
 
+html {
+  overflow: hidden;
+}
+
 body {
   padding: 0;
   margin: 0;

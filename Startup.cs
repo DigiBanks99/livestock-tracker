@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace LivestockTracker
 {
@@ -40,6 +42,7 @@ namespace LivestockTracker
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                SeedDevData(app);
             }
             else
             {
@@ -58,16 +61,35 @@ namespace LivestockTracker
 
             app.UseSpa(spa =>
             {
-          // To learn more about options for serving an Angular SPA from ASP.NET Core,
-          // see https://go.microsoft.com/fwlink/?linkid=864501
+                // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                // see https://go.microsoft.com/fwlink/?linkid=864501
 
-          spa.Options.SourcePath = "ClientApp";
+                spa.Options.SourcePath = "ClientApp";
 
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
                 }
             });
+        }
+
+        private static void SeedDevData(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices.CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<LivestockContext>())
+                {
+                    try
+                    {
+                        SeedData.Initialize(serviceScope.ServiceProvider);
+                    }
+                    catch (Exception ex)
+                    {
+                        var logger = app.ApplicationServices.GetRequiredService<ILogger<Program>>();
+                        logger.LogError(ex, "An error occurred seeding the DB.");
+                    }
+                }
+            }
         }
     }
 }

@@ -1,7 +1,8 @@
 import { isNullOrUndefined } from 'util';
+import * as moment from 'moment';
+
 import { LiveStockType } from './livestock-type.model';
 
-import * as moment from 'moment';
 
 export interface Animal {
   id: number;
@@ -13,14 +14,21 @@ export interface Animal {
   purchasePrice: number;
   sold: boolean;
   sellPrice: number;
+  sellDate: Date;
   arrivalWeight: number;
   batchNumber: number;
+  deceased: boolean;
+  dateOfDeath: Date;
 
   getAge(): string;
 }
 
 export class Livestock implements Animal {
   public sold: boolean;
+  public sellDate: Date;
+  public deceased: boolean;
+  public dateOfDeath: Date;
+
   constructor(
     public id: number,
     public type: LiveStockType,
@@ -39,6 +47,7 @@ export class Livestock implements Animal {
       this.sold = false;
     }
   }
+
   public getAge(): string {
     const today = moment();
     const birthDate = moment(this.birthDate);
@@ -52,6 +61,7 @@ export class Livestock implements Animal {
     ) {
       return '0 days';
     }
+
     if (month > 0 && day < 0) {
       month--;
       const birthMonth = birthDate.month() + 1; // add 1 becuase for some stupid reason month is 0 based
@@ -59,18 +69,22 @@ export class Livestock implements Animal {
       const daysInMnth = Date.daysInMonth(birthMonth, birthYear);
       day = daysInMnth + day;
     }
+
     if (year > 0 && month < 0) {
       year--;
       month = 12 + month;
     }
+
     let displayAge = this.addAgeSection(year, 'year');
     displayAge += this.addAgeSection(month, 'month');
     displayAge += this.addAgeSection(day, 'day');
     if (displayAge.endsWith(' ')) {
       displayAge = displayAge.substring(0, displayAge.length - 1);
     }
+
     return displayAge;
   }
+
   private addAgeSection(unit: number, description: string): string {
     let displayAge = '';
     if (unit <= 0) {

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute,  Params,  Router,  NavigationExtras } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
@@ -39,6 +39,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   private editID: number;
   private editingStartedSubscription: Subscription;
   private soldChanged: Subscription;
+  private deceasedChanged: Subscription;
   private birthDateChanged: Subscription;
 
   constructor(
@@ -84,8 +85,11 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     let arrivalWeight: number = null;
     let batchNumber: number = null;
     let sellPrice: number = null;
+    let sellDate: Date = null;
     let sold = false;
     let age = '0 days';
+    let deceased = false;
+    let dateOfDeath: Date = null;
 
     const animal: Livestock = this.livestockService.getAnimal(this.editID);
     if (animal != null) {
@@ -101,6 +105,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       sellPrice = animal.sellPrice;
       sold = animal.sold;
       age = animal.getAge();
+      sellDate = animal.sellDate;
+      deceased = animal.deceased;
+      dateOfDeath = animal.dateOfDeath;
     } else {
       this.currentAnimal = null;
     }
@@ -116,6 +123,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     this.livestockForm.get('sellPrice').setValue(sellPrice);
     this.livestockForm.get('sold').setValue(sold);
     this.livestockForm.get('age').setValue(age);
+    this.livestockForm.get('sellDate').setValue(sellDate);
+    this.livestockForm.get('deceased').setValue(deceased);
+    this.livestockForm.get('dateOfDeath').setValue(dateOfDeath);
     this.livestockForm.markAsPristine();
   }
 
@@ -165,6 +175,16 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     animal.sold = this.livestockForm.get('sold').value;
     if (!animal.sold) {
       animal.sellPrice = null;
+      animal.sellDate = null;
+    } else {
+      animal.sellDate = this.livestockForm.get('sellDate').value;
+    }
+
+    animal.deceased = this.livestockForm.get('deceased').value;
+    if (!animal.deceased) {
+      animal.dateOfDeath = null;
+    } else {
+      animal.dateOfDeath = this.livestockForm.get('dateOfDeath').value;
     }
 
     if (this.editID > 0) {
@@ -207,23 +227,6 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  private updateSellPriceCtrl(value: boolean) {
-    const validators = [];
-    const sellPriceCtrl = this.livestockForm.get('sellPrice');
-
-    if (value) {
-      validators.push(Validators.required);
-      sellPriceCtrl.enable();
-    } else {
-      sellPriceCtrl.setValue(null);
-      sellPriceCtrl.disable();
-    }
-
-    sellPriceCtrl.setValidators(validators);
-    sellPriceCtrl.updateValueAndValidity();
-    sellPriceCtrl.markAsTouched();
-  }
-
   public initForm() {
     let type = LiveStockType.Cattle;
     let subspecies: string = null;
@@ -234,8 +237,11 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     let arrivalWeight: number = null;
     let batchNumber: number = null;
     let sellPrice: number = null;
+    let sellDate: Date = null;
     let sold = false;
     let age = '0 days';
+    let deceased = false;
+    let dateOfDeath: Date = null;
 
     const animal: Livestock = this.livestockService.getAnimal(this.editID);
     if (animal != null) {
@@ -251,6 +257,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       sellPrice = animal.sellPrice;
       sold = animal.sold;
       age = animal.getAge();
+      sellDate = animal.sellDate;
+      deceased = animal.deceased;
+      dateOfDeath = animal.dateOfDeath;
 
       if (!sold) {
         sellPrice = null;
@@ -268,29 +277,80 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       purchasePrice: new FormControl(purchasePrice, [Validators.required]),
       arrivalWeight: new FormControl(arrivalWeight, [Validators.required]),
       batchNumber: new FormControl(batchNumber, [Validators.required]),
-      sellPrice: new FormControl(sellPrice, []),
       sold: new FormControl(sold, [Validators.required]),
-      age: new FormControl({ value: age, disabled: true })
+      sellPrice: new FormControl({value: sellPrice, disabled: true }, []),
+      sellDate: new FormControl({value: sellDate, disabled: true }, []),
+      age: new FormControl({ value: age, disabled: true }),
+      deceased: new FormControl(deceased, [Validators.required]),
+      dateOfDeath: new FormControl({value: dateOfDeath, disabled: true }, [])
     });
 
-    this.updateSellPriceCtrl(sold);
+    this.updateSold(sold);
+    this.updateDateOfDeathCtrl(deceased);
 
     this.soldChanged = this.livestockForm
       .get('sold')
-      .valueChanges.subscribe((value: boolean) => this.updateSellPriceCtrl(value));
+      .valueChanges.subscribe((value: boolean) => this.updateSold(value));
 
-      this.birthDateChanged = this.livestockForm.get('birthDate').valueChanges.subscribe((value: Date) => {
+    this.birthDateChanged = this.livestockForm.get('birthDate').valueChanges.subscribe((value: Date) => {
         const ageCtrl = this.livestockForm.get('age');
         const tempAnimal = new Livestock(0, LiveStockType.Cattle, null, 0, value, new Date(), null, null, null, null);
         ageCtrl.setValue(tempAnimal.getAge());
         ageCtrl.updateValueAndValidity();
         ageCtrl.markAsTouched();
       });
+
+    this.deceasedChanged = this.livestockForm
+      .get('deceased')
+      .valueChanges.subscribe((value: boolean) => this.updateDateOfDeathCtrl(value));
+  }
+
+  private updateSold(value: boolean) {
+    const validators = [];
+    const sellPriceCtrl = this.livestockForm.get('sellPrice');
+    const sellDateCtrl = this.livestockForm.get('sellDate');
+
+    if (value) {
+      validators.push(Validators.required);
+      sellPriceCtrl.enable();
+      sellDateCtrl.enable();
+    } else {
+      sellPriceCtrl.setValue(null);
+      sellPriceCtrl.disable();
+      sellDateCtrl.setValue(null);
+      sellDateCtrl.disable();
+    }
+
+    sellPriceCtrl.setValidators(validators);
+    sellPriceCtrl.updateValueAndValidity();
+    sellPriceCtrl.markAsTouched();
+
+    sellDateCtrl.setValidators(validators);
+    sellDateCtrl.updateValueAndValidity();
+    sellDateCtrl.markAsTouched();
+  }
+
+  private updateDateOfDeathCtrl(value: boolean) {
+    const validators = [];
+    const dateOfDeathCtrl = this.livestockForm.get('dateOfDeath');
+
+    if (value) {
+      validators.push(Validators.required);
+      dateOfDeathCtrl.enable();
+    } else {
+      dateOfDeathCtrl.setValue(null);
+      dateOfDeathCtrl.disable();
+    }
+
+    dateOfDeathCtrl.setValidators(validators);
+    dateOfDeathCtrl.updateValueAndValidity();
+    dateOfDeathCtrl.markAsTouched();
   }
 
   ngOnDestroy() {
     this.editingStartedSubscription.unsubscribe();
     this.soldChanged.unsubscribe();
     this.birthDateChanged.unsubscribe();
+    this.deceasedChanged.unsubscribe();
   }
 }

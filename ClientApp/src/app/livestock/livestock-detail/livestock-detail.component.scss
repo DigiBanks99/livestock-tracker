@@ -7,7 +7,8 @@
   left: 0;
   width: 100vw;
   min-height: 100vh;
-  display: flex;
+  height: 100vh;
+  overflow-y: auto;
   flex-direction: column;
 
   .livestock-detail-toolbar__header-top {
@@ -49,6 +50,10 @@
 
     .form-container-inline {
       display: flex;
+
+      #sold {
+        padding-bottom: 1.34375em;;
+      }
     }
 
     .mat-form-field,

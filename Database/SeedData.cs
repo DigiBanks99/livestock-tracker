@@ -37,7 +37,8 @@ namespace LivestockTracker.Database
                         PurchasePrice = 200m,
                         ArrivalWeight = 120m,
                         Sold = false,
-                        SellPrice = null
+                        SellPrice = null,
+                        Deceased = false
                     }
                 );
                 context.SaveChanges();
