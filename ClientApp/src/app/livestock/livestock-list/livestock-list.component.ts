@@ -30,16 +30,13 @@ export class LivestockListComponent implements OnInit, OnDestroy {
     this.lastPage = 0;
     this.livestockList = [];
     this.filteredLivestockList = [];
-    this.livestockService.getLivestock().subscribe((animals: Livestock[]) => {
-      this.livestockList = animals;
-      this.filterList(this.pageSize, this.lastPage);
-    });
-    this.filterList(this.pageSize, this.lastPage);
 
     this.livestockChanged = this.livestockService.livestockChanged.subscribe((livestockList: Livestock[]) => {
       this.livestockList = livestockList;
       this.filterList(this.pageSize, this.lastPage);
     });
+
+    this.livestockService.getLivestock();
   }
 
   public getSvgIcon(animal: Livestock): string {

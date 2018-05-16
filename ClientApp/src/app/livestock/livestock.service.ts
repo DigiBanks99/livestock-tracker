@@ -1,6 +1,6 @@
-import { OnInit, Injectable } from '@angular/core';
+import { OnInit, Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Subject, Observable, throwError } from 'rxjs';
+import { Subject, Observable, Subscription, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 import { Config } from 'protractor';
@@ -9,12 +9,11 @@ import * as moment from 'moment';
 
 import { Animal, Livestock } from './livestock.model';
 import { LiveStockType } from './livestock-type.model';
-import { Extensions } from '../extensions';
 
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
   editingStarted: Subject<number>;
-  getLivestock(); // : Livestock[];
+  getLivestock();
   getAnimal(id: number): Livestock;
   removeLivestock(id: number);
   addAnimal(animal: Livestock);
@@ -25,31 +24,20 @@ interface ILivestockService {
 }
 
 @Injectable()
-export class LivestockService implements ILivestockService, OnInit {
+export class LivestockService implements ILivestockService, OnInit, OnDestroy {
   private livestock: Livestock[];
   private lastNewID: number;
   private readonly apiRoute = 'http://localhost:51372/api/';
+  private httpGetSubscription: Subscription;
+  private httpDeleteSubscription: Subscription;
+  private httpPutSubscription: Subscription;
+  private httpPostSubscription: Subscription;
 
   public livestockChanged: Subject<Livestock[]>;
   public editingStarted: Subject<number>;
 
   constructor(private http: HttpClient) {
-    this.livestock = [
-      new Livestock(1, LiveStockType.Cattle, 'Brahman', 1, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
-      new Livestock(2, LiveStockType.Cattle, 'Brahman', 2, new Date(2018, 3, 23), new Date(2018, 4, 1), 1000, null, 120, 1),
-      new Livestock(8, LiveStockType.Chicken, null, 8, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
-      new Livestock(3, LiveStockType.Cattle, 'Fries', 3, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
-      new Livestock(4, LiveStockType.Cattle, 'Jersey', 4, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
-      new Livestock(9, LiveStockType.Pig, null, 9, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
-      new Livestock(5, LiveStockType.Cattle, 'Brahman', 5, new Date(2018, 3, 23), new Date(2018, 4, 1), 1000, null, 120, 1),
-      new Livestock(10, LiveStockType.Sheep, null, 10, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
-      new Livestock(6, LiveStockType.Cattle, 'Guernsey', 6, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1),
-      new Livestock(7, LiveStockType.Cattle, 'Fries', 7, new Date(2018, 3, 22), new Date(2018, 4, 1), 1000, null, 120, 1)
-    ];
-
-    this.lastNewID = -1;
-    this.livestock[4].sold = true;
-    this.livestock[4].sellPrice = 1400;
+    this.livestock = [];
 
     this.livestockChanged = new Subject<Livestock[]>();
     this.editingStarted = new Subject<number>();
@@ -60,14 +48,12 @@ export class LivestockService implements ILivestockService, OnInit {
 
   public getLivestock() {
     this.livestock = [];
-    const obsrvble = new Subject<Livestock[]>();
-    this.http.get<Livestock[]>(this.apiRoute + 'animal').subscribe((animals: Livestock[]) => {
+    this.httpGetSubscription = this.http.get<Livestock[]>(this.apiRoute + 'animal').subscribe((animals: Livestock[]) => {
       for (const animal of animals) {
         this.livestock.push(this.cloneAnimal(animal));
+        this.emitLivestockChanged();
       }
-      obsrvble.next(this.livestock);
     });
-    return obsrvble;
   }
 
   public getLivestockType(typeNumber: number): LiveStockType {
@@ -118,8 +104,9 @@ export class LivestockService implements ILivestockService, OnInit {
       throw Error('Item not found');
     }
 
-    this.livestock.splice(index, 1);
-    this.emitLivestockChanged();
+    this.httpDeleteSubscription = this.http.delete(this.apiRoute + '/' + id).subscribe(() => {
+      this.getLivestock();
+    });
   }
 
   public addAnimal(animal: Livestock) {
@@ -141,10 +128,8 @@ export class LivestockService implements ILivestockService, OnInit {
     } else {
       animal.id = this.lastNewID--;
       this.livestock.push(animal);
-      this.http.post(this.apiRoute + 'animal', animal).subscribe(() => {
-        this.getLivestock().subscribe((animals: Livestock[]) => {
-          this.emitLivestockChanged();
-        });
+      this.httpPostSubscription = this.http.post(this.apiRoute + 'animal', animal).subscribe(() => {
+        this.getLivestock();
       });
     }
   }
@@ -157,10 +142,8 @@ export class LivestockService implements ILivestockService, OnInit {
     if (index < 0) {
       throw new Error('Animal does not exist in list. Use addAnimal instead.');
     }
-    this.http.put(this.apiRoute + 'animal', animal).subscribe(() => {
-      this.getLivestock().subscribe((animals: Livestock[]) => {
-        this.emitLivestockChanged();
-      });
+    this.httpPutSubscription = this.http.put(this.apiRoute + 'animal', animal).subscribe(() => {
+      this.getLivestock();
     });
   }
 
@@ -246,6 +229,13 @@ export class LivestockService implements ILivestockService, OnInit {
     // return an observable with a user-facing error message
     return throwError(
       'Something bad happened; please try again later.');
+  }
+
+  ngOnDestroy() {
+    this.httpGetSubscription.unsubscribe();
+    this.httpDeleteSubscription.unsubscribe();
+    this.httpPostSubscription.unsubscribe();
+    this.httpPutSubscription.unsubscribe();
   }
 }
 
