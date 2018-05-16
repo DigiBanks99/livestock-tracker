@@ -1,63 +1,62 @@
-﻿using LivestockTracker.Models;
-using System;
+﻿using LivestockTracker.Database;
+using LivestockTracker.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace LivestockTracker.Services
 {
     public class AnimalService : IAnimalService
     {
-        private readonly List<Animal> _animals;
+        private readonly LivestockContext _context;
 
-        public AnimalService()
+        public AnimalService(LivestockContext context)
         {
-            _animals = GetDefaultList();
+            _context = context;
         }
 
         public List<Animal> GetAnimals()
         {
-            return _animals;
+            return _context.Animal.ToList();
+        }
+
+        public Animal GetAnimal(int id)
+        {
+            if (!_context.Animal.Any())
+                return null;
+
+            return _context.Animal.FirstOrDefault(x => x.ID == id);
         }
 
         public void AddAnimal(Animal animal)
         {
-            if (_animals.Any(x => x.ID == animal.ID))
+            if (GetAnimal(animal.ID) != null)
                 return;
 
-            animal.ID = _animals.Max(x => x.ID) + 1;
-            _animals.Add(animal);
+            animal.ID = _context.Animal.Max(x => x.ID) + 1;
+            _context.Animal.Add(animal);
         }
 
         public void UpdateAnimal(Animal animal)
         {
-            var animalToUpdateIndex = _animals.IndexOf(_animals.First(x => x.ID == animal.ID));
-            if (animalToUpdateIndex < 0)
+            var animalToUpdate = GetAnimal(animal.ID);
+            if (animalToUpdate == null)
                 throw new AnimalNotFoundException(animal.ID);
 
-            _animals[animalToUpdateIndex] = animal;
+            _context.Animal.Update(animal);
         }
 
-        private List<Animal> GetDefaultList()
+        public void DeleteAnimal(int id)
         {
-            return
-                new List<Animal>()
-                {
-                    new Animal()
-                    {
-                        ID = 1,
-                        Type = (int)LivestockType.Cattle,
-                        Subspecies = "Brahman",
-                        Number = 1,
-                        BatchNumber = 1,
-                        BirthDate = new DateTime(2018, 4, 1),
-                        PurchaseDate = new DateTime(2018, 4, 15),
-                        PurchasePrice = 200m,
-                        ArrivalWeight = 120m,
-                        Sold = false,
-                        SellPrice = null
-                    }
-                };
+            var animalToRemove = GetAnimal(id);
+            if (animalToRemove == null)
+                return;
+
+            _context.Animal.Remove(animalToRemove);
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

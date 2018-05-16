@@ -23,6 +23,7 @@ namespace LivestockTracker.Controllers
         public IActionResult AddAnimal([FromBody]Animal animal)
         {
             _animalService.AddAnimal(animal);
+            _animalService.Save();
             return Ok();
         }
 
@@ -32,12 +33,21 @@ namespace LivestockTracker.Controllers
             try
             {
                 _animalService.UpdateAnimal(animal);
+                _animalService.Save();
                 return Ok();
             }
             catch (AnimalNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteAnimal(int id)
+        {
+            _animalService.DeleteAnimal(id);
+            _animalService.Save();
+            return Ok();
         }
     }
 }

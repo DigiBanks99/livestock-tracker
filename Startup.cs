@@ -1,7 +1,9 @@
+using LivestockTracker.Database;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -21,7 +23,9 @@ namespace LivestockTracker
         {
             services.AddMvc();
 
-            services.AddSingleton<IAnimalService, AnimalService>();
+            services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddScoped<IAnimalService, AnimalService>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
