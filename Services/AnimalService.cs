@@ -42,7 +42,7 @@ namespace LivestockTracker.Services
             if (animalToUpdate == null)
                 throw new AnimalNotFoundException(animal.ID);
 
-            _context.Animal.Update(animal);
+            _context.Entry(animalToUpdate).CurrentValues.SetValues(animal);
         }
 
         public void DeleteAnimal(int id)
