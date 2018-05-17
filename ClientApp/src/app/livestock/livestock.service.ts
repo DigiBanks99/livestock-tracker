@@ -9,6 +9,7 @@ import * as moment from 'moment';
 
 import { Animal, Livestock } from './livestock.model';
 import { LiveStockType } from './livestock-type.model';
+import { environment } from './../../environments/environment';
 
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
@@ -27,7 +28,7 @@ interface ILivestockService {
 export class LivestockService implements ILivestockService, OnInit, OnDestroy {
   private livestock: Livestock[];
   private lastNewID: number;
-  private readonly apiRoute = 'http://localhost:51372/api/';
+  private readonly apiUrl = environment.apiUrl;
   private httpGetSubscription: Subscription;
   private httpDeleteSubscription: Subscription;
   private httpPutSubscription: Subscription;
@@ -48,7 +49,7 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
 
   public getLivestock() {
     this.livestock = [];
-    this.httpGetSubscription = this.http.get<Livestock[]>(this.apiRoute + 'animal').subscribe((animals: Livestock[]) => {
+    this.httpGetSubscription = this.http.get<Livestock[]>(this.apiUrl + 'animal').subscribe((animals: Livestock[]) => {
       for (const animal of animals) {
         this.livestock.push(this.cloneAnimal(animal));
         this.emitLivestockChanged();
@@ -104,7 +105,7 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
       throw Error('Item not found');
     }
 
-    this.httpDeleteSubscription = this.http.delete(this.apiRoute + '/' + id).subscribe(() => {
+    this.httpDeleteSubscription = this.http.delete(this.apiUrl + '/' + id).subscribe(() => {
       this.getLivestock();
     });
   }
@@ -128,7 +129,7 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
     } else {
       animal.id = this.lastNewID--;
       this.livestock.push(animal);
-      this.httpPostSubscription = this.http.post(this.apiRoute + 'animal', animal).subscribe(() => {
+      this.httpPostSubscription = this.http.post(this.apiUrl + 'animal', animal).subscribe(() => {
         this.getLivestock();
       });
     }
@@ -142,7 +143,7 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
     if (index < 0) {
       throw new Error('Animal does not exist in list. Use addAnimal instead.');
     }
-    this.httpPutSubscription = this.http.put(this.apiRoute + 'animal', animal).subscribe(() => {
+    this.httpPutSubscription = this.http.put(this.apiUrl + 'animal', animal).subscribe(() => {
       this.getLivestock();
     });
   }
