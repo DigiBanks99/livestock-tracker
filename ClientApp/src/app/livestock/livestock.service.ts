@@ -39,6 +39,7 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
 
   constructor(private http: HttpClient) {
     this.livestock = [];
+    this.lastNewID = 0;
 
     this.livestockChanged = new Subject<Livestock[]>();
     this.editingStarted = new Subject<number>();
@@ -49,6 +50,7 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
 
   public getLivestock() {
     this.livestock = [];
+
     this.httpGetSubscription = this.http.get<Livestock[]>(this.apiUrl + 'animal').subscribe((animals: Livestock[]) => {
       for (const animal of animals) {
         this.livestock.push(this.cloneAnimal(animal));
