@@ -33,8 +33,17 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="ClientApp\src\app\medical\medicalTransaction.model.ts" />
       <None Remove="livestock.db" />
       <None Remove="livestock2.db" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <TypeScriptCompile Include="ClientApp\src\app\medical\medicalTransaction.model.ts" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="ClientApp\src\app\shared\" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

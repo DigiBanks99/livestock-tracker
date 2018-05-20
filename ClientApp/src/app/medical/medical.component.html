@@ -1,0 +1,15 @@
+<div class="medical-container">
+  <mat-toolbar>
+    <span>
+      <mat-icon svgIcon="{{getSvgIcon(currentAnimal)}}"></mat-icon>
+    </span>
+    <div appearance="fill">
+      <mat-select (change)="test($event)" [(ngModel)]="x">
+        <mat-option *ngFor="let animal of animals; let i = index" [value]="animal.id">
+          <mat-icon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
+          {{animal.number}} - {{animal.batchNumber}}
+        </mat-option>
+      </mat-select>
+    </div>
+  </mat-toolbar>
+</div>

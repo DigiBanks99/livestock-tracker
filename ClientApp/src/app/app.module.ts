@@ -33,6 +33,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { LivestockListComponent } from './livestock/livestock-list/livestock-list.component';
 import { LivestockDetailComponent } from './livestock/livestock-detail/livestock-detail.component';
 import { LivestockService } from './livestock/livestock.service';
+import { MedicalComponent } from './medical/medical.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { LivestockService } from './livestock/livestock.service';
     LivestockComponent,
     ReportsComponent,
     LivestockListComponent,
-    LivestockDetailComponent
+    LivestockDetailComponent,
+    MedicalComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
