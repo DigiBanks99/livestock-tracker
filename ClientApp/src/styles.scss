@@ -37,8 +37,7 @@ app-livestock-list {
   .mat-list-item,
   .mat-list-item .mat-list-item-content,
   .mat-button,
-  a,
-  span {
+  a {
     color: $light-primary-text;
     font-size: 22px;
     font-weight: 400;
@@ -97,7 +96,7 @@ input.currency-input::-webkit-inner-spin-button {
   display: none;
 }
 
-input.currency-input {
+.currency-input {
   -moz-appearance: textfield;
   appearance: textfield;
 }
@@ -146,4 +145,29 @@ input.currency-input {
   .mat-icon {
     color: mat-color($candy-app-accent, '50-contrast');
   }
+}
+
+.medical-toolbar__trans-type {
+  width: 40%;
+
+  &.mat-select {
+    width: 40%;
+    margin-right: 8px;
+  }
+}
+
+.medical-toolbar__trans-date,
+.medical-toolbar__trans-dose,
+.medical-toolbar__trans-unit {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+.medical-toolbar__trans-date {
+  width: 30%;
+}
+
+.medical-toolbar__trans-dose,
+.medical-toolbar__trans-unit {
+  width: 15%;
 }

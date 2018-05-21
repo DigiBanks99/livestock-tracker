@@ -6,4 +6,4 @@ var MedicalTransaction = /** @class */ (function () {
     return MedicalTransaction;
 }());
 exports.MedicalTransaction = MedicalTransaction;
-//# sourceMappingURL=medicalTransaction.model.js.map
+//# sourceMappingURL=medical-transaction.model.js.map

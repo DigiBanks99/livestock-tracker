@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LivestockTracker.Models
@@ -30,5 +31,7 @@ namespace LivestockTracker.Models
         [Required]
         public bool Deceased { get; set; } = false;
         public DateTime? DateOfDeath { get; set; }
+
+        public List<MedicalTransaction> MedicalTransactions { get; set; }
     }
 }

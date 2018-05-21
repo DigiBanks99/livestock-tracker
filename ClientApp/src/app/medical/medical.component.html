@@ -1,15 +1,39 @@
 <div class="medical-container">
-  <mat-toolbar>
-    <span>
-      <mat-icon svgIcon="{{getSvgIcon(currentAnimal)}}"></mat-icon>
-    </span>
-    <div appearance="fill">
-      <mat-select (change)="test($event)" [(ngModel)]="x">
+  <mat-toolbar class="medical-toolbar">
+    <mat-toolbar-row>
+      <span class="selected-animal-svg">
+        <mat-icon svgIcon="{{getSvgIcon(currentAnimal)}}"></mat-icon>
+      </span>
+      <mat-select [value]="currentAnimal ? currentAnimal.id : 0" #animalSelector>
         <mat-option *ngFor="let animal of animals; let i = index" [value]="animal.id">
           <mat-icon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
-          {{animal.number}} - {{animal.batchNumber}}
+          {{animal.number}} {{animal.subspecies ? ' - ' + animal.subspecies : ''}}
         </mat-option>
       </mat-select>
-    </div>
+      <span class="fill-remaining-space"></span>
+    </mat-toolbar-row>
+    <mat-toolbar-row class="medical-toolbar__header">
+      <span class="medical-toolbar__trans-type">Medicine Type</span>
+      <span class="medical-toolbar__trans-date">Date</span>
+      <span class="medical-toolbar__trans-dose">Dose</span>
+      <span class="medical-toolbar__trans-unit">Unit</span>
+    </mat-toolbar-row>
   </mat-toolbar>
+  <mat-list class="medical-list mat-elevation-z1">
+    <mat-list-item class="medical-list-item" *ngFor="let medTrans of filteredMedicalTransactions">
+      <mat-select [value]="medTrans.type" class="medical-toolbar__trans-type">
+        <mat-option *ngFor="let medType of medicineTypes" [value]="medType.typeCode">{{medType.description}}</mat-option>
+      </mat-select>
+      <span class="medical-toolbar__trans-date">{{medTrans.transactionDate | date}}</span>
+      <span class="medical-toolbar__trans-dose">{{medTrans.dose | number}}</span>
+      <span class="medical-toolbar__trans-unit">{{medTrans.unit}}</span>
+    </mat-list-item>
+    <mat-paginator [pageSize]="pageSize"
+                   [length]="filteredMedicalTransactions.length"
+                   class="mat-accent-background"
+                   (page)="onPage($event)"></mat-paginator>
+  </mat-list>
+  <button mat-fab class="mat-fab-bottom-right" type="button" (click)="addMedicalTransaction(currentAnimal.id)" left>
+    <mat-icon>add</mat-icon>
+  </button>
 </div>

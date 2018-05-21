@@ -34,6 +34,7 @@ import { LivestockListComponent } from './livestock/livestock-list/livestock-lis
 import { LivestockDetailComponent } from './livestock/livestock-detail/livestock-detail.component';
 import { LivestockService } from './livestock/livestock.service';
 import { MedicalComponent } from './medical/medical.component';
+import { MedicalService } from './medical/medical.service';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,7 @@ import { MedicalComponent } from './medical/medical.component';
     MatCardModule,
     MatPaginatorModule
   ],
-  providers: [LivestockService],
+  providers: [LivestockService, MedicalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
