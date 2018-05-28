@@ -29,6 +29,9 @@ namespace LivestockTracker
 
             services.AddScoped<IAnimalRepository, AnimalRepository>();
             services.AddScoped<IAnimalService, AnimalService>();
+            services.AddScoped<IMedicalService, MedicalService>();
+            services.AddScoped<IMedecineService, MedecineService>();
+            services.AddScoped<IUnitService, UnitService>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

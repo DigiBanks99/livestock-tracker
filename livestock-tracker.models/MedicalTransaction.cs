@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LivestockTracker.Models
 {
-    public class MedicalTransaction
+    public class MedicalTransaction : IMedicalTransaction
     {
         [Key]
         public int ID { get; set; }

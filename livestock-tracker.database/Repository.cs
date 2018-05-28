@@ -44,7 +44,7 @@ namespace LivestockTracker.Database
 
         public virtual void Remove(int id)
         {
-            var entity = DataTable.Find(id);
+            var entity = Get(id);
             Remove(entity);
         }
 

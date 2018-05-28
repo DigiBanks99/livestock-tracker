@@ -16,15 +16,24 @@ namespace LivestockTracker.Controllers
         [HttpGet]
         public IActionResult GetAnimals()
         {
-            return Ok(_animalService.GetAnimals());
+            return Ok(_animalService.GetAll());
+        }
+
+        [HttpGet]
+        public IActionResult Get(int id)
+        {
+            return Ok(_animalService.Get(id));
         }
 
         [HttpPost]
         public IActionResult AddAnimal([FromBody]Animal animal)
         {
-            _animalService.AddAnimal(animal);
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            _animalService.Add(animal);
             _animalService.Save();
-            return Ok();
+            return CreatedAtAction("Get", new { id = animal.ID}, animal);
         }
 
         [HttpPut]
@@ -32,7 +41,7 @@ namespace LivestockTracker.Controllers
         {
             try
             {
-                _animalService.UpdateAnimal(animal);
+                _animalService.Update(animal);
                 _animalService.Save();
                 return Ok();
             }
@@ -45,7 +54,7 @@ namespace LivestockTracker.Controllers
         [HttpDelete]
         public IActionResult DeleteAnimal(int id)
         {
-            _animalService.DeleteAnimal(id);
+            _animalService.Remove(id);
             _animalService.Save();
             return Ok();
         }
