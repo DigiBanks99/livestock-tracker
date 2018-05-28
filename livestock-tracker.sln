@@ -3,7 +3,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker", "livestock-tracker.csproj", "{18D5D693-7849-4862-8D07-C638E60CEE01}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{12DD062C-CB85-41D7-8FF7-3A4969F0F1E5}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.base", "livestock-tracker.base\livestock-tracker.base.csproj", "{E02D2A40-6988-4E78-B6B6-CAE4D3EE77FA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.database", "livestock-tracker.database\livestock-tracker.database.csproj", "{DEC65809-06E0-4F1B-ACFC-2908E603DF85}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.models", "livestock-tracker.models\livestock-tracker.models.csproj", "{F9F804C7-88B3-415F-B006-8EDD981A2C76}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker", "livestock-tracker\livestock-tracker.csproj", "{B98D00ED-A927-4AE9-94B7-154BB552F99B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "livestock-tracker.database.sqlite", "livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj", "{42CC84FA-30B9-4F18-A081-314B30934764}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +24,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{18D5D693-7849-4862-8D07-C638E60CEE01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18D5D693-7849-4862-8D07-C638E60CEE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18D5D693-7849-4862-8D07-C638E60CEE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18D5D693-7849-4862-8D07-C638E60CEE01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E02D2A40-6988-4E78-B6B6-CAE4D3EE77FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E02D2A40-6988-4E78-B6B6-CAE4D3EE77FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E02D2A40-6988-4E78-B6B6-CAE4D3EE77FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E02D2A40-6988-4E78-B6B6-CAE4D3EE77FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEC65809-06E0-4F1B-ACFC-2908E603DF85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC65809-06E0-4F1B-ACFC-2908E603DF85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEC65809-06E0-4F1B-ACFC-2908E603DF85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEC65809-06E0-4F1B-ACFC-2908E603DF85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B98D00ED-A927-4AE9-94B7-154BB552F99B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B98D00ED-A927-4AE9-94B7-154BB552F99B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B98D00ED-A927-4AE9-94B7-154BB552F99B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B98D00ED-A927-4AE9-94B7-154BB552F99B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42CC84FA-30B9-4F18-A081-314B30934764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42CC84FA-30B9-4F18-A081-314B30934764}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42CC84FA-30B9-4F18-A081-314B30934764}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42CC84FA-30B9-4F18-A081-314B30934764}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using LivestockTracker.Database;
+using System;
 
 namespace LivestockTracker
 {
-    public interface IAnimal
+    public interface IAnimal : IEntity
     {
-        int ID { get; set; }
         int Type { get; set; }
         string Subspecies { get; set; }
         int Number { get; set; }

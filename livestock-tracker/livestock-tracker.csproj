@@ -28,8 +28,19 @@
 
     <ItemGroup>
         <!-- Don't publish the SPA source files, but do show them in the project files list -->
+        <Compile Remove="livestock-tracker.base\**" />
+        <Compile Remove="livestock-tracker.models\**" />
         <Content Remove="$(SpaRoot)**" />
+        <Content Remove="livestock-tracker.base\**" />
+        <Content Remove="livestock-tracker.models\**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="livestock-tracker.base\**" />
+      <EmbeddedResource Remove="livestock-tracker.models\**" />
+      <None Remove="livestock-tracker.base\**" />
+      <None Remove="livestock-tracker.models\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -49,6 +60,13 @@
 
     <ItemGroup>
       <Folder Include="ClientApp\src\app\shared\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
+      <ProjectReference Include="..\livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj" />
+      <ProjectReference Include="..\livestock-tracker.database\livestock-tracker.database.csproj" />
+      <ProjectReference Include="..\livestock-tracker.models\livestock-tracker.models.csproj" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

@@ -27,6 +27,7 @@ namespace LivestockTracker
 
             services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddScoped<IAnimalRepository, AnimalRepository>();
             services.AddScoped<IAnimalService, AnimalService>();
 
             // In production, the Angular files will be served from this directory
@@ -46,7 +47,7 @@ namespace LivestockTracker
             }
             else
             {
-                //app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler();
             }
 
             app.UseStaticFiles();

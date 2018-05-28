@@ -5,7 +5,7 @@ namespace LivestockTracker.Services
 {
     public interface IAnimalService
     {
-        List<Animal> GetAnimals();
+        IEnumerable<Animal> GetAnimals();
         void AddAnimal(Animal animal);
         void UpdateAnimal(Animal animal);
         void DeleteAnimal(int id);

@@ -1,5 +1,6 @@
 ﻿using LivestockTracker.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace LivestockTracker.Database
 {
@@ -8,18 +9,12 @@ namespace LivestockTracker.Database
         public LivestockContext(DbContextOptions<LivestockContext> options)
                 : base(options)
         {
-
         }
 
         public DbSet<Animal> Animal { get; set; }
         public DbSet<MedicalTransaction> MedicalTransactions { get; set; }
         public DbSet<MedecineType> Medecine { get; set; }
         public DbSet<Unit> Unit { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlite("Data Source=livestock.db");
-        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
