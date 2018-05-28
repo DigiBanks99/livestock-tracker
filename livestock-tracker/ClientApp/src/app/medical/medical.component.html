@@ -21,7 +21,7 @@
   </mat-toolbar>
   <mat-list class="medical-list mat-elevation-z1">
     <mat-list-item class="medical-list-item" *ngFor="let medTrans of filteredMedicalTransactions">
-      <mat-select [value]="medTrans.type" class="medical-toolbar__trans-type">
+      <mat-select [value]="medTrans.medecineTypeCode" class="medical-toolbar__trans-type">
         <mat-option *ngFor="let medType of medicineTypes" [value]="medType.typeCode">{{medType.description}}</mat-option>
       </mat-select>
       <span class="medical-toolbar__trans-date">{{medTrans.transactionDate | date}}</span>

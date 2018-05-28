@@ -1,12 +1,11 @@
 ﻿using LivestockTracker.Models;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace LivestockTracker.Database
 {
     public class MedecineTypeRepository : Repository<MedecineType>, IMedecineTypeRepository
     {
-        public MedecineTypeRepository(DbContext context) : base(context) { }
+        public MedecineTypeRepository(LivestockContext context) : base(context) { }
 
         public override MedecineType Get(int id)
         {

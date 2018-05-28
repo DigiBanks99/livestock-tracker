@@ -8,6 +8,6 @@ namespace LivestockTracker.Models
         [Key]
         public int TypeCode { get; set; }
         public string Description { get; set; }
-        public int ID { get; set; }
+        public int ID { get { return TypeCode; } set { TypeCode = value; } }
     }
 }

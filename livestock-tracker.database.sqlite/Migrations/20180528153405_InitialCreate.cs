@@ -2,19 +2,45 @@
 using System;
 using System.Collections.Generic;
 
-namespace LivestockTracker.Migrations
+namespace LivestockTracker.Database.Migrations
 {
-    public partial class MedicalTransactions : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Animal",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ArrivalWeight = table.Column<decimal>(nullable: false),
+                    BatchNumber = table.Column<int>(nullable: false),
+                    BirthDate = table.Column<DateTime>(nullable: false),
+                    DateOfDeath = table.Column<DateTime>(nullable: true),
+                    Deceased = table.Column<bool>(nullable: false),
+                    Number = table.Column<int>(nullable: false),
+                    PurchaseDate = table.Column<DateTime>(nullable: false),
+                    PurchasePrice = table.Column<decimal>(nullable: false),
+                    SellDate = table.Column<DateTime>(nullable: true),
+                    SellPrice = table.Column<decimal>(nullable: true),
+                    Sold = table.Column<bool>(nullable: false),
+                    Subspecies = table.Column<string>(maxLength: 50, nullable: true),
+                    Type = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Animal", x => x.ID);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Medecine",
                 columns: table => new
                 {
                     TypeCode = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    ID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -27,7 +53,8 @@ namespace LivestockTracker.Migrations
                 {
                     TypeCode = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    ID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,7 +70,6 @@ namespace LivestockTracker.Migrations
                     AnimalID = table.Column<int>(nullable: false),
                     Dose = table.Column<decimal>(nullable: false),
                     MedecineTypeCode = table.Column<int>(nullable: false),
-                    MedecineTypeTypeCode = table.Column<int>(nullable: true),
                     TransactionDate = table.Column<DateTime>(nullable: false),
                     Unit = table.Column<int>(nullable: false)
                 },
@@ -51,22 +77,10 @@ namespace LivestockTracker.Migrations
                 {
                     table.PrimaryKey("PK_MedicalTransactions", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_MedicalTransaction_Animal",
+                        name: "FK_MedicalTransactions_Animal_AnimalID",
                         column: x => x.AnimalID,
                         principalTable: "Animal",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_MedicalTransactions_Medecine_MedecineTypeTypeCode",
-                        column: x => x.MedecineTypeTypeCode,
-                        principalTable: "Medecine",
-                        principalColumn: "TypeCode",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_MedicalTransactions_Unit_Unit",
-                        column: x => x.Unit,
-                        principalTable: "Unit",
-                        principalColumn: "TypeCode",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -74,28 +88,21 @@ namespace LivestockTracker.Migrations
                 name: "IX_MedicalTransactions_AnimalID",
                 table: "MedicalTransactions",
                 column: "AnimalID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MedicalTransactions_MedecineTypeTypeCode",
-                table: "MedicalTransactions",
-                column: "MedecineTypeTypeCode");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_MedicalTransactions_Unit",
-                table: "MedicalTransactions",
-                column: "Unit");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MedicalTransactions");
-
-            migrationBuilder.DropTable(
                 name: "Medecine");
 
             migrationBuilder.DropTable(
+                name: "MedicalTransactions");
+
+            migrationBuilder.DropTable(
                 name: "Unit");
+
+            migrationBuilder.DropTable(
+                name: "Animal");
         }
     }
 }

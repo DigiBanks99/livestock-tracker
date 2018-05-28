@@ -19,8 +19,8 @@ namespace LivestockTracker.Controllers
             return Ok(_animalService.GetAll());
         }
 
-        [HttpGet]
-        public IActionResult Get(int id)
+        [HttpGet("{id}")]
+        public IActionResult Get([FromRoute] int id)
         {
             return Ok(_animalService.Get(id));
         }

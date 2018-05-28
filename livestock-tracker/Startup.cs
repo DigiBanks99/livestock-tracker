@@ -28,6 +28,10 @@ namespace LivestockTracker
             services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IAnimalRepository, AnimalRepository>();
+            services.AddScoped<IMedecineTypeRepository, MedecineTypeRepository>();
+            services.AddScoped<IMedicalRepository, MedicalRepository>();
+            services.AddScoped<IUnitRepository, UnitRepository>();
+
             services.AddScoped<IAnimalService, AnimalService>();
             services.AddScoped<IMedicalService, MedicalService>();
             services.AddScoped<IMedecineService, MedecineService>();

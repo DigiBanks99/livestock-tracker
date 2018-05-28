@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.EntityFrameworkCore.Storage.Internal;
 using System;
 
-namespace LivestockTracker.Migrations
+namespace LivestockTracker.Database.Migrations
 {
     [DbContext(typeof(LivestockContext))]
-    [Migration("20180521112411_MedicalTransactions")]
-    partial class MedicalTransactions
+    [Migration("20180528153405_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -64,6 +64,8 @@ namespace LivestockTracker.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int>("ID");
+
                     b.HasKey("TypeCode");
 
                     b.ToTable("Medecine");
@@ -80,8 +82,6 @@ namespace LivestockTracker.Migrations
 
                     b.Property<int>("MedecineTypeCode");
 
-                    b.Property<int?>("MedecineTypeTypeCode");
-
                     b.Property<DateTime>("TransactionDate");
 
                     b.Property<int>("Unit");
@@ -89,10 +89,6 @@ namespace LivestockTracker.Migrations
                     b.HasKey("ID");
 
                     b.HasIndex("AnimalID");
-
-                    b.HasIndex("MedecineTypeTypeCode");
-
-                    b.HasIndex("Unit");
 
                     b.ToTable("MedicalTransactions");
                 });
@@ -104,6 +100,8 @@ namespace LivestockTracker.Migrations
 
                     b.Property<string>("Description");
 
+                    b.Property<int>("ID");
+
                     b.HasKey("TypeCode");
 
                     b.ToTable("Unit");
@@ -114,16 +112,6 @@ namespace LivestockTracker.Migrations
                     b.HasOne("LivestockTracker.Models.Animal", "AnimalObject")
                         .WithMany("MedicalTransactions")
                         .HasForeignKey("AnimalID")
-                        .HasConstraintName("FK_MedicalTransaction_Animal")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("LivestockTracker.Models.MedecineType", "MedecineType")
-                        .WithMany()
-                        .HasForeignKey("MedecineTypeTypeCode");
-
-                    b.HasOne("LivestockTracker.Models.Unit", "UnitObject")
-                        .WithMany()
-                        .HasForeignKey("Unit")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

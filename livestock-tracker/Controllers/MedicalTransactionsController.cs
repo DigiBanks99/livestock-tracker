@@ -2,12 +2,11 @@
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace livestock_tracker.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/medicalTransactions")]
     public class MedicalTransactionsController : Controller
     {
         private readonly IMedicalService _medicalService;
@@ -19,9 +18,9 @@ namespace livestock_tracker.Controllers
 
         // GET: api/MedicalTransactions
         [HttpGet("{animalID}")]
-        public IEnumerable<MedicalTransaction> GetMedicalTransactions([FromRoute] int animalID)
+        public IActionResult GetMedicalTransactions([FromRoute] int animalID)
         {
-            return _medicalService.GetByAnimalID(animalID);
+            return Ok(_medicalService.GetByAnimalID(animalID));
         }
 
         // GET: api/MedicalTransactions/5

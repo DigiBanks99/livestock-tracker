@@ -1,6 +1,5 @@
 ﻿using LivestockTracker.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace LivestockTracker.Database
 {
@@ -21,8 +20,7 @@ namespace LivestockTracker.Database
             modelBuilder.Entity<MedicalTransaction>()
                 .HasOne(m => m.AnimalObject)
                 .WithMany(a => a.MedicalTransactions)
-                .HasForeignKey(m => m.AnimalID)
-                .HasConstraintName("FK_MedicalTransaction_Animal");
+                .HasForeignKey(m => m.AnimalID);
 
             base.OnModelCreating(modelBuilder);
         }
