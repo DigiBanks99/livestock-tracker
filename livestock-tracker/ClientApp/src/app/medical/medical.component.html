@@ -17,11 +17,12 @@
       <span class="medical-toolbar__trans-date">Date</span>
       <span class="medical-toolbar__trans-dose">Dose</span>
       <span class="medical-toolbar__trans-unit">Unit</span>
+      <span class="medical-toolbar__trans-trash"></span>
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-list class="medical-list mat-elevation-z1">
     <mat-list-item class="medical-list-item" *ngFor="let medTrans of filteredMedicalTransactions">
-      <app-medical-transaction [medicalTransaction]="medTrans"></app-medical-transaction>
+      <app-medical-transaction class="medical-transaction" [medicalTransaction]="medTrans"></app-medical-transaction>
     </mat-list-item>
     <mat-paginator [pageSize]="pageSize"
                    [length]="filteredMedicalTransactions.length"

@@ -76,4 +76,10 @@
     background-color: mat-color($candy-app-accent);
     color: mat-color($candy-app-accent, '600-contrast', 0.6);
   }
+
+  .medical-transaction {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
 }

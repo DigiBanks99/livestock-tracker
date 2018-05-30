@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { isNullOrUndefined } from 'util';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Subject, Subscription } from 'rxjs';
+import { isNullOrUndefined, isUndefined } from 'util';
 
 import * as moment from 'moment';
 
@@ -9,11 +9,15 @@ import { MedicalTransaction } from './medical-transaction.model';
 import { environment } from '../../environments/environment.prod';
 
 @Injectable()
-export class MedicalService {
-  private medicalTransactions: MedicalTransaction[];
-  private urlBase = environment.apiUrl + 'medicalTransactions/';
-
+export class MedicalService implements OnDestroy {
   public medicalTransactionsChanged: Subject<MedicalTransaction[]>;
+
+  private urlBase = environment.apiUrl + 'medicalTransactions/';
+  private medicalTransactions: MedicalTransaction[];
+  private httpGetSubscription: Subscription;
+  private httpPostSubscription: Subscription;
+  private httpPutSubscription: Subscription;
+  private httpDeleteSubscription: Subscription;
 
   constructor(private http: HttpClient) {
     this.medicalTransactions = [];
@@ -21,7 +25,7 @@ export class MedicalService {
   }
 
   public getMedicalTransactions(animalID: number) {
-    this.http.get(this.urlBase + animalID).subscribe((transactions: MedicalTransaction[]) => {
+    this.httpGetSubscription = this.http.get(this.urlBase + animalID).subscribe((transactions: MedicalTransaction[]) => {
       this.medicalTransactions = transactions;
       this.emitMedicalTransactionsChanged();
     });
@@ -44,7 +48,7 @@ export class MedicalService {
     medicalTransaction.medecineTypeCode = 1;
     medicalTransaction.transactionDate = new Date();
     medicalTransaction.unit = 1;
-    this.http.post(this.urlBase, medicalTransaction).subscribe((savedTransaction: MedicalTransaction) => {
+    this.httpPostSubscription = this.http.post(this.urlBase, medicalTransaction).subscribe((savedTransaction: MedicalTransaction) => {
       medicalTransaction = savedTransaction;
       this.medicalTransactions.push(medicalTransaction);
       this.emitMedicalTransactionsChanged();
@@ -58,8 +62,14 @@ export class MedicalService {
     }
 
     const transactionToUpdate = this.medicalTransactions[index];
-    this.http.put(this.urlBase + medicalTransaction.id, medicalTransaction).subscribe((updatedTransaction: MedicalTransaction) => {
+    this.httpPutSubscription = this.http.put(this.urlBase + medicalTransaction.id, medicalTransaction).subscribe((updatedTransaction: MedicalTransaction) => {
       medicalTransaction = updatedTransaction;
+      this.emitMedicalTransactionsChanged();
+    });
+  }
+
+  public deleteMedicalTransaction(id: number) {
+    this.httpDeleteSubscription = this.http.delete(this.urlBase + id).subscribe(() => {
       this.emitMedicalTransactionsChanged();
     });
   }
@@ -82,5 +92,20 @@ export class MedicalService {
     }).indexOf(id);
 
     return index;
+  }
+
+  ngOnDestroy() {
+    if (isUndefined(this.httpGetSubscription)) {
+      this.httpGetSubscription.unsubscribe();
+    }
+    if (isUndefined(this.httpPostSubscription)) {
+      this.httpPostSubscription.unsubscribe();
+    }
+    if (isUndefined(this.httpPutSubscription)) {
+      this.httpPutSubscription.unsubscribe();
+    }
+    if (isUndefined(this.httpDeleteSubscription)) {
+      this.httpDeleteSubscription.unsubscribe();
+    }
   }
 }

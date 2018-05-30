@@ -1,10 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
+
 //@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "~@angular/material/theming";
 @import "~/../app-theme.scss";
-
 @include mat-core();
-
 html {
   overflow: hidden;
 }
@@ -28,12 +27,10 @@ app-livestock-list {
   .mat-nav-list {
     display: flex;
     position: relative;
-
     .mat-list-item {
       color: $light-primary-text;
     }
   }
-
   .mat-list-item,
   .mat-list-item .mat-list-item-content,
   .mat-button,
@@ -41,21 +38,17 @@ app-livestock-list {
     color: $light-primary-text;
     font-size: 22px;
     font-weight: 400;
-
     &:hover {
       color: $light-secondary-text;
       background-color: unset;
     }
-
     .mat-icon {
       padding-right: 8px;
     }
   }
-
   a {
     cursor: pointer;
   }
-
   *[disabled],
   *[disabled] * {
     color: $light-disabled-text;
@@ -70,7 +63,6 @@ app-livestock-list {
   .livestock-item-list__item.mat-list-item {
     .mat-list-item-content {
       padding: 8px;
-
       &:focus {
         outline: unset;
       }
@@ -80,7 +72,6 @@ app-livestock-list {
 
 .nav {
   font-size: 22px;
-
   .nav-secondary,
   .nav-secondary .mat-list-item-content {
     font-size: 16px;
@@ -89,6 +80,8 @@ app-livestock-list {
 
 .currency-input {
   text-align: right;
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 input.currency-input::-webkit-outer-spin-button,
@@ -96,16 +89,10 @@ input.currency-input::-webkit-inner-spin-button {
   display: none;
 }
 
-.currency-input {
-  -moz-appearance: textfield;
-  appearance: textfield;
-}
-
 .mat-checkbox {
   margin: auto 4px;
   display: flex;
   flex-direction: column;
-
   &.mat-checkbox-label-before .mat-checkbox-inner-container {
     margin-left: auto;
     margin-right: 0;
@@ -114,17 +101,15 @@ input.currency-input::-webkit-inner-spin-button {
 
 .mat-card {
   background-color: mat-color($candy-app-primary, 100);
-
   .mat-card-header {
     display: flex;
     .mat-icon {
-      background-color:mat-color($candy-app-accent, 400);
+      background-color: mat-color($candy-app-accent, 400);
       border-radius: 50%;
       padding: 4px;
       font-size: unset;
     }
   }
-
   .mat-card-actions {
     .mat-button {
       text-transform: uppercase;
@@ -141,18 +126,24 @@ input.currency-input::-webkit-inner-spin-button {
 *.mat-accent-background {
   background-color: mat-color($candy-app-accent);
   color: mat-color($candy-app-accent, '50-contrast');
-
   .mat-icon {
     color: mat-color($candy-app-accent, '50-contrast');
   }
 }
 
-.medical-toolbar__trans-type {
-  width: 40%;
+.medical-toolbar__trans-type,
+.medical-toolbar__trans-date,
+.medical-toolbar__trans-dose,
+.medical-toolbar__trans-unit {
+  padding: 8px 0 0 8px;
+}
 
+.medical-toolbar__trans-type {
+  width: 32%;
+  padding-left: 0;
   &.mat-select {
-    width: 40%;
-    margin-right: 8px;
+    width: 32%;
+    padding-left: 0;
   }
 }
 
@@ -170,4 +161,18 @@ input.currency-input::-webkit-inner-spin-button {
 .medical-toolbar__trans-dose,
 .medical-toolbar__trans-unit {
   width: 15%;
+}
+
+.medical-toolbar__trans-trash,
+.medical-toolbar__trans-trash.mat-button,
+.medical-toolbar__trans-trash.mat-icon-button {
+  width: 8%;
+  max-width: 40px;
+  margin-top: 16px;
+  .mat-icon {
+    color: rgba(0, 0, 0, 0.54);
+    &:hover {
+      color: rgba(0, 0, 0, 0.44);
+    }
+  }
 }

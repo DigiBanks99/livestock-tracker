@@ -55,6 +55,10 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
     this.initForm();
   }
 
+  public deleteTransaction(id: number) {
+    this.medicalService.deleteMedicalTransaction(id);
+  }
+
   private medecineTypeControlChangedHandler(value: number) {
     this.medicalTransaction.medecineTypeCode = value;
     this.updateMedicalTransaction();
