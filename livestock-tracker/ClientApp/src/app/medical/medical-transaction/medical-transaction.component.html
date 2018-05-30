@@ -1,0 +1,20 @@
+<form [formGroup]="medicalTransactionForm">
+  <mat-form-field class="medical-toolbar__trans-type">
+    <mat-select [value]="medicalTransaction.medecineTypeCode" formControlName="medecineTypeCode">
+      <mat-option *ngFor="let medType of medicineTypes" [value]="medType.typeCode">{{medType.description}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="medical-toolbar__trans-date">
+    <input id="transactionDate" matInput [matDatepicker]="td" formControlName="transactionDate" required>
+    <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
+    <mat-datepicker #td disabled="false"></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="medical-toolbar__trans-dose">
+    <input id="dose" type="number" matInput formControlName="dose" required>
+  </mat-form-field>
+  <mat-form-field class="medical-toolbar__trans-unit">
+    <mat-select formControlName="unit" id="unit">
+      <mat-option *ngFor="let unitType of [{typeCode: 1, description: 'kg'},{typeCode: 2, description: 'l'}]" [value]="unitType.typeCode">{{unitType.description}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

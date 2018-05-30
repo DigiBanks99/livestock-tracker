@@ -21,19 +21,14 @@
   </mat-toolbar>
   <mat-list class="medical-list mat-elevation-z1">
     <mat-list-item class="medical-list-item" *ngFor="let medTrans of filteredMedicalTransactions">
-      <mat-select [value]="medTrans.medecineTypeCode" class="medical-toolbar__trans-type">
-        <mat-option *ngFor="let medType of medicineTypes" [value]="medType.typeCode">{{medType.description}}</mat-option>
-      </mat-select>
-      <span class="medical-toolbar__trans-date">{{medTrans.transactionDate | date}}</span>
-      <span class="medical-toolbar__trans-dose">{{medTrans.dose | number}}</span>
-      <span class="medical-toolbar__trans-unit">{{medTrans.unit}}</span>
+      <app-medical-transaction [medicalTransaction]="medTrans"></app-medical-transaction>
     </mat-list-item>
     <mat-paginator [pageSize]="pageSize"
                    [length]="filteredMedicalTransactions.length"
                    class="mat-accent-background"
                    (page)="onPage($event)"></mat-paginator>
   </mat-list>
-  <button mat-fab class="mat-fab-bottom-right" type="button" (click)="addMedicalTransaction(currentAnimal.id)" left>
+  <button mat-fab class="mat-fab-bottom-right" type="button" (click)="addMedicalTransaction(currentAnimal)" left>
     <mat-icon>add</mat-icon>
   </button>
 </div>

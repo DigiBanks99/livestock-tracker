@@ -23,7 +23,6 @@ export class MedicalComponent implements OnInit, OnDestroy {
   public currentAnimal: Livestock;
   public medicalTransactions: MedicalTransaction[];
   public filteredMedicalTransactions: MedicalTransaction[];
-  public medicineTypes: MedicineType[];
   public pageSize: number;
 
   public livestockChanged: Subscription;
@@ -36,15 +35,6 @@ export class MedicalComponent implements OnInit, OnDestroy {
     this.currentAnimal = null;
     this.medicalTransactions = [];
     this.filteredMedicalTransactions = [];
-    this.medicineTypes = [];
-    const antibiotics = new MedicineType();
-    antibiotics.typeCode = 1;
-    antibiotics.description = 'Antibiotics';
-    const painkiller = new MedicineType();
-    painkiller.typeCode = 2;
-    painkiller.description = 'Painkiller';
-    this.medicineTypes.push(antibiotics);
-    this.medicineTypes.push(painkiller);
   }
 
   ngOnInit() {
@@ -60,7 +50,7 @@ export class MedicalComponent implements OnInit, OnDestroy {
   }
 
   public addMedicalTransaction(animal: Livestock) {
-
+    this.medicalService.addMedicalTransaction(animal.id);
   }
 
   public getSvgIcon(animal: Livestock) {

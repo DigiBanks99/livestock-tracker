@@ -35,6 +35,7 @@ import { LivestockDetailComponent } from './livestock/livestock-detail/livestock
 import { LivestockService } from './livestock/livestock.service';
 import { MedicalComponent } from './medical/medical.component';
 import { MedicalService } from './medical/medical.service';
+import { MedicalTransactionComponent } from './medical/medical-transaction/medical-transaction.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { MedicalService } from './medical/medical.service';
     ReportsComponent,
     LivestockListComponent,
     LivestockDetailComponent,
-    MedicalComponent
+    MedicalComponent,
+    MedicalTransactionComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
