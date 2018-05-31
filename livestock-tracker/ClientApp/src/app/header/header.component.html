@@ -9,5 +9,8 @@
     <a mat-list-item [routerLink]="['reports']" title="View reports" class="nav nav-secondary">Reports</a>
   </mat-nav-list>
   <span class="fill-remaining-space"></span>
-  <a mat-list-item class="nav nav-secondary">Manage</a>
+  <a mat-list-item [matMenuTriggerFor]="manageMenu" class="nav nav-secondary">Manage</a>
+  <mat-menu #manageMenu="matMenu">
+    <a mat-menu-item [routerLink]="['units']">Units</a>
+  </mat-menu>
 </mat-toolbar>

@@ -20,7 +20,8 @@ import {
   MatRippleModule,
   MatSnackBarModule,
   MatCardModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatMenuModule
  } from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
@@ -36,6 +37,8 @@ import { LivestockService } from './livestock/livestock.service';
 import { MedicalComponent } from './medical/medical.component';
 import { MedicalService } from './medical/medical.service';
 import { MedicalTransactionComponent } from './medical/medical-transaction/medical-transaction.component';
+import { UnitComponent } from './unit/unit.component';
+import { UnitDetailComponent } from './unit/unit-detail/unit-detail.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,9 @@ import { MedicalTransactionComponent } from './medical/medical-transaction/medic
     LivestockListComponent,
     LivestockDetailComponent,
     MedicalComponent,
-    MedicalTransactionComponent
+    MedicalTransactionComponent,
+    UnitComponent,
+    UnitDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -71,7 +76,8 @@ import { MedicalTransactionComponent } from './medical/medical-transaction/medic
     MatRippleModule,
     MatSnackBarModule,
     MatCardModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatMenuModule
   ],
   providers: [LivestockService, MedicalService],
   bootstrap: [AppComponent]
