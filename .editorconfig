@@ -10,6 +10,3 @@ insert_final_newline = true
 [*.{xml,csproj}]
 indent_size = 2
 
-[*.{cs,vb}]
-indent_size = 4
-

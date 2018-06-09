@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{12DD062C-CB85-41D7-8FF7-3A4969F0F1E5}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.base", "livestock-tracker.base\livestock-tracker.base.csproj", "{E02D2A40-6988-4E78-B6B6-CAE4D3EE77FA}"
@@ -16,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.models", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker", "livestock-tracker\livestock-tracker.csproj", "{B98D00ED-A927-4AE9-94B7-154BB552F99B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "livestock-tracker.database.sqlite", "livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj", "{42CC84FA-30B9-4F18-A081-314B30934764}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.database.sqlite", "livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj", "{42CC84FA-30B9-4F18-A081-314B30934764}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
