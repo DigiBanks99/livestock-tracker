@@ -125,9 +125,9 @@ input.currency-input::-webkit-inner-spin-button {
 .mat-accent-background,
 *.mat-accent-background {
   background-color: mat-color($candy-app-accent);
-  color: mat-color($candy-app-accent, '50-contrast');
+  color: mat-color($candy-app-accent, "50-contrast");
   .mat-icon {
-    color: mat-color($candy-app-accent, '50-contrast');
+    color: mat-color($candy-app-accent, "50-contrast");
   }
 }
 
@@ -174,5 +174,72 @@ input.currency-input::-webkit-inner-spin-button {
     &:hover {
       color: rgba(0, 0, 0, 0.44);
     }
+  }
+}
+
+.card-list-container {
+  display: block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+
+  .card-list-content {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 695px;
+    min-width: 695px;
+    display: flex;
+    flex-direction: column;
+
+    .mat-toolbar {
+      background-color: mat-color($candy-app-primary, 100);
+    }
+
+    .card-list-item {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      flex: 1;
+
+      >.mat-list-item-content {
+        flex: 1;
+      }
+
+      .card-list-item-content {
+        display: flex;
+        flex: 1;
+
+        .mat-form-field {
+          flex: 1;
+        }
+      }
+
+      .card-list-item-actions {
+        max-width: 24px;
+      }
+
+      .mat-icon {
+        color: rgba(0, 0, 0, 0.54);
+      }
+    }
+  }
+
+  @media only screen and (min-width: 1100px) {
+    .card-list-content {
+      width: 920px;
+    }
+  }
+
+  @media only screen and (min-width: 1400px) {
+    .card-list-content {
+      width: 1150px;
+    }
+  }
+
+  .mat-fab-bottom-right {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
   }
 }

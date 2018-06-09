@@ -5,6 +5,7 @@ namespace LivestockTracker
 {
     public interface IAnimal : IEntity
     {
+        int ID { get; set; }
         int Type { get; set; }
         string Subspecies { get; set; }
         int Number { get; set; }

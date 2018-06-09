@@ -1,3 +1,4 @@
+import { PageEvent } from '@angular/material';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject, Subscription } from 'rxjs';
@@ -13,11 +14,15 @@ import { Unit } from './unit.model';
 })
 export class UnitComponent implements OnInit, OnDestroy {
   public units: Unit[];
+  public pageSize: number;
+  public lastPage: number;
 
   private unitsChanged: Subscription;
 
   constructor(private unitService: UnitService) {
     this.units = [];
+    this.pageSize = 10;
+    this.lastPage = 1;
   }
 
   ngOnInit() {
@@ -27,6 +32,11 @@ export class UnitComponent implements OnInit, OnDestroy {
 
   public addUnit() {
     this.unitService.addUnit(new Unit());
+  }
+
+  public onPage(pageEvent: PageEvent) {
+    this.lastPage = pageEvent.pageIndex;
+    // this.filterList(pageEvent.pageSize, pageEvent.pageIndex);
   }
 
   private unitsChangedHandler(units: Unit[]) {

@@ -1,16 +1,24 @@
-<div class="medical-container">
-  <mat-toolbar class="unit-toolbar">
-    <mat-toolbar-row class="unit-toolbar__header">
-      <span class="unit-toolbar__trans-type">Description</span>
-      <span class="unit-toolbar__trans-trash"></span>
-    </mat-toolbar-row>
-  </mat-toolbar>
-  <mat-list class="unit-list mat-elevation-z1">
-    <mat-list-item class="unit-list-item" *ngFor="let unit of units">
-      <app-unit-detail class="unit-transaction" [unit]="unit"></app-unit-detail>
-    </mat-list-item>
-  </mat-list>
-  <button mat-fab class="mat-fab-bottom-right" type="button" (click)="addUnit()" left>
-    <mat-icon>add</mat-icon>
-  </button>
+<div class="card-list-container">
+  <div class="card-list-content">
+    <mat-toolbar class="unit-toolbar">
+      <mat-toolbar-row class="unit-toolbar__header">
+        <span class="unit-toolbar__trans-type">Description</span>
+        <span class="unit-toolbar__trans-trash"></span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-list class="unit-list mat-elevation-z1">
+      <mat-list-item class="card-list-item" *ngFor="let unit of units">
+        <app-unit-detail class="unit-item" [unit]="unit"></app-unit-detail>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+      <mat-paginator
+        [pageSize]="pageSize"
+        [length]="units.length"
+        class="mat-accent-background"
+        (page)="onPage($event)"></mat-paginator>
+    </mat-list>
+    <button mat-fab class="mat-fab-bottom-right" type="button" (click)="addUnit()" left>
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
 </div>

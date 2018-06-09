@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace LivestockTracker.Database.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class InititalCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -34,13 +34,41 @@ namespace LivestockTracker.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FeedingTransactions",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FeedID = table.Column<int>(nullable: false),
+                    Quantity = table.Column<decimal>(nullable: false),
+                    TransactionDate = table.Column<DateTime>(nullable: false),
+                    UnitTypeCode = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeedingTransactions", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FeedTypes",
+                columns: table => new
+                {
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Description = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FeedTypes", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Medecine",
                 columns: table => new
                 {
                     TypeCode = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(nullable: true),
-                    ID = table.Column<int>(nullable: false)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,8 +81,7 @@ namespace LivestockTracker.Database.Migrations
                 {
                     TypeCode = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Description = table.Column<string>(nullable: true),
-                    ID = table.Column<int>(nullable: false)
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -92,6 +119,12 @@ namespace LivestockTracker.Database.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "FeedingTransactions");
+
+            migrationBuilder.DropTable(
+                name: "FeedTypes");
+
             migrationBuilder.DropTable(
                 name: "Medecine");
 

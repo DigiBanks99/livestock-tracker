@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/livestock-tracker.csproj"
+                "${workspaceFolder}/livestock-tracker/livestock-tracker.csproj"
             ],
             "problemMatcher": "$msCompile"
         }

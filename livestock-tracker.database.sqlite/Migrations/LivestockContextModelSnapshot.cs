@@ -56,14 +56,43 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("Animal");
                 });
 
+            modelBuilder.Entity("LivestockTracker.Models.FeedingTransaction", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("FeedID");
+
+                    b.Property<decimal>("Quantity");
+
+                    b.Property<DateTime>("TransactionDate");
+
+                    b.Property<int>("UnitTypeCode");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("FeedingTransactions");
+                });
+
+            modelBuilder.Entity("LivestockTracker.Models.FeedType", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.HasKey("ID");
+
+                    b.ToTable("FeedTypes");
+                });
+
             modelBuilder.Entity("LivestockTracker.Models.MedecineType", b =>
                 {
                     b.Property<int>("TypeCode")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
-
-                    b.Property<int>("ID");
 
                     b.HasKey("TypeCode");
 
@@ -98,8 +127,6 @@ namespace LivestockTracker.Database.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Description");
-
-                    b.Property<int>("ID");
 
                     b.HasKey("TypeCode");
 

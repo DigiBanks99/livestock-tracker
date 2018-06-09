@@ -29,7 +29,7 @@ namespace LivestockTracker.Services
 
         public void Remove(TEntity entity)
         {
-            Remove(entity.ID);
+            Remove(entity.GetKey());
         }
 
         public void Remove(int id)

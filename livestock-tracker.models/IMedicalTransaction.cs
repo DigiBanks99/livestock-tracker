@@ -5,6 +5,7 @@ namespace LivestockTracker.Models
 {
     public interface IMedicalTransaction : IEntity
     {
+        int ID { get; set; }
         int AnimalID { get; set; }
         Animal AnimalObject { get; set; }
         decimal Dose { get; set; }

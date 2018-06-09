@@ -65,7 +65,7 @@ export class UnitService implements OnInit, OnDestroy {
     });
   }
 
-  public deleteUnit(typeCode: Unit) {
+  public deleteUnit(typeCode: number) {
     this.deleteUnitSubscription = this.http.delete(this.urlBase + typeCode).subscribe(() => {
       this.getUnits();
       this.emitUnitsChanged();

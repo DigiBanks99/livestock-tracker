@@ -14,7 +14,7 @@
   </mat-form-field>
   <mat-form-field class="medical-toolbar__trans-unit">
     <mat-select formControlName="unit" id="unit">
-      <mat-option *ngFor="let unitType of [{typeCode: 1, description: 'kg'},{typeCode: 2, description: 'l'}]" [value]="unitType.typeCode">{{unitType.description}}</mat-option>
+      <mat-option *ngFor="let unitType of units" [value]="unitType.typeCode">{{unitType.description}}</mat-option>
     </mat-select>
   </mat-form-field>
   <button mat-icon-button class="medical-toolbar__trans-trash" (click)="deleteTransaction(medicalTransaction.id)" title="Delete this transaction">

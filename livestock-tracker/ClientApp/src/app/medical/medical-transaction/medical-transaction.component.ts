@@ -1,3 +1,5 @@
+import { UnitService } from './../../unit/unit.service';
+import { Unit } from './../../unit/unit.model';
 import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { MatSelect, MatSelectChange, MAT_DATE_FORMATS } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -33,13 +35,15 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
   public transactionDateControl: FormControl;
   public doseControl: FormControl;
   public unitControl: FormControl;
+  public units: Unit[];
 
   private medecineTypeControlChanged: Subscription;
   private transactionDateControlChanged: Subscription;
   private doseControlChanged: Subscription;
   private unitControlChanged: Subscription;
+  private unitsChanged: Subscription;
 
-  constructor(private medicalService: MedicalService) {
+  constructor(private medicalService: MedicalService, private unitService: UnitService) {
     this.medicineTypes = [];
     const antibiotics = new MedicineType();
     antibiotics.typeCode = 1;
@@ -49,10 +53,15 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
     painkiller.description = 'Painkiller';
     this.medicineTypes.push(antibiotics);
     this.medicineTypes.push(painkiller);
+
+    this.units = [];
   }
 
   ngOnInit() {
     this.initForm();
+
+    this.unitsChanged = this.unitService.unitsChanged.subscribe((units: Unit[]) => this.units = units);
+    this.unitService.getUnits();
   }
 
   public deleteTransaction(id: number) {
@@ -106,6 +115,7 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
     this.medecineTypeControlChanged.unsubscribe();
     this.transactionDateControlChanged.unsubscribe();
     this.doseControlChanged.unsubscribe();
+    this.unitControlChanged.unsubscribe();
     this.unitControlChanged.unsubscribe();
   }
 }

@@ -33,5 +33,9 @@ namespace LivestockTracker.Models
         public DateTime? DateOfDeath { get; set; }
 
         public List<MedicalTransaction> MedicalTransactions { get; set; }
+        public int GetKey()
+        {
+            return ID;
+        }
     }
 }

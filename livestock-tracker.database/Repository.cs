@@ -60,7 +60,9 @@ namespace LivestockTracker.Database
 
         public virtual void Update(TEntity entity)
         {
-            _dbContext.Entry(Get(entity.ID)).CurrentValues.SetValues(entity);
+            int key = entity.GetKey();
+            TEntity savedEntity = Get(key);
+            _dbContext.Entry(savedEntity).CurrentValues.SetValues(entity);
         }
 
         public virtual void BeforeSavingChanges() { }

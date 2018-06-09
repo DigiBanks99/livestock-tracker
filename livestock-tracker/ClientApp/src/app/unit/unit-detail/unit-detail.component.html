@@ -1,3 +1,10 @@
-<p>
-  unit-detail works!
-</p>
+<form [formGroup]="unitForm">
+  <div class="card-list-item-content">
+    <mat-form-field class="description">
+      <input matInput type="text" id="description" formControlName="description">
+    </mat-form-field>
+  </div>
+  <button mat-icon-button class="card-list-item-actions" (click)="deleteUnit(unit.typeCode)" title="Delete this unit">
+    <mat-icon>delete</mat-icon>
+  </button>
+</form>
