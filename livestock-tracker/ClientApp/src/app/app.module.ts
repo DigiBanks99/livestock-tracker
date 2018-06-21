@@ -39,6 +39,9 @@ import { MedicalService } from './medical/medical.service';
 import { MedicalTransactionComponent } from './medical/medical-transaction/medical-transaction.component';
 import { UnitComponent } from './unit/unit.component';
 import { UnitDetailComponent } from './unit/unit-detail/unit-detail.component';
+import { MedicineTypeComponent } from './medical/medicine-type/medicine-type.component';
+import { MedicineTypeDetailComponent } from './medical/medicine-type/medicine-type-detail/medicine-type-detail.component';
+import { MedicineTypeService } from './medical/medicine-type/medicine-type.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +55,9 @@ import { UnitDetailComponent } from './unit/unit-detail/unit-detail.component';
     MedicalComponent,
     MedicalTransactionComponent,
     UnitComponent,
-    UnitDetailComponent
+    UnitDetailComponent,
+    MedicineTypeComponent,
+    MedicineTypeDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -79,7 +84,7 @@ import { UnitDetailComponent } from './unit/unit-detail/unit-detail.component';
     MatPaginatorModule,
     MatMenuModule
   ],
-  providers: [LivestockService, MedicalService],
+  providers: [LivestockService, MedicalService, MedicineTypeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

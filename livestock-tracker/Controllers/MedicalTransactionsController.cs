@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 namespace livestock_tracker.Controllers
 {
     [Produces("application/json")]
-    [Route("api/medicalTransactions")]
+    [Route("api/[controller]")]
     public class MedicalTransactionsController : Controller
     {
         private readonly IMedicalService _medicalService;

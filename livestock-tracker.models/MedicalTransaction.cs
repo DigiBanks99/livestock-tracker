@@ -9,7 +9,7 @@ namespace LivestockTracker.Models
         public int ID { get; set; }
         public int AnimalID { get; set; }
         [Required]
-        public int MedecineTypeCode { get; set; }
+        public int MedicineTypeCode { get; set; }
         [Required]
         public DateTime TransactionDate { get; set; }
         [Required]

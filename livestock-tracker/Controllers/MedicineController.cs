@@ -6,60 +6,60 @@ using Microsoft.EntityFrameworkCore;
 namespace livestock_tracker.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Medecine")]
-    public class MedecineController : Controller
+    [Route("api/[controller]")]
+    public class MedicineController : Controller
     {
-        private readonly IMedecineService _medecineService;
+        private readonly IMedicineService _medicineService;
 
-        public MedecineController(IMedecineService medecineService)
+        public MedicineController(IMedicineService medicineService)
         {
-            _medecineService = medecineService;
+            _medicineService = medicineService;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_medecineService.GetAll());
+            return Ok(_medicineService.GetAll());
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok(_medecineService.Get(id));
+            return Ok(_medicineService.Get(id));
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] MedecineType medecineType)
+        public IActionResult Add([FromBody] MedicineType medicineType)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _medecineService.Add(medecineType);
-            _medecineService.Save();
+            _medicineService.Add(medicineType);
+            _medicineService.Save();
 
-            return CreatedAtAction("Get", new { id = medecineType.TypeCode }, medecineType);
+            return CreatedAtAction("Get", new { id = medicineType.TypeCode }, medicineType);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] MedecineType medecineType)
+        public IActionResult Update([FromRoute] int id, [FromBody] MedicineType medicineType)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != medecineType.TypeCode)
+            if (id != medicineType.TypeCode)
             {
                 return BadRequest();
             }
 
-            _medecineService.Update(medecineType);
+            _medicineService.Update(medicineType);
 
             try
             {
-                _medecineService.Save();
+                _medicineService.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -84,16 +84,16 @@ namespace livestock_tracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            var medecineType = _medecineService.Get(id);
-            if (medecineType == null)
+            var medicineType = _medicineService.Get(id);
+            if (medicineType == null)
             {
                 return NotFound();
             }
 
-            _medecineService.Remove(medecineType);
-            _medecineService.Save();
+            _medicineService.Remove(medicineType);
+            _medicineService.Save();
 
-            return Ok(medecineType);
+            return Ok(medicineType);
         }
     }
 }

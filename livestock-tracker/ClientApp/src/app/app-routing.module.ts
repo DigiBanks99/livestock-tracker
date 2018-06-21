@@ -6,6 +6,7 @@ import { LivestockDetailComponent } from './livestock/livestock-detail/livestock
 import { LivestockComponent } from './livestock/livestock.component';
 import { ReportsComponent } from './reports/reports.component';
 import { MedicalComponent } from './medical/medical.component';
+import { MedicineTypeComponent } from './medical/medicine-type/medicine-type.component';
 import { UnitComponent } from './unit/unit.component';
 
 const routes: Routes = [
@@ -21,7 +22,8 @@ const routes: Routes = [
   },
   { path: 'medical', component: MedicalComponent },
   { path: 'reports', component: ReportsComponent },
-  { path: 'units', component: UnitComponent }
+  { path: 'units', component: UnitComponent },
+  { path: 'medicine-type', component: MedicineTypeComponent }
 ];
 
 @NgModule({

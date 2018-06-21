@@ -12,7 +12,7 @@ namespace LivestockTracker.Database
 
         public DbSet<Animal> Animal { get; set; }
         public DbSet<MedicalTransaction> MedicalTransactions { get; set; }
-        public DbSet<MedecineType> Medecine { get; set; }
+        public DbSet<MedicineType> Medicine { get; set; }
         public DbSet<Unit> Unit { get; set; }
         public DbSet<FeedType> FeedTypes { get; set; }
         public DbSet<FeedingTransaction> FeedingTransactions { get; set; }

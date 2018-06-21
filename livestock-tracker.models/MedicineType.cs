@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LivestockTracker.Models
 {
-    public class MedecineType : IEntity
+    public class MedicineType : IEntity
     {
         [Key]
         public int TypeCode { get; set; }

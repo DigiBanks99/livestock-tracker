@@ -63,7 +63,7 @@ namespace LivestockTracker.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Medecine",
+                name: "Medicine",
                 columns: table => new
                 {
                     TypeCode = table.Column<int>(nullable: false)
@@ -72,7 +72,7 @@ namespace LivestockTracker.Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Medecine", x => x.TypeCode);
+                    table.PrimaryKey("PK_Midecine", x => x.TypeCode);
                 });
 
             migrationBuilder.CreateTable(
@@ -96,7 +96,7 @@ namespace LivestockTracker.Database.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     AnimalID = table.Column<int>(nullable: false),
                     Dose = table.Column<decimal>(nullable: false),
-                    MedecineTypeCode = table.Column<int>(nullable: false),
+                    MedicineTypeCode = table.Column<int>(nullable: false),
                     TransactionDate = table.Column<DateTime>(nullable: false),
                     Unit = table.Column<int>(nullable: false)
                 },
@@ -126,7 +126,7 @@ namespace LivestockTracker.Database.Migrations
                 name: "FeedTypes");
 
             migrationBuilder.DropTable(
-                name: "Medecine");
+                name: "Medicine");
 
             migrationBuilder.DropTable(
                 name: "MedicalTransactions");

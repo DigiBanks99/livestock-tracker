@@ -14,6 +14,8 @@ namespace LivestockTracker.Database.Migrations
     [Migration("20180609120129_InititalCreate")]
     partial class InititalCreate
     {
+        private const string Name = "Medicine";
+
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
@@ -88,7 +90,7 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("FeedTypes");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Models.MedecineType", b =>
+            modelBuilder.Entity("LivestockTracker.Models.MedicineType", b =>
                 {
                     b.Property<int>("TypeCode")
                         .ValueGeneratedOnAdd();
@@ -97,7 +99,7 @@ namespace LivestockTracker.Database.Migrations
 
                     b.HasKey("TypeCode");
 
-                    b.ToTable("Medecine");
+                    b.ToTable(Name);
                 });
 
             modelBuilder.Entity("LivestockTracker.Models.MedicalTransaction", b =>
@@ -109,7 +111,7 @@ namespace LivestockTracker.Database.Migrations
 
                     b.Property<decimal>("Dose");
 
-                    b.Property<int>("MedecineTypeCode");
+                    b.Property<int>("MedicineTypeCode");
 
                     b.Property<DateTime>("TransactionDate");
 

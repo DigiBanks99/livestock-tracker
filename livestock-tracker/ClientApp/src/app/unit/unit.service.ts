@@ -53,14 +53,7 @@ export class UnitService implements OnInit, OnDestroy {
   }
 
   public updateUnit(unit: Unit) {
-    const index = this.indexOf(unit.typeCode);
-    if (index < 0) {
-      throw new Error('Index out of range');
-    }
-
-    let unitToUpdate = this.units[index];
-    this.updateUnitSubscription = this.http.put(this.urlBase + unit.typeCode, unit).subscribe((updatedUnit: Unit) => {
-      unitToUpdate = updatedUnit;
+    this.updateUnitSubscription = this.http.put(this.urlBase + unit.typeCode, unit).subscribe(() => {
       this.emitUnitsChanged();
     });
   }
@@ -68,7 +61,6 @@ export class UnitService implements OnInit, OnDestroy {
   public deleteUnit(typeCode: number) {
     this.deleteUnitSubscription = this.http.delete(this.urlBase + typeCode).subscribe(() => {
       this.getUnits();
-      this.emitUnitsChanged();
     });
   }
 
