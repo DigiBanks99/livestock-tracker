@@ -8,7 +8,6 @@
 *.user
 *.userosscache
 *.sln.docstates
-*.db
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -183,6 +182,10 @@ ClientBin/
 orleans.codegen.cs
 
 /node_modules
+/livestock.db
+/**/node_modules
+.vscode/
+*.db
 
 # RIA/Silverlight projects
 Generated_Code/
@@ -232,5 +235,3 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
-/livestock.db
-/**/node_modules
