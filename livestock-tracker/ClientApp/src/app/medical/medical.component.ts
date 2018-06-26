@@ -9,7 +9,6 @@ import { LivestockService } from '../livestock/livestock.service';
 import { Livestock } from '../livestock/livestock.model';
 import { MedicalTransaction } from './medical-transaction.model';
 import { MedicalService } from './medical.service';
-import { MedicineType } from './medicine-type.model';
 import { environment } from '../../environments/environment.prod';
 
 @Component({
@@ -35,11 +34,11 @@ export class MedicalComponent implements OnInit, OnDestroy {
     this.currentAnimal = null;
     this.medicalTransactions = [];
     this.filteredMedicalTransactions = [];
+    this.pageSize = environment.pageSize;
+    this.lastPage = environment.defaultLastPage;
   }
 
   ngOnInit() {
-    this.pageSize = 10;
-    this.lastPage = 0;
     this.livestockService.getLivestock();
     this.livestockChanged = this.livestockService.livestockChanged
       .subscribe((animals: Livestock[]) => this.updateAnimalsList(animals));
@@ -89,7 +88,11 @@ export class MedicalComponent implements OnInit, OnDestroy {
 
   private updateMedicalTransactionList(transactions: MedicalTransaction[]) {
     this.medicalTransactions = transactions;
-    this.filterList(this.pageSize, 0);
+    if (this.medicalTransactions.length <= this.pageSize) {
+      this.lastPage = 0;
+    }
+
+    this.filterList(this.pageSize, this.lastPage);
   }
 
   ngOnDestroy() {

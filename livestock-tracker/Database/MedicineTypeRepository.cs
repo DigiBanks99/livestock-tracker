@@ -9,7 +9,7 @@ namespace LivestockTracker.Database
 
         public override MedicineType Get(int id)
         {
-            return DataTable.FirstOrDefault(medicine => medicine.TypeCode == id);
+            return DataTable.OrderBy(m => m.Description).FirstOrDefault(medicine => medicine.TypeCode == id);
         }
     }
 }

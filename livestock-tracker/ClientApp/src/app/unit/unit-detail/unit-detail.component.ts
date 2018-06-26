@@ -42,8 +42,8 @@ export class UnitDetailComponent implements OnInit, OnDestroy {
       );
   }
 
-  private updateUnit(descritpion: string) {
-    this.unit.description = descritpion;
+  private updateUnit(description: string) {
+    this.unit.description = description;
     this.unitService.updateUnit(this.unit);
   }
 

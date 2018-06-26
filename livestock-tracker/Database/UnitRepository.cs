@@ -9,7 +9,7 @@ namespace LivestockTracker.Database
 
         public override Unit Get(int id)
         {
-            return DataTable.FirstOrDefault(unit => unit.TypeCode == id);
+            return DataTable.OrderBy(u => u.Description).FirstOrDefault(unit => unit.TypeCode == id);
         }
     }
 }

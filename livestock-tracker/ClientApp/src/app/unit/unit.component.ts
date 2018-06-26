@@ -1,11 +1,10 @@
 import { PageEvent } from '@angular/material';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Subject, Subscription } from 'rxjs';
-import { isUndefined, isNullOrUndefined } from 'util';
+import { Subscription } from 'rxjs';
 
 import { UnitService } from './unit.service';
 import { Unit } from './unit.model';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-unit',
@@ -14,6 +13,7 @@ import { Unit } from './unit.model';
 })
 export class UnitComponent implements OnInit, OnDestroy {
   public units: Unit[];
+  public filteredUnits: Unit[];
   public pageSize: number;
   public lastPage: number;
 
@@ -21,8 +21,10 @@ export class UnitComponent implements OnInit, OnDestroy {
 
   constructor(private unitService: UnitService) {
     this.units = [];
-    this.pageSize = 10;
-    this.lastPage = 1;
+    this.filteredUnits = [];
+    this.pageSize = environment.pageSize;
+    this.lastPage = environment.defaultLastPage;
+    this.unitsChanged = new Subscription();
   }
 
   ngOnInit() {
@@ -36,11 +38,27 @@ export class UnitComponent implements OnInit, OnDestroy {
 
   public onPage(pageEvent: PageEvent) {
     this.lastPage = pageEvent.pageIndex;
-    // this.filterList(pageEvent.pageSize, pageEvent.pageIndex);
+    this.filterList(pageEvent.pageSize, pageEvent.pageIndex);
+  }
+
+  private filterList(pageSize: number, pageIndex: number) {
+    this.filteredUnits.splice(0);
+    const startIndex = pageSize * pageIndex;
+    for (let i = startIndex; i < startIndex + pageSize; i++) {
+      // if we passed the last item, let's not continue
+      if (i >= this.units.length) {
+        return;
+      }
+      this.filteredUnits.push(this.units[i]);
+    }
   }
 
   private unitsChangedHandler(units: Unit[]) {
     this.units = units;
+    if (this.units.length <= this.pageSize) {
+      this.lastPage = 0;
+    }
+    this.filterList(this.pageSize, this.lastPage);
   }
 
   ngOnDestroy() {

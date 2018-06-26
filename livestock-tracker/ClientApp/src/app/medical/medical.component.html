@@ -25,7 +25,7 @@
       <app-medical-transaction class="medical-transaction" [medicalTransaction]="medTrans"></app-medical-transaction>
     </mat-list-item>
     <mat-paginator [pageSize]="pageSize"
-                   [length]="filteredMedicalTransactions.length"
+                   [length]="medicalTransactions.length"
                    class="mat-accent-background"
                    (page)="onPage($event)"></mat-paginator>
   </mat-list>

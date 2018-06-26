@@ -1,65 +1,65 @@
-﻿using LivestockTracker.Models;
-using LivestockTracker.Services;
+﻿using LivestockTracker.Database;
+using LivestockTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace livestock_tracker.Controllers
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
-    public class MedicineController : Controller
+    [Route("api/FeedType")]
+    public class FeedTypeController : Controller
     {
-        private readonly IMedicineService _medicineService;
+        private readonly IFeedTypeRepository _feedTypeRepository;
 
-        public MedicineController(IMedicineService medicineService)
+        public FeedTypeController(IFeedTypeRepository feedTypeRepository)
         {
-            _medicineService = medicineService;
+            _feedTypeRepository = feedTypeRepository;
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
-            return Ok(_medicineService.GetAll());
+            return Ok(_feedTypeRepository.GetAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok(_medicineService.Get(id));
+            return Ok(_feedTypeRepository.Get(id));
         }
 
         [HttpPost]
-        public IActionResult Add([FromBody] MedicineType medicineType)
+        public IActionResult Save([FromBody] FeedType feedType)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _medicineService.Add(medicineType);
-            _medicineService.Save();
+            _feedTypeRepository.Add(feedType);
+            _feedTypeRepository.SaveChanges();
 
-            return CreatedAtAction("Get", new { id = medicineType.TypeCode }, medicineType);
+            return CreatedAtAction("Get", new { id = feedType.ID }, feedType);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update([FromRoute] int id, [FromBody] MedicineType medicineType)
+        public IActionResult Put(int id, [FromBody] FeedType feedType)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != medicineType.TypeCode)
+            if (id != feedType.ID)
             {
                 return BadRequest();
             }
 
-            _medicineService.Update(medicineType);
+            _feedTypeRepository.Update(feedType);
 
             try
             {
-                _medicineService.Save();
+                _feedTypeRepository.SaveChanges();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -84,16 +84,16 @@ namespace livestock_tracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            var medicineType = _medicineService.Get(id);
-            if (medicineType == null)
+            var unit = _feedTypeRepository.Get(id);
+            if (unit == null)
             {
                 return NotFound();
             }
 
-            _medicineService.Remove(medicineType);
-            _medicineService.Save();
+            _feedTypeRepository.Remove(unit);
+            _feedTypeRepository.SaveChanges();
 
-            return Ok(medicineType);
+            return Ok(unit);
         }
     }
 }

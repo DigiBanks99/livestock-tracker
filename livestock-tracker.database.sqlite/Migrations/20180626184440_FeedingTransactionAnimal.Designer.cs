@@ -11,9 +11,10 @@ using System;
 namespace LivestockTracker.Database.Migrations
 {
     [DbContext(typeof(LivestockContext))]
-    partial class LivestockContextModelSnapshot : ModelSnapshot
+    [Migration("20180626184440_FeedingTransactionAnimal")]
+    partial class FeedingTransactionAnimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

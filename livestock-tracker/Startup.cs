@@ -31,6 +31,8 @@ namespace LivestockTracker
             services.AddScoped<IMedicineTypeRepository, MedicineTypeRepository>();
             services.AddScoped<IMedicalRepository, MedicalRepository>();
             services.AddScoped<IUnitRepository, UnitRepository>();
+            services.AddScoped<IFeedTypeRepository, FeedTypeRepository>();
+            services.AddScoped<IFeedingTransactionRepository, FeedingTransactionRepository>();
 
             services.AddScoped<IAnimalService, AnimalService>();
             services.AddScoped<IMedicalService, MedicalService>();

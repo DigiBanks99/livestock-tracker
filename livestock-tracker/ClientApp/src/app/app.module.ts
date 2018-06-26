@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MatToolbarModule,
@@ -14,7 +13,6 @@ import {
   MatDividerModule,
   MatInputModule,
   MatDatepickerModule,
-  MatNativeDateModule,
   NativeDateModule,
   MatCheckboxModule,
   MatRippleModule,
@@ -42,7 +40,9 @@ import { UnitDetailComponent } from './unit/unit-detail/unit-detail.component';
 import { MedicineTypeComponent } from './medical/medicine-type/medicine-type.component';
 import { MedicineTypeDetailComponent } from './medical/medicine-type/medicine-type-detail/medicine-type-detail.component';
 import { MedicineTypeService } from './medical/medicine-type/medicine-type.service';
-
+import { FeedTypeComponent } from './feed-type/feed-type.component';
+import { FeedTypeService } from './feed-type/feed-type.service';
+import { FeedTypeDetailComponent } from './feed-type/feed-type-detail/feed-type-detail.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,7 +57,9 @@ import { MedicineTypeService } from './medical/medicine-type/medicine-type.servi
     UnitComponent,
     UnitDetailComponent,
     MedicineTypeComponent,
-    MedicineTypeDetailComponent
+    MedicineTypeDetailComponent,
+    FeedTypeComponent,
+    FeedTypeDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -84,7 +86,7 @@ import { MedicineTypeService } from './medical/medicine-type/medicine-type.servi
     MatPaginatorModule,
     MatMenuModule
   ],
-  providers: [LivestockService, MedicalService, MedicineTypeService],
+  providers: [LivestockService, MedicalService, MedicineTypeService, FeedTypeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

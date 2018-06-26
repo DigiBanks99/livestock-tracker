@@ -8,6 +8,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { MedicalComponent } from './medical/medical.component';
 import { MedicineTypeComponent } from './medical/medicine-type/medicine-type.component';
 import { UnitComponent } from './unit/unit.component';
+import { FeedTypeComponent } from './feed-type/feed-type.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -23,7 +24,8 @@ const routes: Routes = [
   { path: 'medical', component: MedicalComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'units', component: UnitComponent },
-  { path: 'medicine-type', component: MedicineTypeComponent }
+  { path: 'medicine-type', component: MedicineTypeComponent },
+  { path: 'feed-type', component: FeedTypeComponent }
 ];
 
 @NgModule({

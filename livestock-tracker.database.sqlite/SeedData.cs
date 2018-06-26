@@ -23,6 +23,8 @@ namespace LivestockTracker.Database
                 SeedUnits(context);
                 SeedMedicine(context);
                 SeedMedicalTransactions(context);
+                SeedFeedTypes(context);
+                SeedFeedingTransactions(context);
             }
         }
 
@@ -97,11 +99,11 @@ namespace LivestockTracker.Database
             if (context.MedicalTransactions != null && context.MedicalTransactions.Any())
                 return;
 
-            var animal = context.Animal.First();
+            var animal = context.Animal.OrderBy(a => a.Number).First();
             if (animal == null)
             {
                 SeedAnimals(context);
-                animal = context.Animal.First();
+                animal = context.Animal.OrderBy(a => a.Number).First();
             }
 
             context.MedicalTransactions.AddRange(
@@ -115,6 +117,61 @@ namespace LivestockTracker.Database
                 });
 
             context.SaveChanges();
+        }
+
+        private static void SeedFeedTypes(LivestockContext livestockContext)
+        {
+            if (livestockContext.FeedTypes.Any())
+                return;
+
+            livestockContext.FeedTypes.AddRange(
+                new FeedType()
+                {
+                    ID = 1,
+                    Description = "Wheat"
+                },
+                new FeedType()
+                {
+                    ID = 2,
+                    Description = "Maze"
+                });
+
+            livestockContext.SaveChanges();
+        }
+
+        private static void SeedFeedingTransactions(LivestockContext livestockContext)
+        {
+            if (livestockContext.FeedingTransactions.Any())
+                return;
+
+            var animal = livestockContext.Animal.OrderBy(a => a.Number).First();
+            if (animal == null)
+            {
+                SeedAnimals(livestockContext);
+                animal = livestockContext.Animal.OrderBy(a => a.Number).First();
+            }
+
+            livestockContext.FeedingTransactions.AddRange(
+                new FeedingTransaction()
+                {
+                    ID = 1,
+                    AnimalID = animal.ID,
+                    FeedID = 1,
+                    Quantity = 0.5m,
+                    TransactionDate = DateTime.Now,
+                    UnitTypeCode = 2
+                },
+                new FeedingTransaction()
+                {
+                    ID = 2,
+                    AnimalID = animal.ID,
+                    FeedID = 2,
+                    Quantity = 1,
+                    TransactionDate = DateTime.Now.AddDays(-1),
+                    UnitTypeCode = 2
+                });
+
+            livestockContext.SaveChanges();
         }
     }
 }

@@ -7,7 +7,7 @@
       </mat-toolbar-row>
     </mat-toolbar>
     <mat-list class="medecine-type-list mat-elevation-z1">
-      <mat-list-item class="card-list-item" *ngFor="let medicineType of medicineTypes">
+      <mat-list-item class="card-list-item" *ngFor="let medicineType of filteredMedicineTypes">
         <app-medicine-type-detail class="medicine-type-item" [medicineType]="medicineType"></app-medicine-type-detail>
         <mat-divider></mat-divider>
       </mat-list-item>

@@ -9,6 +9,8 @@ namespace LivestockTracker.Models
         [Key]
         public int ID { get; set; }
         [Required]
+        public int AnimalID { get; set; }
+        [Required]
         public int FeedID { get; set; }
         [Required]
         public DateTime TransactionDate { get; set; }

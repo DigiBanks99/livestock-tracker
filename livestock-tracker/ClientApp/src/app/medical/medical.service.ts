@@ -69,8 +69,8 @@ export class MedicalService implements OnDestroy {
   }
 
   public deleteMedicalTransaction(id: number) {
-    this.httpDeleteSubscription = this.http.delete(this.urlBase + id).subscribe(() => {
-      this.emitMedicalTransactionsChanged();
+    this.httpDeleteSubscription = this.http.delete(this.urlBase + id).subscribe((deletedMedicalTransaction: MedicalTransaction) => {
+      this.getMedicalTransactions(deletedMedicalTransaction.animalID);
     });
   }
 

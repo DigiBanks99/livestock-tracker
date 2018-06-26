@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import { LiveStockType } from '../livestock-type.model';
 import { LivestockService } from '../livestock.service';
 import { Livestock } from '../livestock.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-livestock-list',
@@ -26,13 +27,17 @@ export class LivestockListComponent implements OnInit, OnDestroy {
     private livestockService: LivestockService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
-    this.pageSize = 10;
-    this.lastPage = 0;
+    this.pageSize = environment.pageSize;
+    this.lastPage = environment.defaultLastPage;
     this.livestockList = [];
     this.filteredLivestockList = [];
 
     this.livestockChanged = this.livestockService.livestockChanged.subscribe((livestockList: Livestock[]) => {
       this.livestockList = livestockList;
+      if (this.livestockList.length <= this.pageSize) {
+        this.lastPage = 0;
+      }
+
       this.filterList(this.pageSize, this.lastPage);
     });
 
