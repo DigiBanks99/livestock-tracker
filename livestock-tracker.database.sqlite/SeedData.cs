@@ -108,7 +108,7 @@ namespace LivestockTracker.Database
                 new MedicalTransaction()
                 {
                     AnimalID = animal.ID,
-                    MedecineTypeCode = 1,
+                    MedicineTypeCode = 1,
                     TransactionDate = DateTime.Now,
                     Unit = 1,
                     Dose = 0.5m
