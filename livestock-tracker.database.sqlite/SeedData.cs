@@ -109,8 +109,9 @@ namespace LivestockTracker.Database
                 {
                     AnimalID = animal.ID,
                     MedecineTypeCode = 1,
-                    TransactionDate = new DateTime(),
-                    Unit = 1
+                    TransactionDate = DateTime.Now,
+                    Unit = 1,
+                    Dose = 0.5m
                 });
 
             context.SaveChanges();
