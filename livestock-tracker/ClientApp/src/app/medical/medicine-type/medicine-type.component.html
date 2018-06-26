@@ -1,0 +1,24 @@
+<div class="card-list-container">
+  <div class="card-list-content">
+    <mat-toolbar class="medecine-type-toolbar">
+      <mat-toolbar-row class="medecine-type-toolbar__header">
+        <span class="medecine-type-toolbar__trans-type">Description</span>
+        <span class="medecine-type-toolbar__trans-trash"></span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-list class="medecine-type-list mat-elevation-z1">
+      <mat-list-item class="card-list-item" *ngFor="let medicineType of medicineTypes">
+        <app-medicine-type-detail class="medicine-type-item" [medicineType]="medicineType"></app-medicine-type-detail>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+      <mat-paginator
+        [pageSize]="pageSize"
+        [length]="medicineTypes.length"
+        class="mat-accent-background"
+        (page)="onPage($event)"></mat-paginator>
+    </mat-list>
+    <button mat-fab class="mat-fab-bottom-right" type="button" (click)="addMedicineType()" left>
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

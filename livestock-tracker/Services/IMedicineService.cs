@@ -2,7 +2,7 @@
 
 namespace LivestockTracker.Services
 {
-    public interface IMedecineService : IService<MedecineType>
+    public interface IMedicineService : IService<MedicineType>
     {
     }
 }

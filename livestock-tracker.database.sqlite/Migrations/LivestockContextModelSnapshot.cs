@@ -87,7 +87,7 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("FeedTypes");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Models.MedecineType", b =>
+            modelBuilder.Entity("LivestockTracker.Models.MedicineType", b =>
                 {
                     b.Property<int>("TypeCode")
                         .ValueGeneratedOnAdd();
@@ -96,7 +96,7 @@ namespace LivestockTracker.Database.Migrations
 
                     b.HasKey("TypeCode");
 
-                    b.ToTable("Medecine");
+                    b.ToTable("Medicine");
                 });
 
             modelBuilder.Entity("LivestockTracker.Models.MedicalTransaction", b =>
@@ -108,7 +108,7 @@ namespace LivestockTracker.Database.Migrations
 
                     b.Property<decimal>("Dose");
 
-                    b.Property<int>("MedecineTypeCode");
+                    b.Property<int>("MedicineTypeCode");
 
                     b.Property<DateTime>("TransactionDate");
 

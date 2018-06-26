@@ -2,7 +2,7 @@
 
 namespace LivestockTracker.Database
 {
-    public interface IMedecineTypeRepository : IRepository<MedecineType>
+    public interface IMedicineTypeRepository : IRepository<MedicineType>
     {
     }
 }

@@ -45,7 +45,7 @@ export class MedicalService implements OnDestroy {
     let medicalTransaction = new MedicalTransaction();
     medicalTransaction.animalID = animalID;
     medicalTransaction.dose = 1;
-    medicalTransaction.medecineTypeCode = 1;
+    medicalTransaction.medicineTypeCode = 1;
     medicalTransaction.transactionDate = new Date();
     medicalTransaction.unit = 1;
     this.httpPostSubscription = this.http.post(this.urlBase, medicalTransaction).subscribe((savedTransaction: MedicalTransaction) => {

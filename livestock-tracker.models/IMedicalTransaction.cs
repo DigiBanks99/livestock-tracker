@@ -9,7 +9,7 @@ namespace LivestockTracker.Models
         int AnimalID { get; set; }
         Animal AnimalObject { get; set; }
         decimal Dose { get; set; }
-        int MedecineTypeCode { get; set; }
+        int MedicineTypeCode { get; set; }
         DateTime TransactionDate { get; set; }
         int Unit { get; set; }
     }

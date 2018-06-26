@@ -196,6 +196,10 @@ input.currency-input::-webkit-inner-spin-button {
       background-color: mat-color($candy-app-primary, 100);
     }
 
+    .mat-list {
+      background-color: mat-color($candy-app-primary, 200);
+    }
+
     .card-list-item {
       display: flex;
       flex-direction: row;
@@ -216,7 +220,8 @@ input.currency-input::-webkit-inner-spin-button {
       }
 
       .card-list-item-actions {
-        max-width: 24px;
+        max-width: 48px;
+        margin-top: 16px
       }
 
       .mat-icon {

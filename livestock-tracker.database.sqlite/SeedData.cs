@@ -21,7 +21,7 @@ namespace LivestockTracker.Database
 
                 SeedAnimals(context);
                 SeedUnits(context);
-                SeedMedecine(context);
+                SeedMedicine(context);
                 SeedMedicalTransactions(context);
             }
         }
@@ -72,18 +72,18 @@ namespace LivestockTracker.Database
             context.SaveChanges();
         }
 
-        private static void SeedMedecine(LivestockContext context)
+        private static void SeedMedicine(LivestockContext context)
         {
-            if (context.Medecine != null && context.Medecine.Any())
+            if (context.Medicine != null && context.Medicine.Any())
                 return;
 
-            context.Medecine.AddRange(
-                new MedecineType()
+            context.Medicine.AddRange(
+                new MedicineType()
                 {
                     TypeCode = 1,
                     Description = "Antibiotics"
                 },
-                new MedecineType()
+                new MedicineType()
                 {
                     TypeCode = 2,
                     Description = "Painkillers"
