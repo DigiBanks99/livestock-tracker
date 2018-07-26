@@ -2,14 +2,21 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { isNullOrUndefined, isUndefined } from 'util';
-
-import * as moment from 'moment';
-
 import { MedicalTransaction } from './medical-transaction.model';
 import { environment } from '../../environments/environment.prod';
 
+export interface IMedicalService {
+  medicalTransactionsChanged: Subject<MedicalTransaction[]>;
+
+  getMedicalTransactions(animalID: number);
+  getMedicalTransaction(id: number): MedicalTransaction;
+  addMedicalTransaction(animalID: number);
+  updateMedicalTransaction(medicalTransaction: MedicalTransaction);
+  deleteMedicalTransaction(id: number);
+}
+
 @Injectable()
-export class MedicalService implements OnDestroy {
+export class MedicalService implements IMedicalService, OnDestroy {
   public medicalTransactionsChanged: Subject<MedicalTransaction[]>;
 
   private urlBase = environment.apiUrl + 'medicalTransactions/';
@@ -107,5 +114,29 @@ export class MedicalService implements OnDestroy {
     if (isUndefined(this.httpDeleteSubscription)) {
       this.httpDeleteSubscription.unsubscribe();
     }
+  }
+}
+
+export class MockMedicalService implements IMedicalService {
+  medicalTransactionsChanged: Subject<MedicalTransaction[]>;
+
+  constructor() {
+    this.medicalTransactionsChanged = new Subject<MedicalTransaction[]>();
+  }
+
+  getMedicalTransactions(animalID: number) {
+    this.medicalTransactionsChanged.next([]);
+  }
+  getMedicalTransaction(id: number): MedicalTransaction {
+    return new MedicalTransaction();
+  }
+  addMedicalTransaction(animalID: number) {
+    throw new Error('Method not implemented.');
+  }
+  updateMedicalTransaction(medicalTransaction: MedicalTransaction) {
+    throw new Error('Method not implemented.');
+  }
+  deleteMedicalTransaction(id: number) {
+    throw new Error('Method not implemented.');
   }
 }

@@ -6,10 +6,20 @@ import { isUndefined, isNullOrUndefined } from 'util';
 import { Unit } from './unit.model';
 import { environment } from '../../environments/environment.prod';
 
+export interface IUnitService {
+  unitsChanged: Subject<Unit[]>;
+
+  getUnits();
+  getUnit(typeCode: number): Unit;
+  addUnit(unit: Unit);
+  updateUnit(unit: Unit);
+  deleteUnit(typeCode: number);
+}
+
 @Injectable({
   providedIn: 'root'
 })
-export class UnitService implements OnInit, OnDestroy {
+export class UnitService implements IUnitService, OnInit, OnDestroy {
   public unitsChanged: Subject<Unit[]>;
 
   private urlBase = environment.apiUrl + 'unit/';
@@ -96,4 +106,30 @@ export class UnitService implements OnInit, OnDestroy {
       this.deleteUnitSubscription.unsubscribe();
     }
   }
+}
+
+export class MockUnitService implements IUnitService {
+  unitsChanged: Subject<Unit[]>;
+
+  constructor() {
+    this.unitsChanged = new Subject<Unit[]>();
+  }
+
+  getUnits() {
+    this.unitsChanged.next([]);
+  }
+  getUnit(typeCode: number): Unit {
+    return new Unit();
+  }
+  addUnit(unit: Unit) {
+    throw new Error('Method not implemented.');
+  }
+  updateUnit(unit: Unit) {
+    throw new Error('Method not implemented.');
+  }
+  deleteUnit(typeCode: number) {
+    throw new Error('Method not implemented.');
+  }
+
+
 }

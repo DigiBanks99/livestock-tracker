@@ -1,8 +1,8 @@
 import { MedicineTypeService } from './../medicine-type/medicine-type.service';
 import { UnitService } from './../../unit/unit.service';
 import { Unit } from './../../unit/unit.model';
-import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
-import { MatSelect, MatSelectChange, MAT_DATE_FORMATS } from '@angular/material';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { MAT_DATE_FORMATS } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
@@ -48,6 +48,13 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
   constructor(private medicalService: MedicalService, private unitService: UnitService, private medicineTypeService: MedicineTypeService) {
     this.medicineTypes = [];
     this.units = [];
+
+    this.medicineTypeControlChanged = new Subscription();
+    this.transactionDateControlChanged = new Subscription();
+    this.doseControlChanged = new Subscription();
+    this.unitControlChanged = new Subscription();
+    this.unitsChanged = new Subscription();
+    this.medicineTypeChanged = new Subscription();
   }
 
   ngOnInit() {
@@ -56,7 +63,7 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
     this.unitsChanged = this.unitService.unitsChanged.subscribe((units: Unit[]) => this.units = units);
     this.unitService.getUnits();
     this.medicineTypeChanged = this.medicineTypeService.medicineTypesChanged
-    .subscribe((medicineTypes: MedicineType[]) => this.medicineTypes = medicineTypes);
+      .subscribe((medicineTypes: MedicineType[]) => this.medicineTypes = medicineTypes);
     this.medicineTypeService.getMedicineTypes();
   }
 

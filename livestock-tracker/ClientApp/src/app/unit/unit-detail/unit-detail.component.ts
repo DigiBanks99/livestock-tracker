@@ -31,9 +31,11 @@ export class UnitDetailComponent implements OnInit, OnDestroy {
   }
 
   private initForm() {
-    this.unitForm = new FormGroup({
-      description: new FormControl(this.unit.description, [Validators.required])
-    });
+    const descriptionControl = new FormControl(this.unit.description, [Validators.required]);
+    const formGroupSetup = {
+      description: descriptionControl
+    };
+    this.unitForm = new FormGroup(formGroupSetup);
 
     this.onDescriptionChanged = this.unitForm
       .get('description')

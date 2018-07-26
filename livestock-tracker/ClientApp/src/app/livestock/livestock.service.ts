@@ -1,9 +1,7 @@
 import { OnInit, Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Subject, Observable, Subscription, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
-import { Config } from 'protractor';
 
 import * as moment from 'moment';
 
@@ -14,6 +12,7 @@ import { environment } from './../../environments/environment';
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
   editingStarted: Subject<number>;
+
   getLivestock();
   getAnimal(id: number): Livestock;
   removeLivestock(id: number);
@@ -119,7 +118,7 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
 
     let existingAnimal: Livestock;
     try {
-     existingAnimal = this.getAnimal(animal.id);
+      existingAnimal = this.getAnimal(animal.id);
     } catch (e) {
       if (e.message === 'Item not found') {
         existingAnimal = null;
@@ -175,15 +174,15 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
 
   public getSvgIconByString(type: string): string {
     if (type === 'Cattle') {
-        return 'cow';
+      return 'cow';
     } else if (type === 'Chicken') {
-        return 'chicken';
+      return 'chicken';
     } else if (type === 'Pig') {
-        return 'pig';
+      return 'pig';
     } else if (type === 'Sheep') {
-        return 'sheep';
+      return 'sheep';
     } else {
-        throw Error(type + ' not implemented');
+      throw Error(type + ' not implemented');
     }
   }
 

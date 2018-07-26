@@ -6,8 +6,17 @@ import { environment } from '../../../environments/environment';
 import { MedicineType } from './../medicine-type.model';
 import { isNullOrUndefined } from 'util';
 
+export interface IMedicineTypeService {
+  medicineTypesChanged: Subject<MedicineType[]>;
+
+  getMedicineTypes();
+  addMedicineType(medicineType: MedicineType);
+  deleteMedicineType(typeCode: number);
+  updateMedicineType(medicineTypeToUpdate: MedicineType);
+}
+
 @Injectable()
-export class MedicineTypeService {
+export class MedicineTypeService implements IMedicineTypeService {
   public medicineTypesChanged: Subject<MedicineType[]>;
 
   private urlBase = environment.apiUrl + 'Medicine/';
@@ -60,5 +69,26 @@ export class MedicineTypeService {
 
   private emitMedicineTypeChanged() {
     this.medicineTypesChanged.next(this.medicineTypes.slice());
+  }
+}
+
+export class MockMedicineTypeService implements IMedicineTypeService {
+  medicineTypesChanged: Subject<MedicineType[]>;
+
+  constructor() {
+    this.medicineTypesChanged = new Subject<MedicineType[]>();
+  }
+
+  getMedicineTypes() {
+    this.medicineTypesChanged.next([]);
+  }
+  addMedicineType(medicineType: MedicineType) {
+
+  }
+  deleteMedicineType(typeCode: number) {
+
+  }
+  updateMedicineType(medicineTypeToUpdate: MedicineType) {
+
   }
 }

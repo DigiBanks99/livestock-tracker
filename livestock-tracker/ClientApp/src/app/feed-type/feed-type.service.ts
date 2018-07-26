@@ -6,8 +6,19 @@ import { isNullOrUndefined } from 'util';
 import { environment } from '../../environments/environment';
 import { FeedType } from './feed-type.model';
 
+export interface IFeedTypeService {
+  feedTypesChanged: Subject<FeedType[]>;
+
+  getFeedTypes();
+  getFromServer(id: number): Observable<Object>;
+  get(id: number): FeedType;
+  add(feedType: FeedType);
+  update(feedType: FeedType);
+  delete(id: number);
+}
+
 @Injectable()
-export class FeedTypeService implements OnInit, OnDestroy {
+export class FeedTypeService implements IFeedTypeService, OnInit, OnDestroy {
   private urlBase = environment.apiUrl + 'feedtype/';
   private feedTypes: FeedType[];
 
@@ -73,5 +84,33 @@ export class FeedTypeService implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.feedTypesChanged.unsubscribe();
+  }
+}
+
+export class MockFeedTypeService implements IFeedTypeService {
+  public feedTypesChanged: Subject<FeedType[]>;
+
+  constructor() {
+    this.feedTypesChanged = new Subject<FeedType[]>();
+  }
+
+  getFeedTypes() {
+    this.feedTypesChanged.next([]);
+  }
+
+  getFromServer(id: number): Observable<Object> {
+    throw new Error('Method not implemented.');
+  }
+  get(id: number): FeedType {
+    throw new Error('Method not implemented.');
+  }
+  add(feedType: FeedType) {
+    throw new Error('Method not implemented.');
+  }
+  update(feedType: FeedType) {
+    throw new Error('Method not implemented.');
+  }
+  delete(id: number) {
+    throw new Error('Method not implemented.');
   }
 }
