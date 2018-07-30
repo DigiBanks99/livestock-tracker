@@ -1,3 +1,23 @@
-<p>
-  ls-grid works!
-</p>
+<div class="ls-grid-container">
+  <div class="ls-grid-content">
+    <mat-toolbar class="ls-grid-toolbar">
+      <mat-toolbar-row class="ls-grid-heading" *ngIf="isHeadingVisible()">
+        <span>{{getHeading()}}</span>
+      </mat-toolbar-row>
+      <mat-toolbar-row class="ls-grid-header">
+        <span *ngFor="let colDef of getColumnDefs()" class="ls-grid-header-cell" [ngStyle]="{'width': colDef.getWidth()}">
+          {{colDef.description}}
+        </span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-list class="ls-grid-list mat-elevation-z1">
+      <mat-list-item class="ls-grid-list-item" *ngFor="let item of getData()">
+        <div class="ls-grid-list-item-container">
+          <span class="ls-grid-list-item-cell" *ngFor="let colDef of getColumnDefs()" [ngStyle]="{'width': colDef.getWidth()}">{{getValueDisplay(item, colDef)}}</span>
+        </div>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+      <mat-paginator [pageSize]="getPageSize()" [length]="getDataLength()" class="mat-accent-background" (page)="onPage($event)"></mat-paginator>
+    </mat-list>
+  </div>
+</div>

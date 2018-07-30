@@ -9,7 +9,46 @@
                 "build",
                 "${workspaceFolder}/livestock-tracker/livestock-tracker.csproj"
             ],
-            "problemMatcher": "$msCompile"
+            "problemMatcher": "$msCompile",
+            "dependsOn": [
+                "clean dist"
+            ]
+        },
+        {
+            "label": "clean dist",
+            "command": "Get-ChildItem",
+            "type": "shell",
+            "args": [
+                "${workspaceFolder}/livestock-tracker/ClientApp/dist",
+                "-Recurse",
+                "|",
+                "Remove-Item",
+                "-Recurse"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "clean node_modules",
+            "command": "Get-ChildItem",
+            "type": "shell",
+            "args": [
+                "${workspaceFolder}/livestock-tracker/ClientApp/node_modules",
+                "-Recurse",
+                "|",
+                "Remove-Item",
+                "-Recurse"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "client build",
+            "command": "ng",
+            "isBackground": true,
+            "type": "process",
+            "args": [
+                "build",
+                "--watch"
+            ]
         }
     ]
 }

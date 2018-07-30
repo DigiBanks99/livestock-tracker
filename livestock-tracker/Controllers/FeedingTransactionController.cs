@@ -1,4 +1,4 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker.Database;
 using LivestockTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +16,10 @@ namespace livestock_tracker.Controllers
       _feedingTransactionRepository = feedingTransactionRepository;
     }
 
-    [HttpGet]
-    public IActionResult GetAll()
+    [HttpGet("{animalID}")]
+    public IActionResult GetAll([FromRoute] int animalID)
     {
-      return Ok(_feedingTransactionRepository.GetAll());
+      return Ok(_feedingTransactionRepository.Find(x => x.AnimalID == animalID));
     }
 
     [HttpGet("{id}")]

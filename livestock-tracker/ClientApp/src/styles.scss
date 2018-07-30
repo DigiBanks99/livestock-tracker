@@ -177,6 +177,15 @@ input.currency-input::-webkit-inner-spin-button {
   }
 }
 
+.selected-animal-svg {
+  margin-right: 8px;
+  width: 24px;
+  height: 24px;
+  padding: 8px;
+  background-color: mat-color($candy-app-accent);
+  border-radius: 50%;
+}
+
 .card-list-container {
   display: block;
   position: relative;
@@ -246,5 +255,63 @@ input.currency-input::-webkit-inner-spin-button {
     position: fixed;
     bottom: 16px;
     right: 16px;
+  }
+}
+
+.ls-grid-container {
+  display: block;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+
+  .ls-grid-content {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    width: 695px;
+    min-width: 695px;
+    display: flex;
+    flex-direction: column;
+
+    .ls-grid-toolbar {
+      background-color: mat-color($candy-app-primary, 100);
+    }
+
+    .ls-grid-list {
+      background-color: mat-color($candy-app-primary, 200);
+    }
+  }
+
+  @media only screen and (min-width: 1100px) {
+    .ls-grid-content {
+      width: 920px;
+    }
+  }
+
+  @media only screen and (min-width: 1400px) {
+    .ls-grid-content {
+      width: 1150px;
+    }
+  }
+
+  .ls-grid-header {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+
+    .ls-grid-header-cell {
+      font-size: 16px;
+    }
+  }
+
+  .ls-grid-list .ls-grid-list-item .ls-grid-list-item-container {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .ls-grid-list .ls-grid-list-item .ls-grid-list-item-container .ls-grid-list-item-cell {
+    display: table-cell;
+    text-align: center;
   }
 }
