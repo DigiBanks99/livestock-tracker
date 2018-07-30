@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { MedicineType } from './../medicine-type.model';
+import { MedicineType } from '../medicine-type.model';
 import { isNullOrUndefined } from 'util';
 
 export interface IMedicineTypeService {

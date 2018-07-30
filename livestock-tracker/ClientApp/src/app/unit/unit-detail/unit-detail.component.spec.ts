@@ -2,10 +2,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnitDetailComponent } from './unit-detail.component';
 import { UnitService, MockUnitService } from '../unit.service';
-import { MatFormFieldModule, MatIconModule, MatInputModule } from '../../../../node_modules/@angular/material';
-import { ReactiveFormsModule } from '../../../../node_modules/@angular/forms';
+import { MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Unit } from '../unit.model';
-import { BrowserAnimationsModule } from '../../../../node_modules/@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('UnitDetailComponent', () => {
   let component: UnitDetailComponent;

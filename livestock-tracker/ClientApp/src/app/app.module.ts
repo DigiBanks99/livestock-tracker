@@ -43,6 +43,8 @@ import { MedicineTypeService } from './medical/medicine-type/medicine-type.servi
 import { FeedTypeComponent } from './feed-type/feed-type.component';
 import { FeedTypeService } from './feed-type/feed-type.service';
 import { FeedTypeDetailComponent } from './feed-type/feed-type-detail/feed-type-detail.component';
+import { FeedingTransactionComponent } from './feeding-transaction/feeding-transaction.component';
+import { FeedingTransactionService } from './feeding-transaction/feeding-transaction.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,7 +61,8 @@ import { FeedTypeDetailComponent } from './feed-type/feed-type-detail/feed-type-
     MedicineTypeComponent,
     MedicineTypeDetailComponent,
     FeedTypeComponent,
-    FeedTypeDetailComponent
+    FeedTypeDetailComponent,
+    FeedingTransactionComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -86,7 +89,7 @@ import { FeedTypeDetailComponent } from './feed-type/feed-type-detail/feed-type-
     MatPaginatorModule,
     MatMenuModule
   ],
-  providers: [LivestockService, MedicalService, MedicineTypeService, FeedTypeService],
+  providers: [LivestockService, MedicalService, MedicineTypeService, FeedTypeService, FeedingTransactionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

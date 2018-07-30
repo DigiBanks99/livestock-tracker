@@ -3,8 +3,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 
-import { MedicineType } from './../../medicine-type.model';
-import { MedicineTypeService } from './../medicine-type.service';
+import { MedicineType } from '../../medicine-type.model';
+import { MedicineTypeService } from '../medicine-type.service';
 
 @Component({
   selector: 'app-medicine-type-detail',

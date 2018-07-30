@@ -1,16 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute,  Params,  Router,  NavigationExtras } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { Subscription, Observable } from 'rxjs';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
 import * as moment from 'moment';
 
-import { Livestock } from './../livestock.model';
-import { LiveStockType } from './../livestock-type.model';
+import { Livestock } from '../livestock.model';
+import { LiveStockType } from '../livestock-type.model';
 import { LivestockService } from '../livestock.service';
 
 export const MY_FORMATS = {

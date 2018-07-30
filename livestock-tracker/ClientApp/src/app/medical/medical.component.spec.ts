@@ -3,10 +3,10 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MedicalComponent } from './medical.component';
 import { MedicalService, MockMedicalService } from './medical.service';
 import { LivestockService, MockLivestockService } from '../livestock/livestock.service';
-import { MatIconModule, MatSelectModule, MatOptionModule, MatPaginatorModule, MatToolbarModule, MatListModule, MatDatepickerModule } from '../../../node_modules/@angular/material';
+import { MatIconModule, MatSelectModule, MatOptionModule, MatPaginatorModule, MatToolbarModule, MatListModule, MatDatepickerModule } from '@angular/material';
 import { MedicalTransactionComponent } from './medical-transaction/medical-transaction.component';
-import { ReactiveFormsModule } from '../../../node_modules/@angular/forms';
-import { HttpClientTestingModule } from '../../../node_modules/@angular/common/http/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('MedicalComponent', () => {
   let component: MedicalComponent;

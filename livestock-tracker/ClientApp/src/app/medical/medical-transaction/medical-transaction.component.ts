@@ -1,6 +1,6 @@
-import { MedicineTypeService } from './../medicine-type/medicine-type.service';
-import { UnitService } from './../../unit/unit.service';
-import { Unit } from './../../unit/unit.model';
+import { MedicineTypeService } from '../medicine-type/medicine-type.service';
+import { UnitService } from '../../unit/unit.service';
+import { Unit } from '../../unit/unit.model';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MAT_DATE_FORMATS } from '@angular/material';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -15,7 +15,7 @@ export const MY_FORMATS = {
     dateInput: 'LL'
   },
   display: {
-    dateInput: 'DD MMMM YYYY',
+    dateInput: 'DD MMMM YYYY HH:mm',
     monthYearLabel: 'MMM YYYY',
     dateA11yLabel: 'LL',
     monthYearA11yLabel: 'MMMM YYYY'

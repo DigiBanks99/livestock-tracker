@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material';
 import { Subscription } from 'rxjs';
 
-import { MedicineType } from './../medicine-type.model';
+import { MedicineType } from '../medicine-type.model';
 import { MedicineTypeService } from './medicine-type.service';
 import { environment } from '../../../environments/environment';
 

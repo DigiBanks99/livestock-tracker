@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MedicineTypeDetailComponent } from './medicine-type-detail.component';
-import { ReactiveFormsModule } from '../../../../../node_modules/@angular/forms';
-import { MatFormFieldModule, MatIconModule, MatInputModule } from '../../../../../node_modules/@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
 import { MedicineTypeService, MockMedicineTypeService } from '../medicine-type.service';
 import { MedicineType } from '../../medicine-type.model';
-import { BrowserAnimationsModule } from '../../../../../node_modules/@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('MedicineTypeDetailComponent', () => {
   let component: MedicineTypeDetailComponent;

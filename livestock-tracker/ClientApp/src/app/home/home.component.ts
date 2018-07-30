@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { LivestockService } from './../livestock/livestock.service';
-import { Livestock } from './../livestock/livestock.model';
+import { LivestockService } from '../livestock/livestock.service';
+import { Livestock } from '../livestock/livestock.model';
 
 @Component({
   selector: 'app-home',

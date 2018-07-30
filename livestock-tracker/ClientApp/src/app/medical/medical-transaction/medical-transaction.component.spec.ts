@@ -1,14 +1,14 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MedicalTransactionComponent } from './medical-transaction.component';
-import { MatOptionModule, MatSelectModule, MatFormFieldModule, MatDatepickerModule, MatInputModule, MatIconModule, NativeDateModule } from '../../../../node_modules/@angular/material';
-import { ReactiveFormsModule } from '../../../../node_modules/@angular/forms';
+import { MatOptionModule, MatSelectModule, MatFormFieldModule, MatDatepickerModule, MatInputModule, MatIconModule, NativeDateModule } from '@angular/material';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MockMedicalService, MedicalService } from '../medical.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MedicineTypeService, MockMedicineTypeService } from '../medicine-type/medicine-type.service';
 import { UnitService, MockUnitService } from '../../unit/unit.service';
 import { MedicalTransaction } from '../medical-transaction.model';
-import { BrowserAnimationsModule } from '../../../../node_modules/@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('MedicalTransactionComponent', () => {
   let component: MedicalTransactionComponent;

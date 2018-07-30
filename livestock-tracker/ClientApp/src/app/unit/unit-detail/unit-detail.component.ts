@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 
 import { Unit } from '../unit.model';
-import { UnitService } from './../unit.service';
+import { UnitService } from '../unit.service';
 import { isNullOrUndefined } from 'util';
 
 @Component({

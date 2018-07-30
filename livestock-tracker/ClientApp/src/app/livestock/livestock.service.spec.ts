@@ -1,5 +1,5 @@
 import { TestBed, getTestBed, inject } from '@angular/core/testing';
-import { HttpTestingController, HttpClientTestingModule } from '../../../node_modules/@angular/common/http/testing';
+import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
 import { LivestockService } from './livestock.service';
 import { LiveStockType } from './livestock-type.model';
 import { Livestock } from './livestock.model';

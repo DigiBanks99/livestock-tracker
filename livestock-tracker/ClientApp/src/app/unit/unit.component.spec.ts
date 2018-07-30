@@ -2,9 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnitComponent } from './unit.component';
 import { UnitService, MockUnitService } from './unit.service';
-import { MatToolbarModule, MatListModule, MatPaginatorModule, MatIconModule, MatFormFieldModule } from '../../../node_modules/@angular/material';
+import { MatToolbarModule, MatListModule, MatPaginatorModule, MatIconModule, MatFormFieldModule } from '@angular/material';
 import { UnitDetailComponent } from './unit-detail/unit-detail.component';
-import { ReactiveFormsModule } from '../../../node_modules/@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe('UnitComponent', () => {
   let component: UnitComponent;

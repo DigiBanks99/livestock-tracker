@@ -1,13 +1,13 @@
 import { OnInit, Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Subject, Observable, Subscription, throwError } from 'rxjs';
+import { Subject, Subscription, throwError } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 
 import * as moment from 'moment';
 
-import { Animal, Livestock } from './livestock.model';
+import { Livestock } from './livestock.model';
 import { LiveStockType } from './livestock-type.model';
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
