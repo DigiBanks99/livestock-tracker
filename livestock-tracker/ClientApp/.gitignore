@@ -17,6 +17,7 @@
 *.launch
 .settings/
 *.sublime-workspace
+.sonarlint
 
 # IDE - VSCode
 .vscode/*
@@ -24,6 +25,7 @@
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/cSpell.json
 
 # misc
 /.sass-cache

@@ -149,7 +149,7 @@ publish/
 !**/packages/build/
 # Uncomment if necessary however generally it will be regenerated when needed
 #!**/packages/repositories.config
-**/package-lock.json
+package-lock.json
 
 # Microsoft Azure Build Output
 csx/
@@ -172,6 +172,14 @@ BundleArtifacts/
 # but keep track of directories ending in .cache
 !*.[Cc]ache/
 
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/cSpell.json
+
 # Others
 ClientBin/
 ~$*
@@ -185,8 +193,8 @@ orleans.codegen.cs
 /node_modules
 /livestock.db
 /**/node_modules
-.vscode/
 *.db
+.sonarlint
 
 # RIA/Silverlight projects
 Generated_Code/

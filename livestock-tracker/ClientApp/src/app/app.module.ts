@@ -45,6 +45,7 @@ import { FeedTypeService } from './feed-type/feed-type.service';
 import { FeedTypeDetailComponent } from './feed-type/feed-type-detail/feed-type-detail.component';
 import { FeedingTransactionComponent } from './feeding-transaction/feeding-transaction.component';
 import { FeedingTransactionService } from './feeding-transaction/feeding-transaction.service';
+import { LsGridComponent } from './shared/ls-grid/ls-grid.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -62,7 +63,8 @@ import { FeedingTransactionService } from './feeding-transaction/feeding-transac
     MedicineTypeDetailComponent,
     FeedTypeComponent,
     FeedTypeDetailComponent,
-    FeedingTransactionComponent
+    FeedingTransactionComponent,
+    LsGridComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
