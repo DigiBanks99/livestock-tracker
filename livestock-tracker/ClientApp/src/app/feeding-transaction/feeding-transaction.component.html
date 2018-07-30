@@ -1,3 +1,19 @@
-<p *ngFor="let feedingTransaction of feedingTransactions">
-  {{feedingTransaction.transactionDate}}
-</p>
+<div class="ls-grid-container">
+  <div class="ls-grid-content">
+    <mat-toolbar class="ls-grid-toolbar">
+      <mat-toolbar-row class="ls-grid-heading">
+        <span class="selected-animal-svg">
+          <mat-icon svgIcon="{{getSvgIcon(getCurrentAnimal())}}"></mat-icon>
+        </span>
+        <mat-select [value]="getCurrentAnimal().id" #animalSelector>
+          <mat-option *ngFor="let animal of getAnimals(); let i = index" [value]="animal.id">
+            <mat-icon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
+            {{animal.number}} {{animal.subspecies ? ' - ' + animal.subspecies : ''}}
+          </mat-option>
+        </mat-select>
+        <span class="fill-remaining-space"></span>
+      </mat-toolbar-row>
+    </mat-toolbar>
+  </div>
+</div>
+<app-ls-grid #data [config]="getConfig()"></app-ls-grid>

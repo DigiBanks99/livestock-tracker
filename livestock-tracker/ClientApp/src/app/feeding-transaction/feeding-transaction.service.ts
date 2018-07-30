@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { Observable } from '../../../node_modules/rxjs';
+import { Observable } from 'rxjs';
 import { FeedingTransaction } from './feeding-transaction.model';
-import { HttpClient } from '../../../node_modules/@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { ILsDataService } from '../shared/ls-grid/ls-data-service.interface';
 
 export interface IFeedingTransactionService {
   get(): Observable<Object>;
@@ -11,13 +12,17 @@ export interface IFeedingTransactionService {
 @Injectable({
   providedIn: 'root'
 })
-export class FeedingTransactionService implements IFeedingTransactionService {
+export class FeedingTransactionService implements IFeedingTransactionService, ILsDataService {
   private urlBase = environment.apiUrl + 'FeedingTransaction/';
 
   constructor(private http: HttpClient) { }
 
-  public get(): Observable<Object> {
-    return this.http.get(this.urlBase);
+  public get(fetchKey?: any): Observable<Object> {
+    return this.http.get(this.urlBase + fetchKey);
+  }
+
+  public page(pageNumber: number, pageSize: number): Observable<Object> {
+    return this.http.get(this.urlBase + 'page?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
   }
 }
 
