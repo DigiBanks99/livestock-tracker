@@ -24,7 +24,6 @@ export class LsGridComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.init();
   }
 
   public getLoadingStatus() {
@@ -97,10 +96,6 @@ export class LsGridComponent implements OnInit, OnDestroy {
     }
 
     return this.config;
-  }
-
-  private init() {
-    this.fetchData();
   }
 
   private fetchData() {

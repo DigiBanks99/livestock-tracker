@@ -19,6 +19,7 @@ import { MatSelect, MatSelectChange } from '../../../node_modules/@angular/mater
 })
 export class FeedingTransactionComponent implements OnInit, OnDestroy {
   private livestockChanged: Subscription;
+  private livestockAdded: Subscription;
   private animalSelectorChanged: Subscription;
   private currentAnimal: Livestock;
   private animals: Livestock[];
@@ -30,11 +31,12 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
 
   constructor(private feedingTransactionService: FeedingTransactionService, private livestockService: LivestockService) {
     this.livestockChanged = new Subscription();
+    this.livestockAdded = new Subscription();
     this.animalSelectorChanged = new Subscription();
 
     this.feedingTransactions = [];
     const utcNow = moment().utc().toDate();
-    this.currentAnimal = new Livestock(0, LiveStockType.Cattle, null, 0, utcNow, utcNow, 0, 0, 0, 0);
+    this.currentAnimal = new Livestock(-99, LiveStockType.Cattle, null, 0, utcNow, utcNow, 0, 0, 0, 0);
   }
 
   public ngOnInit(): void {
@@ -62,6 +64,17 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     return this.livestockService.getSvgIcon(animal);
   }
 
+  public add(animal: Livestock): void {
+    this.dataGrid.config.fetchKey = animal.id;
+    const feedingTransaction = new FeedingTransaction();
+    feedingTransaction.animalID = animal.id;
+    feedingTransaction.transactionDate = moment().utc(false).toDate();
+    feedingTransaction.feedID = 1;
+    feedingTransaction.quantity = 0;
+    feedingTransaction.unitTypeCode = 1;
+    this.livestockAdded = this.feedingTransactionService.add(feedingTransaction).subscribe(() => this.dataGrid.reload());
+  }
+
   private init() {
     this.fetchAnimals();
     this.animalSelectorChanged = this.animalSelector.selectionChange
@@ -69,17 +82,16 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   }
 
   private fetchAnimals() {
+    this.animals = [];
     this.livestockChanged = this.livestockService.livestockChanged.subscribe((animals: Livestock[]) => {
       this.animals = animals;
-      this.currentAnimal = this.animals[0];
+      this.setCurrentAnimal(this.animals[0]);
     });
     this.livestockService.getLivestock();
   }
 
   private animalSelectorValueChanged(selectChanged: MatSelectChange) {
-    this.currentAnimal = this.livestockService.getAnimal(selectChanged.value);
-    this.dataGrid.config.fetchKey = this.currentAnimal.id;
-    this.dataGrid.reload();
+    this.setCurrentAnimal(this.livestockService.getAnimal(selectChanged.value));
   }
 
   private getGridColumnDefs(): LsGridColumnDef[] {
@@ -119,8 +131,19 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     return formatDate(item, 'medium', date.locale(), date.zoneName());
   }
 
+  private setCurrentAnimal(animal: Livestock): void {
+    if (animal.id === -99 || animal.id === this.currentAnimal.id) {
+      return;
+    }
+
+    this.currentAnimal = animal;
+    this.dataGrid.config.fetchKey = animal.id;
+    this.dataGrid.reload();
+  }
+
   public ngOnDestroy(): void {
     this.livestockChanged.unsubscribe();
+    this.livestockAdded.unsubscribe();
     this.animalSelectorChanged.unsubscribe();
   }
 }

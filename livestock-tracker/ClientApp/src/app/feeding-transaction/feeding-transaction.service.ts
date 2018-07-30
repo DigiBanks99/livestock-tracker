@@ -21,6 +21,10 @@ export class FeedingTransactionService implements IFeedingTransactionService, IL
     return this.http.get(this.urlBase + fetchKey);
   }
 
+  public add(feedingTransaction: FeedingTransaction): Observable<Object> {
+    return this.http.post(this.urlBase, feedingTransaction);
+  }
+
   public page(pageNumber: number, pageSize: number): Observable<Object> {
     return this.http.get(this.urlBase + 'page?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
   }
