@@ -11,7 +11,7 @@
       </mat-toolbar-row>
     </mat-toolbar>
     <mat-list class="ls-grid-list mat-elevation-z1">
-      <mat-list-item class="ls-grid-list-item" *ngFor="let item of getData()">
+      <mat-list-item class="ls-grid-list-item" *ngFor="let item of getData()" [routerLink]="getRouterLink()" [queryParams]="getQueryParams(item)">
         <div class="ls-grid-list-item-container">
           <span class="ls-grid-list-item-cell" *ngFor="let colDef of getColumnDefs()" [ngStyle]="{'width': colDef.getWidth()}">{{getValueDisplay(item, colDef)}}</span>
         </div>

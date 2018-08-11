@@ -10,6 +10,7 @@ import { MedicineTypeComponent } from './medical/medicine-type/medicine-type.com
 import { UnitComponent } from './unit/unit.component';
 import { FeedTypeComponent } from './feed-type/feed-type.component';
 import { FeedingTransactionComponent } from './feeding-transaction/feeding-transaction.component';
+import { FeedingTransactionDetailComponent } from './feeding-transaction/feeding-transaction-detail/feeding-transaction-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -27,7 +28,14 @@ const routes: Routes = [
   { path: 'units', component: UnitComponent },
   { path: 'medicine-type', component: MedicineTypeComponent },
   { path: 'feed-type', component: FeedTypeComponent },
-  { path: 'feeding-transaction', component: FeedingTransactionComponent }
+  {
+    path: 'feeding-transaction',
+    component: FeedingTransactionComponent,
+    children: [
+      { path: 'new', component: FeedingTransactionDetailComponent },
+      { path: 'edit', component: FeedingTransactionDetailComponent }
+    ]
+  }
 ];
 
 @NgModule({

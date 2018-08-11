@@ -4,7 +4,7 @@ export class LsGridColumnDef {
   pipe?: Function;
   sortable?: boolean;
   width?: number;
-  widthUnits: string;
+  widthUnits?: string;
 
   constructor() {
     this.pipe = null;

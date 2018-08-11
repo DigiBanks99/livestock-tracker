@@ -49,6 +49,8 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     config.columnDef = this.getGridColumnDefs();
     config.useHeading = false;
     config.fetchKey = this.currentAnimal;
+    config.routerLink = ['edit'];
+    config.queryParameters = (item: FeedingTransaction) => ({ id: item.id });
     return config;
   }
 

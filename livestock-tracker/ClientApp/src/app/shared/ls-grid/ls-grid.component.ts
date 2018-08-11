@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material';
 import { Subscription, Observable } from '../../../../node_modules/rxjs';
-import { isNullOrUndefined } from 'util';
+import { isNullOrUndefined, isFunction } from 'util';
 import { LsGridConfig } from './ls-grid-config.model';
 import { LsGridColumnDef } from './ls-grid-column-def.model';
+import { Params } from '../../../../node_modules/@angular/router';
 
 @Component({
   selector: 'app-ls-grid',
@@ -80,6 +81,33 @@ export class LsGridComponent implements OnInit, OnDestroy {
     }
 
     return colDef.pipe(item[colDef.field]);
+  }
+
+  public getRouterLink(): Array<string> {
+    let routerLink = this.getConfig().routerLink;
+    if (isNullOrUndefined(routerLink)) {
+      routerLink = ['#'];
+    }
+
+    return routerLink;
+  }
+
+  public getQueryParams(item: any): Params {
+    let paramsFunc = this.getConfig().queryParameters;
+    if (!isFunction(paramsFunc)) {
+      paramsFunc = () => {};
+    }
+
+    return paramsFunc(item);
+  }
+
+  public getRouterLinkActiveClasses(): string[] | string {
+    let routerLinkActive = this.getConfig().routerLinkActive;
+    if (isNullOrUndefined(routerLinkActive)) {
+      routerLinkActive = ['active'];
+    }
+
+    return routerLinkActive;
   }
 
   public onPage(pageEvent: PageEvent) {
