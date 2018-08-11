@@ -18,7 +18,11 @@ export class FeedingTransactionService implements IFeedingTransactionService, IL
   constructor(private http: HttpClient) { }
 
   public get(fetchKey?: any): Observable<Object> {
-    return this.http.get(this.urlBase + fetchKey);
+    return this.http.get(this.urlBase + 'getAll/' + fetchKey);
+  }
+
+  public getSingle(fetchKey?: any): Observable<Object> {
+    return this.http.get(this.urlBase + 'get/' + fetchKey);
   }
 
   public add(feedingTransaction: FeedingTransaction): Observable<Object> {

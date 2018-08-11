@@ -17,12 +17,14 @@ namespace livestock_tracker.Controllers
     }
 
     [HttpGet("{animalID}")]
+    [Route("getAll/{animalID}")]
     public IActionResult GetAll([FromRoute] int animalID)
     {
       return Ok(_feedingTransactionRepository.Find(x => x.AnimalID == animalID));
     }
 
     [HttpGet("{id}")]
+    [Route("get/{id}")]
     public IActionResult Get(int id)
     {
       return Ok(_feedingTransactionRepository.Get(id));

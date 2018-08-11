@@ -11,6 +11,11 @@ import { Livestock } from '../livestock/livestock.model';
 import { LiveStockType } from '../livestock/livestock-type.model';
 import { LivestockService } from '../livestock/livestock.service';
 import { MatSelect, MatSelectChange } from '../../../node_modules/@angular/material';
+import { FeedTypeService } from '../feed-type/feed-type.service';
+import { FeedType } from '../feed-type/feed-type.model';
+import { isNullOrUndefined } from 'util';
+import { UnitService } from '../unit/unit.service';
+import { Unit } from '../unit/unit.model';
 
 @Component({
   selector: 'app-feeding-transaction',
@@ -21,20 +26,32 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   private livestockChanged: Subscription;
   private livestockAdded: Subscription;
   private animalSelectorChanged: Subscription;
+  private feedTypesChanged: Subscription;
+  private unitTypesChanged: Subscription;
+
   private currentAnimal: Livestock;
   private animals: Livestock[];
+  private feedTypes: FeedType[];
+  private unitTypes: Unit[];
 
   public feedingTransactions: FeedingTransaction[];
 
   @ViewChild('data') dataGrid: LsGridComponent;
   @ViewChild('animalSelector') animalSelector: MatSelect;
 
-  constructor(private feedingTransactionService: FeedingTransactionService, private livestockService: LivestockService) {
+  constructor(private feedingTransactionService: FeedingTransactionService,
+    private livestockService: LivestockService,
+    private feedTypeService: FeedTypeService,
+    private unitService: UnitService) {
     this.livestockChanged = new Subscription();
     this.livestockAdded = new Subscription();
     this.animalSelectorChanged = new Subscription();
+    this.feedTypesChanged = new Subscription();
+    this.unitTypesChanged = new Subscription();
 
     this.feedingTransactions = [];
+    this.feedTypes = [];
+    this.unitTypes = [];
     const utcNow = moment().utc().toDate();
     this.currentAnimal = new Livestock(-99, LiveStockType.Cattle, null, 0, utcNow, utcNow, 0, 0, 0, 0);
   }
@@ -79,6 +96,8 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
 
   private init() {
     this.fetchAnimals();
+    this.fetchFeedTypes();
+    this.fetchUnitTypes();
     this.animalSelectorChanged = this.animalSelector.selectionChange
       .subscribe((change: MatSelectChange) => this.animalSelectorValueChanged(change));
   }
@@ -92,6 +111,22 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     this.livestockService.getLivestock();
   }
 
+  private fetchFeedTypes() {
+    this.feedTypeService.getFeedTypes();
+    this.feedTypesChanged = this.feedTypeService.feedTypesChanged
+    .subscribe((feedTypes: FeedType[]) => {
+      this.feedTypes = feedTypes.slice();
+    });
+  }
+
+  private fetchUnitTypes() {
+    this.unitService.getUnits();
+    this.unitTypesChanged = this.unitService.unitsChanged
+    .subscribe((units: Unit[]) => {
+      this.unitTypes = units.slice();
+    });
+  }
+
   private animalSelectorValueChanged(selectChanged: MatSelectChange) {
     this.setCurrentAnimal(this.livestockService.getAnimal(selectChanged.value));
   }
@@ -99,20 +134,20 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   private getGridColumnDefs(): LsGridColumnDef[] {
     const columnDefs = [];
 
-    const colDef1 = new LsGridColumnDef();
-    colDef1.description = 'Animal';
-    colDef1.field = 'animalID';
-    columnDefs.push(colDef1);
-
     const colDef2 = new LsGridColumnDef();
     colDef2.description = 'Feed';
     colDef2.field = 'feedID';
+    colDef2.pipe = (item: any): string => {
+       return this.getFeedTypePipe(item);
+    };
     columnDefs.push(colDef2);
 
     const colDef3 = new LsGridColumnDef();
     colDef3.description = 'Date';
     colDef3.field = 'transactionDate';
-    colDef3.pipe = this.getDatePipe;
+    colDef3.pipe = (item: any): string => {
+      return this.getDatePipe(item);
+    };
     columnDefs.push(colDef3);
 
     const colDef4 = new LsGridColumnDef();
@@ -123,6 +158,9 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     const colDef5 = new LsGridColumnDef();
     colDef5.description = 'Unit';
     colDef5.field = 'unitTypeCode';
+    colDef5.pipe = (item: any): string => {
+       return this.getUnitPipe(item);
+    };
     columnDefs.push(colDef5);
 
     return columnDefs;
@@ -131,6 +169,32 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   private getDatePipe(item: string): string {
     const date = moment(item);
     return formatDate(item, 'medium', date.locale(), date.zoneName());
+  }
+
+  private getFeedTypePipe(id: number): string {
+    if (isNullOrUndefined(this.feedTypes)) {
+      this.feedTypes = [];
+    }
+
+    const foundType = this.feedTypes.find((feedType) => feedType.id === id);
+    if (isNullOrUndefined(foundType)) {
+      return '';
+    }
+
+    return foundType.description;
+  }
+
+  private getUnitPipe(id: number): string {
+    if (isNullOrUndefined(this.unitTypes)) {
+      this.unitTypes = [];
+    }
+
+    const foundType = this.unitTypes.find((unit) => unit.typeCode === id);
+    if (isNullOrUndefined(foundType)) {
+      return '';
+    }
+
+    return foundType.description;
   }
 
   private setCurrentAnimal(animal: Livestock): void {
@@ -147,5 +211,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     this.livestockChanged.unsubscribe();
     this.livestockAdded.unsubscribe();
     this.animalSelectorChanged.unsubscribe();
+    this.feedTypesChanged.unsubscribe();
+    this.unitTypesChanged.unsubscribe();
   }
 }

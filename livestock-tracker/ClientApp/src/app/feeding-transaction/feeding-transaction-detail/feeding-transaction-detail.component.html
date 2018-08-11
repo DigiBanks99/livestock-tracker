@@ -1,3 +1,39 @@
-<p>
-  feeding-transaction-detail works!
-</p>
+<form [formGroup]="feedForm">
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <mat-nav-list>
+        <a mat-list-item [routerLink]="['../']">
+          <mat-icon>arrow_back</mat-icon>
+        </a>
+        <a mat-list-item matRippleDisabled>{{'TODO'}}</a>
+      </mat-nav-list>
+      <span class="fill-remaining-space"></span>
+      <button mat-icon-button type="button" title="Reset changes" [disabled]="!feedForm.dirty" (click)="resetForm()">
+        <mat-icon>cancel</mat-icon>
+      </button>
+      <button mat-icon-button type="submit" title="Submit changes" [disabled]="!feedForm.dirty">
+        <mat-icon>save</mat-icon>
+      </button>
+    </mat-toolbar-row>
+    <mat-toolbar-row></mat-toolbar-row>
+  </mat-toolbar>
+  <div>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>
+          {{'TODO'}}
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="form form-container-inline">
+          <mat-form-field appearance="fill">
+            <mat-label for="transactionDate">Transaction Date</mat-label>
+            <input id="transactionDate" formControlName="transactionDate" matInput [matDatepicker]="td" required>
+            <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
+            <mat-datepicker #td disabled="false"></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</form>
