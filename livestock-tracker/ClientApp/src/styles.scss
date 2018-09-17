@@ -295,12 +295,14 @@ input.currency-input::-webkit-inner-spin-button {
   }
 
   .ls-grid-header {
-    display: flex;
-    flex-flow: row wrap;
+    display: table;
+    table-layout: fixed;
     justify-content: space-around;
 
     .ls-grid-header-cell {
       font-size: 16px;
+      display: table-cell;
+      text-align: center;
     }
   }
 

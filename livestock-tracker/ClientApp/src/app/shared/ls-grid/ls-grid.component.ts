@@ -5,6 +5,7 @@ import { isNullOrUndefined, isFunction } from 'util';
 import { LsGridConfig } from './ls-grid-config.model';
 import { LsGridColumnDef } from './ls-grid-column-def.model';
 import { Params } from '../../../../node_modules/@angular/router';
+import { LsGridColumnType } from './ls-grid-column-type.enum';
 
 @Component({
   selector: 'app-ls-grid',
@@ -114,8 +115,22 @@ export class LsGridComponent implements OnInit, OnDestroy {
     this.callDataFetch(this.getConfig().dataService.page(pageEvent.pageSize, pageEvent.pageIndex));
   }
 
+  public onDelete(colDef: LsGridColumnDef, item: any) {
+    if (isFunction(colDef.delete)) {
+      colDef.delete(item);
+    }
+  }
+
   public reload(): void {
     this.fetchData();
+  }
+
+  public isDisplayColumn(type: LsGridColumnType) {
+    return type === LsGridColumnType.DisplayOnly;
+  }
+
+  public isDeleteColumn(type: LsGridColumnType) {
+    return type === LsGridColumnType.Delete;
   }
 
   private getConfig(): LsGridConfig {

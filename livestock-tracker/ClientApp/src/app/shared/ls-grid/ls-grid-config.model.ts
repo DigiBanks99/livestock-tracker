@@ -1,6 +1,5 @@
 import { LsGridColumnDef } from './ls-grid-column-def.model';
 import { ILsDataService } from './ls-data-service.interface';
-import { Params } from '../../../../node_modules/@angular/router';
 
 export class LsGridConfig {
   columnDef: LsGridColumnDef[];

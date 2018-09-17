@@ -29,6 +29,10 @@ export class FeedingTransactionService implements IFeedingTransactionService, IL
     return this.http.post(this.urlBase, feedingTransaction);
   }
 
+  public delete(feedingTransaction: FeedingTransaction): Observable<Object> {
+    return this.http.delete(this.urlBase + feedingTransaction.id);
+  }
+
   public page(pageNumber: number, pageSize: number): Observable<Object> {
     return this.http.get(this.urlBase + 'page?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
   }

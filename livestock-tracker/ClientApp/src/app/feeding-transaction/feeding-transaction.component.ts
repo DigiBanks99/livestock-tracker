@@ -16,6 +16,7 @@ import { FeedType } from '../feed-type/feed-type.model';
 import { isNullOrUndefined } from 'util';
 import { UnitService } from '../unit/unit.service';
 import { Unit } from '../unit/unit.model';
+import { LsGridColumnType } from '../shared/ls-grid/ls-grid-column-type.enum';
 
 @Component({
   selector: 'app-feeding-transaction',
@@ -94,6 +95,10 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     this.livestockAdded = this.feedingTransactionService.add(feedingTransaction).subscribe(() => this.dataGrid.reload());
   }
 
+  public delete(feedingTransaction: FeedingTransaction) {
+    this.feedingTransactionService.delete(feedingTransaction);
+  }
+
   private init() {
     this.fetchAnimals();
     this.fetchFeedTypes();
@@ -153,6 +158,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     const colDef4 = new LsGridColumnDef();
     colDef4.description = 'Quantity';
     colDef4.field = 'quantity';
+    colDef4.width = 70;
     columnDefs.push(colDef4);
 
     const colDef5 = new LsGridColumnDef();
@@ -161,7 +167,16 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     colDef5.pipe = (item: any): string => {
        return this.getUnitPipe(item);
     };
+    colDef5.width = 50;
     columnDefs.push(colDef5);
+
+    const colDef6 = new LsGridColumnDef();
+    colDef6.description = '';
+    colDef6.field = 'delete';
+    colDef6.width = 25;
+    colDef6.type = LsGridColumnType.Delete;
+    colDef6.delete = this.delete;
+    columnDefs.push(colDef6);
 
     return columnDefs;
   }
