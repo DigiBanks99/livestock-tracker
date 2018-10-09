@@ -76,6 +76,11 @@ export class LsGridComponent implements OnInit, OnDestroy {
     return this.getConfig().columnDef;
   }
 
+  public getColumnDefIds(): Array<Object> {
+    const colDefs = this.getColumnDefs();
+    return colDefs.map(colDef => colDefs.indexOf(colDef));
+  }
+
   public getValueDisplay(item: any, colDef: LsGridColumnDef) {
     if (isNullOrUndefined(colDef.pipe)) {
       return item[colDef.field];
@@ -96,7 +101,7 @@ export class LsGridComponent implements OnInit, OnDestroy {
   public getQueryParams(item: any): Params {
     let paramsFunc = this.getConfig().queryParameters;
     if (!isFunction(paramsFunc)) {
-      paramsFunc = () => {};
+      paramsFunc = () => { };
     }
 
     return paramsFunc(item);

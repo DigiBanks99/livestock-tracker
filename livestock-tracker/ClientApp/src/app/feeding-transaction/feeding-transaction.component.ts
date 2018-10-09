@@ -119,17 +119,17 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   private fetchFeedTypes() {
     this.feedTypeService.getFeedTypes();
     this.feedTypesChanged = this.feedTypeService.feedTypesChanged
-    .subscribe((feedTypes: FeedType[]) => {
-      this.feedTypes = feedTypes.slice();
-    });
+      .subscribe((feedTypes: FeedType[]) => {
+        this.feedTypes = feedTypes.slice();
+      });
   }
 
   private fetchUnitTypes() {
     this.unitService.getUnits();
     this.unitTypesChanged = this.unitService.unitsChanged
-    .subscribe((units: Unit[]) => {
-      this.unitTypes = units.slice();
-    });
+      .subscribe((units: Unit[]) => {
+        this.unitTypes = units.slice();
+      });
   }
 
   private animalSelectorValueChanged(selectChanged: MatSelectChange) {
@@ -143,7 +143,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     colDef2.description = 'Feed';
     colDef2.field = 'feedID';
     colDef2.pipe = (item: any): string => {
-       return this.getFeedTypePipe(item);
+      return this.getFeedTypePipe(item);
     };
     columnDefs.push(colDef2);
 
@@ -165,7 +165,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     colDef5.description = 'Unit';
     colDef5.field = 'unitTypeCode';
     colDef5.pipe = (item: any): string => {
-       return this.getUnitPipe(item);
+      return this.getUnitPipe(item);
     };
     colDef5.width = 50;
     columnDefs.push(colDef5);
