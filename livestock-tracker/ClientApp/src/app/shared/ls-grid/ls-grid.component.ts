@@ -133,8 +133,8 @@ export class LsGridComponent implements OnInit, OnDestroy {
     this.callDataFetch(this.getConfig().dataService.page(pageEvent.pageSize, pageEvent.pageIndex));
   }
 
-  public onDelete(index: number, item: any) {
-    this.getColumnDef(index).handleDelete(item);
+  public onDelete(event: Event, index: number, item: any) {
+    this.getColumnDef(index).handleDelete(event, item);
   }
 
   public reload(): void {

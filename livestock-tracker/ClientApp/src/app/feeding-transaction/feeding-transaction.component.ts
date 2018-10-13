@@ -66,7 +66,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     config.dataService = this.feedingTransactionService;
     config.columnDef = this.getGridColumnDefs();
     config.useHeading = false;
-    config.fetchKey = this.currentAnimal;
+    config.fetchKey = this.currentAnimal.id;
     config.routerLink = ['edit'];
     config.queryParameters = (item: FeedingTransaction) => ({ id: item.id });
     return config;
@@ -175,7 +175,9 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     colDef6.field = 'delete';
     colDef6.width = 25;
     colDef6.type = LsGridColumnType.Delete;
-    colDef6.delete = (item: FeedingTransaction) => {
+    colDef6.delete = (event: Event, item: FeedingTransaction) => {
+      event.stopPropagation();
+      event.preventDefault();
       this.delete(item);
     };
     columnDefs.push(colDef6);

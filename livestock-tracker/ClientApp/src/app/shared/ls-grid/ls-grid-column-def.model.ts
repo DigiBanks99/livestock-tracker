@@ -29,9 +29,14 @@ export class LsGridColumnDef {
     return this.width + this.widthUnits;
   }
 
-  public handleDelete(item: any) {
+  public handleDelete(event: Event, item: any) {
     if (isFunction(this.delete)) {
-      this.delete(item);
+      const deleteFunc: Function = this.delete;
+      if (deleteFunc.length === 1) {
+        this.delete(item);
+      } else {
+        this.delete(event, item);
+      }
     }
   }
 
