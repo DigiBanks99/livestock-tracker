@@ -43,25 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\app\medical\medical-transaction.model.ts" />
-    <None Remove="ClientApp\src\app\medical\medical.service.ts" />
-    <None Remove="ClientApp\src\app\medical\medicine-type.model.ts" />
-    <None Remove="livestock.bak.db" />
-    <None Remove="livestock.db" />
-    <None Remove="livestock2.db" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\app\medical\medical.service.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\medical\medical-transaction.model.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\medical\medicine-type.model.ts" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ClientApp\src\app\shared\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
     <ProjectReference Include="..\livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj" />
     <ProjectReference Include="..\livestock-tracker.database\livestock-tracker.database.csproj" />
