@@ -29,7 +29,7 @@ export class LsGridColumnDef {
     return this.width + this.widthUnits;
   }
 
-  public defaultDelete(item: any) {
+  public handleDelete(item: any) {
     if (isFunction(this.delete)) {
       this.delete(item);
     }

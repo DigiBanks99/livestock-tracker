@@ -76,12 +76,17 @@ export class LsGridComponent implements OnInit, OnDestroy {
     return this.getConfig().columnDef;
   }
 
-  public getColumnDefIds(): Array<Object> {
+  public getColumnDefIndexes(): Array<Object> {
     const colDefs = this.getColumnDefs();
     return colDefs.map(colDef => colDefs.indexOf(colDef));
   }
 
-  public getValueDisplay(item: any, colDef: LsGridColumnDef) {
+  public getColumnDef(index: number): LsGridColumnDef {
+    return this.getColumnDefs()[index] || new LsGridColumnDef();
+  }
+
+  public getValueDisplay(item: any, index: number) {
+    const colDef = this.getColumnDef(index);
     if (isNullOrUndefined(colDef.pipe)) {
       return item[colDef.field];
     }
@@ -116,26 +121,32 @@ export class LsGridComponent implements OnInit, OnDestroy {
     return routerLinkActive;
   }
 
+  public getColumnTitle(index: number): string {
+    return this.getColumnDef(index).title;
+  }
+
+  public getColumnWidth(index: number): string {
+    return this.getColumnDef(index).getWidth();
+  }
+
   public onPage(pageEvent: PageEvent) {
     this.callDataFetch(this.getConfig().dataService.page(pageEvent.pageSize, pageEvent.pageIndex));
   }
 
-  public onDelete(colDef: LsGridColumnDef, item: any) {
-    if (isFunction(colDef.delete)) {
-      colDef.delete(item);
-    }
+  public onDelete(index: number, item: any) {
+    this.getColumnDef(index).handleDelete(item);
   }
 
   public reload(): void {
     this.fetchData();
   }
 
-  public isDisplayColumn(type: LsGridColumnType) {
-    return type === LsGridColumnType.DisplayOnly;
+  public isDisplayColumn(index: number) {
+    return this.getColumnDef(index).type === LsGridColumnType.DisplayOnly;
   }
 
-  public isDeleteColumn(type: LsGridColumnType) {
-    return type === LsGridColumnType.Delete;
+  public isDeleteColumn(index: number) {
+    return this.getColumnDef(index).type === LsGridColumnType.Delete;
   }
 
   private getConfig(): LsGridConfig {

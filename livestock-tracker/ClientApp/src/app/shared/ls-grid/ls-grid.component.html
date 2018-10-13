@@ -13,10 +13,10 @@
     <mat-list class="ls-grid-list mat-elevation-z1">
       <mat-list-item class="ls-grid-list-item" *ngFor="let item of getData()" [routerLink]="getRouterLink()" [queryParams]="getQueryParams(item)">
         <div class="ls-grid-list-item-container">
-          <span class="ls-grid-list-item-cell" *ngFor="let colDefId of getColumnDefIds()" [ngStyle]="{'width': getColumnDefs()[colDefId].getWidth()}">
-            <span *ngIf="isDisplayColumn(getColumnDefs()[colDefId].type)">{{getValueDisplay(item, getColumnDefs()[colDefId])}}</span>
-            <span *ngIf="isDeleteColumn(getColumnDefs()[colDefId].type)">
-              <button mat-icon-button (click)="onDelete(getColumnDefs()[colDefId], item)" [title]="getColumnDefs()[colDefId].getTitle()">
+          <span class="ls-grid-list-item-cell" *ngFor="let colDefIndex of getColumnDefIndexes()" [ngStyle]="{'width':getColumnWidth(colDefIndex)}">
+            <span *ngIf="isDisplayColumn(colDefIndex)">{{getValueDisplay(item,colDefIndex)}}</span>
+            <span *ngIf="isDeleteColumn(colDefIndex)">
+              <button mat-icon-button (click)="onDelete(colDefIndex, item)" [title]="getColumnTitle(colDefIndex)">
                 <mat-icon>delete</mat-icon>
               </button>
             </span>

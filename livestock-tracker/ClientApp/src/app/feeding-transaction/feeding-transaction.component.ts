@@ -41,9 +41,9 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   @ViewChild('animalSelector') animalSelector: MatSelect;
 
   constructor(private feedingTransactionService: FeedingTransactionService,
-    private livestockService: LivestockService,
-    private feedTypeService: FeedTypeService,
-    private unitService: UnitService) {
+              private livestockService: LivestockService,
+              private feedTypeService: FeedTypeService,
+              private unitService: UnitService) {
     this.livestockChanged = new Subscription();
     this.livestockAdded = new Subscription();
     this.animalSelectorChanged = new Subscription();
@@ -96,7 +96,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   }
 
   public delete(feedingTransaction: FeedingTransaction) {
-    this.feedingTransactionService.delete(feedingTransaction);
+    this.feedingTransactionService.delete(feedingTransaction).subscribe(() => this.dataGrid.reload());
   }
 
   private init() {
@@ -175,7 +175,9 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     colDef6.field = 'delete';
     colDef6.width = 25;
     colDef6.type = LsGridColumnType.Delete;
-    colDef6.delete = this.delete;
+    colDef6.delete = (item: FeedingTransaction) => {
+      this.delete(item);
+    };
     columnDefs.push(colDef6);
 
     return columnDefs;
