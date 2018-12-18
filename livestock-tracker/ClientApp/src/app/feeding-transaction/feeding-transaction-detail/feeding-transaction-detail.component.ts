@@ -1,19 +1,14 @@
 import { Component, OnInit, OnDestroy, DoCheck } from '@angular/core';
-import { ActivatedRoute } from '../../../../node_modules/@angular/router';
-import { map } from '../../../../node_modules/rxjs/operators';
-import { Subscription } from '../../../../node_modules/rxjs';
-import {
-  FormGroup,
-  FormControl,
-  Validators
-} from '../../../../node_modules/@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import * as moment from 'moment';
 import { FeedingTransactionService } from '../feeding-transaction.service';
 import { FeedingTransaction } from '../feeding-transaction.model';
 import { isNullOrUndefined } from 'util';
 import { LivestockService } from '../../livestock/livestock.service';
-import { AnimalStore } from '../../store/animal.store';
 import { Livestock } from '../../livestock/livestock.model';
 
 @Component({

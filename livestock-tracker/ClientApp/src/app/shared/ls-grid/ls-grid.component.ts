@@ -1,10 +1,10 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material';
-import { Subscription, Observable } from '../../../../node_modules/rxjs';
+import { Params } from '@angular/router';
+import { Subscription, Observable } from 'rxjs';
 import { isNullOrUndefined, isFunction } from 'util';
 import { LsGridConfig } from './ls-grid-config.model';
 import { LsGridColumnDef } from './ls-grid-column-def.model';
-import { Params } from '../../../../node_modules/@angular/router';
 import { LsGridColumnType } from './ls-grid-column-type.enum';
 
 @Component({

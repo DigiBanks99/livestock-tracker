@@ -1,13 +1,13 @@
 import { OnInit, Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Subject, Subscription, throwError } from 'rxjs';
+import { Subject, Subscription, throwError, Observable } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 
 import * as moment from 'moment';
 
-import { Livestock } from './livestock.model';
-import { LiveStockType } from './livestock-type.model';
-import { environment } from '../../environments/environment';
+import { Livestock } from '@app/livestock/livestock.model';
+import { LiveStockType } from '@app/livestock/livestock-type.model';
+import { environment } from '@env/environment';
 
 interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
@@ -44,18 +44,23 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
     this.editingStarted = new Subject<number>();
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   public getLivestock() {
     this.livestock = [];
 
-    this.httpGetSubscription = this.http.get<Livestock[]>(this.apiUrl + 'animal').subscribe((animals: Livestock[]) => {
-      for (const animal of animals) {
-        this.livestock.push(this.cloneAnimal(animal));
-        this.emitLivestockChanged();
-      }
-    });
+    this.httpGetSubscription = this.http
+      .get<Livestock[]>(this.apiUrl + 'animal')
+      .subscribe((animals: Livestock[]) => {
+        for (const animal of animals) {
+          this.livestock.push(this.cloneAnimal(animal));
+          this.emitLivestockChanged();
+        }
+      }, this.handleError);
+  }
+
+  public index(): Observable<Livestock[]> {
+    return this.http.get<Livestock[]>(this.apiUrl + 'animal');
   }
 
   public getLivestockType(typeNumber: number): LiveStockType {
@@ -82,9 +87,11 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
       throw Error('Item not found');
     }
 
-    const index = this.livestock.map((animal) => {
-      return animal.id;
-    }).indexOf(id);
+    const index = this.livestock
+      .map(animal => {
+        return animal.id;
+      })
+      .indexOf(id);
 
     if (index < 0) {
       throw Error('Item not found');
@@ -98,17 +105,21 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
       return;
     }
 
-    const index = this.livestock.map((animal) => {
-      return animal.id;
-    }).indexOf(id);
+    const index = this.livestock
+      .map(animal => {
+        return animal.id;
+      })
+      .indexOf(id);
 
     if (index < 0) {
       throw Error('Item not found');
     }
 
-    this.httpDeleteSubscription = this.http.delete(this.apiUrl + '/' + id).subscribe(() => {
-      this.getLivestock();
-    });
+    this.httpDeleteSubscription = this.http
+      .delete(this.apiUrl + '/' + id)
+      .subscribe(() => {
+        this.getLivestock();
+      });
   }
 
   public addAnimal(animal: Livestock) {
@@ -130,23 +141,29 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
     } else {
       animal.id = this.lastNewID--;
       this.livestock.push(animal);
-      this.httpPostSubscription = this.http.post(this.apiUrl + 'animal', animal).subscribe(() => {
-        this.getLivestock();
-      });
+      this.httpPostSubscription = this.http
+        .post(this.apiUrl + 'animal', animal)
+        .subscribe(() => {
+          this.getLivestock();
+        });
     }
   }
 
   public updateAnimal(animal: Livestock) {
-    const index = this.livestock.map((existingAnimal) => {
-      return existingAnimal.id;
-    }).indexOf(animal.id);
+    const index = this.livestock
+      .map(existingAnimal => {
+        return existingAnimal.id;
+      })
+      .indexOf(animal.id);
 
     if (index < 0) {
       throw new Error('Animal does not exist in list. Use addAnimal instead.');
     }
-    this.httpPutSubscription = this.http.put(this.apiUrl + 'animal', animal).subscribe(() => {
-      this.getLivestock();
-    });
+    this.httpPutSubscription = this.http
+      .put(this.apiUrl + 'animal', animal)
+      .subscribe(() => {
+        this.getLivestock();
+      });
   }
 
   public getSvgIcon(animal: Livestock): string {
@@ -219,18 +236,14 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
 
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
     } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
       console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+        `Back-end returned code ${error.status}, ` + `body was: ${error.error}`
+      );
     }
     // return an observable with a user-facing error message
-    return throwError(
-      'Something bad happened; please try again later.');
+    return throwError('Something bad happened; please try again later.');
   }
 
   ngOnDestroy() {
@@ -253,13 +266,30 @@ export class MockLivestockService implements ILivestockService {
       return null;
     }
 
-    return new Livestock(1, LiveStockType.Cattle, '', 0, new Date(), new Date(), 0, 0, 0, 0);
+    return new Livestock(
+      1,
+      LiveStockType.Cattle,
+      '',
+      0,
+      new Date(),
+      new Date(),
+      0,
+      0,
+      0,
+      0
+    );
   }
 
-  public removeLivestock(id: number) { }
-  public addAnimal(animal: Livestock) { }
-  public updateAnimal(animal: Livestock) { }
-  public getSvgIcon(animal: Livestock): string { return null; }
-  public getSvgIconByType(type: LiveStockType): string { return null; }
-  public getSvgIconByString(type: string): string { return null; }
+  public removeLivestock(id: number) {}
+  public addAnimal(animal: Livestock) {}
+  public updateAnimal(animal: Livestock) {}
+  public getSvgIcon(animal: Livestock): string {
+    return null;
+  }
+  public getSvgIconByType(type: LiveStockType): string {
+    return null;
+  }
+  public getSvgIconByString(type: string): string {
+    return null;
+  }
 }

@@ -1,5 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatSidenavModule, MatIconModule, MatToolbarModule, MatDividerModule, MatListModule, MatInputModule, MatCheckboxModule, MatFormFieldModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule, MatSnackBarModule } from '@angular/material';
+import {
+  MatSidenavModule,
+  MatIconModule,
+  MatToolbarModule,
+  MatDividerModule,
+  MatListModule,
+  MatInputModule,
+  MatCheckboxModule,
+  MatFormFieldModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatSelectModule,
+  MatSnackBarModule
+} from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -22,13 +35,14 @@ describe('LivestockComponent', () => {
         LivestockListComponent,
         LivestockDetailComponent
       ],
-      providers: [{ provide: LivestockService, useClass: MockLivestockService }],
+      providers: [
+        { provide: LivestockService, useClass: MockLivestockService }
+      ],
       imports: [
         MatSidenavModule,
         MatIconModule,
         MatToolbarModule,
         MatDividerModule,
-        MatListModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
         MatListModule,
@@ -43,11 +57,8 @@ describe('LivestockComponent', () => {
         MatSnackBarModule,
         FormsModule // required for MatCheckbox without forms
       ],
-      schemas: [
-        CUSTOM_ELEMENTS_SCHEMA
-      ]
-    })
-      .compileComponents();
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
   }));
 
   beforeEach(() => {
