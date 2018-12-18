@@ -4,8 +4,10 @@ import {
   ActionTypes,
   AddAnimal,
   RemoveAnimal,
-  SelectAnimal
+  SelectAnimal,
+  SetAnimals
 } from './animal.actions';
+import { map } from 'rxjs/operators';
 
 interface AnimalKeyValue {
   [key: string]: Livestock;
@@ -35,6 +37,11 @@ export function animals(state: State, action: Action): State {
         ...state,
         selectedAnimal: selectAnimal(state.selectedAnimal, <SelectAnimal>action)
       };
+    case ActionTypes.SET_ANIMALS:
+      return {
+        ...state,
+        animals: setAnimals(state.animals, <SetAnimals>action)
+      };
     default:
       return state;
   }
@@ -58,4 +65,13 @@ function removeAnimal(
 function selectAnimal(key: string, action: SelectAnimal): string {
   if (action.key === undefined) return key;
   return '' + action.key;
+}
+
+function setAnimals(animals: AnimalKeyValue, action: SetAnimals) {
+  let newState: AnimalKeyValue = {};
+  action.animals.map(animal => {
+    newState = { ...newState, [animal.id.toString()]: animal };
+    return animal;
+  });
+  return { ...newState };
 }

@@ -1,5 +1,10 @@
 import { animals, initialState } from './animal.reducers';
-import { AddAnimal, RemoveAnimal, SelectAnimal } from './animal.actions';
+import {
+  AddAnimal,
+  RemoveAnimal,
+  SelectAnimal,
+  SetAnimals
+} from './animal.actions';
 import { Livestock } from '../livestock/livestock.model';
 import { LiveStockType } from '../livestock/livestock-type.model';
 
@@ -223,5 +228,54 @@ describe('animals reducer', () => {
     selectAnimal3.key = '3';
     const state5 = animals(state4, selectAnimal3);
     expect(state5.selectedAnimal).toEqual('3');
+  });
+
+  it('should clear animals and set them to the key value object matching array passed in if the action type is SET_ANIMALS', () => {
+    const animal1 = new Livestock(
+      1,
+      LiveStockType.Cattle,
+      'fries',
+      1,
+      new Date(),
+      new Date(),
+      100,
+      0,
+      120,
+      1
+    );
+    const animal2 = new Livestock(
+      2,
+      LiveStockType.Chicken,
+      'black',
+      2,
+      new Date(),
+      new Date(),
+      20,
+      0,
+      1,
+      2
+    );
+    const animal3 = new Livestock(
+      3,
+      LiveStockType.Pig,
+      'fat',
+      3,
+      new Date(),
+      new Date(),
+      200,
+      0,
+      200,
+      3
+    );
+    const setAnimals1 = new SetAnimals([animal1, animal2, animal3]);
+    const state1 = animals(initialState, setAnimals1);
+    expect(state1.animals).toBeDefined();
+    expect(state1.animals).not.toBeNull();
+    expect(state1.animals['1']).toBeDefined();
+    expect(state1.animals['2']).toBeDefined();
+    expect(state1.animals['3']).toBeDefined();
+    expect(state1.animals['1'].type).toBe(LiveStockType.Cattle);
+    expect(state1.animals['2'].type).toBe(LiveStockType.Chicken);
+    expect(state1.animals['3'].type).toBe(LiveStockType.Pig);
   });
 });

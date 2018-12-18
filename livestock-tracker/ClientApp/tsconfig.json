@@ -13,7 +13,8 @@
     "baseUrl": "src",
     "paths": {
       "@app/*": ["app/*"],
-      "@env/*": ["environments/*"]
+      "@env/*": ["environments/*"],
+      "@animal-store/*": ["app/store/animal.*"]
     }
   }
 }
