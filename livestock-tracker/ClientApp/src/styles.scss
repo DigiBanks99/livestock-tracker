@@ -317,3 +317,80 @@ input.currency-input::-webkit-inner-spin-button {
     text-align: center;
   }
 }
+
+.form-detail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  flex-direction: column;
+
+  .form-detail-toolbar {
+    .form-detail-toolbar__header-top {
+      height: 30vh;
+    }
+
+    .form-detail-toolbar__nav {
+      .form-detail-toolbar__nav__desc {
+        .mat-icon {
+          padding-right: 4px;
+          background-color: $light-primary-text;
+        }
+
+        .form-detail-toolbar__nav__desc-text {
+          padding-left: 8px;
+        }
+      }
+    }
+  }
+
+  .form-detail-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    .form-detail-content__card {
+      position: relative;
+      top: -20vh;
+      margin: auto;
+      min-width: 40vw;
+      background-color: mat-color($candy-app-primary, 200);
+
+      .form-detail-content__card-content {
+        margin-bottom: 0;
+      }
+
+      .form-container-inline {
+        display: flex;
+
+        #sold {
+          padding-bottom: 1.34375em;;
+        }
+      }
+
+      .mat-form-field,
+      .mat-checkbox {
+        flex: 1 1 auto;
+        width: 50%;
+      }
+
+      .mat-form-field {
+        margin: 0 4px;
+      }
+
+      .mat-card-actions {
+        display: flex;
+      }
+
+      .mat-card-header .mat-card-header-text .mat-card-title {
+        .mat-icon {
+          background-color: mat-color($candy-app-accent, 400);
+          font-size: unset;
+        }
+      }
+    }
+  }
+}

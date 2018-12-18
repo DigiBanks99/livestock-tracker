@@ -2,21 +2,40 @@
   <div class="ls-grid-content">
     <mat-toolbar class="ls-grid-toolbar">
       <mat-toolbar-row class="ls-grid-heading" *ngIf="isHeadingVisible()">
-        <span>{{getHeading()}}</span>
+        <span>{{ getHeading() }}</span>
       </mat-toolbar-row>
       <mat-toolbar-row class="ls-grid-header">
-        <span *ngFor="let colDef of getColumnDefs()" class="ls-grid-header-cell" [ngStyle]="{'width': colDef.getWidth()}">
-          {{colDef.description}}
+        <span
+          *ngFor="let colDef of getColumnDefs()"
+          class="ls-grid-header-cell"
+          [ngStyle]="{ width: colDef.getWidth() }"
+        >
+          {{ colDef.description }}
         </span>
       </mat-toolbar-row>
     </mat-toolbar>
     <mat-list class="ls-grid-list mat-elevation-z1">
-      <mat-list-item class="ls-grid-list-item" *ngFor="let item of getData()" [routerLink]="getRouterLink()" [queryParams]="getQueryParams(item)">
+      <mat-list-item
+        class="ls-grid-list-item"
+        *ngFor="let item of getData()"
+        [routerLink]="getRouterLink()"
+        [queryParams]="getQueryParams(item)"
+      >
         <div class="ls-grid-list-item-container">
-          <span class="ls-grid-list-item-cell" *ngFor="let colDefIndex of getColumnDefIndexes()" [ngStyle]="{'width':getColumnWidth(colDefIndex)}">
-            <span *ngIf="isDisplayColumn(colDefIndex)">{{getValueDisplay(item,colDefIndex)}}</span>
+          <span
+            class="ls-grid-list-item-cell"
+            *ngFor="let colDefIndex of getColumnDefIndexes()"
+            [ngStyle]="{ width: getColumnWidth(colDefIndex) }"
+          >
+            <span *ngIf="isDisplayColumn(colDefIndex)">{{
+              getValueDisplay(item, colDefIndex)
+            }}</span>
             <span *ngIf="isDeleteColumn(colDefIndex)">
-              <button mat-icon-button (click)="onDelete($event, colDefIndex, item)" [title]="getColumnTitle(colDefIndex)">
+              <button
+                mat-icon-button
+                (click)="onDelete($event, colDefIndex, item)"
+                [title]="getColumnTitle(colDefIndex)"
+              >
                 <mat-icon>delete</mat-icon>
               </button>
             </span>
@@ -24,7 +43,12 @@
         </div>
         <mat-divider></mat-divider>
       </mat-list-item>
-      <mat-paginator [pageSize]="getPageSize()" [length]="getDataLength()" class="mat-accent-background" (page)="onPage($event)"></mat-paginator>
+      <mat-paginator
+        [pageSize]="getPageSize()"
+        [length]="getDataLength()"
+        class="mat-accent-background"
+        (page)="onPage($event)"
+      ></mat-paginator>
     </mat-list>
   </div>
 </div>

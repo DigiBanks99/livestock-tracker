@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, ViewChild, PipeTransform } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  PipeTransform
+} from '@angular/core';
 import { FeedingTransactionService } from './feeding-transaction.service';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -10,7 +16,10 @@ import { formatDate } from '../../../node_modules/@angular/common';
 import { Livestock } from '../livestock/livestock.model';
 import { LiveStockType } from '../livestock/livestock-type.model';
 import { LivestockService } from '../livestock/livestock.service';
-import { MatSelect, MatSelectChange } from '../../../node_modules/@angular/material';
+import {
+  MatSelect,
+  MatSelectChange
+} from '../../../node_modules/@angular/material';
 import { FeedTypeService } from '../feed-type/feed-type.service';
 import { FeedType } from '../feed-type/feed-type.model';
 import { isNullOrUndefined } from 'util';
@@ -40,10 +49,12 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   @ViewChild('data') dataGrid: LsGridComponent;
   @ViewChild('animalSelector') animalSelector: MatSelect;
 
-  constructor(private feedingTransactionService: FeedingTransactionService,
-              private livestockService: LivestockService,
-              private feedTypeService: FeedTypeService,
-              private unitService: UnitService) {
+  constructor(
+    private feedingTransactionService: FeedingTransactionService,
+    private livestockService: LivestockService,
+    private feedTypeService: FeedTypeService,
+    private unitService: UnitService
+  ) {
     this.livestockChanged = new Subscription();
     this.livestockAdded = new Subscription();
     this.animalSelectorChanged = new Subscription();
@@ -53,8 +64,21 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     this.feedingTransactions = [];
     this.feedTypes = [];
     this.unitTypes = [];
-    const utcNow = moment().utc().toDate();
-    this.currentAnimal = new Livestock(-99, LiveStockType.Cattle, null, 0, utcNow, utcNow, 0, 0, 0, 0);
+    const utcNow = moment()
+      .utc()
+      .toDate();
+    this.currentAnimal = new Livestock(
+      -99,
+      LiveStockType.Cattle,
+      null,
+      0,
+      utcNow,
+      utcNow,
+      0,
+      0,
+      0,
+      0
+    );
   }
 
   public ngOnInit(): void {
@@ -88,48 +112,59 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     this.dataGrid.config.fetchKey = animal.id;
     const feedingTransaction = new FeedingTransaction();
     feedingTransaction.animalID = animal.id;
-    feedingTransaction.transactionDate = moment().utc(false).toDate();
+    feedingTransaction.transactionDate = moment()
+      .utc(false)
+      .toDate();
     feedingTransaction.feedID = 1;
     feedingTransaction.quantity = 0;
     feedingTransaction.unitTypeCode = 1;
-    this.livestockAdded = this.feedingTransactionService.add(feedingTransaction).subscribe(() => this.dataGrid.reload());
+    this.livestockAdded = this.feedingTransactionService
+      .add(feedingTransaction)
+      .subscribe(() => this.dataGrid.reload());
   }
 
   public delete(feedingTransaction: FeedingTransaction) {
-    this.feedingTransactionService.delete(feedingTransaction).subscribe(() => this.dataGrid.reload());
+    this.feedingTransactionService
+      .delete(feedingTransaction)
+      .subscribe(() => this.dataGrid.reload());
   }
 
   private init() {
     this.fetchAnimals();
     this.fetchFeedTypes();
     this.fetchUnitTypes();
-    this.animalSelectorChanged = this.animalSelector.selectionChange
-      .subscribe((change: MatSelectChange) => this.animalSelectorValueChanged(change));
+    this.animalSelectorChanged = this.animalSelector.selectionChange.subscribe(
+      (change: MatSelectChange) => this.animalSelectorValueChanged(change)
+    );
   }
 
   private fetchAnimals() {
     this.animals = [];
-    this.livestockChanged = this.livestockService.livestockChanged.subscribe((animals: Livestock[]) => {
-      this.animals = animals;
-      this.setCurrentAnimal(this.animals[0]);
-    });
+    this.livestockChanged = this.livestockService.livestockChanged.subscribe(
+      (animals: Livestock[]) => {
+        this.animals = animals;
+        this.setCurrentAnimal(this.animals[0]);
+      }
+    );
     this.livestockService.getLivestock();
   }
 
   private fetchFeedTypes() {
     this.feedTypeService.getFeedTypes();
-    this.feedTypesChanged = this.feedTypeService.feedTypesChanged
-      .subscribe((feedTypes: FeedType[]) => {
+    this.feedTypesChanged = this.feedTypeService.feedTypesChanged.subscribe(
+      (feedTypes: FeedType[]) => {
         this.feedTypes = feedTypes.slice();
-      });
+      }
+    );
   }
 
   private fetchUnitTypes() {
     this.unitService.getUnits();
-    this.unitTypesChanged = this.unitService.unitsChanged
-      .subscribe((units: Unit[]) => {
+    this.unitTypesChanged = this.unitService.unitsChanged.subscribe(
+      (units: Unit[]) => {
         this.unitTypes = units.slice();
-      });
+      }
+    );
   }
 
   private animalSelectorValueChanged(selectChanged: MatSelectChange) {
@@ -195,7 +230,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
       this.feedTypes = [];
     }
 
-    const foundType = this.feedTypes.find((feedType) => feedType.id === id);
+    const foundType = this.feedTypes.find(feedType => feedType.id === id);
     if (isNullOrUndefined(foundType)) {
       return '';
     }
@@ -208,7 +243,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
       this.unitTypes = [];
     }
 
-    const foundType = this.unitTypes.find((unit) => unit.typeCode === id);
+    const foundType = this.unitTypes.find(unit => unit.typeCode === id);
     if (isNullOrUndefined(foundType)) {
       return '';
     }

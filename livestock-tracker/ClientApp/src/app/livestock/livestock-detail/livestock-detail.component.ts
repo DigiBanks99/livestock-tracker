@@ -199,13 +199,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['livestock']);
   }
 
-  public sell() {
+  public sell() {}
 
-  }
-
-  public kill() {
-
-  }
+  public kill() {}
 
   public showPrefix(elementID: string): boolean {
     if (isNullOrUndefined(elementID)) {
@@ -273,16 +269,18 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       subspecies: new FormControl(subspecies, []),
       number: new FormControl(number, [Validators.required]),
       birthDate: new FormControl(moment(birthDate), [Validators.required]),
-      purchaseDate: new FormControl(moment(purchaseDate), [Validators.required]),
+      purchaseDate: new FormControl(moment(purchaseDate), [
+        Validators.required
+      ]),
       purchasePrice: new FormControl(purchasePrice, [Validators.required]),
       arrivalWeight: new FormControl(arrivalWeight, [Validators.required]),
       batchNumber: new FormControl(batchNumber, [Validators.required]),
       sold: new FormControl(sold, [Validators.required]),
-      sellPrice: new FormControl({value: sellPrice, disabled: true }, []),
-      sellDate: new FormControl({value: sellDate, disabled: true }, []),
+      sellPrice: new FormControl({ value: sellPrice, disabled: true }, []),
+      sellDate: new FormControl({ value: sellDate, disabled: true }, []),
       age: new FormControl({ value: age, disabled: true }),
       deceased: new FormControl(deceased, [Validators.required]),
-      dateOfDeath: new FormControl({value: dateOfDeath, disabled: true }, [])
+      dateOfDeath: new FormControl({ value: dateOfDeath, disabled: true }, [])
     });
 
     this.updateSold(sold);
@@ -292,9 +290,22 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       .get('sold')
       .valueChanges.subscribe((value: boolean) => this.updateSold(value));
 
-    this.birthDateChanged = this.livestockForm.get('birthDate').valueChanges.subscribe((value: Date) => {
+    this.birthDateChanged = this.livestockForm
+      .get('birthDate')
+      .valueChanges.subscribe((value: Date) => {
         const ageCtrl = this.livestockForm.get('age');
-        const tempAnimal = new Livestock(0, LiveStockType.Cattle, null, 0, value, new Date(), null, null, null, null);
+        const tempAnimal = new Livestock(
+          0,
+          LiveStockType.Cattle,
+          null,
+          0,
+          value,
+          new Date(),
+          null,
+          null,
+          null,
+          null
+        );
         ageCtrl.setValue(tempAnimal.getAge());
         ageCtrl.updateValueAndValidity();
         ageCtrl.markAsTouched();
@@ -302,7 +313,9 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
 
     this.deceasedChanged = this.livestockForm
       .get('deceased')
-      .valueChanges.subscribe((value: boolean) => this.updateDateOfDeathCtrl(value));
+      .valueChanges.subscribe((value: boolean) =>
+        this.updateDateOfDeathCtrl(value)
+      );
   }
 
   private updateSold(value: boolean) {

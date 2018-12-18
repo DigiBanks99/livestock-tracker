@@ -1,34 +1,66 @@
-<form [formGroup]="feedForm">
-  <mat-toolbar>
+<form [formGroup]="feedForm" class="container form-detail app-background">
+  <mat-toolbar
+    color="primary"
+    class="form-detail-toolbar app-toolbar"
+    role="header"
+  >
     <mat-toolbar-row>
-      <mat-nav-list>
-        <a mat-list-item [routerLink]="['../']">
+      <mat-nav-list class="form-detail-toolbar__nav">
+        <a
+          mat-list-item
+          [routerLink]="['../']"
+          class="form-detail-toolbar__nav__icon-container"
+        >
           <mat-icon>arrow_back</mat-icon>
         </a>
-        <a mat-list-item matRippleDisabled>{{'TODO'}}</a>
+        <a
+          mat-list-item
+          matRippleDisabled
+          class="form-detail-toolbar__nav__desc"
+          >{{ getHeaderText() }}</a
+        >
       </mat-nav-list>
       <span class="fill-remaining-space"></span>
-      <button mat-icon-button type="button" title="Reset changes" [disabled]="!feedForm.dirty" (click)="resetForm()">
+      <button
+        mat-icon-button
+        type="button"
+        title="Reset changes"
+        [disabled]="!feedForm.dirty"
+        (click)="resetForm()"
+      >
         <mat-icon>cancel</mat-icon>
       </button>
-      <button mat-icon-button type="submit" title="Submit changes" [disabled]="!feedForm.dirty">
+      <button
+        mat-icon-button
+        type="submit"
+        title="Submit changes"
+        [disabled]="!feedForm.dirty"
+      >
         <mat-icon>save</mat-icon>
       </button>
     </mat-toolbar-row>
-    <mat-toolbar-row></mat-toolbar-row>
+    <mat-toolbar-row class="form-detail-toolbar__header-top">
+      <div class="form-detail-toolbar__header-top"></div>
+    </mat-toolbar-row>
   </mat-toolbar>
-  <div>
-    <mat-card>
+  <div class="form-detail-content">
+    <mat-card class="form-container form-detail-content__card">
       <mat-card-header>
         <mat-card-title>
-          {{'TODO'}}
+          <mat-icon [svgIcon]="getAnimalIcon()"></mat-icon>
         </mat-card-title>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content class="form-detail-content__card-content">
         <div class="form form-container-inline">
           <mat-form-field appearance="fill">
             <mat-label for="transactionDate">Transaction Date</mat-label>
-            <input id="transactionDate" formControlName="transactionDate" matInput [matDatepicker]="td" required>
+            <input
+              id="transactionDate"
+              formControlName="transactionDate"
+              matInput
+              [matDatepicker]="td"
+              required
+            />
             <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
             <mat-datepicker #td disabled="false"></mat-datepicker>
           </mat-form-field>

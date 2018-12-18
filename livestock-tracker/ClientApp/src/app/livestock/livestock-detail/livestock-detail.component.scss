@@ -1,5 +1,5 @@
-@import "~@angular/material/theming";
-@import "~/../../../../app-theme";
+@import '~@angular/material/theming';
+@import '~/../../../../app-theme';
 
 .livestock-detail-container {
   position: fixed;
@@ -52,7 +52,7 @@
       display: flex;
 
       #sold {
-        padding-bottom: 1.34375em;;
+        padding-bottom: 1.34375em;
       }
     }
 

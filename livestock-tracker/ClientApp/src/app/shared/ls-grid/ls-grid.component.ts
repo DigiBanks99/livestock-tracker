@@ -25,8 +25,7 @@ export class LsGridComponent implements OnInit, OnDestroy {
     this.loading = false;
   }
 
-  public ngOnInit(): void {
-  }
+  public ngOnInit(): void {}
 
   public getLoadingStatus() {
     return this.loading;
@@ -106,7 +105,7 @@ export class LsGridComponent implements OnInit, OnDestroy {
   public getQueryParams(item: any): Params {
     let paramsFunc = this.getConfig().queryParameters;
     if (!isFunction(paramsFunc)) {
-      paramsFunc = () => { };
+      paramsFunc = () => {};
     }
 
     return paramsFunc(item);
@@ -130,7 +129,9 @@ export class LsGridComponent implements OnInit, OnDestroy {
   }
 
   public onPage(pageEvent: PageEvent) {
-    this.callDataFetch(this.getConfig().dataService.page(pageEvent.pageSize, pageEvent.pageIndex));
+    this.callDataFetch(
+      this.getConfig().dataService.page(pageEvent.pageSize, pageEvent.pageIndex)
+    );
   }
 
   public onDelete(event: Event, index: number, item: any) {
@@ -158,7 +159,9 @@ export class LsGridComponent implements OnInit, OnDestroy {
   }
 
   private fetchData() {
-    this.callDataFetch(this.getConfig().dataService.get(this.getConfig().fetchKey));
+    this.callDataFetch(
+      this.getConfig().dataService.get(this.getConfig().fetchKey)
+    );
   }
 
   private addDataItem(item: any) {
@@ -174,8 +177,9 @@ export class LsGridComponent implements OnInit, OnDestroy {
     this.setLoadingStatus(true);
     this.dataChanged = observable.subscribe(
       (data: Object) => this.setData(data),
-      (error) => this.handleError(error),
-      () => this.setLoadingStatus(false));
+      error => this.handleError(error),
+      () => this.setLoadingStatus(false)
+    );
   }
 
   private handleError(error: any) {

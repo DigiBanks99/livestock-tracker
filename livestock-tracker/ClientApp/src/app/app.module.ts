@@ -20,7 +20,7 @@ import {
   MatCardModule,
   MatPaginatorModule,
   MatMenuModule
- } from '@angular/material';
+} from '@angular/material';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 import { AppComponent } from './app.component';
@@ -93,7 +93,13 @@ import { FeedingTransactionDetailComponent } from './feeding-transaction/feeding
     MatPaginatorModule,
     MatMenuModule
   ],
-  providers: [LivestockService, MedicalService, MedicineTypeService, FeedTypeService, FeedingTransactionService],
+  providers: [
+    LivestockService,
+    MedicalService,
+    MedicineTypeService,
+    FeedTypeService,
+    FeedingTransactionService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
