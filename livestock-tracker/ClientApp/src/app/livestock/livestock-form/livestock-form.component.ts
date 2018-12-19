@@ -7,8 +7,6 @@ import {
   OnChanges,
   OnDestroy
 } from '@angular/core';
-import { Livestock, getAge } from '@livestock/livestock.model';
-import { LiveStockType } from '@livestock/livestock-type.model';
 import {
   FormGroup,
   FormBuilder,
@@ -16,11 +14,12 @@ import {
   FormControl
 } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-
-import moment = require('moment');
+import * as moment from 'moment';
 import { Subscription } from 'rxjs';
-import { LivestockService } from '../livestock.service';
 import { isNullOrUndefined } from 'util';
+import { Livestock, getAge } from '@livestock/livestock.model';
+import { LiveStockType } from '@livestock/livestock-type.model';
+import { LivestockService } from '@livestock/livestock.service';
 
 const Constants = {
   Controls: {
