@@ -1,77 +1,83 @@
-import { Livestock } from '../livestock/livestock.model';
+import { Livestock } from '@livestock/livestock.model';
 import { Action } from '@ngrx/store';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import {
   ActionTypes,
   AddAnimal,
   RemoveAnimal,
   SelectAnimal,
-  SetAnimals
-} from './animal.actions';
-import { map } from 'rxjs/operators';
+  SetAnimals,
+  HandleFetchAnimalsError
+} from '@animal-store/actions';
 
-interface AnimalKeyValue {
-  [key: string]: Livestock;
+export const animalsAdapter = createEntityAdapter<Livestock>({
+  selectId: (animal: Livestock) => animal.id,
+  sortComparer: false
+});
+
+export interface State extends EntityState<Livestock> {
+  selectedAnimal: number;
+  error?: Error;
+  isFetching: boolean;
 }
 
-export interface State {
-  animals: AnimalKeyValue;
-  selectedAnimal: string;
-}
+export const initialState: State = animalsAdapter.getInitialState({
+  selectedAnimal: null,
+  error: null,
+  isFetching: false
+});
 
-export const initialState: State = {
-  animals: {},
-  selectedAnimal: null
-};
-
-export function animals(state: State, action: Action): State {
+export function animalsReducer(
+  state: State = initialState,
+  action: Action
+): State {
   switch (action.type) {
     case ActionTypes.ADD_ANIMAL:
-      return { ...state, animals: addAnimal(state.animals, <AddAnimal>action) };
+      return animalsAdapter.addOne((<AddAnimal>action).animal, state);
     case ActionTypes.REMOVE_ANIMAL:
-      return {
-        ...state,
-        animals: removeAnimal(state.animals, <RemoveAnimal>action)
-      };
+      return animalsAdapter.removeOne((<RemoveAnimal>action).key, state);
     case ActionTypes.SELECT_ANIMAL:
       return {
         ...state,
         selectedAnimal: selectAnimal(state.selectedAnimal, <SelectAnimal>action)
       };
-    case ActionTypes.SET_ANIMALS:
+    case ActionTypes.FETCH_ANIMALS:
       return {
         ...state,
-        animals: setAnimals(state.animals, <SetAnimals>action)
+        isFetching: true,
+        error: null
+      };
+    case ActionTypes.SET_ANIMALS:
+      const newState = animalsAdapter.addMany(
+        (<SetAnimals>action).animals,
+        state
+      );
+      return {
+        ...newState,
+        isFetching: false,
+        error: null
+      };
+    case ActionTypes.HANDLE_FETCH_ANIMALS_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        error: handleFetchAnimalsError(state.error, <HandleFetchAnimalsError>(
+          action
+        ))
       };
     default:
       return state;
   }
 }
 
-function addAnimal(animals: AnimalKeyValue, action: AddAnimal): AnimalKeyValue {
-  return { ...animals, [action.animal.id.toString()]: action.animal };
-}
-
-function removeAnimal(
-  animals: AnimalKeyValue,
-  action: RemoveAnimal
-): AnimalKeyValue {
-  const newState = Object.assign({}, animals, {});
-
-  delete newState[action.key];
-
-  return newState;
-}
-
-function selectAnimal(key: string, action: SelectAnimal): string {
+function selectAnimal(key: number, action: SelectAnimal): number {
   if (action.key === undefined) return key;
-  return '' + action.key;
+  return 0 + action.key;
 }
 
-function setAnimals(animals: AnimalKeyValue, action: SetAnimals) {
-  let newState: AnimalKeyValue = {};
-  action.animals.map(animal => {
-    newState = { ...newState, [animal.id.toString()]: animal };
-    return animal;
-  });
-  return { ...newState };
+function handleFetchAnimalsError(
+  error: Error,
+  action: HandleFetchAnimalsError
+): Error {
+  return { ...action.error };
 }

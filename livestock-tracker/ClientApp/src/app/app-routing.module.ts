@@ -1,16 +1,16 @@
 import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
-import { HomeComponent } from './home/home.component';
-import { LivestockDetailComponent } from './livestock/livestock-detail/livestock-detail.component';
-import { LivestockComponent } from './livestock/livestock.component';
-import { ReportsComponent } from './reports/reports.component';
-import { MedicalComponent } from './medical/medical.component';
-import { MedicineTypeComponent } from './medical/medicine-type/medicine-type.component';
-import { UnitComponent } from './unit/unit.component';
-import { FeedTypeComponent } from './feed-type/feed-type.component';
-import { FeedingTransactionComponent } from './feeding-transaction/feeding-transaction.component';
-import { FeedingTransactionDetailComponent } from './feeding-transaction/feeding-transaction-detail/feeding-transaction-detail.component';
+import { HomeComponent } from '@home/home.component';
+import { LivestockDetailComponent } from '@livestock/livestock-detail/livestock-detail.component';
+import { LivestockComponent } from '@livestock/livestock.component';
+import { ReportsComponent } from '@reports/reports.component';
+import { MedicalComponent } from '@medical/medical.component';
+import { MedicineTypeComponent } from '@medical/medicine-type/medicine-type.component';
+import { UnitComponent } from '@unit/unit.component';
+import { FeedTypeComponent } from '@feed-type/feed-type.component';
+import { FeedingTransactionComponent } from '@feeding-transaction/feeding-transaction.component';
+import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-transaction-detail/feeding-transaction-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,7 +20,7 @@ const routes: Routes = [
     component: LivestockComponent,
     children: [
       { path: 'new', component: LivestockDetailComponent },
-      { path: 'edit', component: LivestockDetailComponent },
+      { path: 'edit', component: LivestockDetailComponent }
     ]
   },
   { path: 'medical', component: MedicalComponent },
@@ -42,4 +42,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

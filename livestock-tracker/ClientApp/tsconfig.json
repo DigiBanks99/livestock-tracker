@@ -14,7 +14,18 @@
     "paths": {
       "@app/*": ["app/*"],
       "@env/*": ["environments/*"],
-      "@animal-store/*": ["app/store/animal.*"]
+      "@animal-store/*": ["app/store/animal.*"],
+      "@store": ["app/store/index.ts"],
+      "@livestock/*": ["app/livestock/*"],
+      "@admin/*": ["app/admin/*"],
+      "@feed-type/*": ["app/feed-type/*"],
+      "@feeding-transaction/*": ["app/feeding-transaction/*"],
+      "@home/*": ["app/home/*"],
+      "@header/*": ["app/header/*"],
+      "@medical/*": ["app/medical/*"],
+      "@reports/*": ["app/reports/*"],
+      "@shared/*": ["app/shared/*"],
+      "@unit/*": ["app/unit/*"]
     }
   }
 }

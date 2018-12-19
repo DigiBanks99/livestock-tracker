@@ -1,11 +1,11 @@
 import { Effect, Actions, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs';
 import { Action } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { LivestockService } from '@app/livestock/livestock.service';
 import { ActionTypes, FetchAnimals, SetAnimals } from '@animal-store/actions';
 import { startWith, switchMap, map } from 'rxjs/operators';
-import { Livestock } from '@app/livestock/livestock.model';
+import { LivestockService } from '@livestock/livestock.service';
+import { Livestock } from '@livestock/livestock.model';
 
 @Injectable()
 export class AnimalEffects {
