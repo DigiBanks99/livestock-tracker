@@ -54,6 +54,7 @@ import { LsGridComponent } from '@shared/ls-grid/ls-grid.component';
 import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-transaction-detail/feeding-transaction-detail.component';
 import { AnimalSelectContainerComponent } from '@shared/animal-select/animal-select-container.component';
 import { AnimalSelectComponent } from '@shared/animal-select/animal-select.component';
+import { LivestockFormComponent } from '@livestock/livestock-form/livestock-form.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AnimalSelectComponent } from '@shared/animal-select/animal-select.compo
     LivestockListComponent,
     LivestockDetailComponent,
     LivestockDetailContainerComponent,
+    LivestockFormComponent,
     MedicalComponent,
     MedicalTransactionComponent,
     UnitComponent,

@@ -62,7 +62,7 @@ export class LivestockComponent implements OnInit, OnDestroy {
   }
 
   public addAnimal() {
-    this.router.navigate(['new']);
+    this.router.navigate(['/livestock', 'new']);
   }
 
   public onActivate(event: any) {

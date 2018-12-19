@@ -74,6 +74,10 @@ export class LivestockDetailComponent implements OnInit, OnDestroy, OnChanges {
     this.initForm();
   }
 
+  public onSave(animal: Livestock) {
+    console.log(`saving ${animal.number}`);
+  }
+
   public reset() {
     let type = LiveStockType.Cattle;
     let subspecies: string = null;
@@ -103,7 +107,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy, OnChanges {
       batchNumber = animal.batchNumber;
       sellPrice = animal.sellPrice;
       sold = animal.sold;
-      age = getAge(animal);
+      age = getAge(animal.birthDate);
       sellDate = animal.sellDate;
       deceased = animal.deceased;
       dateOfDeath = animal.dateOfDeath;
@@ -251,7 +255,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy, OnChanges {
       batchNumber = animal.batchNumber;
       sellPrice = animal.sellPrice;
       sold = animal.sold;
-      age = getAge(animal);
+      age = getAge(animal.birthDate);
       sellDate = animal.sellDate;
       deceased = animal.deceased;
       dateOfDeath = animal.dateOfDeath;
@@ -303,7 +307,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy, OnChanges {
           null,
           null
         );
-        ageCtrl.setValue(getAge(tempAnimal));
+        ageCtrl.setValue(getAge(tempAnimal.birthDate));
         ageCtrl.updateValueAndValidity();
         ageCtrl.markAsTouched();
       });
@@ -315,7 +319,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy, OnChanges {
       );
   }
 
-  public navigateBack() {
+  public onNavigateBack() {
     this.location.back();
   }
 

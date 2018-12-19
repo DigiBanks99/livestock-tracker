@@ -59,13 +59,9 @@ function daysInMonth(month, year): number {
   return date.getDate();
 }
 
-export function getAge(animal: Livestock): string {
-  if (animal === null || animal === undefined) {
-    return '0 days';
-  }
-
+export function getAge(animalBirthDate: Date): string {
   const today = moment();
-  const birthDate = moment(animal.birthDate);
+  const birthDate = moment(animalBirthDate);
   let year = today.year() - birthDate.year();
   let month = today.month() - birthDate.month();
   let day = today.date() - birthDate.date();

@@ -47,6 +47,6 @@ export class LivestockListComponent implements OnInit {
   public onPage(pageEvent: PageEvent) {}
 
   public getAge(animal: Livestock): string {
-    return getAnimalAge(animal);
+    return getAnimalAge(animal.birthDate);
   }
 }

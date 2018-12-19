@@ -18,7 +18,7 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model)).toBe('0 days');
+    expect(getAge(model.birthDate)).toBe('0 days');
   });
 
   it('#getAge should return 1 day', () => {
@@ -47,7 +47,7 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model)).toBe('1 day');
+    expect(getAge(model.birthDate)).toBe('1 day');
   });
 
   it('#getAge should return 27 days', () => {
@@ -76,7 +76,7 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model)).toBe('27 days');
+    expect(getAge(model.birthDate)).toBe('27 days');
   });
 
   it('#getAge should return 1 year', () => {
@@ -102,7 +102,7 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model)).toBe('1 year');
+    expect(getAge(model.birthDate)).toBe('1 year');
   });
 
   it('#getAge should return 1 year 4 months', () => {
@@ -128,7 +128,7 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model)).toBe('1 year 4 months');
+    expect(getAge(model.birthDate)).toBe('1 year 4 months');
   });
 
   it('#getAge should return 1 year 4 months 3 days', () => {
@@ -157,7 +157,7 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model)).toBe('1 year 4 months 3 days');
+    expect(getAge(model.birthDate)).toBe('1 year 4 months 3 days');
   });
 
   it('#getAge should return 4 months 1 day', () => {
@@ -186,7 +186,7 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model)).toBe('4 months 1 day');
+    expect(getAge(model.birthDate)).toBe('4 months 1 day');
   });
 
   it('#getAge should return 1 month 12 days', () => {
@@ -215,6 +215,6 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model)).toBe('1 month 12 days');
+    expect(getAge(model.birthDate)).toBe('1 month 12 days');
   });
 });
