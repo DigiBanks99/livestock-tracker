@@ -20,7 +20,7 @@ const routes: Routes = [
     component: LivestockComponent,
     children: [
       { path: 'new', component: LivestockDetailComponent },
-      { path: 'edit', component: LivestockDetailComponent }
+      { path: ':id/edit', component: LivestockDetailComponent }
     ]
   },
   { path: 'medical', component: MedicalComponent },

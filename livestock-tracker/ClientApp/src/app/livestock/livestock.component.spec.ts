@@ -23,6 +23,8 @@ import { LivestockComponent } from './livestock.component';
 import { LivestockListComponent } from './livestock-list/livestock-list.component';
 import { LivestockDetailComponent } from './livestock-detail/livestock-detail.component';
 import { LivestockService, MockLivestockService } from './livestock.service';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from '@app/store';
 
 describe('LivestockComponent', () => {
   let component: LivestockComponent;
@@ -55,7 +57,8 @@ describe('LivestockComponent', () => {
         HttpClientModule,
         RouterTestingModule,
         MatSnackBarModule,
-        FormsModule // required for MatCheckbox without forms
+        FormsModule, // required for MatCheckbox without forms
+        StoreModule.forRoot(reducers)
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();

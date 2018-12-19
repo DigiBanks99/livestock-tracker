@@ -1,1 +1,5 @@
-<app-livestock-list [livestockList]="animals$ | async"></app-livestock-list>
+<app-livestock-list
+  [livestockList]="animals$ | async"
+  (remove)="deleteAnimal($event)"
+  (showDetail)="showDetail($event)"
+></app-livestock-list>

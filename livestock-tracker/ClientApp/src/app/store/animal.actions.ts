@@ -4,6 +4,7 @@ import { Livestock } from '@livestock/livestock.model';
 export enum ActionTypes {
   ADD_ANIMAL = 'ADD_ANIMAL',
   REMOVE_ANIMAL = 'REMOVE_ANIMAL',
+  REMOVE_ANIMAL_SUCCESS = 'REMOVE_ANIMAL_SUCCESS',
   SELECT_ANIMAL = 'SELECT_ANIMAL',
   FETCH_ANIMALS = 'FETCH_ANIMALS',
   SET_ANIMALS = 'SET_ANIMALS',
@@ -18,11 +19,28 @@ export class AddAnimal implements Action {
 export class RemoveAnimal implements Action {
   readonly type = ActionTypes.REMOVE_ANIMAL;
   key: number;
+
+  constructor(id: number) {
+    this.key = id;
+  }
+}
+
+export class RemoveAnimalSucceeded implements Action {
+  readonly type = ActionTypes.REMOVE_ANIMAL_SUCCESS;
+  key: number;
+
+  constructor(id: number) {
+    this.key = id;
+  }
 }
 
 export class SelectAnimal implements Action {
   readonly type = ActionTypes.SELECT_ANIMAL;
   key: number;
+
+  constructor(id: number) {
+    this.key = id;
+  }
 }
 
 export class FetchAnimals implements Action {

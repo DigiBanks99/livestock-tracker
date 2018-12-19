@@ -34,7 +34,7 @@ export function animalsReducer(
   switch (action.type) {
     case ActionTypes.ADD_ANIMAL:
       return animalsAdapter.addOne((<AddAnimal>action).animal, state);
-    case ActionTypes.REMOVE_ANIMAL:
+    case ActionTypes.REMOVE_ANIMAL_SUCCESS:
       return animalsAdapter.removeOne((<RemoveAnimal>action).key, state);
     case ActionTypes.SELECT_ANIMAL:
       return {

@@ -1,6 +1,6 @@
 import { OnInit, Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Subject, Subscription, throwError, Observable } from 'rxjs';
+import { Subject, Subscription, throwError, Observable, from, of } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 
 import * as moment from 'moment';
@@ -13,9 +13,10 @@ interface ILivestockService {
   livestockChanged: Subject<Livestock[]>;
   editingStarted: Subject<number>;
 
+  index(): Observable<Livestock[]>;
   getLivestock();
   getAnimal(id: number): Livestock;
-  removeLivestock(id: number);
+  removeLivestock(id: number): Observable<Livestock>;
   addAnimal(animal: Livestock);
   updateAnimal(animal: Livestock);
   getSvgIcon(animal: Livestock): string;
@@ -100,26 +101,8 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
     return this.livestock.slice()[index];
   }
 
-  public removeLivestock(id: number) {
-    if (this.livestock.length === 0) {
-      return;
-    }
-
-    const index = this.livestock
-      .map(animal => {
-        return animal.id;
-      })
-      .indexOf(id);
-
-    if (index < 0) {
-      throw Error('Item not found');
-    }
-
-    this.httpDeleteSubscription = this.http
-      .delete(this.apiUrl + '/' + id)
-      .subscribe(() => {
-        this.getLivestock();
-      });
+  public removeLivestock(id: number): Observable<any> {
+    return this.http.delete(this.apiUrl + '/' + id);
   }
 
   public addAnimal(animal: Livestock) {
@@ -257,6 +240,11 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
 export class MockLivestockService implements ILivestockService {
   public livestockChanged = new Subject<Livestock[]>();
   public editingStarted = new Subject<number>();
+
+  public index(): Observable<Livestock[]> {
+    return of([]);
+  }
+
   public getLivestock(): Livestock[] {
     return [];
   }
@@ -280,7 +268,9 @@ export class MockLivestockService implements ILivestockService {
     );
   }
 
-  public removeLivestock(id: number) {}
+  public removeLivestock(id: number): Observable<Livestock> {
+    return from(null);
+  }
   public addAnimal(animal: Livestock) {}
   public updateAnimal(animal: Livestock) {}
   public getSvgIcon(animal: Livestock): string {

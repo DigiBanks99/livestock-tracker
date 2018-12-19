@@ -10,6 +10,7 @@ import {
   getFetchAnimalsError,
   getSelectedAnimal
 } from '@app/store';
+import { RemoveAnimal, SelectAnimal } from '@app/store/animal.actions';
 
 @Component({
   selector: 'app-livestock',
@@ -26,22 +27,34 @@ export class LivestockComponent implements OnInit {
 
   constructor(private store: Store<State>, private router: Router) {}
 
-  ngOnInit() {
+  public ngOnInit() {
     this.animals$ = this.store.pipe(select(getAnimals));
     this.selectedAnimal$ = this.store.pipe(select(getSelectedAnimal));
     this.isFetching$ = this.store.pipe(select(getFetchAnimalsPendingState));
     this.error$ = this.store.pipe(select(getFetchAnimalsError));
   }
 
+  public deleteAnimal(animal: Livestock) {
+    const r = confirm('Are you sure?');
+    if (r) {
+      this.store.dispatch(new RemoveAnimal(animal.id));
+    }
+  }
+
+  public showDetail(id: number) {
+    this.store.dispatch(new SelectAnimal(id));
+    this.router.navigate(['/livestock', id, 'edit']);
+  }
+
   public onAddAnimal() {
     this.router.navigate(['new']);
   }
 
-  onActivate(event: any) {
+  public onActivate(event: any) {
     this.showLandingPage = false;
   }
 
-  onDeactivate(event: any) {
+  public onDeactivate(event: any) {
     this.showLandingPage = true;
   }
 }

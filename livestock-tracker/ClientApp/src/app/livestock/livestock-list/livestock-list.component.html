@@ -10,9 +10,7 @@
       class="livestock-item-list__item"
       *ngFor="let animal of livestockList; let i = index"
       mat-ripple
-      [routerLink]="['edit']"
-      [queryParams]="{ id: animal.id }"
-      [routerLinkActive]="['livestock-item-list__item-active']"
+      (click)="onEditItem(animal.id)"
     >
       <span class="livestock-card__type">
         <mat-icon

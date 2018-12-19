@@ -96,7 +96,7 @@ import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-
     MatCardModule,
     MatPaginatorModule,
     MatMenuModule,
-    getStoreModules(),
+    StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AnimalEffects])
   ],
   providers: [
@@ -109,7 +109,3 @@ import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-
-function getStoreModules(): ModuleWithProviders {
-  return StoreModule.forRoot(reducers);
-}

@@ -1,9 +1,9 @@
 import { animalsReducer, initialState } from './animal.reducers';
 import {
   AddAnimal,
-  RemoveAnimal,
   SelectAnimal,
-  SetAnimals
+  SetAnimals,
+  RemoveAnimalSucceeded
 } from './animal.actions';
 import { Livestock } from '../livestock/livestock.model';
 import { LiveStockType } from '../livestock/livestock-type.model';
@@ -97,7 +97,7 @@ describe('animals reducer', () => {
     expect(state3.entities[3].type).toBe(LiveStockType.Pig);
   });
 
-  it('should remove the animal with the provided key if the action is of type REMOVE_ANIMAL', () => {
+  it('should remove the animal with the provided key if the action is of type REMOVE_ANIMAL_SUCCESS', () => {
     const animal1 = new Livestock(
       1,
       LiveStockType.Cattle,
@@ -146,22 +146,20 @@ describe('animals reducer', () => {
     addAnimalTask3.animal = animal3;
     const state3 = animalsReducer(state2, addAnimalTask3);
 
-    const removeAnimal2 = new RemoveAnimal();
-    removeAnimal2.key = 2;
+    const removeAnimal2 = new RemoveAnimalSucceeded(2);
     const state4 = animalsReducer(state3, removeAnimal2);
     expect(state4.entities[2]).toBeUndefined();
     expect(state4.entities[1]).toBeDefined();
     expect(state4.entities[3]).toBeDefined();
 
-    const removeAnimal1 = new RemoveAnimal();
+    const removeAnimal1 = new RemoveAnimalSucceeded(1);
     removeAnimal1.key = 1;
     const state5 = animalsReducer(state4, removeAnimal1);
     expect(state5.entities[2]).toBeUndefined();
     expect(state5.entities[1]).toBeUndefined();
     expect(state5.entities[3]).toBeDefined();
 
-    const removeAnimal3 = new RemoveAnimal();
-    removeAnimal3.key = 3;
+    const removeAnimal3 = new RemoveAnimalSucceeded(3);
     const state6 = animalsReducer(state5, removeAnimal3);
     expect(state6.entities[2]).toBeUndefined();
     expect(state6.entities[1]).toBeUndefined();
@@ -219,13 +217,11 @@ describe('animals reducer', () => {
     addAnimalTask3.animal = animal3;
     const state3 = animalsReducer(state2, addAnimalTask3);
 
-    const selectAnimal2 = new SelectAnimal();
-    selectAnimal2.key = 2;
+    const selectAnimal2 = new SelectAnimal(2);
     const state4 = animalsReducer(state3, selectAnimal2);
     expect(state4.selectedAnimal).toEqual(2);
 
-    const selectAnimal3 = new SelectAnimal();
-    selectAnimal3.key = 3;
+    const selectAnimal3 = new SelectAnimal(3);
     const state5 = animalsReducer(state4, selectAnimal3);
     expect(state5.selectedAnimal).toEqual(3);
   });

@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { MatListOption, PageEvent } from '@angular/material';
-import { Router, NavigationExtras } from '@angular/router';
 import { LivestockService } from '@livestock/livestock.service';
 import {
   Livestock,
@@ -13,15 +12,14 @@ import { environment } from '@env/environment';
   templateUrl: './livestock-list.component.html',
   styleUrls: ['./livestock-list.component.scss']
 })
-export class LivestockListComponent implements OnInit, OnDestroy {
+export class LivestockListComponent implements OnInit {
   @Input() public livestockList: Livestock[];
+  @Output() public remove = new EventEmitter<Livestock>();
+  @Output() public showDetail = new EventEmitter<number>();
 
   public pageSize: number;
 
-  constructor(
-    private livestockService: LivestockService,
-    private router: Router
-  ) {}
+  constructor(private livestockService: LivestockService) {}
 
   ngOnInit() {
     this.pageSize = environment.pageSize;
@@ -32,28 +30,13 @@ export class LivestockListComponent implements OnInit, OnDestroy {
   }
 
   public removeLivestock(selectedItems: MatListOption[]) {
-    try {
-      for (const item of selectedItems) {
-        this.livestockService.removeLivestock(item.value);
-      }
-    } catch (error) {
-      console.error(error);
+    for (const item of selectedItems) {
+      this.remove.emit(item.value);
     }
   }
 
   public onEditItem(id: number) {
-    try {
-      const navigationExtras: NavigationExtras = {
-        queryParams: { id: id }
-      };
-      this.router.navigate(['edit'], navigationExtras);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  public onAddAnimal() {
-    this.router.navigate(['/livestock', 'new']);
+    this.showDetail.emit(id);
   }
 
   public onPage(pageEvent: PageEvent) {}
@@ -61,6 +44,4 @@ export class LivestockListComponent implements OnInit, OnDestroy {
   public getAge(animal: Livestock): string {
     return getAnimalAge(animal);
   }
-
-  ngOnDestroy() {}
 }
