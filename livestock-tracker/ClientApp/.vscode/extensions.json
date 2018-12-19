@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "Angular.ng-template",
+    "EditorConfig.EditorConfig",
+    "eg2.tslint",
+    "esbenp.prettier-vscode",
+    "msjsdiag.debugger-for-chrome",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}

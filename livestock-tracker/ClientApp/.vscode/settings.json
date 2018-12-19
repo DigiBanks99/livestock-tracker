@@ -3,5 +3,5 @@
     "titleBar.activeBackground": "#a71cb9",
     "titleBar.activeForeground": "#ffffff"
   },
-  "cSpell.words": ["ngrx", "injectable"]
+  "cSpell.words": ["ngrx", "injectable", "validators"]
 }
