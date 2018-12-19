@@ -2,4 +2,7 @@
   [livestockList]="animals$ | async"
   (remove)="deleteAnimal($event)"
   (showDetail)="showDetail($event)"
+  (addAnimal)="addAnimal()"
 ></app-livestock-list>
+
+<router-outlet></router-outlet>

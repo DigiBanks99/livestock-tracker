@@ -16,7 +16,7 @@ export const {
   selectEntities: getAnimalsEntities
 } = animalsAdapter.getSelectors(getAnimalsState);
 
-export const getSelectedAnimal = createSelector(
+export const getSelectedAnimalId = createSelector(
   getAnimalsState,
   state => state.selectedAnimal
 );
@@ -29,4 +29,10 @@ export const getFetchAnimalsPendingState = createSelector(
 export const getFetchAnimalsError = createSelector(
   getAnimalsState,
   state => state.error
+);
+
+export const getSelectedAnimal = createSelector(
+  getAnimalsEntities,
+  getSelectedAnimalId,
+  (entities, id) => entities[id]
 );

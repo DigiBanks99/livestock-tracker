@@ -35,6 +35,7 @@ import { LivestockComponent } from '@livestock/livestock.component';
 import { ReportsComponent } from '@reports/reports.component';
 import { LivestockListComponent } from '@livestock/livestock-list/livestock-list.component';
 import { LivestockDetailComponent } from '@livestock/livestock-detail/livestock-detail.component';
+import { LivestockDetailContainerComponent } from '@livestock/livestock-detail/livestock-detail-container.component';
 import { LivestockService } from '@livestock/livestock.service';
 import { MedicalComponent } from '@medical/medical.component';
 import { MedicalService } from '@medical/medical.service';
@@ -51,6 +52,9 @@ import { FeedingTransactionComponent } from '@feeding-transaction/feeding-transa
 import { FeedingTransactionService } from '@feeding-transaction/feeding-transaction.service';
 import { LsGridComponent } from '@shared/ls-grid/ls-grid.component';
 import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-transaction-detail/feeding-transaction-detail.component';
+import { AnimalSelectContainerComponent } from '@shared/animal-select/animal-select-container.component';
+import { AnimalSelectComponent } from '@shared/animal-select/animal-select.component';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +64,7 @@ import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-
     ReportsComponent,
     LivestockListComponent,
     LivestockDetailComponent,
+    LivestockDetailContainerComponent,
     MedicalComponent,
     MedicalTransactionComponent,
     UnitComponent,
@@ -70,7 +75,9 @@ import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-
     FeedTypeDetailComponent,
     FeedingTransactionComponent,
     LsGridComponent,
-    FeedingTransactionDetailComponent
+    FeedingTransactionDetailComponent,
+    AnimalSelectContainerComponent,
+    AnimalSelectComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

@@ -1,8 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 
 //@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "~@angular/material/theming";
-@import "~/../app-theme.scss";
+@import '~@angular/material/theming';
+@import '~/../app-theme.scss';
 @include mat-core();
 html {
   overflow: hidden;
@@ -125,9 +125,9 @@ input.currency-input::-webkit-inner-spin-button {
 .mat-accent-background,
 *.mat-accent-background {
   background-color: mat-color($candy-app-accent);
-  color: mat-color($candy-app-accent, "50-contrast");
+  color: mat-color($candy-app-accent, '50-contrast');
   .mat-icon {
-    color: mat-color($candy-app-accent, "50-contrast");
+    color: mat-color($candy-app-accent, '50-contrast');
   }
 }
 
@@ -215,7 +215,7 @@ input.currency-input::-webkit-inner-spin-button {
       position: relative;
       flex: 1;
 
-      >.mat-list-item-content {
+      > .mat-list-item-content {
         flex: 1;
       }
 
@@ -230,7 +230,7 @@ input.currency-input::-webkit-inner-spin-button {
 
       .card-list-item-actions {
         max-width: 48px;
-        margin-top: 16px
+        margin-top: 16px;
       }
 
       .mat-icon {
@@ -312,7 +312,10 @@ input.currency-input::-webkit-inner-spin-button {
     width: 100%;
   }
 
-  .ls-grid-list .ls-grid-list-item .ls-grid-list-item-container .ls-grid-list-item-cell {
+  .ls-grid-list
+    .ls-grid-list-item
+    .ls-grid-list-item-container
+    .ls-grid-list-item-cell {
     display: table-cell;
     text-align: center;
   }
@@ -367,7 +370,7 @@ input.currency-input::-webkit-inner-spin-button {
         display: flex;
 
         #sold {
-          padding-bottom: 1.34375em;;
+          padding-bottom: 1.34375em;
         }
       }
 
@@ -392,5 +395,15 @@ input.currency-input::-webkit-inner-spin-button {
         }
       }
     }
+  }
+}
+
+app-animal-select-container {
+  display: flex;
+  flex: 1;
+
+  app-animal-select {
+    display: flex;
+    flex: 1;
   }
 }

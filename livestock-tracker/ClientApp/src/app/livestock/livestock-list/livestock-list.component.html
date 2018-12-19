@@ -10,7 +10,7 @@
       class="livestock-item-list__item"
       *ngFor="let animal of livestockList; let i = index"
       mat-ripple
-      (click)="onEditItem(animal.id)"
+      (click)="onEditAnimal(animal.id)"
     >
       <span class="livestock-card__type">
         <mat-icon
@@ -44,5 +44,3 @@
     <mat-icon>add</mat-icon>
   </button>
 </div>
-
-<router-outlet></router-outlet>

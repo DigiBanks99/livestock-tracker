@@ -16,6 +16,7 @@ export class LivestockListComponent implements OnInit {
   @Input() public livestockList: Livestock[];
   @Output() public remove = new EventEmitter<Livestock>();
   @Output() public showDetail = new EventEmitter<number>();
+  @Output() public addAnimal = new EventEmitter();
 
   public pageSize: number;
 
@@ -35,8 +36,12 @@ export class LivestockListComponent implements OnInit {
     }
   }
 
-  public onEditItem(id: number) {
+  public onEditAnimal(id: number) {
     this.showDetail.emit(id);
+  }
+
+  public onAddAnimal() {
+    this.addAnimal.emit();
   }
 
   public onPage(pageEvent: PageEvent) {}

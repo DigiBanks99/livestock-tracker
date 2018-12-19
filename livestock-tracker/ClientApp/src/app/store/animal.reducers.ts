@@ -52,8 +52,12 @@ export function animalsReducer(
         (<SetAnimals>action).animals,
         state
       );
+      let selectedAnimalId: number = newState.selectedAnimal;
+      if (!selectedAnimalId)
+        selectedAnimalId = newState.ids.length > 0 ? +newState.ids[0] : null;
       return {
         ...newState,
+        selectedAnimal: selectedAnimalId,
         isFetching: false,
         error: null
       };

@@ -1,0 +1,16 @@
+@import '~@angular/material/theming';
+@import '~/../../../../app-theme';
+
+.animal-select-container {
+  display: flex;
+  flex: 1;
+
+  .animal-select-svg {
+    margin-right: 8px;
+    width: 24px;
+    height: 24px;
+    padding: 8px;
+    background-color: mat-color($candy-app-accent);
+    border-radius: 50%;
+  }
+}

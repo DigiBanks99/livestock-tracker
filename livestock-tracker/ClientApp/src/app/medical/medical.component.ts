@@ -24,12 +24,13 @@ export class MedicalComponent implements OnInit, OnDestroy {
   public filteredMedicalTransactions: MedicalTransaction[];
   public pageSize: number;
 
-  public livestockChanged: Subscription;
-  public animalSelectorChanged: Subscription;
   public medicalTransactionsChanged: Subscription;
   private lastPage: number;
 
-  constructor(private livestockService: LivestockService, private medicalService: MedicalService) {
+  constructor(
+    private livestockService: LivestockService,
+    private medicalService: MedicalService
+  ) {
     this.animals = [];
     this.currentAnimal = null;
     this.medicalTransactions = [];
@@ -40,12 +41,10 @@ export class MedicalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.livestockService.getLivestock();
-    this.livestockChanged = this.livestockService.livestockChanged
-      .subscribe((animals: Livestock[]) => this.updateAnimalsList(animals));
-    this.animalSelectorChanged = this.animalSelector.selectionChange
-      .subscribe((change: MatSelectChange) => this.animalSelectorValueChanged(change));
-    this.medicalTransactionsChanged = this.medicalService.medicalTransactionsChanged
-      .subscribe((transactions: MedicalTransaction[]) => this.updateMedicalTransactionList(transactions));
+    this.medicalTransactionsChanged = this.medicalService.medicalTransactionsChanged.subscribe(
+      (transactions: MedicalTransaction[]) =>
+        this.updateMedicalTransactionList(transactions)
+    );
   }
 
   public addMedicalTransaction(animal: Livestock) {
@@ -96,8 +95,6 @@ export class MedicalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.livestockChanged.unsubscribe();
-    this.animalSelectorChanged.unsubscribe();
     this.medicalTransactionsChanged.unsubscribe();
   }
 }

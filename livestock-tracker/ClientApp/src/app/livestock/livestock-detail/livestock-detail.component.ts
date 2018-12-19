@@ -1,17 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
 
 import * as moment from 'moment';
 
-import { Livestock } from '../livestock.model';
+import { Livestock, getAge } from '../livestock.model';
 import { LiveStockType } from '../livestock-type.model';
 import { LivestockService } from '../livestock.service';
+import { Location } from '@angular/common';
 
 export const MY_FORMATS = {
   parse: {
@@ -30,14 +30,14 @@ export const MY_FORMATS = {
   styleUrls: ['./livestock-detail.component.scss'],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }]
 })
-export class LivestockDetailComponent implements OnInit, OnDestroy {
+export class LivestockDetailComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() public currentAnimal: Livestock;
+
   public livestockForm: FormGroup;
   public livestockTypes = LiveStockType;
-  public currentAnimal: Livestock;
   public keys: number[];
 
   private editID: number;
-  private editingStartedSubscription: Subscription;
   private soldChanged: Subscription;
   private deceasedChanged: Subscription;
   private birthDateChanged: Subscription;
@@ -45,6 +45,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
+    private location: Location,
     private livestockService: LivestockService,
     private snackbarSerive: MatSnackBar
   ) {
@@ -55,24 +56,22 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     try {
-      const idParamObservable = this.route.queryParamMap.pipe(
-        map(params => params.get('id') || 'None')
-      );
-      this.editingStartedSubscription = idParamObservable.subscribe(
-        (idParam: string) => {
-          if (idParam === 'None') {
-            this.initForm();
-          } else {
-            this.editID = +idParam;
-            this.initForm();
-          }
-        }
-      );
+      const idParam = this.route.snapshot.params['id'];
+      if (idParam === 'None') {
+        this.initForm();
+      } else {
+        this.editID = +idParam;
+        this.initForm();
+      }
     } catch (error) {
       console.error(error);
     }
+  }
+
+  public ngOnChanges() {
+    this.initForm();
   }
 
   public reset() {
@@ -91,7 +90,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     let deceased = false;
     let dateOfDeath: Date = null;
 
-    const animal: Livestock = this.livestockService.getAnimal(this.editID);
+    const animal: Livestock = this.currentAnimal;
     if (animal != null) {
       this.currentAnimal = animal;
       type = animal.type;
@@ -104,7 +103,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       batchNumber = animal.batchNumber;
       sellPrice = animal.sellPrice;
       sold = animal.sold;
-      age = animal.getAge();
+      age = getAge(animal);
       sellDate = animal.sellDate;
       deceased = animal.deceased;
       dateOfDeath = animal.dateOfDeath;
@@ -239,7 +238,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
     let deceased = false;
     let dateOfDeath: Date = null;
 
-    const animal: Livestock = this.livestockService.getAnimal(this.editID);
+    const animal: Livestock = this.currentAnimal;
     if (animal != null) {
       this.currentAnimal = animal;
       type = animal.type;
@@ -252,7 +251,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       batchNumber = animal.batchNumber;
       sellPrice = animal.sellPrice;
       sold = animal.sold;
-      age = animal.getAge();
+      age = getAge(animal);
       sellDate = animal.sellDate;
       deceased = animal.deceased;
       dateOfDeath = animal.dateOfDeath;
@@ -260,8 +259,6 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       if (!sold) {
         sellPrice = null;
       }
-    } else {
-      this.currentAnimal = null;
     }
 
     this.livestockForm = new FormGroup({
@@ -306,7 +303,7 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
           null,
           null
         );
-        ageCtrl.setValue(tempAnimal.getAge());
+        ageCtrl.setValue(getAge(tempAnimal));
         ageCtrl.updateValueAndValidity();
         ageCtrl.markAsTouched();
       });
@@ -316,6 +313,10 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
       .valueChanges.subscribe((value: boolean) =>
         this.updateDateOfDeathCtrl(value)
       );
+  }
+
+  public navigateBack() {
+    this.location.back();
   }
 
   private updateSold(value: boolean) {
@@ -361,7 +362,6 @@ export class LivestockDetailComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.editingStartedSubscription.unsubscribe();
     this.soldChanged.unsubscribe();
     this.birthDateChanged.unsubscribe();
     this.deceasedChanged.unsubscribe();

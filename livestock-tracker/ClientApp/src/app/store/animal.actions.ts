@@ -50,6 +50,7 @@ export class FetchAnimals implements Action {
 export class SetAnimals implements Action {
   readonly type = ActionTypes.SET_ANIMALS;
   animals: Livestock[];
+  selectedAnimalId: number;
 
   constructor(animals: Livestock[]) {
     this.animals = animals;

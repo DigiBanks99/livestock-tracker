@@ -1,16 +1,7 @@
 <div class="medical-container">
   <mat-toolbar class="medical-toolbar">
     <mat-toolbar-row>
-      <span class="selected-animal-svg">
-        <mat-icon svgIcon="{{getSvgIcon(currentAnimal)}}"></mat-icon>
-      </span>
-      <mat-select [value]="currentAnimal ? currentAnimal.id : 0" #animalSelector>
-        <mat-option *ngFor="let animal of animals; let i = index" [value]="animal.id">
-          <mat-icon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
-          {{animal.number}} {{animal.subspecies ? ' - ' + animal.subspecies : ''}}
-        </mat-option>
-      </mat-select>
-      <span class="fill-remaining-space"></span>
+      <app-animal-select-container></app-animal-select-container>
     </mat-toolbar-row>
     <mat-toolbar-row class="medical-toolbar__header">
       <span class="medical-toolbar__trans-type">Medicine Type</span>
@@ -21,15 +12,29 @@
     </mat-toolbar-row>
   </mat-toolbar>
   <mat-list class="medical-list mat-elevation-z1">
-    <mat-list-item class="medical-list-item" *ngFor="let medTrans of filteredMedicalTransactions">
-      <app-medical-transaction class="medical-transaction" [medicalTransaction]="medTrans"></app-medical-transaction>
+    <mat-list-item
+      class="medical-list-item"
+      *ngFor="let medTrans of filteredMedicalTransactions"
+    >
+      <app-medical-transaction
+        class="medical-transaction"
+        [medicalTransaction]="medTrans"
+      ></app-medical-transaction>
     </mat-list-item>
-    <mat-paginator [pageSize]="pageSize"
-                   [length]="medicalTransactions.length"
-                   class="mat-accent-background"
-                   (page)="onPage($event)"></mat-paginator>
+    <mat-paginator
+      [pageSize]="pageSize"
+      [length]="medicalTransactions.length"
+      class="mat-accent-background"
+      (page)="onPage($event)"
+    ></mat-paginator>
   </mat-list>
-  <button mat-fab class="mat-fab-bottom-right" type="button" (click)="addMedicalTransaction(currentAnimal)" left>
+  <button
+    mat-fab
+    class="mat-fab-bottom-right"
+    type="button"
+    (click)="addMedicalTransaction(currentAnimal)"
+    left
+  >
     <mat-icon>add</mat-icon>
   </button>
 </div>

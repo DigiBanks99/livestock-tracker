@@ -13,7 +13,7 @@
         <a
           mat-list-item
           class="livestock-detail-toolbar__nav__icon-container"
-          [routerLink]="['../']"
+          (click)="navigateBack()"
         >
           <mat-icon>arrow_back</mat-icon>
         </a>
@@ -53,7 +53,13 @@
       <mat-card-header>
         <mat-card-title>
           <mat-icon
-            svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(livestockForm.get('type').value)])}}"
+            svgIcon="{{
+              getSvgIconByType(
+                livestockTypes[
+                  getValueOrDefault(livestockForm.get('type').value)
+                ]
+              )
+            }}"
           ></mat-icon>
         </mat-card-title>
       </mat-card-header>
@@ -69,7 +75,9 @@
             >
               <mat-option *ngFor="let key of keys" [value]="key">
                 <mat-icon
-                  svgIcon="{{getSvgIconByType(livestockTypes[getValueOrDefault(key)])}}"
+                  svgIcon="{{
+                    getSvgIconByType(livestockTypes[getValueOrDefault(key)])
+                  }}"
                 ></mat-icon>
                 <span>{{ livestockTypes[getValueOrDefault(key)] }}</span>
               </mat-option>
