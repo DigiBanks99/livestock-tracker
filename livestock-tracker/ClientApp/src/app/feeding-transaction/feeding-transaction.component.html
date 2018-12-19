@@ -3,22 +3,19 @@
     <div class="ls-grid-content">
       <mat-toolbar class="ls-grid-toolbar">
         <mat-toolbar-row class="ls-grid-heading">
-          <span class="selected-animal-svg">
-            <mat-icon svgIcon="{{getSvgIcon(getCurrentAnimal())}}"></mat-icon>
-          </span>
-          <mat-select [value]="getCurrentAnimal().id" #animalSelector>
-            <mat-option *ngFor="let animal of getAnimals(); let i = index" [value]="animal.id">
-              <mat-icon svgIcon="{{getSvgIcon(animal)}}"></mat-icon>
-              {{animal.number}} {{animal.subspecies ? ' - ' + animal.subspecies : ''}}
-            </mat-option>
-          </mat-select>
-          <span class="fill-remaining-space"></span>
+          <app-animal-select-container></app-animal-select-container>
         </mat-toolbar-row>
       </mat-toolbar>
     </div>
   </div>
   <app-ls-grid #data [config]="getConfig()"></app-ls-grid>
-  <button mat-fab class="mat-fab-bottom-right" type="button" (click)="add(getCurrentAnimal())" left>
+  <button
+    mat-fab
+    class="mat-fab-bottom-right"
+    type="button"
+    (click)="add(getCurrentAnimal())"
+    left
+  >
     <mat-icon>add</mat-icon>
   </button>
 </div>
