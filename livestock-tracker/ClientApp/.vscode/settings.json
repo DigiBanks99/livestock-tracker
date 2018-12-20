@@ -3,5 +3,18 @@
     "titleBar.activeBackground": "#a71cb9",
     "titleBar.activeForeground": "#ffffff"
   },
-  "cSpell.words": ["ngrx", "injectable", "validators"]
+  "editor.autoClosingQuotes": "always",
+  "typescript.preferences.quoteStyle": "single",
+  "javascript.preferences.quoteStyle": "single",
+  "cSpell.words": [
+    "ngrx",
+    "injectable",
+    "validators",
+    "datepicker",
+    "theming",
+    "snackbar",
+    "truthy",
+    "sidenav",
+    "paginator"
+  ]
 }

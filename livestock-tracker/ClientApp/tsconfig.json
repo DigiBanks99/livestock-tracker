@@ -12,7 +12,6 @@
     "lib": ["es2017", "dom"],
     "baseUrl": "src",
     "paths": {
-      "@app/*": ["app/*"],
       "@env/*": ["environments/*"],
       "@animal-store/*": ["app/store/animal.*"],
       "@store": ["app/store/index.ts"],
@@ -25,7 +24,8 @@
       "@medical/*": ["app/medical/*"],
       "@reports/*": ["app/reports/*"],
       "@shared/*": ["app/shared/*"],
-      "@unit/*": ["app/unit/*"]
+      "@unit/*": ["app/unit/*"],
+      "@app/*": ["app/*"]
     }
   }
 }

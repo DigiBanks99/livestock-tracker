@@ -55,6 +55,7 @@ import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-
 import { AnimalSelectContainerComponent } from '@shared/animal-select/animal-select-container.component';
 import { AnimalSelectComponent } from '@shared/animal-select/animal-select.component';
 import { LivestockFormComponent } from '@livestock/livestock-form/livestock-form.component';
+import { LivestockNewComponent } from './livestock/livestock-new/livestock-new.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { LivestockFormComponent } from '@livestock/livestock-form/livestock-form
     LivestockDetailComponent,
     LivestockDetailContainerComponent,
     LivestockFormComponent,
+    LivestockNewComponent,
     MedicalComponent,
     MedicalTransactionComponent,
     UnitComponent,

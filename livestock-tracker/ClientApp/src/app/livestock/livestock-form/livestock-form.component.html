@@ -66,9 +66,7 @@
               required
             >
               <mat-option *ngFor="let key of keys" [value]="key">
-                <mat-icon
-                  svgIcon="{{ getSvgIconByType(key.toString()) }}"
-                ></mat-icon>
+                <mat-icon svgIcon="{{ getSvgIconByType(key) }}"></mat-icon>
                 <span>{{ livestockTypes[key] }}</span>
               </mat-option>
             </mat-select>

@@ -2,8 +2,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 
 import { HomeComponent } from '@home/home.component';
-import { LivestockDetailContainerComponent } from '@livestock/livestock-detail/livestock-detail-container.component';
 import { LivestockComponent } from '@livestock/livestock.component';
+import { LivestockDetailContainerComponent } from '@livestock/livestock-detail/livestock-detail-container.component';
+import { LivestockNewComponent } from '@livestock/livestock-new/livestock-new.component';
 import { ReportsComponent } from '@reports/reports.component';
 import { MedicalComponent } from '@medical/medical.component';
 import { MedicineTypeComponent } from '@medical/medicine-type/medicine-type.component';
@@ -19,7 +20,7 @@ const routes: Routes = [
     path: 'livestock',
     component: LivestockComponent,
     children: [
-      { path: 'new', component: LivestockDetailContainerComponent },
+      { path: 'new', component: LivestockNewComponent },
       { path: ':id/edit', component: LivestockDetailContainerComponent }
     ]
   },

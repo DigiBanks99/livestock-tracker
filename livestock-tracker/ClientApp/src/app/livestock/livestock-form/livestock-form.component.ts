@@ -54,17 +54,39 @@ export const MY_FORMATS = {
 @Component({
   selector: 'app-livestock-form',
   templateUrl: './livestock-form.component.html',
+  styleUrls: ['./livestock-form.component.scss'],
   providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }]
 })
 export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() public currentAnimal: Livestock;
+  @Input() public currentAnimal: Livestock = {
+    id: undefined,
+    number: null,
+    birthDate: new Date(),
+    type: LiveStockType.Cattle,
+    arrivalWeight: null,
+    batchNumber: null,
+    dateOfDeath: null,
+    deceased: false,
+    purchaseDate: new Date(),
+    purchasePrice: null,
+    sellDate: null,
+    sellPrice: null,
+    sold: false,
+    subspecies: null
+  };
   @Input() public header: string;
   @Output() public navigateBack = new EventEmitter();
   @Output() public save = new EventEmitter<Livestock>();
 
   public livestockForm: FormGroup;
   public livestockTypes = LiveStockType;
-  public keys: number[] = Object.keys(LiveStockType).map(type => +type);
+  public keys: number[] = Object.keys(LiveStockType)
+    .filter(Number)
+    .map(type => {
+      const x = +type;
+      return x;
+    })
+    .concat(0);
 
   private soldChanged: Subscription;
   private deceasedChanged: Subscription;
@@ -104,8 +126,8 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     return this.getSvgIconByType(type);
   }
 
-  public getSvgIconByType(type: string): string {
-    return this.livestockService.getSvgIconByString(type);
+  public getSvgIconByType(type: number): string {
+    return this.livestockService.getSvgIconByType(type);
   }
 
   public showPrefix(elementID: string): boolean {

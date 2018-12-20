@@ -5,6 +5,7 @@
     "eg2.tslint",
     "esbenp.prettier-vscode",
     "msjsdiag.debugger-for-chrome",
-    "streetsidesoftware.code-spell-checker"
+    "streetsidesoftware.code-spell-checker",
+    "christian-kohler.path-intellisense"
   ]
 }

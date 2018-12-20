@@ -9,14 +9,16 @@
       "request": "attach",
       "name": "Attach to Chrome",
       "port": 5000,
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}",
+      "smartStep": true
     },
     {
       "type": "chrome",
       "request": "launch",
       "name": "Launch in Chrome",
       "url": "http://localhost:5000",
-      "webRoot": "${workspaceFolder}"
+      "webRoot": "${workspaceFolder}",
+      "smartStep": true
     }
   ]
 }
