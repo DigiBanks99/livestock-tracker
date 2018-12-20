@@ -3,7 +3,6 @@ import { Action } from '@ngrx/store';
 import { EntityState, createEntityAdapter, Update } from '@ngrx/entity';
 import {
   ActionTypes,
-  AddAnimal,
   RemoveAnimal,
   SelectAnimal,
   SetAnimals,

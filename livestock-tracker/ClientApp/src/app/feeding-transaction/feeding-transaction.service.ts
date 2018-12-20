@@ -12,33 +12,50 @@ export interface IFeedingTransactionService {
 @Injectable({
   providedIn: 'root'
 })
-export class FeedingTransactionService implements IFeedingTransactionService, ILsDataService {
+export class FeedingTransactionService
+  implements IFeedingTransactionService, ILsDataService {
   private urlBase = environment.apiUrl + 'FeedingTransaction/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   public get(fetchKey?: any): Observable<Object> {
-    return this.http.get(this.urlBase + 'getAll/' + fetchKey);
+    return this.http.get<FeedingTransaction[]>(
+      this.urlBase + 'getAll/' + fetchKey
+    );
   }
 
   public getSingle(fetchKey?: any): Observable<Object> {
-    return this.http.get(this.urlBase + 'get/' + fetchKey);
+    return this.http.get<FeedingTransaction>(this.urlBase + 'get/' + fetchKey);
   }
 
   public add(feedingTransaction: FeedingTransaction): Observable<Object> {
-    return this.http.post(this.urlBase, feedingTransaction);
+    return this.http.post<FeedingTransaction>(this.urlBase, feedingTransaction);
+  }
+
+  public patch(feedingTransaction: FeedingTransaction): Observable<Object> {
+    return this.http.patch<FeedingTransaction>(
+      this.urlBase,
+      feedingTransaction
+    );
   }
 
   public delete(feedingTransaction: FeedingTransaction): Observable<Object> {
-    return this.http.delete(this.urlBase + feedingTransaction.id);
+    return this.deleteById(feedingTransaction.id);
+  }
+
+  public deleteById(id: number): Observable<Object> {
+    return this.http.delete<number>(this.urlBase + id);
   }
 
   public page(pageNumber: number, pageSize: number): Observable<Object> {
-    return this.http.get(this.urlBase + 'page?pageNumber=' + pageNumber + '&pageSize=' + pageSize);
+    return this.http.get(
+      this.urlBase + 'page?pageNumber=' + pageNumber + '&pageSize=' + pageSize
+    );
   }
 }
 
-export class MockFeedingTransactionService implements IFeedingTransactionService {
+export class MockFeedingTransactionService
+  implements IFeedingTransactionService {
   public get(): Observable<Object> {
     return new Observable<Object>();
   }

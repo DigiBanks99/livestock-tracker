@@ -58,6 +58,7 @@ import { LivestockFormComponent } from '@livestock/livestock-form/livestock-form
 import { LivestockNewComponent } from './livestock/livestock-new/livestock-new.component';
 import { MedicalContainerComponent } from '@medical/medical-container.component';
 import { FeedingTransactionContainerComponent } from '@feeding-transaction/feeding-transaction-container.component';
+import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
 
 @NgModule({
   declarations: [
@@ -112,7 +113,7 @@ import { FeedingTransactionContainerComponent } from '@feeding-transaction/feedi
     MatPaginatorModule,
     MatMenuModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AnimalEffects])
+    EffectsModule.forRoot([AnimalEffects, FeedingTransactionEffects])
   ],
   providers: [
     LivestockService,

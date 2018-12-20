@@ -3,7 +3,6 @@ import {
   OnInit,
   OnDestroy,
   ViewChild,
-  PipeTransform,
   Input,
   OnChanges
 } from '@angular/core';
@@ -90,6 +89,8 @@ export class FeedingTransactionComponent
 
   public ngOnChanges() {
     this.feedingTransactionService.get(this.currentAnimal.id);
+    this.dataGrid.config.fetchKey = this.currentAnimal.id;
+    this.dataGrid.reload();
   }
 
   public getConfig(): LsGridConfig {
@@ -259,11 +260,6 @@ export class FeedingTransactionComponent
   }
 
   private setCurrentAnimal(animal: Livestock): void {
-    if (animal.id === -99 || animal.id === this.currentAnimal.id) {
-      return;
-    }
-
-    this.currentAnimal = animal;
     this.dataGrid.config.fetchKey = animal.id;
     this.dataGrid.reload();
   }
