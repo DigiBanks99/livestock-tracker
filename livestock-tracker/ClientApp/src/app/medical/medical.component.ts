@@ -1,11 +1,6 @@
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { MatSelect, MatSelectChange, PageEvent } from '@angular/material';
+import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
+import { PageEvent } from '@angular/material';
 import { Subscription } from 'rxjs';
-import { isNullOrUndefined } from 'util';
-
-import * as moment from 'moment';
-
-import { LivestockService } from '../livestock/livestock.service';
 import { Livestock } from '../livestock/livestock.model';
 import { MedicalTransaction } from './medical-transaction.model';
 import { MedicalService } from './medical.service';
@@ -16,10 +11,8 @@ import { environment } from '../../environments/environment.prod';
   templateUrl: './medical.component.html',
   styleUrls: ['./medical.component.scss']
 })
-export class MedicalComponent implements OnInit, OnDestroy {
-  @ViewChild('animalSelector') animalSelector: MatSelect;
-  public animals: Livestock[];
-  public currentAnimal: Livestock;
+export class MedicalComponent implements OnInit, OnChanges, OnDestroy {
+  @Input() public currentAnimal: Livestock;
   public medicalTransactions: MedicalTransaction[];
   public filteredMedicalTransactions: MedicalTransaction[];
   public pageSize: number;
@@ -27,11 +20,7 @@ export class MedicalComponent implements OnInit, OnDestroy {
   public medicalTransactionsChanged: Subscription;
   private lastPage: number;
 
-  constructor(
-    private livestockService: LivestockService,
-    private medicalService: MedicalService
-  ) {
-    this.animals = [];
+  constructor(private medicalService: MedicalService) {
     this.currentAnimal = null;
     this.medicalTransactions = [];
     this.filteredMedicalTransactions = [];
@@ -40,19 +29,18 @@ export class MedicalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.livestockService.getLivestock();
     this.medicalTransactionsChanged = this.medicalService.medicalTransactionsChanged.subscribe(
       (transactions: MedicalTransaction[]) =>
         this.updateMedicalTransactionList(transactions)
     );
   }
 
-  public addMedicalTransaction(animal: Livestock) {
-    this.medicalService.addMedicalTransaction(animal.id);
+  ngOnChanges() {
+    this.medicalService.getMedicalTransactions(this.currentAnimal.id);
   }
 
-  public getSvgIcon(animal: Livestock) {
-    return this.livestockService.getSvgIcon(animal);
+  public addMedicalTransaction(animal: Livestock) {
+    this.medicalService.addMedicalTransaction(animal.id);
   }
 
   public onPage(pageEvent: PageEvent) {
@@ -70,19 +58,6 @@ export class MedicalComponent implements OnInit, OnDestroy {
       }
       this.filteredMedicalTransactions.push(this.medicalTransactions[i]);
     }
-  }
-
-  private updateAnimalsList(animals: Livestock[]) {
-    this.animals = animals;
-    if (!isNullOrUndefined(this.animals) && this.animals.length > 0) {
-      this.currentAnimal = this.animals[0];
-      this.medicalService.getMedicalTransactions(this.currentAnimal.id);
-    }
-  }
-
-  private animalSelectorValueChanged(selectChanged: MatSelectChange) {
-    this.currentAnimal = this.livestockService.getAnimal(selectChanged.value);
-    this.medicalService.getMedicalTransactions(this.currentAnimal.id);
   }
 
   private updateMedicalTransactionList(transactions: MedicalTransaction[]) {

@@ -112,7 +112,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
     if (!this.livestockForm) this.initForm();
 
-    if (!this.isPending) {
+    if (!this.isPending && !this.livestockForm.pristine) {
       const snackBarOptions = { duration: 4000 };
       let message = '';
       if (this.error != null) message = `ERROR: ${this.error.message}`;
@@ -120,6 +120,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
       setTimeout(() => {
         this.snackBar.open(message, 'Dismiss', snackBarOptions);
+        this.onNavigateBack();
       });
     }
   }

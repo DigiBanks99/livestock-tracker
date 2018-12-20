@@ -3,7 +3,9 @@ import {
   OnInit,
   OnDestroy,
   ViewChild,
-  PipeTransform
+  PipeTransform,
+  Input,
+  OnChanges
 } from '@angular/core';
 import { FeedingTransactionService } from './feeding-transaction.service';
 import { Subscription } from 'rxjs';
@@ -32,14 +34,15 @@ import { LsGridColumnType } from '../shared/ls-grid/ls-grid-column-type.enum';
   templateUrl: './feeding-transaction.component.html',
   styleUrls: ['./feeding-transaction.component.scss']
 })
-export class FeedingTransactionComponent implements OnInit, OnDestroy {
+export class FeedingTransactionComponent
+  implements OnInit, OnChanges, OnDestroy {
   private livestockChanged: Subscription;
   private livestockAdded: Subscription;
   private animalSelectorChanged: Subscription;
   private feedTypesChanged: Subscription;
   private unitTypesChanged: Subscription;
 
-  private currentAnimal: Livestock;
+  @Input() public currentAnimal: Livestock;
   private animals: Livestock[];
   private feedTypes: FeedType[];
   private unitTypes: Unit[];
@@ -83,6 +86,10 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.init();
+  }
+
+  public ngOnChanges() {
+    this.feedingTransactionService.get(this.currentAnimal.id);
   }
 
   public getConfig(): LsGridConfig {
