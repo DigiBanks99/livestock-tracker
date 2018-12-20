@@ -7,7 +7,7 @@ import { Livestock } from '@livestock/livestock.model';
 import {
   getAnimals,
   getFetchAnimalsPendingState,
-  getFetchAnimalsError,
+  getAnimalsError,
   getSelectedAnimalId
 } from '@app/store';
 import { RemoveAnimal, SelectAnimal } from '@app/store/animal.actions';
@@ -25,7 +25,7 @@ export class LivestockComponent implements OnInit, OnDestroy {
   public isFetching$: Observable<boolean>;
   public error$: Observable<Error>;
 
-  private selecteAnimalSubscription: Subscription;
+  private selectedAnimalSubscription: Subscription;
 
   constructor(
     private store: Store<State>,
@@ -37,9 +37,9 @@ export class LivestockComponent implements OnInit, OnDestroy {
     this.animals$ = this.store.pipe(select(getAnimals));
     this.selectedAnimal$ = this.store.pipe(select(getSelectedAnimalId));
     this.isFetching$ = this.store.pipe(select(getFetchAnimalsPendingState));
-    this.error$ = this.store.pipe(select(getFetchAnimalsError));
+    this.error$ = this.store.pipe(select(getAnimalsError));
 
-    this.selecteAnimalSubscription = this.selectedAnimal$.subscribe(
+    this.selectedAnimalSubscription = this.selectedAnimal$.subscribe(
       (id: number) => {
         if (id !== undefined || !this.route.snapshot.params['id']) return;
 
@@ -47,6 +47,11 @@ export class LivestockComponent implements OnInit, OnDestroy {
         this.store.dispatch(new SelectAnimal(paramId));
       }
     );
+  }
+
+  public ngOnDestroy() {
+    if (this.selectedAnimalSubscription)
+      this.selectedAnimalSubscription.unsubscribe();
   }
 
   public deleteAnimal(animal: Livestock) {
@@ -71,10 +76,5 @@ export class LivestockComponent implements OnInit, OnDestroy {
 
   public onDeactivate(event: any) {
     this.showLandingPage = true;
-  }
-
-  public ngOnDestroy() {
-    if (this.selecteAnimalSubscription)
-      this.selecteAnimalSubscription.unsubscribe();
   }
 }

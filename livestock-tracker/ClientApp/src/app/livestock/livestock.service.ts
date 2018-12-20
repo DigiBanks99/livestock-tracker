@@ -5,7 +5,7 @@ import { isNullOrUndefined } from 'util';
 
 import * as moment from 'moment';
 
-import { Livestock } from '@app/livestock/livestock.model';
+import { Livestock, Animal } from '@app/livestock/livestock.model';
 import { LiveStockType } from '@app/livestock/livestock-type.model';
 import { environment } from '@env/environment';
 
@@ -17,8 +17,8 @@ interface ILivestockService {
   getLivestock();
   getAnimal(id: number): Livestock;
   removeLivestock(id: number): Observable<Livestock>;
-  addAnimal(animal: Livestock);
-  updateAnimal(animal: Livestock);
+  addAnimal(animal: Livestock): Observable<Livestock>;
+  updateAnimal(animal: Livestock): Observable<Livestock>;
   getSvgIcon(animal: Livestock): string;
   getSvgIconByType(type: LiveStockType): string;
   getSvgIconByString(type: string): string;
@@ -105,48 +105,18 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
     return this.http.delete(this.apiUrl + '/' + id);
   }
 
-  public addAnimal(animal: Livestock) {
+  public addAnimal(animal: Livestock): Observable<Livestock> {
     if (isNullOrUndefined(animal)) {
       throw new Error('Animal is required');
     }
 
-    let existingAnimal: Livestock;
-    try {
-      existingAnimal = this.getAnimal(animal.id);
-    } catch (e) {
-      if (e.message === 'Item not found') {
-        existingAnimal = null;
-      }
-    }
-
-    if (existingAnimal !== null) {
-      throw new Error('Animal already exists. Use updateAnimal instead.');
-    } else {
-      animal.id = this.lastNewID--;
-      this.livestock.push(animal);
-      this.httpPostSubscription = this.http
-        .post(this.apiUrl + 'animal', animal)
-        .subscribe(() => {
-          this.getLivestock();
-        });
-    }
+    animal.id = this.lastNewID--;
+    this.livestock.push(animal);
+    return this.http.post<Livestock>(this.apiUrl + 'animal', animal);
   }
 
-  public updateAnimal(animal: Livestock) {
-    const index = this.livestock
-      .map(existingAnimal => {
-        return existingAnimal.id;
-      })
-      .indexOf(animal.id);
-
-    if (index < 0) {
-      throw new Error('Animal does not exist in list. Use addAnimal instead.');
-    }
-    this.httpPutSubscription = this.http
-      .put(this.apiUrl + 'animal', animal)
-      .subscribe(() => {
-        this.getLivestock();
-      });
+  public updateAnimal(animal: Livestock): Observable<Animal> {
+    return this.http.patch<Animal>(this.apiUrl + 'animal', animal);
   }
 
   public getSvgIcon(animal: Livestock): string {
@@ -271,8 +241,12 @@ export class MockLivestockService implements ILivestockService {
   public removeLivestock(id: number): Observable<Livestock> {
     return from(null);
   }
-  public addAnimal(animal: Livestock) {}
-  public updateAnimal(animal: Livestock) {}
+  public addAnimal(animal: Livestock): Observable<Livestock> {
+    return from(null);
+  }
+  public updateAnimal(animal: Livestock): Observable<Livestock> {
+    return from(null);
+  }
   public getSvgIcon(animal: Livestock): string {
     return null;
   }

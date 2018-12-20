@@ -62,6 +62,8 @@ namespace LivestockTracker.Database
         {
             int key = entity.GetKey();
             TEntity savedEntity = Get(key);
+            if (savedEntity == null)
+                throw new EntityNotFoundException<TEntity>(key);
             _dbContext.Entry(savedEntity).CurrentValues.SetValues(entity);
         }
 

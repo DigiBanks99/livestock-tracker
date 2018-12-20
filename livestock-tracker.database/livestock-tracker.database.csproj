@@ -13,4 +13,8 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
+  </ItemGroup>
+
 </Project>

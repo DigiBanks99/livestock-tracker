@@ -26,7 +26,12 @@ export const getFetchAnimalsPendingState = createSelector(
   state => state.isFetching
 );
 
-export const getFetchAnimalsError = createSelector(
+export const getAnimalsPendingState = createSelector(
+  getAnimalsState,
+  state => state.isPending
+);
+
+export const getAnimalsError = createSelector(
   getAnimalsState,
   state => state.error
 );

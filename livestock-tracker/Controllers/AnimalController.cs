@@ -1,4 +1,4 @@
-﻿using LivestockTracker.Models;
+using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,16 +36,17 @@ namespace LivestockTracker.Controllers
             return CreatedAtAction("Get", new { id = animal.ID}, animal);
         }
 
-        [HttpPut]
+        [HttpPatch]
         public IActionResult UpdateAnimal([FromBody]Animal animal)
         {
             try
             {
                 _animalService.Update(animal);
                 _animalService.Save();
-                return Ok();
+                var savedAnimal = _animalService.Get(animal.ID);
+                return Ok(savedAnimal);
             }
-            catch (AnimalNotFoundException ex)
+            catch (EntityNotFoundException<Animal> ex)
             {
                 return NotFound(ex.Message);
             }

@@ -5,7 +5,8 @@ import {
   EventEmitter,
   OnInit,
   OnChanges,
-  OnDestroy
+  OnDestroy,
+  SimpleChanges
 } from '@angular/core';
 import {
   FormGroup,
@@ -20,6 +21,7 @@ import { isNullOrUndefined } from 'util';
 import { Livestock, getAge } from '@livestock/livestock.model';
 import { LiveStockType } from '@livestock/livestock-type.model';
 import { LivestockService } from '@livestock/livestock.service';
+import { MatSnackBar } from '@angular/material';
 
 const Constants = {
   Controls: {
@@ -75,6 +77,9 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     subspecies: null
   };
   @Input() public header: string;
+  @Input() public successMessage: string;
+  @Input() public isPending = false;
+  @Input() public error: Error = null;
   @Output() public navigateBack = new EventEmitter();
   @Output() public save = new EventEmitter<Livestock>();
 
@@ -94,15 +99,29 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private livestockService: LivestockService
+    private livestockService: LivestockService,
+    private snackBar: MatSnackBar
   ) {}
 
   public ngOnInit() {
     this.initForm();
   }
 
-  public ngOnChanges() {
-    this.initForm();
+  public ngOnChanges(changes: SimpleChanges) {
+    if (changes.currentAnimal) this.initForm();
+
+    if (!this.livestockForm) this.initForm();
+
+    if (!this.isPending) {
+      const snackBarOptions = { duration: 4000 };
+      let message = '';
+      if (this.error != null) message = `ERROR: ${this.error.message}`;
+      else message = this.successMessage;
+
+      setTimeout(() => {
+        this.snackBar.open(message, 'Dismiss', snackBarOptions);
+      });
+    }
   }
 
   public ngOnDestroy() {
@@ -168,7 +187,6 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
     const animal: Livestock = this.currentAnimal;
     if (animal != null) {
-      this.currentAnimal = animal;
       type = animal.type;
       subspecies = animal.subspecies;
       number = animal.number;
@@ -234,7 +252,6 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
     const animal: Livestock = this.currentAnimal;
     if (animal != null) {
-      this.currentAnimal = animal;
       type = animal.type;
       subspecies = animal.subspecies;
       number = animal.number;
@@ -256,6 +273,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.livestockForm = this.formBuilder.group({
+      id: [animal.id],
       type: new FormControl(type, [Validators.required]),
       subspecies: new FormControl(subspecies, []),
       number: new FormControl(number, [Validators.required]),

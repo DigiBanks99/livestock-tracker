@@ -1,34 +1,37 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
 import { Livestock } from '@livestock/livestock.model';
-import { LivestockService } from '@livestock/livestock.service';
+import { Store, select } from '@ngrx/store';
+import { State } from '@animal-store/reducers';
+import { UpdateAnimal } from '@animal-store/actions';
+import { Observable } from 'rxjs';
+import { getAnimalsPendingState, getAnimalsError } from '@store';
 
 @Component({
   selector: 'app-livestock-detail',
   templateUrl: './livestock-detail.component.html',
   styleUrls: ['./livestock-detail.component.scss']
 })
-export class LivestockDetailComponent {
+export class LivestockDetailComponent implements OnInit {
   @Input() public currentAnimal: Livestock;
 
-  private editID: number;
+  public isPending$: Observable<boolean>;
+  public error$: Observable<Error>;
 
   constructor(
+    private store: Store<State>,
     private router: Router,
-    private location: Location,
-    private livestockService: LivestockService,
-    private snackbarService: MatSnackBar
+    private location: Location
   ) {}
 
-  public onSave(animal: Livestock) {
-    this.livestockService.updateAnimal(animal);
+  public ngOnInit() {
+    this.isPending$ = this.store.pipe(select(getAnimalsPendingState));
+    this.error$ = this.store.pipe(select(getAnimalsError));
+  }
 
-    this.snackbarService.open('Item update!', 'Dismiss', {
-      duration: 4000
-    });
-    this.router.navigate(['livestock']);
+  public onSave(animal: Livestock) {
+    this.store.dispatch(new UpdateAnimal(animal));
   }
 
   public onNavigateBack() {

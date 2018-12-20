@@ -1,19 +1,51 @@
 import { Action } from '@ngrx/store';
 import { Livestock } from '@livestock/livestock.model';
+import { Update } from '@ngrx/entity';
 
 export enum ActionTypes {
   ADD_ANIMAL = 'ADD_ANIMAL',
+  ADD_ANIMAL_SUCCESS = 'ADD_ANIMAL_SUCCESS',
   REMOVE_ANIMAL = 'REMOVE_ANIMAL',
   REMOVE_ANIMAL_SUCCESS = 'REMOVE_ANIMAL_SUCCESS',
+  UPDATE_ANIMAL = 'UPDATE_ANIMAL',
+  UPDATE_ANIMAL_SUCCESS = 'UPDATE_ANIMAL_SUCCESS',
   SELECT_ANIMAL = 'SELECT_ANIMAL',
   FETCH_ANIMALS = 'FETCH_ANIMALS',
   SET_ANIMALS = 'SET_ANIMALS',
-  HANDLE_FETCH_ANIMALS_ERROR = 'HANDLE_FETCH_ANIMALS_ERROR'
+  HANDLE_FETCH_ANIMALS_ERROR = 'HANDLE_FETCH_ANIMALS_ERROR',
+  HANDLE_ERROR = 'HANDLE_ERROR'
 }
 
 export class AddAnimal implements Action {
   readonly type = ActionTypes.ADD_ANIMAL;
   animal: Livestock;
+}
+
+export class AddAnimalSucceeded implements Action {
+  readonly type = ActionTypes.ADD_ANIMAL_SUCCESS;
+  animal: Livestock;
+
+  constructor(createdAnimal: Livestock) {
+    this.animal = createdAnimal;
+  }
+}
+
+export class UpdateAnimal implements Action {
+  readonly type = ActionTypes.UPDATE_ANIMAL;
+  animal: Livestock;
+
+  constructor(animal: Livestock) {
+    this.animal = animal;
+  }
+}
+
+export class UpdateAnimalSucceeded implements Action {
+  readonly type = ActionTypes.UPDATE_ANIMAL_SUCCESS;
+  animal: Update<Livestock>;
+
+  constructor(updatedAnimal: Update<Livestock>) {
+    this.animal = updatedAnimal;
+  }
 }
 
 export class RemoveAnimal implements Action {
@@ -59,6 +91,15 @@ export class SetAnimals implements Action {
 
 export class HandleFetchAnimalsError implements Action {
   readonly type = ActionTypes.HANDLE_FETCH_ANIMALS_ERROR;
+  error: Error;
+
+  constructor(error: Error) {
+    this.error = error;
+  }
+}
+
+export class HandleError implements Action {
+  readonly type = ActionTypes.HANDLE_ERROR;
   error: Error;
 
   constructor(error: Error) {

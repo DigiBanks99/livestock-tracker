@@ -1,13 +1,16 @@
 import { Livestock } from '@livestock/livestock.model';
 import { Action } from '@ngrx/store';
-import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { EntityState, createEntityAdapter, Update } from '@ngrx/entity';
 import {
   ActionTypes,
   AddAnimal,
   RemoveAnimal,
   SelectAnimal,
   SetAnimals,
-  HandleFetchAnimalsError
+  HandleFetchAnimalsError,
+  UpdateAnimalSucceeded,
+  AddAnimalSucceeded,
+  HandleError
 } from '@animal-store/actions';
 
 export const animalsAdapter = createEntityAdapter<Livestock>({
@@ -19,12 +22,14 @@ export interface State extends EntityState<Livestock> {
   selectedAnimal: number;
   error?: Error;
   isFetching: boolean;
+  isPending: boolean;
 }
 
 export const initialState: State = animalsAdapter.getInitialState({
   selectedAnimal: null,
   error: null,
-  isFetching: false
+  isFetching: false,
+  isPending: false
 });
 
 export function animalsReducer(
@@ -33,9 +38,41 @@ export function animalsReducer(
 ): State {
   switch (action.type) {
     case ActionTypes.ADD_ANIMAL:
-      return animalsAdapter.addOne((<AddAnimal>action).animal, state);
+    case ActionTypes.UPDATE_ANIMAL:
+    case ActionTypes.REMOVE_ANIMAL:
+      return {
+        ...state,
+        isPending: true
+      };
+    case ActionTypes.ADD_ANIMAL_SUCCESS:
+      const addedAnimal: Livestock = (<AddAnimalSucceeded>action).animal;
+      return {
+        ...animalsAdapter.addOne(addedAnimal, {
+          ...state,
+          selectedAnimal: addedAnimal.id,
+          isPending: false,
+          error: null
+        })
+      };
     case ActionTypes.REMOVE_ANIMAL_SUCCESS:
-      return animalsAdapter.removeOne((<RemoveAnimal>action).key, state);
+      return {
+        ...animalsAdapter.removeOne((<RemoveAnimal>action).key, {
+          ...state,
+          isPending: false,
+          error: null
+        })
+      };
+    case ActionTypes.UPDATE_ANIMAL_SUCCESS:
+      const updatedAnimal: Update<Livestock> = (<UpdateAnimalSucceeded>action)
+        .animal;
+      return {
+        ...animalsAdapter.updateOne(updatedAnimal, {
+          ...state,
+          selectedAnimal: +updatedAnimal.id,
+          isPending: false,
+          error: null
+        })
+      };
     case ActionTypes.SELECT_ANIMAL:
       return {
         ...state,
@@ -44,14 +81,12 @@ export function animalsReducer(
     case ActionTypes.FETCH_ANIMALS:
       return {
         ...state,
-        isFetching: true,
-        error: null
+        isFetching: true
       };
     case ActionTypes.SET_ANIMALS:
-      const newState = animalsAdapter.addMany(
-        (<SetAnimals>action).animals,
-        state
-      );
+      const newState = animalsAdapter.addMany((<SetAnimals>action).animals, {
+        ...state
+      });
       let selectedAnimalId: number = newState.selectedAnimal;
       if (!selectedAnimalId)
         selectedAnimalId = newState.ids.length > 0 ? +newState.ids[0] : null;
@@ -65,9 +100,13 @@ export function animalsReducer(
       return {
         ...state,
         isFetching: false,
-        error: handleFetchAnimalsError(state.error, <HandleFetchAnimalsError>(
-          action
-        ))
+        error: handleError(state.error, <HandleFetchAnimalsError>action)
+      };
+    case ActionTypes.HANDLE_ERROR:
+      return {
+        ...state,
+        isPending: false,
+        error: handleError(state.error, <HandleError>action)
       };
     default:
       return state;
@@ -79,9 +118,12 @@ function selectAnimal(key: number, action: SelectAnimal): number {
   return 0 + action.key;
 }
 
-function handleFetchAnimalsError(
+function handleError(
   error: Error,
-  action: HandleFetchAnimalsError
+  action: HandleFetchAnimalsError | HandleError
 ): Error {
-  return { ...action.error };
+  const newError = new Error(action.error.message);
+  newError.name = action.error.name;
+  newError.stack = action.error.stack;
+  return newError;
 }

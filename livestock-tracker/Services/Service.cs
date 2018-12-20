@@ -1,4 +1,4 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker.Database;
 using System.Collections.Generic;
 
 namespace LivestockTracker.Services
