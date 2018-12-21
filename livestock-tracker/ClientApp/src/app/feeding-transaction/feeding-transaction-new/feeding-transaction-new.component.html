@@ -1,9 +1,8 @@
 <app-feeding-transaction-form
   [selectedAnimalId]="selectedAnimalId$ | async"
-  [feedingTransaction]="selectedFeedingTransaction$ | async"
-  header="Edit feed transaction"
-  successMessage="Feed transaction saved"
-  [feedTypes]="feedTypes"
+  header="New feed transaction"
+  successMessage="Feed transaction created"
+  [feedTypes]="feedTypes$ | async"
   [unitTypes]="unitTypes$ | async"
   (save)="onSave($event)"
   (navigateBack)="onNavigateBack()"

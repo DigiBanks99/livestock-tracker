@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { State } from '@animal-store/reducers';
 import { Observable } from 'rxjs';
@@ -13,6 +13,8 @@ import { SelectAnimal } from '@animal-store/actions';
 export class AnimalSelectContainerComponent implements OnInit {
   public animal$: Observable<Livestock>;
   public animals$: Observable<Livestock[]>;
+
+  @Input() public disabled: boolean;
 
   constructor(private store: Store<State>) {}
 

@@ -1,3 +1,4 @@
+using LivestockTracker;
 using LivestockTracker.Database;
 using LivestockTracker.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -76,6 +77,32 @@ namespace livestock_tracker.Controllers
       }
 
       return NoContent();
+    }
+
+    [HttpPatch]
+    public IActionResult Patch([FromBody] FeedingTransaction feedingTransaction)
+    {
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+      try
+      {
+        _feedingTransactionRepository.Update(feedingTransaction);
+        _feedingTransactionRepository.SaveChanges();
+        var updatedTransaction = Get(feedingTransaction.ID);
+        if (updatedTransaction == null)
+        {
+          return NotFound();
+        }
+
+        return Ok(updatedTransaction);
+      }
+      catch (EntityNotFoundException<FeedingTransaction> ex)
+      {
+        return NotFound(ex.Message);
+      }
     }
 
     [HttpDelete("{id}")]

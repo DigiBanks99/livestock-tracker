@@ -12,6 +12,7 @@ import { FeedTypeComponent } from '@feed-type/feed-type.component';
 import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-transaction-detail/feeding-transaction-detail.component';
 import { MedicalContainerComponent } from '@medical/medical-container.component';
 import { FeedingTransactionContainerComponent } from '@feeding-transaction/feeding-transaction-container.component';
+import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-transaction-new/feeding-transaction-new.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -33,7 +34,7 @@ const routes: Routes = [
     path: 'feeding-transaction',
     component: FeedingTransactionContainerComponent,
     children: [
-      { path: ':animalId/new', component: FeedingTransactionDetailComponent },
+      { path: ':animalId/new', component: FeedingTransactionNewComponent },
       {
         path: ':animalId/:id/edit',
         component: FeedingTransactionDetailComponent

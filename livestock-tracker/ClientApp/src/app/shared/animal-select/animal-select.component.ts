@@ -18,6 +18,7 @@ import { LivestockService } from '@livestock/livestock.service';
 export class AnimalSelectComponent implements OnInit, OnChanges {
   @Input() public animal: Livestock;
   @Input() public animals: Livestock[];
+  @Input() public disabled: boolean;
   @Output() public animalChanged = new EventEmitter<number>();
 
   public currentAnimal: Livestock;

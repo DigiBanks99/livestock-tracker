@@ -60,6 +60,7 @@ import { MedicalContainerComponent } from '@medical/medical-container.component'
 import { FeedingTransactionContainerComponent } from '@feeding-transaction/feeding-transaction-container.component';
 import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
 import { FeedingTransactionFormComponent } from '@feeding-transaction/feeding-transaction-form/feeding-transaction-form.component';
+import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-transaction-new/feeding-transaction-new.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { FeedingTransactionFormComponent } from '@feeding-transaction/feeding-tr
     LsGridComponent,
     FeedTypeComponent,
     FeedTypeDetailComponent,
+    FeedingTransactionNewComponent,
     FeedingTransactionComponent,
     FeedingTransactionContainerComponent,
     FeedingTransactionFormComponent,

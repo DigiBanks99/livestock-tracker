@@ -14,7 +14,7 @@ export interface IFeedingTransactionService {
 })
 export class FeedingTransactionService
   implements IFeedingTransactionService, ILsDataService {
-  private urlBase = environment.apiUrl + 'FeedingTransaction/';
+  private urlBase = environment.apiUrl + 'feedingTransaction/';
 
   constructor(private http: HttpClient) {}
 
@@ -30,6 +30,10 @@ export class FeedingTransactionService
 
   public add(feedingTransaction: FeedingTransaction): Observable<Object> {
     return this.http.post<FeedingTransaction>(this.urlBase, feedingTransaction);
+  }
+
+  public replace(feedingTransaction: FeedingTransaction): Observable<Object> {
+    return this.http.put<FeedingTransaction>(this.urlBase, feedingTransaction);
   }
 
   public patch(feedingTransaction: FeedingTransaction): Observable<Object> {

@@ -6,6 +6,7 @@
     [value]="currentAnimal ? currentAnimal.id : 0"
     #animalSelector
     (selectionChange)="onChange($event)"
+    [disabled]="disabled"
   >
     <mat-option
       *ngFor="let animal of animals; let i = index"
