@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ViewChild,
-  Input,
-  OnChanges
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
 import { FeedingTransactionService } from './feeding-transaction.service';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -15,12 +8,8 @@ import { LsGridConfig } from '../shared/ls-grid/ls-grid-config.model';
 import { LsGridColumnDef } from '../shared/ls-grid/ls-grid-column-def.model';
 import { formatDate } from '../../../node_modules/@angular/common';
 import { Livestock } from '../livestock/livestock.model';
-import { LiveStockType } from '../livestock/livestock-type.model';
 import { LivestockService } from '../livestock/livestock.service';
-import {
-  MatSelect,
-  MatSelectChange
-} from '../../../node_modules/@angular/material';
+import { MatSelect } from '../../../node_modules/@angular/material';
 import { FeedTypeService } from '../feed-type/feed-type.service';
 import { FeedType } from '../feed-type/feed-type.model';
 import { isNullOrUndefined } from 'util';
@@ -33,20 +22,17 @@ import { LsGridColumnType } from '../shared/ls-grid/ls-grid-column-type.enum';
   templateUrl: './feeding-transaction.component.html',
   styleUrls: ['./feeding-transaction.component.scss']
 })
-export class FeedingTransactionComponent
-  implements OnInit, OnChanges, OnDestroy {
-  private livestockChanged: Subscription;
+export class FeedingTransactionComponent implements OnInit, OnDestroy {
   private livestockAdded: Subscription;
-  private animalSelectorChanged: Subscription;
   private feedTypesChanged: Subscription;
   private unitTypesChanged: Subscription;
 
-  @Input() public currentAnimal: Livestock;
   private animals: Livestock[];
   private feedTypes: FeedType[];
   private unitTypes: Unit[];
 
-  public feedingTransactions: FeedingTransaction[];
+  @Input() public currentAnimal: Livestock;
+  @Input() public feedingTransactions: FeedingTransaction[];
 
   @ViewChild('data') dataGrid: LsGridComponent;
   @ViewChild('animalSelector') animalSelector: MatSelect;
@@ -57,40 +43,17 @@ export class FeedingTransactionComponent
     private feedTypeService: FeedTypeService,
     private unitService: UnitService
   ) {
-    this.livestockChanged = new Subscription();
     this.livestockAdded = new Subscription();
-    this.animalSelectorChanged = new Subscription();
     this.feedTypesChanged = new Subscription();
     this.unitTypesChanged = new Subscription();
 
     this.feedingTransactions = [];
     this.feedTypes = [];
     this.unitTypes = [];
-    const utcNow = moment()
-      .utc()
-      .toDate();
-    this.currentAnimal = new Livestock(
-      -99,
-      LiveStockType.Cattle,
-      null,
-      0,
-      utcNow,
-      utcNow,
-      0,
-      0,
-      0,
-      0
-    );
   }
 
   public ngOnInit(): void {
     this.init();
-  }
-
-  public ngOnChanges() {
-    this.feedingTransactionService.get(this.currentAnimal.id);
-    this.dataGrid.config.fetchKey = this.currentAnimal.id;
-    this.dataGrid.reload();
   }
 
   public getConfig(): LsGridConfig {
@@ -126,9 +89,9 @@ export class FeedingTransactionComponent
     feedingTransaction.feedID = 1;
     feedingTransaction.quantity = 0;
     feedingTransaction.unitTypeCode = 1;
-    this.livestockAdded = this.feedingTransactionService
+    /* this.livestockAdded = this.feedingTransactionService
       .add(feedingTransaction)
-      .subscribe(() => this.dataGrid.reload());
+      .subscribe(() => this.dataGrid.reload()); */
   }
 
   public delete(feedingTransaction: FeedingTransaction) {
@@ -138,23 +101,8 @@ export class FeedingTransactionComponent
   }
 
   private init() {
-    this.fetchAnimals();
     this.fetchFeedTypes();
     this.fetchUnitTypes();
-    this.animalSelectorChanged = this.animalSelector.selectionChange.subscribe(
-      (change: MatSelectChange) => this.animalSelectorValueChanged(change)
-    );
-  }
-
-  private fetchAnimals() {
-    this.animals = [];
-    this.livestockChanged = this.livestockService.livestockChanged.subscribe(
-      (animals: Livestock[]) => {
-        this.animals = animals;
-        this.setCurrentAnimal(this.animals[0]);
-      }
-    );
-    this.livestockService.getLivestock();
   }
 
   private fetchFeedTypes() {
@@ -173,10 +121,6 @@ export class FeedingTransactionComponent
         this.unitTypes = units.slice();
       }
     );
-  }
-
-  private animalSelectorValueChanged(selectChanged: MatSelectChange) {
-    this.setCurrentAnimal(this.livestockService.getAnimal(selectChanged.value));
   }
 
   private getGridColumnDefs(): LsGridColumnDef[] {
@@ -259,15 +203,8 @@ export class FeedingTransactionComponent
     return foundType.description;
   }
 
-  private setCurrentAnimal(animal: Livestock): void {
-    this.dataGrid.config.fetchKey = animal.id;
-    this.dataGrid.reload();
-  }
-
   public ngOnDestroy(): void {
-    this.livestockChanged.unsubscribe();
     this.livestockAdded.unsubscribe();
-    this.animalSelectorChanged.unsubscribe();
     this.feedTypesChanged.unsubscribe();
     this.unitTypesChanged.unsubscribe();
   }

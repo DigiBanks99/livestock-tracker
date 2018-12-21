@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  SimpleChanges,
+  OnChanges
+} from '@angular/core';
 import { PageEvent } from '@angular/material';
 import { Params } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
@@ -12,12 +19,13 @@ import { LsGridColumnType } from './ls-grid-column-type.enum';
   templateUrl: './ls-grid.component.html',
   styleUrls: ['./ls-grid.component.scss']
 })
-export class LsGridComponent implements OnInit, OnDestroy {
+export class LsGridComponent implements OnInit, OnChanges, OnDestroy {
   private dataChanged: Subscription;
   private data: any[];
   private loading: boolean;
 
   @Input() public config: LsGridConfig;
+  @Input() dataSource?: any[];
 
   constructor() {
     this.dataChanged = new Subscription();
@@ -26,6 +34,11 @@ export class LsGridComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {}
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (changes.dataSource && changes.dataSource.currentValue)
+      this.data = this.dataSource;
+  }
 
   public getLoadingStatus() {
     return this.loading;
@@ -139,7 +152,8 @@ export class LsGridComponent implements OnInit, OnDestroy {
   }
 
   public reload(): void {
-    this.fetchData();
+    if (this.dataSource) this.data = this.dataSource;
+    else this.fetchData();
   }
 
   public isDisplayColumn(index: number) {

@@ -8,7 +8,11 @@
       </mat-toolbar>
     </div>
   </div>
-  <app-ls-grid #data [config]="getConfig()"></app-ls-grid>
+  <app-ls-grid
+    #data
+    [config]="getConfig()"
+    [dataSource]="feedingTransactions"
+  ></app-ls-grid>
   <button
     mat-fab
     class="mat-fab-bottom-right"

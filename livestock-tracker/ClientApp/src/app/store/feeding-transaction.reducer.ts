@@ -34,7 +34,7 @@ export const initialState: FeedingTransactionState = feedingTransactionAdapter.g
 );
 
 export function feedingTransactionReducer(
-  state: FeedingTransactionState,
+  state: FeedingTransactionState = initialState,
   action: Action
 ) {
   switch (action.type) {
@@ -51,7 +51,7 @@ export function feedingTransactionReducer(
       return {
         ...feedingTransactionAdapter.addOne(
           (<AddFeedTransactionSucceeded>action).transaction,
-          state
+          { ...state }
         ),
         isPending: false,
         error: null
@@ -60,7 +60,7 @@ export function feedingTransactionReducer(
       return {
         ...feedingTransactionAdapter.removeOne(
           (<RemoveFeedTransactionSucceeded>action).id,
-          state
+          { ...state }
         ),
         isPending: false,
         error: null
@@ -69,17 +69,19 @@ export function feedingTransactionReducer(
       return {
         ...feedingTransactionAdapter.updateOne(
           (<UpdateFeedTransactionSucceeded>action).transaction,
-          state
+          { ...state }
         ),
         isPending: false,
         error: null
       };
     case ActionTypes.SET_FEED_TRANSACTIONS:
+      const setFeedTransactionsAction = <SetFeedTransactions>action;
+      const newState = feedingTransactionAdapter.addAll(
+        setFeedTransactionsAction.transactions,
+        { ...state }
+      );
       return {
-        ...feedingTransactionAdapter.addAll(
-          (<SetFeedTransactions>action).transactions,
-          state
-        ),
+        ...newState,
         isPending: false,
         error: null
       };

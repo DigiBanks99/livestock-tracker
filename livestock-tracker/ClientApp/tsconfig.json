@@ -27,6 +27,8 @@
       "@shared/*": ["app/shared/*"],
       "@unit/*": ["app/unit/*"],
       "@app/*": ["app/*"]
-    }
+    },
+    "newLine": "LF",
+    "charset": "UTF-8"
   }
 }

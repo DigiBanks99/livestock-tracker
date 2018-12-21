@@ -15,14 +15,27 @@ import {
 } from '@feeding-transaction-store/actions';
 import { FeedingTransactionService } from '@feeding-transaction/feeding-transaction.service';
 import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
+import {
+  ActionTypes as AnimalActionTypes,
+  SelectAnimal
+} from '@animal-store/actions';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
+@Injectable()
 export class FeedingTransactionEffects {
   constructor(
     private actions$: Actions,
     private feedingTransactionService: FeedingTransactionService
   ) {}
+
+  @Effect()
+  selectedAnimalChanged$: Observable<Action> = this.actions$.pipe(
+    ofType(AnimalActionTypes.SELECT_ANIMAL),
+    map((action: SelectAnimal) => action.key),
+    map((animalId: number) => new FetchFeedingTransactions(animalId))
+  );
 
   @Effect()
   getAll$: Observable<Action> = this.actions$.pipe(
