@@ -5,7 +5,7 @@
   <mat-select
     [value]="currentAnimal ? currentAnimal.id : 0"
     #animalSelector
-    (selectionChange)="onChange(currentAnimal)"
+    (selectionChange)="onChange($event)"
   >
     <mat-option
       *ngFor="let animal of animals; let i = index"

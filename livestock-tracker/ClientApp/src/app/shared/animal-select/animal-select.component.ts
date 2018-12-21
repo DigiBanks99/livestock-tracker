@@ -6,8 +6,9 @@ import {
   OnInit,
   OnChanges
 } from '@angular/core';
-import { Livestock } from '@app/livestock/livestock.model';
-import { LivestockService } from '@app/livestock/livestock.service';
+import { MatSelectChange } from '@angular/material';
+import { Livestock } from '@livestock/livestock.model';
+import { LivestockService } from '@livestock/livestock.service';
 
 @Component({
   selector: 'app-animal-select',
@@ -35,8 +36,8 @@ export class AnimalSelectComponent implements OnInit, OnChanges {
     return this.livestockService.getSvgIcon(animal);
   }
 
-  public onChange(id: number) {
-    this.animalChanged.emit(id);
+  public onChange($event: MatSelectChange) {
+    this.animalChanged.emit($event.value);
   }
 
   private updateAnimal() {

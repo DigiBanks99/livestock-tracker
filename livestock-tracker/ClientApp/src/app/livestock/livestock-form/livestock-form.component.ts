@@ -25,6 +25,7 @@ import { MatSnackBar } from '@angular/material';
 
 const Constants = {
   Controls: {
+    ID: 'id',
     SELL_PRICE: 'sellPrice',
     SELL_DATE: 'sellDate',
     DATE_OF_DEATH: 'dateOfDeath',
@@ -171,6 +172,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public reset() {
+    let id: number;
     let type = LiveStockType.Cattle;
     let subspecies: string = null;
     let number: number = null;
@@ -188,6 +190,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
     const animal: Livestock = this.currentAnimal;
     if (animal != null) {
+      id = animal.id;
       type = animal.type;
       subspecies = animal.subspecies;
       number = animal.number;
@@ -206,6 +209,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       this.currentAnimal = null;
     }
 
+    this.livestockForm.get(Constants.Controls.ID).setValue(id);
     this.livestockForm.get(Constants.Controls.TYPE).setValue(type);
     this.livestockForm.get(Constants.Controls.SUBSPECIES).setValue(subspecies);
     this.livestockForm.get(Constants.Controls.NUMBER).setValue(number);
@@ -236,6 +240,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private initForm() {
+    let id: number;
     let type = LiveStockType.Cattle;
     let subspecies: string = null;
     let number: number = null;
@@ -253,6 +258,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
     const animal: Livestock = this.currentAnimal;
     if (animal != null) {
+      id = animal.id;
       type = animal.type;
       subspecies = animal.subspecies;
       number = animal.number;
@@ -274,7 +280,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.livestockForm = this.formBuilder.group({
-      id: [animal.id],
+      id: [id],
       type: new FormControl(type, [Validators.required]),
       subspecies: new FormControl(subspecies, []),
       number: new FormControl(number, [Validators.required]),
