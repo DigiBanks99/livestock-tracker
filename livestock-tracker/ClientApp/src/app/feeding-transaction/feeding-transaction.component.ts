@@ -1,21 +1,28 @@
-import { Component, OnInit, OnDestroy, ViewChild, Input } from '@angular/core';
-import { FeedingTransactionService } from './feeding-transaction.service';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  Input,
+  Output,
+  EventEmitter
+} from '@angular/core';
+import { MatSelect } from '@angular/material';
+import { formatDate } from '@angular/common';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
+import { Livestock } from '@livestock/livestock.model';
+import { FeedType } from '@feed-type/feed-type.model';
+import { Unit } from '@unit/unit.model';
 import { FeedingTransaction } from './feeding-transaction.model';
-import { LsGridComponent } from '../shared/ls-grid/ls-grid.component';
-import { LsGridConfig } from '../shared/ls-grid/ls-grid-config.model';
-import { LsGridColumnDef } from '../shared/ls-grid/ls-grid-column-def.model';
-import { formatDate } from '../../../node_modules/@angular/common';
-import { Livestock } from '../livestock/livestock.model';
-import { LivestockService } from '../livestock/livestock.service';
-import { MatSelect } from '../../../node_modules/@angular/material';
-import { FeedTypeService } from '../feed-type/feed-type.service';
-import { FeedType } from '../feed-type/feed-type.model';
+import { LsGridComponent } from '@shared/ls-grid/ls-grid.component';
+import { FeedingTransactionService } from './feeding-transaction.service';
+import { FeedTypeService } from '@feed-type/feed-type.service';
+import { UnitService } from '@unit/unit.service';
+import { LsGridConfig } from '@shared/ls-grid/ls-grid-config.model';
+import { LsGridColumnDef } from '@shared/ls-grid/ls-grid-column-def.model';
+import { LsGridColumnType } from '@shared/ls-grid/ls-grid-column-type.enum';
 import { isNullOrUndefined } from 'util';
-import { UnitService } from '../unit/unit.service';
-import { Unit } from '../unit/unit.model';
-import { LsGridColumnType } from '../shared/ls-grid/ls-grid-column-type.enum';
 
 @Component({
   selector: 'app-feeding-transaction',
@@ -23,7 +30,7 @@ import { LsGridColumnType } from '../shared/ls-grid/ls-grid-column-type.enum';
   styleUrls: ['./feeding-transaction.component.scss']
 })
 export class FeedingTransactionComponent implements OnInit, OnDestroy {
-  private livestockAdded: Subscription;
+  private showDetailTriggered: Subscription;
   private feedTypesChanged: Subscription;
   private unitTypesChanged: Subscription;
 
@@ -33,17 +40,18 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
 
   @Input() public currentAnimal: Livestock;
   @Input() public feedingTransactions: FeedingTransaction[];
+  @Output() public addTransaction = new EventEmitter<number>();
+  @Output() public showDetail = new EventEmitter<FeedingTransaction>();
 
   @ViewChild('data') dataGrid: LsGridComponent;
   @ViewChild('animalSelector') animalSelector: MatSelect;
 
   constructor(
     private feedingTransactionService: FeedingTransactionService,
-    private livestockService: LivestockService,
     private feedTypeService: FeedTypeService,
     private unitService: UnitService
   ) {
-    this.livestockAdded = new Subscription();
+    this.showDetailTriggered = new Subscription();
     this.feedTypesChanged = new Subscription();
     this.unitTypesChanged = new Subscription();
 
@@ -64,6 +72,9 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     config.fetchKey = this.currentAnimal ? this.currentAnimal.id : 0;
     config.routerLink = ['edit'];
     config.queryParameters = (item: FeedingTransaction) => ({ id: item.id });
+    this.showDetailTriggered = config.showDetail.subscribe((item: any) => {
+      this.showDetail.emit(<FeedingTransaction>item);
+    });
     return config;
   }
 
@@ -75,23 +86,8 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     return this.currentAnimal;
   }
 
-  public getSvgIcon(animal: Livestock) {
-    return this.livestockService.getSvgIcon(animal);
-  }
-
-  public add(animal: Livestock): void {
-    this.dataGrid.config.fetchKey = animal.id;
-    const feedingTransaction = new FeedingTransaction();
-    feedingTransaction.animalID = animal.id;
-    feedingTransaction.transactionDate = moment()
-      .utc(false)
-      .toDate();
-    feedingTransaction.feedID = 1;
-    feedingTransaction.quantity = 0;
-    feedingTransaction.unitTypeCode = 1;
-    /* this.livestockAdded = this.feedingTransactionService
-      .add(feedingTransaction)
-      .subscribe(() => this.dataGrid.reload()); */
+  public add(): void {
+    this.addTransaction.emit(this.currentAnimal.id);
   }
 
   public delete(feedingTransaction: FeedingTransaction) {
@@ -204,7 +200,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.livestockAdded.unsubscribe();
+    this.showDetailTriggered.unsubscribe();
     this.feedTypesChanged.unsubscribe();
     this.unitTypesChanged.unsubscribe();
   }

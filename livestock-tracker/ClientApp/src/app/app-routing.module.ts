@@ -33,8 +33,11 @@ const routes: Routes = [
     path: 'feeding-transaction',
     component: FeedingTransactionContainerComponent,
     children: [
-      { path: 'new', component: FeedingTransactionDetailComponent },
-      { path: 'edit', component: FeedingTransactionDetailComponent }
+      { path: ':animalId/new', component: FeedingTransactionDetailComponent },
+      {
+        path: ':animalId/:id/edit',
+        component: FeedingTransactionDetailComponent
+      }
     ]
   }
 ];

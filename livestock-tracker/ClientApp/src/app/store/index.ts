@@ -15,6 +15,11 @@ export const reducers = {
   feedingTransactions: feedingTransactionReducer
 };
 
+export interface State {
+  animals: AnimalState;
+  feedingTransactions: FeedingTransactionState;
+}
+
 const getAnimalsState = createFeatureSelector<AnimalState>('animals');
 const getFeedingTransactionState = createFeatureSelector<
   FeedingTransactionState
@@ -60,13 +65,17 @@ export const {
 
 export const getSelectedFeedingTransactionId = createSelector(
   getFeedingTransactionState,
-  state => state.selectedTransactionId
+  state => {
+    return state.selectedTransactionId;
+  }
 );
 
 export const getSelectedFeedingTransaction = createSelector(
   getAllFeedingTransactionEntities,
   getSelectedFeedingTransactionId,
-  (entities, id) => entities[id]
+  (entities, id) => {
+    return entities[id];
+  }
 );
 
 export const getFeedingTransactionPendingState = createSelector(

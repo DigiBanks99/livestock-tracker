@@ -59,6 +59,7 @@ import { LivestockNewComponent } from './livestock/livestock-new/livestock-new.c
 import { MedicalContainerComponent } from '@medical/medical-container.component';
 import { FeedingTransactionContainerComponent } from '@feeding-transaction/feeding-transaction-container.component';
 import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
+import { FeedingTransactionFormComponent } from '@feeding-transaction/feeding-transaction-form/feeding-transaction-form.component';
 
 @NgModule({
   declarations: [
@@ -79,11 +80,12 @@ import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
     UnitDetailComponent,
     MedicineTypeComponent,
     MedicineTypeDetailComponent,
+    LsGridComponent,
     FeedTypeComponent,
     FeedTypeDetailComponent,
     FeedingTransactionComponent,
     FeedingTransactionContainerComponent,
-    LsGridComponent,
+    FeedingTransactionFormComponent,
     FeedingTransactionDetailComponent,
     AnimalSelectContainerComponent,
     AnimalSelectComponent

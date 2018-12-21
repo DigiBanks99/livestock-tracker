@@ -18,8 +18,7 @@
       <mat-list-item
         class="ls-grid-list-item"
         *ngFor="let item of getData()"
-        [routerLink]="getRouterLink()"
-        [queryParams]="getQueryParams(item)"
+        (click)="onClick(item)"
       >
         <div class="ls-grid-list-item-container">
           <span

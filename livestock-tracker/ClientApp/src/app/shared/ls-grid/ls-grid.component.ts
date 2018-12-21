@@ -141,6 +141,10 @@ export class LsGridComponent implements OnInit, OnChanges, OnDestroy {
     return this.getColumnDef(index).getWidth();
   }
 
+  public onClick(item: any) {
+    this.getConfig().showDetail.emit(item);
+  }
+
   public onPage(pageEvent: PageEvent) {
     this.callDataFetch(
       this.getConfig().dataService.page(pageEvent.pageSize, pageEvent.pageIndex)
