@@ -17,15 +17,16 @@
           mat-list-item
           matRippleDisabled
           class="form-detail-toolbar__nav__desc"
-          >{{ getHeaderText() }}</a
         >
+          {{ getHeaderText() }}
+        </a>
       </mat-nav-list>
       <span class="fill-remaining-space"></span>
       <button
         mat-icon-button
         type="button"
         title="Reset changes"
-        [disabled]="!feedForm.dirty"
+        [disabled]="!feedForm.dirty || isPending"
         (click)="resetForm()"
       >
         <mat-icon>cancel</mat-icon>
@@ -34,7 +35,7 @@
         mat-icon-button
         type="submit"
         title="Submit changes"
-        [disabled]="!feedForm.dirty"
+        [disabled]="!feedForm.dirty || isPending"
         (click)="submit()"
       >
         <mat-icon>save</mat-icon>
@@ -65,7 +66,7 @@
               required
             />
             <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
-            <mat-datepicker #td disabled="false"></mat-datepicker>
+            <mat-datepicker #td></mat-datepicker>
           </mat-form-field>
         </div>
         <div class="form-container-inline">

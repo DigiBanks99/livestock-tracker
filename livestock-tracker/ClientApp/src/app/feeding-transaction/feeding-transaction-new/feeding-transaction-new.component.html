@@ -4,6 +4,8 @@
   successMessage="Feed transaction created"
   [feedTypes]="feedTypes$ | async"
   [unitTypes]="unitTypes$ | async"
+  [isPending]="isPending$ | async"
+  [error]="error$ | async"
   (save)="onSave($event)"
   (navigateBack)="onNavigateBack()"
 ></app-feeding-transaction-form>

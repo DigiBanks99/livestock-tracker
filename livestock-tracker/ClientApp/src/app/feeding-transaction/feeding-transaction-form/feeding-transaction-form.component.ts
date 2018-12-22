@@ -9,10 +9,9 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-
 import * as moment from 'moment';
 import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
-import { MAT_DATE_FORMATS } from '@angular/material';
+import { MAT_DATE_FORMATS, MatSnackBar } from '@angular/material';
 import { FeedType } from '@feed-type/feed-type.model';
 import { Unit } from '@unit/unit.model';
 
@@ -47,6 +46,8 @@ export class FeedingTransactionFormComponent
       .toDate(),
     unitTypeCode: 0
   };
+  @Input() isPending: boolean;
+  @Input() error: Error;
   @Input() header: string;
   @Input() successMessage: string;
   @Input() feedTypes: FeedType[] = [];
@@ -54,14 +55,21 @@ export class FeedingTransactionFormComponent
   @Output() save = new EventEmitter<FeedingTransaction>();
   @Output() navigateBack = new EventEmitter();
 
-  constructor() {}
+  constructor(private snackbar: MatSnackBar) {}
 
   public ngOnInit(): void {
     this.initForm();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.feedingTransaction.currentValue) this.resetForm();
+    this.onSaveResponse();
+
+    if (
+      (changes.feedingTransaction && changes.feedingTransaction.currentValue) ||
+      (changes.selectedAnimalId && changes.selectedAnimalId.currentValue)
+    ) {
+      this.resetForm();
+    }
   }
 
   public ngOnDestroy(): void {}
@@ -91,19 +99,6 @@ export class FeedingTransactionFormComponent
     this.feedForm.markAsPristine();
   }
 
-  private initForm(): void {
-    this.feedForm = new FormGroup({
-      id: new FormControl(null),
-      animalID: new FormControl(this.selectedAnimalId),
-      transactionDate: new FormControl(moment(), Validators.required),
-      feedID: new FormControl(null, Validators.required),
-      quantity: new FormControl(null, [Validators.required, Validators.min(0)]),
-      unitTypeCode: new FormControl(null, Validators.required)
-    });
-
-    this.resetForm();
-  }
-
   public submit() {
     if (this.feedForm.valid) {
       this.save.emit(this.feedForm.value);
@@ -112,5 +107,43 @@ export class FeedingTransactionFormComponent
 
   public onNavigateBack() {
     this.navigateBack.emit();
+  }
+
+  private initForm(): void {
+    this.feedForm = new FormGroup({
+      id: new FormControl(null),
+      animalID: new FormControl(this.selectedAnimalId),
+      transactionDate: new FormControl(
+        { value: moment(), disabled: this.isPending },
+        Validators.required
+      ),
+      feedID: new FormControl(
+        { value: null, disabled: this.isPending },
+        Validators.required
+      ),
+      quantity: new FormControl({ value: null, disabled: this.isPending }, [
+        Validators.required,
+        Validators.min(0)
+      ]),
+      unitTypeCode: new FormControl(
+        { value: null, disabled: this.isPending },
+        Validators.required
+      )
+    });
+
+    this.resetForm();
+  }
+
+  private onSaveResponse() {
+    if (this.feedForm) {
+      if (!this.isPending && !this.feedForm.pristine) {
+        let message = this.successMessage;
+        if (this.error != null) message = this.error.message;
+        setTimeout(() => {
+          this.snackbar.open(message, 'Dismiss', { duration: 4000 });
+          if (!this.error) this.onNavigateBack();
+        });
+      }
+    }
   }
 }

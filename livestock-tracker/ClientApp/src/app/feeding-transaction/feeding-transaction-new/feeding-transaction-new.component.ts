@@ -11,8 +11,8 @@ import { Store, select } from '@ngrx/store';
 import {
   State,
   getSelectedAnimalId,
-  getFetchAnimalsPendingState,
-  getFeedingTransactionErrorState
+  getFeedingTransactionErrorState,
+  getFeedingTransactionPendingState
 } from '@store';
 
 @Component({
@@ -38,7 +38,9 @@ export class FeedingTransactionNewComponent implements OnInit {
 
   public ngOnInit() {
     this.selectedAnimalId$ = this.store.pipe(select(getSelectedAnimalId));
-    this.isPending$ = this.store.pipe(select(getFetchAnimalsPendingState));
+    this.isPending$ = this.store.pipe(
+      select(getFeedingTransactionPendingState)
+    );
     this.error$ = this.store.pipe(select(getFeedingTransactionErrorState));
     this.feedTypes$ = this.feedTypeService.feedTypesChanged;
     this.unitTypes$ = this.unitService.unitsChanged;
