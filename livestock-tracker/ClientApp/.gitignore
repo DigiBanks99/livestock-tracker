@@ -19,14 +19,6 @@
 *.sublime-workspace
 .sonarlint
 
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-!.vscode/cSpell.json
-
 # misc
 /.sass-cache
 /connect.lock
