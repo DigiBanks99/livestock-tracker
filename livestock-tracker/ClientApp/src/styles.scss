@@ -15,6 +15,20 @@
     url('assets/material-icons/MaterialIcons-Regular.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/roboto/roboto-v18-latin-regular.eot');
+  src: local('Roboto'), local('Roboto-Regular'),
+    url('assets/roboto/roboto-v18-latin-regular.eot?#iefix')
+      format('embedded-opentype'),
+    url('assets/roboto/roboto-v18-latin-regular.woff2') format('woff2'),
+    url('assets/roboto/roboto-v18-latin-regular.woff') format('woff'),
+    url('assets/roboto/roboto-v18-latin-regular.ttf') format('truetype'),
+    url('assets/roboto/roboto-v18-latin-regular.svg#Roboto') format('svg');
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;
