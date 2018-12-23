@@ -79,6 +79,8 @@ export class FeedingTransactionFormComponent
   }
 
   public resetForm(): void {
+    if (!this.feedForm) return;
+
     let animalID = this.selectedAnimalId;
     if (this.feedingTransaction !== null) {
       animalID = this.feedingTransaction.animalID

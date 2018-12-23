@@ -86,6 +86,7 @@ export class SetAnimals implements Action {
 
   constructor(animals: Livestock[]) {
     this.animals = animals;
+    this.selectedAnimalId = this.animals.length > 0 ? this.animals[0].id : null;
   }
 }
 

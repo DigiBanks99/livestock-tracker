@@ -1,4 +1,8 @@
-<form [formGroup]="feedForm" class="container form-detail app-background">
+<form
+  [formGroup]="feedForm"
+  class="container form-detail app-background"
+  (ngSubmit)="submit()"
+>
   <mat-toolbar
     color="primary"
     class="form-detail-toolbar app-toolbar"
@@ -26,7 +30,7 @@
         mat-icon-button
         type="button"
         title="Reset changes"
-        [disabled]="!feedForm.dirty || isPending"
+        [disabled]="feedForm.invalid || !feedForm.dirty || isPending"
         (click)="resetForm()"
       >
         <mat-icon>cancel</mat-icon>
@@ -117,6 +121,26 @@
           </mat-form-field>
         </div>
       </mat-card-content>
+      <mat-card-actions>
+        <button
+          type="button"
+          mat-button
+          title="Reset changes"
+          [disabled]="!feedForm.dirty || isPending"
+          (click)="resetForm()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          mat-button
+          color="primary"
+          title="Submit changes"
+          [disabled]="feedForm.invalid || !feedForm.dirty || isPending"
+        >
+          Save
+        </button>
+      </mat-card-actions>
     </mat-card>
   </div>
 </form>

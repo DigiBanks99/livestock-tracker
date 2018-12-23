@@ -6,7 +6,10 @@ import { Livestock } from '@livestock/livestock.model';
 import { getSelectedAnimal, getAllFeedingTransactions } from '@store';
 import { FeedingTransaction } from './feeding-transaction.model';
 import { Router } from '@angular/router';
-import { SelectFeedTransaction } from '@feeding-transaction-store/actions';
+import {
+  SelectFeedTransaction,
+  RemoveFeedTransaction
+} from '@feeding-transaction-store/actions';
 
 @Component({
   selector: 'app-feeding-transaction-container',
@@ -16,6 +19,7 @@ import { SelectFeedTransaction } from '@feeding-transaction-store/actions';
       [feedingTransactions]="feedingTransactions$ | async"
       (addTransaction)="onAddTransaction($event)"
       (showDetail)="onShowDetail($event)"
+      (removeTransaction)="onDelete($event)"
     ></app-feeding-transaction>
   `
 })
@@ -44,5 +48,9 @@ export class FeedingTransactionContainerComponent implements OnInit {
       identifier.id,
       'edit'
     ]);
+  }
+
+  public onDelete(id: number) {
+    this.store.dispatch(new RemoveFeedTransaction(id));
   }
 }

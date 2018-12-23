@@ -1,4 +1,4 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker.Database;
 using System.Collections.Generic;
 
 namespace LivestockTracker.Services
@@ -7,7 +7,7 @@ namespace LivestockTracker.Services
     {
         TEntity Get(int id);
         IEnumerable<TEntity> GetAll();
-        void Add(TEntity entity);
+        TEntity Add(TEntity entity);
         void Update(TEntity entity);
         void Remove(TEntity entity);
         void Remove(int id);

@@ -39,10 +39,10 @@ namespace livestock_tracker.Controllers
         return BadRequest(ModelState);
       }
 
-      _feedingTransactionRepository.Add(feedingTransaction);
+      var addedTransaction = _feedingTransactionRepository.Add(feedingTransaction);
       _feedingTransactionRepository.SaveChanges();
 
-      return CreatedAtAction("Get", new { id = feedingTransaction.ID }, feedingTransaction);
+      return CreatedAtAction("Get", new { id = feedingTransaction.ID }, addedTransaction);
     }
 
     [HttpPut("{id}")]
@@ -91,7 +91,7 @@ namespace livestock_tracker.Controllers
       {
         _feedingTransactionRepository.Update(feedingTransaction);
         _feedingTransactionRepository.SaveChanges();
-        var updatedTransaction = Get(feedingTransaction.ID);
+        var updatedTransaction = _feedingTransactionRepository.Get(feedingTransaction.ID);
         if (updatedTransaction == null)
         {
           return NotFound();
@@ -113,16 +113,16 @@ namespace livestock_tracker.Controllers
         return BadRequest(ModelState);
       }
 
-      var unit = _feedingTransactionRepository.Get(id);
-      if (unit == null)
+      var transaction = _feedingTransactionRepository.Get(id);
+      if (transaction == null)
       {
         return NotFound();
       }
 
-      _feedingTransactionRepository.Remove(unit);
+      _feedingTransactionRepository.Remove(transaction);
       _feedingTransactionRepository.SaveChanges();
 
-      return Ok(unit);
+      return Ok(transaction.ID);
     }
   }
 }

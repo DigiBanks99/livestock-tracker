@@ -42,6 +42,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   @Input() public feedingTransactions: FeedingTransaction[];
   @Output() public addTransaction = new EventEmitter<number>();
   @Output() public showDetail = new EventEmitter<FeedingTransaction>();
+  @Output() public removeTransaction = new EventEmitter<number>();
 
   @ViewChild('data') dataGrid: LsGridComponent;
   @ViewChild('animalSelector') animalSelector: MatSelect;
@@ -91,9 +92,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   }
 
   public delete(feedingTransaction: FeedingTransaction) {
-    this.feedingTransactionService
-      .delete(feedingTransaction)
-      .subscribe(() => this.dataGrid.reload());
+    this.removeTransaction.emit(feedingTransaction.id);
   }
 
   private init() {

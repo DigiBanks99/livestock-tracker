@@ -10,7 +10,7 @@ namespace LivestockTracker.Database
         IQueryable<TEntity> GetAll();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
         TEntity Get(int id);
-        void Add(TEntity entity);
+        TEntity Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);
         void Update(TEntity entity);
         void Remove(int id);

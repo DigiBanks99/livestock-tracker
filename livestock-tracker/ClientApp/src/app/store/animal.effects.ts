@@ -13,7 +13,8 @@ import {
   UpdateAnimal,
   UpdateAnimalSucceeded,
   HandleError,
-  HandleFetchAnimalsError
+  HandleFetchAnimalsError,
+  SelectAnimal
 } from '@animal-store/actions';
 import { startWith, switchMap, map, catchError } from 'rxjs/operators';
 import { LivestockService } from '@livestock/livestock.service';
@@ -45,6 +46,13 @@ export class AnimalEffects {
 
       return of(new HandleFetchAnimalsError(error));
     })
+  );
+
+  @Effect()
+  updateSelectedAnimal$: Observable<Action> = this.actions$.pipe(
+    ofType(ActionTypes.SET_ANIMALS),
+    map((action: SetAnimals) => action.selectedAnimalId),
+    map((id: number) => new SelectAnimal(id))
   );
 
   @Effect()
