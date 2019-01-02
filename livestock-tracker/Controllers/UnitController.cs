@@ -1,4 +1,5 @@
-﻿using LivestockTracker.Models;
+using LivestockTracker;
+using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -39,10 +40,10 @@ namespace livestock_tracker.Controllers
         return BadRequest(ModelState);
       }
 
-      _unitService.Add(unit);
+      var savedUnit = _unitService.Add(unit);
       _unitService.Save();
 
-      return CreatedAtAction("Get", new { id = unit.TypeCode }, unit);
+      return CreatedAtAction("Get", new { id = savedUnit.TypeCode }, savedUnit);
     }
 
     // PUT: api/Unit/5
@@ -80,6 +81,45 @@ namespace livestock_tracker.Controllers
       return NoContent();
     }
 
+    [HttpPatch("{id}")]
+    public IActionResult Patch(int id, [FromBody] Unit unit)
+    {
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+      if (id != unit.TypeCode)
+      {
+        return BadRequest();
+      }
+
+      Unit updatedUnit = null;
+
+      try
+      {
+        updatedUnit = _unitService.Update(unit);
+        _unitService.Save();
+      }
+      catch (EntityNotFoundException<Unit> ex)
+      {
+        return NotFound(ex.Message);
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (updatedUnit == null)
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return Ok(updatedUnit);
+    }
+
     // DELETE: api/ApiWithActions/5
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
@@ -98,7 +138,7 @@ namespace livestock_tracker.Controllers
       _unitService.Remove(unit);
       _unitService.Save();
 
-      return Ok(unit);
+      return Ok(unit.TypeCode);
     }
   }
 }

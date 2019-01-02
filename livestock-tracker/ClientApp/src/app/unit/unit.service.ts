@@ -1,110 +1,43 @@
-import { Injectable, Component, OnInit, OnDestroy } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Subject, Subscription } from 'rxjs';
-import { isUndefined, isNullOrUndefined } from 'util';
-
+import { Subject, Observable, of } from 'rxjs';
 import { Unit } from './unit.model';
-import { environment } from '../../environments/environment.prod';
+import { environment } from '@env/environment';
 
 export interface IUnitService {
-  unitsChanged: Subject<Unit[]>;
-
-  getUnits();
-  getUnit(typeCode: number): Unit;
-  addUnit(unit: Unit);
-  updateUnit(unit: Unit);
-  deleteUnit(typeCode: number);
+  getUnits(): Observable<Unit[]>;
+  getUnit(typeCode: number): Observable<Unit>;
+  addUnit(unit: Unit): Observable<Unit>;
+  updateUnit(unit: Unit): Observable<Unit>;
+  deleteUnit(typeCode: number): Observable<number>;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class UnitService implements IUnitService, OnInit, OnDestroy {
-  public unitsChanged: Subject<Unit[]>;
-
+export class UnitService implements IUnitService {
   private urlBase = environment.apiUrl + 'unit/';
-  private units: Unit[];
-  private getUnitsSubscription: Subscription;
-  private addUnitSubscription: Subscription;
-  private updateUnitSubscription: Subscription;
-  private deleteUnitSubscription: Subscription;
 
-  constructor(private http: HttpClient) {
-    this.units = [];
-    this.unitsChanged = new Subject<Unit[]>();
+  constructor(private http: HttpClient) {}
+
+  public getUnits(): Observable<Unit[]> {
+    return this.http.get<Unit[]>(this.urlBase);
   }
 
-  ngOnInit() {
-    this.units = [];
+  public getUnit(typeCode: number): Observable<Unit> {
+    return this.http.get<Unit>(this.urlBase + typeCode);
   }
 
-  public getUnits() {
-    this.getUnitsSubscription = this.http.get(this.urlBase).subscribe((units: Unit[]) => {
-      this.units = units;
-      this.emitUnitsChanged();
-    });
+  public addUnit(unit: Unit): Observable<Unit> {
+    return this.http.post<Unit>(this.urlBase, unit);
   }
 
-  public getUnit(typeCode: number): Unit {
-    const index = this.indexOf(typeCode);
-    if (index < 0) {
-      throw new Error('Index out of range');
-    }
-
-    return this.units.slice()[index];
+  public updateUnit(unit: Unit): Observable<Unit> {
+    return this.http.patch<Unit>(this.urlBase + unit.typeCode, unit);
   }
 
-  public addUnit(unit: Unit) {
-    this.addUnitSubscription = this.http.post(this.urlBase, unit).subscribe((savedUnit: Unit) => {
-      this.units.push(savedUnit);
-      unit = savedUnit;
-      this.emitUnitsChanged();
-    });
-  }
-
-  public updateUnit(unit: Unit) {
-    this.updateUnitSubscription = this.http.put(this.urlBase + unit.typeCode, unit).subscribe(() => {
-      this.emitUnitsChanged();
-    });
-  }
-
-  public deleteUnit(typeCode: number) {
-    this.deleteUnitSubscription = this.http.delete(this.urlBase + typeCode).subscribe(() => {
-      this.getUnits();
-    });
-  }
-
-  private indexOf(typeCode: number): number {
-    if (isNullOrUndefined(this.units) || this.units.length === 0) {
-      return null;
-    }
-
-    if (isNullOrUndefined(typeCode)) {
-      throw new Error('Invalid index');
-    }
-
-    return this.units.map((unit: Unit) => {
-      return unit.typeCode;
-    }).indexOf(typeCode);
-  }
-
-  private emitUnitsChanged() {
-    this.unitsChanged.next(this.units.slice());
-  }
-
-  ngOnDestroy() {
-    if (!isUndefined(this.getUnitsSubscription)) {
-      this.getUnitsSubscription.unsubscribe();
-    }
-    if (!isUndefined(this.addUnitSubscription)) {
-      this.addUnitSubscription.unsubscribe();
-    }
-    if (!isUndefined(this.updateUnitSubscription)) {
-      this.updateUnitSubscription.unsubscribe();
-    }
-    if (!isUndefined(this.deleteUnitSubscription)) {
-      this.deleteUnitSubscription.unsubscribe();
-    }
+  public deleteUnit(typeCode: number): Observable<number> {
+    return this.http.delete<number>(this.urlBase + typeCode);
   }
 }
 
@@ -115,21 +48,21 @@ export class MockUnitService implements IUnitService {
     this.unitsChanged = new Subject<Unit[]>();
   }
 
-  getUnits() {
-    this.unitsChanged.next([]);
+  getUnits(): Observable<Unit[]> {
+    return of([]);
   }
-  getUnit(typeCode: number): Unit {
-    return new Unit();
+  getUnit(typeCode: number): Observable<Unit> {
+    const unit = new Unit();
+    unit.typeCode = typeCode;
+    return of(unit);
   }
-  addUnit(unit: Unit) {
+  addUnit(unit: Unit): Observable<Unit> {
     throw new Error('Method not implemented.');
   }
-  updateUnit(unit: Unit) {
+  updateUnit(unit: Unit): Observable<Unit> {
     throw new Error('Method not implemented.');
   }
-  deleteUnit(typeCode: number) {
+  deleteUnit(typeCode: number): Observable<number> {
     throw new Error('Method not implemented.');
   }
-
-
 }

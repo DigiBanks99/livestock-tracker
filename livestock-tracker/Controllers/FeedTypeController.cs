@@ -1,4 +1,5 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker;
+using LivestockTracker.Database;
 using LivestockTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,46 @@ namespace livestock_tracker.Controllers
       return NoContent();
     }
 
+    [HttpPatch("{id}")]
+    public IActionResult Patch(int id, [FromBody] FeedType feedType)
+    {
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+      if (id != feedType.ID)
+      {
+        return BadRequest();
+      }
+
+
+      FeedType updatedFeedType = null;
+      try
+      {
+        _feedTypeRepository.Update(feedType);
+        _feedTypeRepository.SaveChanges();
+        updatedFeedType = _feedTypeRepository.Get(feedType.ID);
+      }
+      catch (EntityNotFoundException<FeedType> ex)
+      {
+        return NotFound(ex.Message);
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (updatedFeedType == null)
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return Ok(updatedFeedType);
+    }
+
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -93,7 +134,7 @@ namespace livestock_tracker.Controllers
       _feedTypeRepository.Remove(unit);
       _feedTypeRepository.SaveChanges();
 
-      return Ok(unit);
+      return Ok(unit.ID);
     }
   }
 }

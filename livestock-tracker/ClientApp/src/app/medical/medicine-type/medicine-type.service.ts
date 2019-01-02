@@ -35,10 +35,12 @@ export class MedicineTypeService implements IMedicineTypeService {
   }
 
   public addMedicineType(medicineType: MedicineType) {
-    this.http.post(this.urlBase, medicineType).subscribe((savedMedicineType: MedicineType) => {
-      this.medicineTypes.push(savedMedicineType);
-      this.emitMedicineTypeChanged();
-    });
+    this.http
+      .post(this.urlBase, medicineType)
+      .subscribe((savedMedicineType: MedicineType) => {
+        this.medicineTypes.push(savedMedicineType);
+        this.emitMedicineTypeChanged();
+      });
   }
 
   public deleteMedicineType(typeCode: number) {
@@ -48,13 +50,18 @@ export class MedicineTypeService implements IMedicineTypeService {
   }
 
   public updateMedicineType(medicineTypeToUpdate: MedicineType) {
-    this.http.put(this.urlBase + medicineTypeToUpdate.typeCode, medicineTypeToUpdate).subscribe(() => {
-      this.emitMedicineTypeChanged();
-    });
+    this.http
+      .patch(this.urlBase + medicineTypeToUpdate.typeCode, medicineTypeToUpdate)
+      .subscribe(() => {
+        this.emitMedicineTypeChanged();
+      });
   }
 
   private indexOf(typeCode: number): number {
-    if (isNullOrUndefined(this.medicineTypes) || this.medicineTypes.length === 0) {
+    if (
+      isNullOrUndefined(this.medicineTypes) ||
+      this.medicineTypes.length === 0
+    ) {
       return null;
     }
 
@@ -62,9 +69,11 @@ export class MedicineTypeService implements IMedicineTypeService {
       throw new Error('Invalid index');
     }
 
-    return this.medicineTypes.map((medicineType: MedicineType) => {
-      return medicineType.typeCode;
-    }).indexOf(typeCode);
+    return this.medicineTypes
+      .map((medicineType: MedicineType) => {
+        return medicineType.typeCode;
+      })
+      .indexOf(typeCode);
   }
 
   private emitMedicineTypeChanged() {
@@ -82,13 +91,7 @@ export class MockMedicineTypeService implements IMedicineTypeService {
   getMedicineTypes() {
     this.medicineTypesChanged.next([]);
   }
-  addMedicineType(medicineType: MedicineType) {
-
-  }
-  deleteMedicineType(typeCode: number) {
-
-  }
-  updateMedicineType(medicineTypeToUpdate: MedicineType) {
-
-  }
+  addMedicineType(medicineType: MedicineType) {}
+  deleteMedicineType(typeCode: number) {}
+  updateMedicineType(medicineTypeToUpdate: MedicineType) {}
 }

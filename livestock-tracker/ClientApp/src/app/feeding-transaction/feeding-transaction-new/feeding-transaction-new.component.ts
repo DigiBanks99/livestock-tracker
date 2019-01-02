@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { FeedTypeService } from '@feed-type/feed-type.service';
-import { UnitService } from '@unit/unit.service';
 import { Observable } from 'rxjs';
 import { FeedType } from '@feed-type/feed-type.model';
 import { Unit } from '@unit/unit.model';
@@ -21,15 +19,7 @@ export class FeedingTransactionNewComponent implements OnInit {
   public feedTypes$: Observable<FeedType[]>;
   public unitTypes$: Observable<Unit[]>;
 
-  constructor(
-    private store: Store<State>,
-    private router: Router,
-    private feedTypeService: FeedTypeService,
-    private unitService: UnitService
-  ) {
-    this.feedTypeService.getFeedTypes();
-    this.unitService.getUnits();
-  }
+  constructor(private store: Store<State>, private router: Router) {}
 
   public ngOnInit() {
     this.selectedAnimalId$ = this.store.pipe(
@@ -48,7 +38,7 @@ export class FeedingTransactionNewComponent implements OnInit {
     this.feedTypes$ = this.store.pipe(
       select(selectors.feedTypeSelectors.getFeedTypes)
     );
-    this.unitTypes$ = this.unitService.unitsChanged;
+    this.unitTypes$ = this.store.pipe(select(selectors.unitSelectors.getUnits));
   }
 
   public onSave(transaction: FeedingTransaction) {

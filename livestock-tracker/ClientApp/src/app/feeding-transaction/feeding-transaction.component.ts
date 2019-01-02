@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   OnDestroy,
   ViewChild,
   Input,
@@ -17,7 +16,6 @@ import { Unit } from '@unit/unit.model';
 import { FeedingTransaction } from './feeding-transaction.model';
 import { LsGridComponent } from '@shared/ls-grid/ls-grid.component';
 import { FeedingTransactionService } from './feeding-transaction.service';
-import { UnitService } from '@unit/unit.service';
 import { LsGridConfig } from '@shared/ls-grid/ls-grid-config.model';
 import { LsGridColumnDef } from '@shared/ls-grid/ls-grid-column-def.model';
 import { LsGridColumnType } from '@shared/ls-grid/ls-grid-column-type.enum';
@@ -28,14 +26,13 @@ import { isNullOrUndefined } from 'util';
   templateUrl: './feeding-transaction.component.html',
   styleUrls: ['./feeding-transaction.component.scss']
 })
-export class FeedingTransactionComponent implements OnInit, OnDestroy {
+export class FeedingTransactionComponent implements OnDestroy {
   private showDetailTriggered: Subscription;
-  private unitTypesChanged: Subscription;
-  private unitTypes: Unit[];
 
   @Input() public currentAnimal: Livestock;
   @Input() public feedingTransactions: FeedingTransaction[];
   @Input() public feedTypes: FeedType[];
+  @Input() public unitTypes: Unit[];
   @Output() public addTransaction = new EventEmitter<number>();
   @Output() public showDetail = new EventEmitter<FeedingTransaction>();
   @Output() public removeTransaction = new EventEmitter<number>();
@@ -43,19 +40,10 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   @ViewChild('data') dataGrid: LsGridComponent;
   @ViewChild('animalSelector') animalSelector: MatSelect;
 
-  constructor(
-    private feedingTransactionService: FeedingTransactionService,
-    private unitService: UnitService
-  ) {
+  constructor(private feedingTransactionService: FeedingTransactionService) {
     this.showDetailTriggered = new Subscription();
-    this.unitTypesChanged = new Subscription();
 
     this.feedingTransactions = [];
-    this.unitTypes = [];
-  }
-
-  public ngOnInit(): void {
-    this.init();
   }
 
   public getConfig(): LsGridConfig {
@@ -82,19 +70,6 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
 
   public delete(feedingTransaction: FeedingTransaction) {
     this.removeTransaction.emit(feedingTransaction.id);
-  }
-
-  private init() {
-    this.fetchUnitTypes();
-  }
-
-  private fetchUnitTypes() {
-    this.unitService.getUnits();
-    this.unitTypesChanged = this.unitService.unitsChanged.subscribe(
-      (units: Unit[]) => {
-        this.unitTypes = units.slice();
-      }
-    );
   }
 
   private getGridColumnDefs(): LsGridColumnDef[] {
@@ -179,6 +154,5 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.showDetailTriggered.unsubscribe();
-    this.unitTypesChanged.unsubscribe();
   }
 }

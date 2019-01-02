@@ -13,10 +13,11 @@
     "baseUrl": "src",
     "paths": {
       "@env/*": ["environments/*"],
+      "@store": ["app/store/index.ts"],
       "@animal-store/*": ["app/store/animal.*"],
       "@feeding-transaction-store/*": ["app/store/feeding-transaction.*"],
       "@feed-type-store/*": ["app/store/feed-type.*"],
-      "@store": ["app/store/index.ts"],
+      "@unit-store/*": ["app/store/unit.*"],
       "@livestock/*": ["app/livestock/*"],
       "@admin/*": ["app/admin/*"],
       "@feed-type/*": ["app/feed-type/*"],

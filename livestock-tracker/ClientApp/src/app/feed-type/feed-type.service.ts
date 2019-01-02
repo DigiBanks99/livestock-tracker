@@ -32,7 +32,7 @@ export class FeedTypeService implements IFeedTypeService {
   }
 
   public update(feedType: FeedType): Observable<FeedType> {
-    return this.http.put<FeedType>(this.urlBase + feedType.id, feedType);
+    return this.http.patch<FeedType>(this.urlBase + feedType.id, feedType);
   }
 
   public delete(id: number): Observable<number> {

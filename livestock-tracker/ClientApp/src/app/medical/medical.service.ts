@@ -32,10 +32,12 @@ export class MedicalService implements IMedicalService, OnDestroy {
   }
 
   public getMedicalTransactions(animalID: number) {
-    this.httpGetSubscription = this.http.get(this.urlBase + animalID).subscribe((transactions: MedicalTransaction[]) => {
-      this.medicalTransactions = transactions;
-      this.emitMedicalTransactionsChanged();
-    });
+    this.httpGetSubscription = this.http
+      .get(this.urlBase + animalID)
+      .subscribe((transactions: MedicalTransaction[]) => {
+        this.medicalTransactions = transactions;
+        this.emitMedicalTransactionsChanged();
+      });
   }
 
   public getMedicalTransaction(id: number): MedicalTransaction {
@@ -55,11 +57,13 @@ export class MedicalService implements IMedicalService, OnDestroy {
     medicalTransaction.medicineTypeCode = 1;
     medicalTransaction.transactionDate = new Date();
     medicalTransaction.unit = 1;
-    this.httpPostSubscription = this.http.post(this.urlBase, medicalTransaction).subscribe((savedTransaction: MedicalTransaction) => {
-      medicalTransaction = savedTransaction;
-      this.medicalTransactions.push(medicalTransaction);
-      this.emitMedicalTransactionsChanged();
-    });
+    this.httpPostSubscription = this.http
+      .post(this.urlBase, medicalTransaction)
+      .subscribe((savedTransaction: MedicalTransaction) => {
+        medicalTransaction = savedTransaction;
+        this.medicalTransactions.push(medicalTransaction);
+        this.emitMedicalTransactionsChanged();
+      });
   }
 
   public updateMedicalTransaction(medicalTransaction: MedicalTransaction) {
@@ -69,16 +73,20 @@ export class MedicalService implements IMedicalService, OnDestroy {
     }
 
     const transactionToUpdate = this.medicalTransactions[index];
-    this.httpPutSubscription = this.http.put(this.urlBase + medicalTransaction.id, medicalTransaction).subscribe((updatedTransaction: MedicalTransaction) => {
-      medicalTransaction = updatedTransaction;
-      this.emitMedicalTransactionsChanged();
-    });
+    this.httpPutSubscription = this.http
+      .patch(this.urlBase + medicalTransaction.id, medicalTransaction)
+      .subscribe((updatedTransaction: MedicalTransaction) => {
+        medicalTransaction = updatedTransaction;
+        this.emitMedicalTransactionsChanged();
+      });
   }
 
   public deleteMedicalTransaction(id: number) {
-    this.httpDeleteSubscription = this.http.delete(this.urlBase + id).subscribe((deletedMedicalTransaction: MedicalTransaction) => {
-      this.getMedicalTransactions(deletedMedicalTransaction.animalID);
-    });
+    this.httpDeleteSubscription = this.http
+      .delete(this.urlBase + id)
+      .subscribe((deletedMedicalTransaction: MedicalTransaction) => {
+        this.getMedicalTransactions(deletedMedicalTransaction.animalID);
+      });
   }
 
   private emitMedicalTransactionsChanged() {
@@ -94,9 +102,11 @@ export class MedicalService implements IMedicalService, OnDestroy {
       throw Error('Item not found');
     }
 
-    const index = this.medicalTransactions.map((transaction) => {
-      return transaction.id;
-    }).indexOf(id);
+    const index = this.medicalTransactions
+      .map(transaction => {
+        return transaction.id;
+      })
+      .indexOf(id);
 
     return index;
   }

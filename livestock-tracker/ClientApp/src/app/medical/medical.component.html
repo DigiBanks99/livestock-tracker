@@ -16,10 +16,10 @@
       class="medical-list-item"
       *ngFor="let medTrans of filteredMedicalTransactions"
     >
-      <app-medical-transaction
+      <app-medical-transaction-container
         class="medical-transaction"
         [medicalTransaction]="medTrans"
-      ></app-medical-transaction>
+      ></app-medical-transaction-container>
     </mat-list-item>
     <mat-paginator
       [pageSize]="pageSize"

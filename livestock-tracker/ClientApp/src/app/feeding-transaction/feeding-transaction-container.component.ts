@@ -11,6 +11,7 @@ import {
   RemoveFeedTransaction
 } from '@feeding-transaction-store/actions';
 import { FeedType } from '@feed-type/feed-type.model';
+import { Unit } from '@unit/unit.model';
 
 @Component({
   selector: 'app-feeding-transaction-container',
@@ -19,6 +20,7 @@ import { FeedType } from '@feed-type/feed-type.model';
       [currentAnimal]="selectedAnimal$ | async"
       [feedingTransactions]="feedingTransactions$ | async"
       [feedTypes]="feedTypes$ | async"
+      [unitTypes]="units$ | async"
       (addTransaction)="onAddTransaction($event)"
       (showDetail)="onShowDetail($event)"
       (removeTransaction)="onDelete($event)"
@@ -29,6 +31,7 @@ export class FeedingTransactionContainerComponent implements OnInit {
   public selectedAnimal$: Observable<Livestock>;
   public feedingTransactions$: Observable<FeedingTransaction[]>;
   public feedTypes$: Observable<FeedType[]>;
+  public units$: Observable<Unit[]>;
 
   constructor(private store: Store<State>, private router: Router) {}
 
@@ -42,6 +45,7 @@ export class FeedingTransactionContainerComponent implements OnInit {
     this.feedTypes$ = this.store.pipe(
       select(selectors.feedTypeSelectors.getFeedTypes)
     );
+    this.units$ = this.store.pipe(select(selectors.unitSelectors.getUnits));
   }
 
   public onAddTransaction(animalId: number) {

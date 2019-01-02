@@ -1,9 +1,15 @@
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  Output,
+  EventEmitter
+} from '@angular/core';
 
-import { Unit } from '../unit.model';
-import { UnitService } from '../unit.service';
+import { Unit } from '@unit/unit.model';
 import { isNullOrUndefined } from 'util';
 
 @Component({
@@ -13,12 +19,14 @@ import { isNullOrUndefined } from 'util';
 })
 export class UnitDetailComponent implements OnInit, OnDestroy {
   @Input() unit: Unit;
+  @Output() save = new EventEmitter<Unit>();
+  @Output() remove = new EventEmitter<number>();
 
   public unitForm: FormGroup;
 
   private onDescriptionChanged: Subscription;
 
-  constructor(private unitService: UnitService) {
+  constructor() {
     this.unitForm = null;
   }
 
@@ -26,12 +34,14 @@ export class UnitDetailComponent implements OnInit, OnDestroy {
     this.initForm();
   }
 
-  public deleteUnit(typecode: number) {
-    this.unitService.deleteUnit(typecode);
+  public deleteUnit(typeCode: number) {
+    this.remove.emit(typeCode);
   }
 
   private initForm() {
-    const descriptionControl = new FormControl(this.unit.description, [Validators.required]);
+    const descriptionControl = new FormControl(this.unit.description, [
+      Validators.required
+    ]);
     const formGroupSetup = {
       description: descriptionControl
     };
@@ -39,14 +49,13 @@ export class UnitDetailComponent implements OnInit, OnDestroy {
 
     this.onDescriptionChanged = this.unitForm
       .get('description')
-      .valueChanges.subscribe((description: string) =>
-        this.updateUnit(description)
-      );
+      .valueChanges.subscribe(_ => this.updateUnit());
   }
 
-  private updateUnit(description: string) {
-    this.unit.description = description;
-    this.unitService.updateUnit(this.unit);
+  private updateUnit() {
+    if (this.unitForm.valid) {
+      this.save.emit(this.unitForm.value);
+    }
   }
 
   ngOnDestroy() {

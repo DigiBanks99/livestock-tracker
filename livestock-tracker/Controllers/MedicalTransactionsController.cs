@@ -1,4 +1,5 @@
-﻿using LivestockTracker.Models;
+using LivestockTracker;
+using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,43 @@ namespace livestock_tracker.Controllers
 
       return NoContent();
     }
+    [HttpPatch("{id}")]
+    public IActionResult PatchMedicalTransaction([FromRoute] int id, [FromBody] MedicalTransaction medicalTransaction)
+    {
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+      if (id != medicalTransaction.ID)
+      {
+        return BadRequest();
+      }
+
+      MedicalTransaction updatedMedicalTransaction = null;
+      try
+      {
+        updatedMedicalTransaction = _medicalService.Update(medicalTransaction);
+        _medicalService.Save();
+      }
+      catch (EntityNotFoundException<MedicalTransaction> ex)
+      {
+        return NotFound(ex.Message);
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (updatedMedicalTransaction == null)
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return Ok(updatedMedicalTransaction);
+    }
 
     // POST: api/MedicalTransactions
     [HttpPost]
@@ -110,7 +148,7 @@ namespace livestock_tracker.Controllers
       _medicalService.Remove(medicalTransaction);
       _medicalService.Save();
 
-      return Ok(medicalTransaction);
+      return Ok(medicalTransaction.ID);
     }
 
     private bool MedicalTransactionExists(int id)

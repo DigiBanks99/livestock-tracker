@@ -1,4 +1,5 @@
-﻿using LivestockTracker.Models;
+using LivestockTracker;
+using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -76,6 +77,47 @@ namespace livestock_tracker.Controllers
       return NoContent();
     }
 
+
+    [HttpPatch("{id}")]
+    public IActionResult Patch([FromRoute] int id, [FromBody] MedicineType medicineType)
+    {
+      if (!ModelState.IsValid)
+      {
+        return BadRequest(ModelState);
+      }
+
+      if (id != medicineType.TypeCode)
+      {
+        return BadRequest();
+      }
+
+
+      MedicineType updatedMedicineType = null;
+      try
+      {
+        _medicineService.Update(medicineType);
+        _medicineService.Save();
+        updatedMedicineType = _medicineService.Get(medicineType.TypeCode);
+      }
+      catch (EntityNotFoundException<MedicineType> ex)
+      {
+        return NotFound(ex.Message);
+      }
+      catch (DbUpdateConcurrencyException)
+      {
+        if (updatedMedicineType == null)
+        {
+          return NotFound();
+        }
+        else
+        {
+          throw;
+        }
+      }
+
+      return Ok(updatedMedicineType);
+    }
+
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -93,7 +135,7 @@ namespace livestock_tracker.Controllers
       _medicineService.Remove(medicineType);
       _medicineService.Save();
 
-      return Ok(medicineType);
+      return Ok(medicineType.TypeCode);
     }
   }
 }

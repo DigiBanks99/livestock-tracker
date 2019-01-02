@@ -39,6 +39,7 @@ import { LivestockService } from '@livestock/livestock.service';
 import { MedicalComponent } from '@medical/medical.component';
 import { MedicalService } from '@medical/medical.service';
 import { MedicalTransactionComponent } from '@medical/medical-transaction/medical-transaction.component';
+import { MedicalTransactionContainerComponent } from '@medical/medical-transaction/medical-transaction-container.component';
 import { UnitComponent } from '@unit/unit.component';
 import { UnitDetailComponent } from '@unit/unit-detail/unit-detail.component';
 import { MedicineTypeComponent } from '@medical/medicine-type/medicine-type.component';
@@ -61,6 +62,7 @@ import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
 import { FeedingTransactionFormComponent } from '@feeding-transaction/feeding-transaction-form/feeding-transaction-form.component';
 import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-transaction-new/feeding-transaction-new.component';
 import { FeedTypeContainerComponent } from '@feed-type/feed-type-container.component';
+import { UnitContainerComponent } from '@unit/unit-container.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +77,9 @@ import { FeedTypeContainerComponent } from '@feed-type/feed-type-container.compo
     LivestockNewComponent,
     MedicalComponent,
     MedicalContainerComponent,
+    MedicalTransactionContainerComponent,
     MedicalTransactionComponent,
+    UnitContainerComponent,
     UnitComponent,
     UnitDetailComponent,
     MedicineTypeComponent,

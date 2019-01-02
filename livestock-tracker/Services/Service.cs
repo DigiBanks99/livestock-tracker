@@ -42,9 +42,10 @@ namespace LivestockTracker.Services
       _repository.SaveChanges();
     }
 
-    public void Update(TEntity entity)
+    public TEntity Update(TEntity entity)
     {
       _repository.Update(entity);
+      return _repository.Get(entity.GetKey());
     }
   }
 }

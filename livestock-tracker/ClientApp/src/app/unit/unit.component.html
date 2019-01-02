@@ -8,16 +8,28 @@
     </mat-toolbar>
     <mat-list class="unit-list mat-elevation-z1">
       <mat-list-item class="card-list-item" *ngFor="let unit of filteredUnits">
-        <app-unit-detail class="unit-item" [unit]="unit"></app-unit-detail>
+        <app-unit-detail
+          class="unit-item"
+          [unit]="unit"
+          (remove)="onRemove($event)"
+          (save)="onSave($event)"
+        ></app-unit-detail>
         <mat-divider></mat-divider>
       </mat-list-item>
       <mat-paginator
         [pageSize]="pageSize"
         [length]="units.length"
         class="mat-accent-background"
-        (page)="onPage($event)"></mat-paginator>
+        (page)="onPage($event)"
+      ></mat-paginator>
     </mat-list>
-    <button mat-fab class="mat-fab-bottom-right" type="button" (click)="addUnit()" left>
+    <button
+      mat-fab
+      class="mat-fab-bottom-right"
+      type="button"
+      (click)="onAdd()"
+      left
+    >
       <mat-icon>add</mat-icon>
     </button>
   </div>
