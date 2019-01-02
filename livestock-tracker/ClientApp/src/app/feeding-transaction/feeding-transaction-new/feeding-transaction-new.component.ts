@@ -45,7 +45,9 @@ export class FeedingTransactionNewComponent implements OnInit {
         selectors.feedingTransactionSelectors.getFeedingTransactionErrorState
       )
     );
-    this.feedTypes$ = this.feedTypeService.feedTypesChanged;
+    this.feedTypes$ = this.store.pipe(
+      select(selectors.feedTypeSelectors.getFeedTypes)
+    );
     this.unitTypes$ = this.unitService.unitsChanged;
   }
 

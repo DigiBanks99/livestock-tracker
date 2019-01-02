@@ -38,6 +38,7 @@ const getAnimalsError = createSelector(
 export const selectors = {
   getAnimals: getAnimals,
   getAnimalsEntities: getAnimalsEntities,
+  getAnimalCount: getAnimalCount,
   getSelectedAnimalId: getSelectedAnimalId,
   getSelectedAnimal: getSelectedAnimal,
   getFetchAnimalsPendingState: getFetchAnimalsPendingState,

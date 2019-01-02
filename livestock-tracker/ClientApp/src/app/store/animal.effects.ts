@@ -95,7 +95,7 @@ export class AnimalEffects {
   );
 }
 
-function handleError(err: any): Observable<HandleError> {
+export function handleError(err: any): Observable<HandleError> {
   let error: Error;
   if (err instanceof Error) error = err;
   else if (err instanceof HttpErrorResponse) {

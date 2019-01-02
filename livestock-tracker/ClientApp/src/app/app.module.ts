@@ -60,6 +60,7 @@ import { FeedingTransactionContainerComponent } from '@feeding-transaction/feedi
 import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
 import { FeedingTransactionFormComponent } from '@feeding-transaction/feeding-transaction-form/feeding-transaction-form.component';
 import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-transaction-new/feeding-transaction-new.component';
+import { FeedTypeContainerComponent } from '@feed-type/feed-type-container.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-tra
     MedicineTypeComponent,
     MedicineTypeDetailComponent,
     LsGridComponent,
+    FeedTypeContainerComponent,
     FeedTypeComponent,
     FeedTypeDetailComponent,
     FeedingTransactionNewComponent,

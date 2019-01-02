@@ -52,7 +52,9 @@ export class FeedingTransactionDetailComponent implements OnInit, OnDestroy {
         selectors.feedingTransactionSelectors.getSelectedFeedingTransaction
       )
     );
-    this.feedTypes$ = this.feedTypeService.feedTypesChanged;
+    this.feedTypes$ = this.store.pipe(
+      select(selectors.feedTypeSelectors.getFeedTypes)
+    );
     this.unitTypes$ = this.unitService.unitsChanged;
   }
 

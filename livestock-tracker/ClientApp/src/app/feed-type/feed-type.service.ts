@@ -1,89 +1,42 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnInit, OnDestroy } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
-import { isNullOrUndefined } from 'util';
+import { Injectable } from '@angular/core';
+import { Subject, Observable, of } from 'rxjs';
 
-import { environment } from '../../environments/environment';
-import { FeedType } from './feed-type.model';
+import { environment } from '@env/environment';
+import { FeedType } from '@feed-type/feed-type.model';
 
 export interface IFeedTypeService {
-  feedTypesChanged: Subject<FeedType[]>;
-
-  getFeedTypes();
-  getFromServer(id: number): Observable<Object>;
-  get(id: number): FeedType;
-  add(feedType: FeedType);
-  update(feedType: FeedType);
-  delete(id: number);
+  getFeedTypes(): Observable<FeedType[]>;
+  getFromServer(id: number): Observable<FeedType>;
+  add(feedType: FeedType): Observable<FeedType>;
+  update(feedType: FeedType): Observable<FeedType>;
+  delete(id: number): Observable<number>;
 }
 
 @Injectable()
-export class FeedTypeService implements IFeedTypeService, OnInit, OnDestroy {
+export class FeedTypeService implements IFeedTypeService {
   private urlBase = environment.apiUrl + 'feedtype/';
-  private feedTypes: FeedType[];
 
-  public feedTypesChanged: Subject<FeedType[]>;
-  constructor(private http: HttpClient) {
-    this.feedTypes = [];
-    this.feedTypesChanged = new Subject<FeedType[]>();
+  constructor(private http: HttpClient) {}
+
+  public getFeedTypes(): Observable<FeedType[]> {
+    return this.http.get<FeedType[]>(this.urlBase);
   }
 
-  ngOnInit() {
-
+  public getFromServer(id: number): Observable<FeedType> {
+    return this.http.get<FeedType>(this.urlBase + id);
   }
 
-  public getFeedTypes() {
-    this.http.get(this.urlBase).subscribe((feedTypes: FeedType[]) => {
-      this.feedTypes = feedTypes;
-      this.emitFeedTypesChanged();
-    });
+  public add(feedType: FeedType): Observable<FeedType> {
+    return this.http.post<FeedType>(this.urlBase, feedType);
   }
 
-  public getFromServer(id: number): Observable<Object> {
-    return this.http.get(this.urlBase + id);
+  public update(feedType: FeedType): Observable<FeedType> {
+    return this.http.put<FeedType>(this.urlBase + feedType.id, feedType);
   }
 
-  public get(id: number): FeedType {
-    if (isNullOrUndefined(this.feedTypes)) {
-      return new FeedType();
-    }
-
-    const index = this.feedTypes.map((feedType: FeedType) => {
-      return feedType.id;
-    }).indexOf(id);
-
-    if (index < 0) {
-      throw new Error('Index out of range');
-    }
-
-    return this.feedTypes.slice()[index];
-  }
-
-  public add(feedType: FeedType) {
-    this.http.post(this.urlBase, feedType).subscribe((savedFeedType: FeedType) => {
-      this.feedTypes.push(savedFeedType);
-      this.emitFeedTypesChanged();
-    });
-  }
-
-  public update(feedType: FeedType) {
-    this.http.put(this.urlBase + feedType.id, feedType).subscribe(() => {
-      this.emitFeedTypesChanged();
-    });
-  }
-
-  public delete(id: number) {
-    this.http.delete(this.urlBase + id).subscribe(() => {
-      this.getFeedTypes();
-    });
-  }
-
-  private emitFeedTypesChanged() {
-    this.feedTypesChanged.next(this.feedTypes.slice());
-  }
-
-  ngOnDestroy() {
-    this.feedTypesChanged.unsubscribe();
+  public delete(id: number): Observable<number> {
+    return this.http.delete<number>(this.urlBase + id);
   }
 }
 
@@ -94,23 +47,20 @@ export class MockFeedTypeService implements IFeedTypeService {
     this.feedTypesChanged = new Subject<FeedType[]>();
   }
 
-  getFeedTypes() {
-    this.feedTypesChanged.next([]);
+  getFeedTypes(): Observable<FeedType[]> {
+    return of([]);
   }
 
-  getFromServer(id: number): Observable<Object> {
+  getFromServer(id: number): Observable<FeedType> {
     throw new Error('Method not implemented.');
   }
-  get(id: number): FeedType {
+  add(feedType: FeedType): Observable<FeedType> {
     throw new Error('Method not implemented.');
   }
-  add(feedType: FeedType) {
+  update(feedType: FeedType): Observable<FeedType> {
     throw new Error('Method not implemented.');
   }
-  update(feedType: FeedType) {
-    throw new Error('Method not implemented.');
-  }
-  delete(id: number) {
+  delete(id: number): Observable<number> {
     throw new Error('Method not implemented.');
   }
 }

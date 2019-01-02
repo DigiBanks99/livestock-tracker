@@ -15,6 +15,7 @@
       "@env/*": ["environments/*"],
       "@animal-store/*": ["app/store/animal.*"],
       "@feeding-transaction-store/*": ["app/store/feeding-transaction.*"],
+      "@feed-type-store/*": ["app/store/feed-type.*"],
       "@store": ["app/store/index.ts"],
       "@livestock/*": ["app/livestock/*"],
       "@admin/*": ["app/admin/*"],

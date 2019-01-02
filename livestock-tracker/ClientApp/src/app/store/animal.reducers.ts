@@ -12,17 +12,17 @@ import {
   HandleError
 } from '@animal-store/actions';
 
-export const animalsAdapter = createEntityAdapter<Livestock>({
-  selectId: (animal: Livestock) => animal.id,
-  sortComparer: false
-});
-
 export interface AnimalState extends EntityState<Livestock> {
   selectedAnimal: number;
   error?: Error;
   isFetching: boolean;
   isPending: boolean;
 }
+
+export const animalsAdapter = createEntityAdapter<Livestock>({
+  selectId: (animal: Livestock) => animal.id,
+  sortComparer: false
+});
 
 export const initialState: AnimalState = animalsAdapter.getInitialState({
   selectedAnimal: null,

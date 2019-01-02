@@ -17,7 +17,6 @@ import { Unit } from '@unit/unit.model';
 import { FeedingTransaction } from './feeding-transaction.model';
 import { LsGridComponent } from '@shared/ls-grid/ls-grid.component';
 import { FeedingTransactionService } from './feeding-transaction.service';
-import { FeedTypeService } from '@feed-type/feed-type.service';
 import { UnitService } from '@unit/unit.service';
 import { LsGridConfig } from '@shared/ls-grid/ls-grid-config.model';
 import { LsGridColumnDef } from '@shared/ls-grid/ls-grid-column-def.model';
@@ -31,15 +30,12 @@ import { isNullOrUndefined } from 'util';
 })
 export class FeedingTransactionComponent implements OnInit, OnDestroy {
   private showDetailTriggered: Subscription;
-  private feedTypesChanged: Subscription;
   private unitTypesChanged: Subscription;
-
-  private animals: Livestock[];
-  private feedTypes: FeedType[];
   private unitTypes: Unit[];
 
   @Input() public currentAnimal: Livestock;
   @Input() public feedingTransactions: FeedingTransaction[];
+  @Input() public feedTypes: FeedType[];
   @Output() public addTransaction = new EventEmitter<number>();
   @Output() public showDetail = new EventEmitter<FeedingTransaction>();
   @Output() public removeTransaction = new EventEmitter<number>();
@@ -49,15 +45,12 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
 
   constructor(
     private feedingTransactionService: FeedingTransactionService,
-    private feedTypeService: FeedTypeService,
     private unitService: UnitService
   ) {
     this.showDetailTriggered = new Subscription();
-    this.feedTypesChanged = new Subscription();
     this.unitTypesChanged = new Subscription();
 
     this.feedingTransactions = [];
-    this.feedTypes = [];
     this.unitTypes = [];
   }
 
@@ -79,10 +72,6 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
     return config;
   }
 
-  public getAnimals(): Livestock[] {
-    return this.animals;
-  }
-
   public getCurrentAnimal(): Livestock {
     return this.currentAnimal;
   }
@@ -96,17 +85,7 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
   }
 
   private init() {
-    this.fetchFeedTypes();
     this.fetchUnitTypes();
-  }
-
-  private fetchFeedTypes() {
-    this.feedTypeService.getFeedTypes();
-    this.feedTypesChanged = this.feedTypeService.feedTypesChanged.subscribe(
-      (feedTypes: FeedType[]) => {
-        this.feedTypes = feedTypes.slice();
-      }
-    );
   }
 
   private fetchUnitTypes() {
@@ -200,7 +179,6 @@ export class FeedingTransactionComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.showDetailTriggered.unsubscribe();
-    this.feedTypesChanged.unsubscribe();
     this.unitTypesChanged.unsubscribe();
   }
 }

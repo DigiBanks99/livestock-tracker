@@ -1,19 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { PageEvent } from '@angular/material';
-import { Subscription } from 'rxjs';
 
-import { FeedType } from './feed-type.model';
-import { FeedTypeService } from './feed-type.service';
-import { environment } from '../../environments/environment';
+import { FeedType } from '@feed-type/feed-type.model';
+import { FeedTypeService } from '@feed-type/feed-type.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-feed-type',
   templateUrl: './feed-type.component.html',
   styleUrls: ['./feed-type.component.scss']
 })
-export class FeedTypeComponent implements OnInit, OnDestroy {
+export class FeedTypeComponent implements OnInit {
+  @Input() public feedTypes: FeedType[];
+  @Output() public remove = new EventEmitter<number>();
+  @Output() public save = new EventEmitter<FeedType>();
 
-  public feedTypes: FeedType[];
   public filteredFeedTypes: FeedType[];
   public pageSize: number;
   public lastPage: number;
@@ -23,20 +24,9 @@ export class FeedTypeComponent implements OnInit, OnDestroy {
     this.filteredFeedTypes = [];
     this.pageSize = environment.pageSize;
     this.lastPage = environment.defaultLastPage;
-    this.feedTypesChangedSubscription = new Subscription();
   }
 
-  private feedTypesChangedSubscription: Subscription;
-
   ngOnInit() {
-    this.feedTypesChangedSubscription = this.feedTypeService.feedTypesChanged.subscribe((feedTypes: FeedType[]) => {
-      this.feedTypes = feedTypes;
-      if (this.feedTypes.length <= this.pageSize) {
-        this.lastPage = 0;
-      }
-
-      this.filterList(this.pageSize, this.lastPage);
-    });
     this.feedTypeService.getFeedTypes();
   }
 
@@ -51,6 +41,14 @@ export class FeedTypeComponent implements OnInit, OnDestroy {
     this.filterList(pageEvent.pageSize, pageEvent.pageIndex);
   }
 
+  public onRemove(id: number) {
+    this.remove.emit(id);
+  }
+
+  public onSave(feedType: FeedType) {
+    this.save.emit(feedType);
+  }
+
   private filterList(pageSize: number, pageIndex: number) {
     this.filteredFeedTypes.splice(0);
     const startIndex = pageSize * pageIndex;
@@ -61,9 +59,5 @@ export class FeedTypeComponent implements OnInit, OnDestroy {
       }
       this.filteredFeedTypes.push(this.feedTypes[i]);
     }
-  }
-
-  ngOnDestroy() {
-    this.feedTypesChangedSubscription.unsubscribe();
   }
 }
