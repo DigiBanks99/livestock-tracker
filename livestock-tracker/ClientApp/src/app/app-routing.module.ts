@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { HomeComponent } from '@home/home.component';
 import { LivestockComponent } from '@livestock/livestock.component';
-import { LivestockDetailContainerComponent } from '@livestock/livestock-detail/livestock-detail-container.component';
 import { LivestockNewComponent } from '@livestock/livestock-new/livestock-new.component';
 import { ReportsComponent } from '@reports/reports.component';
 import { MedicineTypeComponent } from '@medical/medicine-type/medicine-type.component';
@@ -13,6 +12,7 @@ import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-
 import { MedicalContainerComponent } from '@medical/medical-container.component';
 import { FeedingTransactionContainerComponent } from '@feeding-transaction/feeding-transaction-container.component';
 import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-transaction-new/feeding-transaction-new.component';
+import { LivestockDetailComponent } from '@livestock/livestock-detail/livestock-detail.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -22,7 +22,7 @@ const routes: Routes = [
     component: LivestockComponent,
     children: [
       { path: 'new', component: LivestockNewComponent },
-      { path: ':id/edit', component: LivestockDetailContainerComponent }
+      { path: ':id/edit', component: LivestockDetailComponent }
     ]
   },
   { path: 'medical', component: MedicalContainerComponent },

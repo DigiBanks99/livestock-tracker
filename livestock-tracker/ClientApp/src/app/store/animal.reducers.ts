@@ -17,14 +17,14 @@ export const animalsAdapter = createEntityAdapter<Livestock>({
   sortComparer: false
 });
 
-export interface State extends EntityState<Livestock> {
+export interface AnimalState extends EntityState<Livestock> {
   selectedAnimal: number;
   error?: Error;
   isFetching: boolean;
   isPending: boolean;
 }
 
-export const initialState: State = animalsAdapter.getInitialState({
+export const initialState: AnimalState = animalsAdapter.getInitialState({
   selectedAnimal: null,
   error: null,
   isFetching: false,
@@ -32,9 +32,9 @@ export const initialState: State = animalsAdapter.getInitialState({
 });
 
 export function animalsReducer(
-  state: State = initialState,
+  state: AnimalState = initialState,
   action: Action
-): State {
+): AnimalState {
   switch (action.type) {
     case ActionTypes.ADD_ANIMAL:
     case ActionTypes.UPDATE_ANIMAL:

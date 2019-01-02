@@ -1,12 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { Router } from '@angular/router';
 import { Livestock } from '@livestock/livestock.model';
 import { Store, select } from '@ngrx/store';
-import { State } from '@animal-store/reducers';
 import { UpdateAnimal } from '@animal-store/actions';
 import { Observable } from 'rxjs';
-import { getAnimalsPendingState, getAnimalsError } from '@store';
+import { selectors, State } from '@store';
 
 @Component({
   selector: 'app-livestock-detail',
@@ -14,20 +12,22 @@ import { getAnimalsPendingState, getAnimalsError } from '@store';
   styleUrls: ['./livestock-detail.component.scss']
 })
 export class LivestockDetailComponent implements OnInit {
-  @Input() public currentAnimal: Livestock;
-
+  public animal$: Observable<Livestock>;
   public isPending$: Observable<boolean>;
   public error$: Observable<Error>;
 
-  constructor(
-    private store: Store<State>,
-    private router: Router,
-    private location: Location
-  ) {}
+  constructor(private store: Store<State>, private location: Location) {}
 
   public ngOnInit() {
-    this.isPending$ = this.store.pipe(select(getAnimalsPendingState));
-    this.error$ = this.store.pipe(select(getAnimalsError));
+    this.isPending$ = this.store.pipe(
+      select(selectors.animalSelectors.getAnimalsPendingState)
+    );
+    this.error$ = this.store.pipe(
+      select(selectors.animalSelectors.getAnimalsError)
+    );
+    this.animal$ = this.store.pipe(
+      select(selectors.animalSelectors.getSelectedAnimal)
+    );
   }
 
   public onSave(animal: Livestock) {

@@ -1,9 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { State } from '@animal-store/reducers';
 import { Observable } from 'rxjs';
 import { Livestock } from '@livestock/livestock.model';
-import { getSelectedAnimal, getAnimals } from '@store';
+import { State, selectors } from '@store';
 import { SelectAnimal } from '@animal-store/actions';
 
 @Component({
@@ -19,8 +18,12 @@ export class AnimalSelectContainerComponent implements OnInit {
   constructor(private store: Store<State>) {}
 
   public ngOnInit() {
-    this.animals$ = this.store.pipe(select(getAnimals));
-    this.animal$ = this.store.pipe(select(getSelectedAnimal));
+    this.animals$ = this.store.pipe(
+      select(selectors.animalSelectors.getAnimals)
+    );
+    this.animal$ = this.store.pipe(
+      select(selectors.animalSelectors.getSelectedAnimal)
+    );
   }
 
   public onAnimalChanged(id: number) {

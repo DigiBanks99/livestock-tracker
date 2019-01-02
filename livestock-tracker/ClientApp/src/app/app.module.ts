@@ -35,7 +35,6 @@ import { LivestockComponent } from '@livestock/livestock.component';
 import { ReportsComponent } from '@reports/reports.component';
 import { LivestockListComponent } from '@livestock/livestock-list/livestock-list.component';
 import { LivestockDetailComponent } from '@livestock/livestock-detail/livestock-detail.component';
-import { LivestockDetailContainerComponent } from '@livestock/livestock-detail/livestock-detail-container.component';
 import { LivestockService } from '@livestock/livestock.service';
 import { MedicalComponent } from '@medical/medical.component';
 import { MedicalService } from '@medical/medical.service';
@@ -71,7 +70,6 @@ import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-tra
     ReportsComponent,
     LivestockListComponent,
     LivestockDetailComponent,
-    LivestockDetailContainerComponent,
     LivestockFormComponent,
     LivestockNewComponent,
     MedicalComponent,

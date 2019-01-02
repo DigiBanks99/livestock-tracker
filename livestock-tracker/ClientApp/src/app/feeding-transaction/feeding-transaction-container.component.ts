@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { State } from '@store';
 import { Observable } from 'rxjs';
 import { Livestock } from '@livestock/livestock.model';
-import { getSelectedAnimal, getAllFeedingTransactions } from '@store';
+import { selectors } from '@store';
 import { FeedingTransaction } from './feeding-transaction.model';
 import { Router } from '@angular/router';
 import {
@@ -30,9 +30,11 @@ export class FeedingTransactionContainerComponent implements OnInit {
   constructor(private store: Store<State>, private router: Router) {}
 
   public ngOnInit() {
-    this.selectedAnimal$ = this.store.pipe(select(getSelectedAnimal));
+    this.selectedAnimal$ = this.store.pipe(
+      select(selectors.animalSelectors.getSelectedAnimal)
+    );
     this.feedingTransactions$ = this.store.pipe(
-      select(getAllFeedingTransactions)
+      select(selectors.feedingTransactionSelectors.getAllFeedingTransactions)
     );
   }
 

@@ -1,13 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
-import {
-  getSelectedAnimalId,
-  getSelectedFeedingTransaction,
-  State,
-  getFeedingTransactionPendingState,
-  getFeedingTransactionErrorState
-} from '@store';
+import { Observable } from 'rxjs';
+import { State, selectors } from '@store';
 import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
 import { UpdateFeedTransaction } from '@feeding-transaction-store/actions';
 import { Router } from '@angular/router';
@@ -40,13 +34,23 @@ export class FeedingTransactionDetailComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
-    this.selectedAnimalId$ = this.store.pipe(select(getSelectedAnimalId));
-    this.isPending$ = this.store.pipe(
-      select(getFeedingTransactionPendingState)
+    this.selectedAnimalId$ = this.store.pipe(
+      select(selectors.animalSelectors.getSelectedAnimalId)
     );
-    this.error$ = this.store.pipe(select(getFeedingTransactionErrorState));
+    this.isPending$ = this.store.pipe(
+      select(
+        selectors.feedingTransactionSelectors.getFeedingTransactionPendingState
+      )
+    );
+    this.error$ = this.store.pipe(
+      select(
+        selectors.feedingTransactionSelectors.getFeedingTransactionErrorState
+      )
+    );
     this.selectedFeedingTransaction$ = this.store.pipe(
-      select(getSelectedFeedingTransaction)
+      select(
+        selectors.feedingTransactionSelectors.getSelectedFeedingTransaction
+      )
     );
     this.feedTypes$ = this.feedTypeService.feedTypesChanged;
     this.unitTypes$ = this.unitService.unitsChanged;

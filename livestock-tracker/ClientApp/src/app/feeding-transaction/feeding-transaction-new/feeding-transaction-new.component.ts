@@ -8,12 +8,7 @@ import { Unit } from '@unit/unit.model';
 import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
 import { AddFeedTransaction } from '@feeding-transaction-store/actions';
 import { Store, select } from '@ngrx/store';
-import {
-  State,
-  getSelectedAnimalId,
-  getFeedingTransactionErrorState,
-  getFeedingTransactionPendingState
-} from '@store';
+import { State, selectors } from '@store';
 
 @Component({
   selector: 'app-feeding-transaction-new',
@@ -37,11 +32,19 @@ export class FeedingTransactionNewComponent implements OnInit {
   }
 
   public ngOnInit() {
-    this.selectedAnimalId$ = this.store.pipe(select(getSelectedAnimalId));
-    this.isPending$ = this.store.pipe(
-      select(getFeedingTransactionPendingState)
+    this.selectedAnimalId$ = this.store.pipe(
+      select(selectors.animalSelectors.getSelectedAnimalId)
     );
-    this.error$ = this.store.pipe(select(getFeedingTransactionErrorState));
+    this.isPending$ = this.store.pipe(
+      select(
+        selectors.feedingTransactionSelectors.getFeedingTransactionPendingState
+      )
+    );
+    this.error$ = this.store.pipe(
+      select(
+        selectors.feedingTransactionSelectors.getFeedingTransactionErrorState
+      )
+    );
     this.feedTypes$ = this.feedTypeService.feedTypesChanged;
     this.unitTypes$ = this.unitService.unitsChanged;
   }

@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { State } from '@animal-store/reducers';
 import { AddAnimal } from '@animal-store/actions';
 import { Livestock } from '@livestock/livestock.model';
 import { Location } from '@angular/common';
 import { Observable } from 'rxjs';
-import { getAnimalsError, getAnimalsPendingState } from '@store';
+import { State, selectors } from '@store';
 
 @Component({
   selector: 'app-livestock-new',
@@ -18,8 +17,12 @@ export class LivestockNewComponent implements OnInit {
   constructor(private store: Store<State>, private location: Location) {}
 
   public ngOnInit() {
-    this.isPending$ = this.store.pipe(select(getAnimalsPendingState));
-    this.error$ = this.store.pipe(select(getAnimalsError));
+    this.isPending$ = this.store.pipe(
+      select(selectors.animalSelectors.getAnimalsPendingState)
+    );
+    this.error$ = this.store.pipe(
+      select(selectors.animalSelectors.getAnimalsError)
+    );
   }
 
   public onSave(animal: Livestock) {

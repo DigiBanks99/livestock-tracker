@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { State } from '@animal-store/reducers';
 import { Observable } from 'rxjs';
 import { Livestock } from '@livestock/livestock.model';
-import { getSelectedAnimal } from '@store';
+import { State, selectors } from '@store';
 
 @Component({
   selector: 'app-medical-container',
@@ -17,6 +16,8 @@ export class MedicalContainerComponent implements OnInit {
   constructor(private store: Store<State>) {}
 
   public ngOnInit() {
-    this.selectedAnimal$ = this.store.pipe(select(getSelectedAnimal));
+    this.selectedAnimal$ = this.store.pipe(
+      select(selectors.animalSelectors.getSelectedAnimal)
+    );
   }
 }

@@ -1,5 +1,5 @@
 <app-livestock-form
-  [currentAnimal]="currentAnimal"
+  [currentAnimal]="animal$ | async"
   [isPending]="isPending$ | async"
   [error]="error$ | async"
   header="Edit animal"

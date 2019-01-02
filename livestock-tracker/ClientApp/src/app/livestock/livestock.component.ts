@@ -1,15 +1,10 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { State } from '@app/store/animal.reducers';
+import { State } from '@app/store';
 import { Observable } from 'rxjs';
 import { Livestock } from '@livestock/livestock.model';
-import {
-  getAnimals,
-  getFetchAnimalsPendingState,
-  getAnimalsError,
-  getSelectedAnimalId
-} from '@app/store';
+import { selectors } from '@app/store';
 import { RemoveAnimal, SelectAnimal } from '@app/store/animal.actions';
 
 @Component({
@@ -28,10 +23,18 @@ export class LivestockComponent implements OnInit {
   constructor(private store: Store<State>, private router: Router) {}
 
   public ngOnInit() {
-    this.animals$ = this.store.pipe(select(getAnimals));
-    this.selectedAnimal$ = this.store.pipe(select(getSelectedAnimalId));
-    this.isFetching$ = this.store.pipe(select(getFetchAnimalsPendingState));
-    this.error$ = this.store.pipe(select(getAnimalsError));
+    this.animals$ = this.store.pipe(
+      select(selectors.animalSelectors.getAnimals)
+    );
+    this.selectedAnimal$ = this.store.pipe(
+      select(selectors.animalSelectors.getSelectedAnimalId)
+    );
+    this.isFetching$ = this.store.pipe(
+      select(selectors.animalSelectors.getFetchAnimalsPendingState)
+    );
+    this.error$ = this.store.pipe(
+      select(selectors.animalSelectors.getAnimalsError)
+    );
   }
 
   public deleteAnimal(animal: Livestock) {
