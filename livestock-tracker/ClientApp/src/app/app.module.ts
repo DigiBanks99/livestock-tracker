@@ -63,6 +63,8 @@ import { FeedingTransactionFormComponent } from '@feeding-transaction/feeding-tr
 import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-transaction-new/feeding-transaction-new.component';
 import { FeedTypeContainerComponent } from '@feed-type/feed-type-container.component';
 import { UnitContainerComponent } from '@unit/unit-container.component';
+import { UnitEffects } from '@unit-store/effects';
+import { FeedTypeEffects } from '@feed-type-store/effects';
 
 @NgModule({
   declarations: [
@@ -121,7 +123,12 @@ import { UnitContainerComponent } from '@unit/unit-container.component';
     MatPaginatorModule,
     MatMenuModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AnimalEffects, FeedingTransactionEffects])
+    EffectsModule.forRoot([
+      AnimalEffects,
+      FeedingTransactionEffects,
+      UnitEffects,
+      FeedTypeEffects
+    ])
   ],
   providers: [
     LivestockService,

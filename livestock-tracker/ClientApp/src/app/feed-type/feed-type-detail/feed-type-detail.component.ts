@@ -1,60 +1,46 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  Output,
-  EventEmitter,
-  OnDestroy
-} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 import { FeedType } from '../feed-type.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { isNullOrUndefined } from 'util';
-import { FeedTypeService } from '../feed-type.service';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-feed-type-detail',
   templateUrl: './feed-type-detail.component.html',
   styleUrls: ['./feed-type-detail.component.scss']
 })
-export class FeedTypeDetailComponent implements OnInit, OnDestroy {
+export class FeedTypeDetailComponent implements OnInit {
   @Input() feedType: FeedType;
   @Output() remove = new EventEmitter<number>();
   @Output() save = new EventEmitter<FeedType>();
 
   public feedTypeForm: FormGroup;
 
-  private onDescriptionChanged: Subscription;
-
-  constructor(private feedTypeService: FeedTypeService) {
+  constructor() {
     this.feedTypeForm = null;
-    this.onDescriptionChanged = new Subscription();
   }
 
   ngOnInit() {
     this.initForm();
   }
 
-  ngOnDestroy() {
-    if (this.onDescriptionChanged) this.onDescriptionChanged.unsubscribe();
-  }
-
   public initForm() {
     let description: string;
+    let id: number;
     if (!isNullOrUndefined(this.feedType)) {
       description = this.feedType.description;
+      id = this.feedType.id;
     } else {
       description = null;
     }
 
     this.feedTypeForm = new FormGroup({
-      description: new FormControl(description, Validators.required)
+      id: new FormControl(id),
+      description: new FormControl(description, {
+        updateOn: 'blur',
+        validators: Validators.required
+      })
     });
-
-    this.onDescriptionChanged = this.feedTypeForm
-      .get('description')
-      .valueChanges.subscribe(_ => this.updateFeedType());
   }
 
   public deleteFeedType(id: number) {

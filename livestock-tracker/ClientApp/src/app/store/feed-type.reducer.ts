@@ -28,7 +28,10 @@ export const initialState = feedTypeAdapter.getInitialState({
   error: null
 });
 
-export function feedTypeReducer(state: FeedTypeState, action: Action) {
+export function feedTypeReducer(
+  state: FeedTypeState = initialState,
+  action: Action
+) {
   switch (action.type) {
     case ActionTypes.ADD_FEED_TYPE:
     case ActionTypes.UPDATE_FEED_TYPE:
@@ -108,7 +111,7 @@ function removeOne(
 }
 
 function setAll(state: FeedTypeState, action: SetFeedTypes): FeedTypeState {
-  const newState = feedTypeAdapter.addMany(action.feedTypes, state);
+  const newState = feedTypeAdapter.addAll(action.feedTypes, state);
   return {
     isPending: false,
     error: null,

@@ -16,6 +16,7 @@ import { Router } from '@angular/router';
   template: `
     <app-feed-type
       [feedTypes]="feedTypes$ | async"
+      (add)="onAdd($event)"
       (remove)="onRemove($event)"
       (save)="onSave($event)"
     ></app-feed-type>
@@ -38,10 +39,8 @@ export class FeedTypeContainerComponent {
     );
   }
 
-  public onAdd() {
-    const newFeedType = new FeedType();
-    newFeedType.description = 'New';
-    this.store.dispatch(new AddFeedType(newFeedType));
+  public onAdd(feedType: FeedType) {
+    this.store.dispatch(new AddFeedType(feedType));
   }
 
   public onRemove(id: number) {

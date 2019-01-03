@@ -28,7 +28,7 @@ export const initialState = unitAdapter.getInitialState({
   error: null
 });
 
-export function unitReducer(state: UnitState, action: Action) {
+export function unitReducer(state: UnitState = initialState, action: Action) {
   switch (action.type) {
     case ActionTypes.ADD_UNIT:
     case ActionTypes.FETCH_UNITS:

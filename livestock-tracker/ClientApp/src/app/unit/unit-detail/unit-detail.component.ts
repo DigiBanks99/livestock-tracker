@@ -1,30 +1,18 @@
-import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import {
-  Component,
-  OnInit,
-  Input,
-  OnDestroy,
-  Output,
-  EventEmitter
-} from '@angular/core';
-
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Unit } from '@unit/unit.model';
-import { isNullOrUndefined } from 'util';
 
 @Component({
   selector: 'app-unit-detail',
   templateUrl: './unit-detail.component.html',
   styleUrls: ['./unit-detail.component.scss']
 })
-export class UnitDetailComponent implements OnInit, OnDestroy {
+export class UnitDetailComponent implements OnInit {
   @Input() unit: Unit;
   @Output() save = new EventEmitter<Unit>();
   @Output() remove = new EventEmitter<number>();
 
   public unitForm: FormGroup;
-
-  private onDescriptionChanged: Subscription;
 
   constructor() {
     this.unitForm = null;
@@ -39,28 +27,18 @@ export class UnitDetailComponent implements OnInit, OnDestroy {
   }
 
   private initForm() {
-    const descriptionControl = new FormControl(this.unit.description, [
-      Validators.required
-    ]);
-    const formGroupSetup = {
-      description: descriptionControl
-    };
-    this.unitForm = new FormGroup(formGroupSetup);
-
-    this.onDescriptionChanged = this.unitForm
-      .get('description')
-      .valueChanges.subscribe(_ => this.updateUnit());
+    this.unitForm = new FormGroup({
+      typeCode: new FormControl(this.unit.typeCode),
+      description: new FormControl(this.unit.description, {
+        validators: [Validators.required],
+        updateOn: 'blur'
+      })
+    });
   }
 
-  private updateUnit() {
+  public updateUnit() {
     if (this.unitForm.valid) {
       this.save.emit(this.unitForm.value);
-    }
-  }
-
-  ngOnDestroy() {
-    if (!isNullOrUndefined(this.onDescriptionChanged)) {
-      this.onDescriptionChanged.unsubscribe();
     }
   }
 }

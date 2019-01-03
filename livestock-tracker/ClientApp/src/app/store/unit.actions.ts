@@ -34,7 +34,7 @@ export class AddUnitSuccess implements Action {
 }
 
 export class UpdateUnit implements Action {
-  readonly type = ActionTypes.ADD_UNIT;
+  readonly type = ActionTypes.UPDATE_UNIT;
   unit: Unit;
 
   constructor(unit: Unit) {
@@ -43,7 +43,7 @@ export class UpdateUnit implements Action {
 }
 
 export class UpdateUnitSuccess implements Action {
-  readonly type = ActionTypes.ADD_UNIT_SUCCESS;
+  readonly type = ActionTypes.UPDATE_UNIT_SUCCESS;
   unit: Update<Unit>;
 
   constructor(unit: Update<Unit>) {

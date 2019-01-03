@@ -25,7 +25,7 @@ export class UnitEffects {
 
   @Effect()
   getAll$: Observable<Action> = this.actions$.pipe(
-    ofType(ActionTypes.SET_UNITS),
+    ofType(ActionTypes.FETCH_UNITS),
     startWith(new FetchUnits()),
     switchMap(_ => this.unitService.getUnits()),
     map((units: Unit[]) => new SetUnits(units)),

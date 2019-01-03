@@ -3,6 +3,7 @@ using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace livestock_tracker.Controllers
 {
@@ -21,7 +22,8 @@ namespace livestock_tracker.Controllers
     [HttpGet]
     public IActionResult Get()
     {
-      return Ok(_unitService.GetAll());
+      var units = _unitService.GetAll().OrderBy(u => u.Description);
+      return Ok(units);
     }
 
     // GET: api/Unit/5

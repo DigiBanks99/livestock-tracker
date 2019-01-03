@@ -12,6 +12,7 @@ import { environment } from '@env/environment';
 })
 export class FeedTypeComponent implements OnInit {
   @Input() public feedTypes: FeedType[];
+  @Output() public add = new EventEmitter<FeedType>();
   @Output() public remove = new EventEmitter<number>();
   @Output() public save = new EventEmitter<FeedType>();
 
@@ -33,7 +34,7 @@ export class FeedTypeComponent implements OnInit {
   public addFeedType() {
     const newFeedType = new FeedType();
     newFeedType.description = 'New';
-    this.feedTypeService.add(newFeedType);
+    this.add.emit(newFeedType);
   }
 
   public onPage(pageEvent: PageEvent) {

@@ -6,10 +6,7 @@
       </mat-toolbar-row>
     </mat-toolbar>
     <mat-list class="unit-list mat-elevation-z1">
-      <mat-list-item
-        class="card-list-item"
-        *ngFor="let feedType of filteredFeedTypes"
-      >
+      <mat-list-item class="card-list-item" *ngFor="let feedType of feedTypes">
         <app-feed-type-detail
           class="feed-type-item"
           [feedType]="feedType"
