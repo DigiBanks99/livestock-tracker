@@ -1,10 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { MatListOption, PageEvent } from '@angular/material';
 import { LivestockService } from '@livestock/livestock.service';
-import {
-  Livestock,
-  getAge as getAnimalAge
-} from '@app/livestock/livestock.model';
+import { Livestock, getAge as getAnimalAge } from '@livestock/livestock.model';
 import { environment } from '@env/environment';
 
 @Component({

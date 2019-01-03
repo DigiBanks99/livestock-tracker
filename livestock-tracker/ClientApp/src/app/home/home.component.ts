@@ -1,30 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs';
-
-import { LivestockService } from '../livestock/livestock.service';
-import { Livestock } from '../livestock/livestock.model';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
+import { State, selectors } from '@store';
+import { Livestock } from '@livestock/livestock.model';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit, OnDestroy {
-  public animals: Livestock[];
-  private animalsChangedSubscription: Subscription;
+export class HomeComponent implements OnInit {
+  public animals$: Observable<Livestock[]>;
+  public animalCount$: Observable<number>;
 
-  constructor(private livestockService: LivestockService) {
-  }
+  constructor(private store: Store<State>) {}
 
   ngOnInit() {
-    this.animals = [];
-    this.animalsChangedSubscription = this.livestockService.livestockChanged.subscribe((animals: Livestock[]) =>  {
-      this.animals = animals;
-    });
-    this.livestockService.getLivestock();
-  }
-
-  ngOnDestroy() {
-    this.animalsChangedSubscription.unsubscribe();
+    this.animals$ = this.store.pipe(
+      select(selectors.animalSelectors.getAnimals)
+    );
+    this.animalCount$ = this.store.pipe(
+      select(selectors.animalSelectors.getAnimalCount)
+    );
   }
 }

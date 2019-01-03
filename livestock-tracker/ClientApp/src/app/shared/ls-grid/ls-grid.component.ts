@@ -10,9 +10,9 @@ import { PageEvent } from '@angular/material';
 import { Params } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { isNullOrUndefined, isFunction } from 'util';
-import { LsGridConfig } from './ls-grid-config.model';
-import { LsGridColumnDef } from './ls-grid-column-def.model';
-import { LsGridColumnType } from './ls-grid-column-type.enum';
+import { LsGridConfig } from '@shared/ls-grid/ls-grid-config.model';
+import { LsGridColumnDef } from '@shared/ls-grid/ls-grid-column-def.model';
+import { LsGridColumnType } from '@shared/ls-grid/ls-grid-column-type.enum';
 
 @Component({
   selector: 'app-ls-grid',

@@ -1,10 +1,10 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
 import { PageEvent } from '@angular/material';
 import { Subscription } from 'rxjs';
-import { Livestock } from '../livestock/livestock.model';
-import { MedicalTransaction } from './medical-transaction.model';
-import { MedicalService } from './medical.service';
-import { environment } from '../../environments/environment.prod';
+import { Livestock } from '@livestock/livestock.model';
+import { MedicalTransaction } from '@medical/medical-transaction.model';
+import { MedicalService } from '@medical/medical.service';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-medical',

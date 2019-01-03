@@ -1,14 +1,12 @@
-import { MedicineTypeService } from '../medicine-type/medicine-type.service';
-import { UnitService } from '../../unit/unit.service';
-import { Unit } from '../../unit/unit.model';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MAT_DATE_FORMATS } from '@angular/material';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
-
-import { MedicalTransaction } from '../medical-transaction.model';
-import { MedicalService } from '../medical.service';
-import { MedicineType } from '../medicine-type.model';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MedicineTypeService } from '@medical/medicine-type/medicine-type.service';
+import { MedicalTransaction } from '@medical/medical-transaction.model';
+import { MedicalService } from '@medical/medical.service';
+import { MedicineType } from '@medical/medicine-type.model';
+import { Unit } from '@unit/unit.model';
 
 export const MY_FORMATS = {
   parse: {

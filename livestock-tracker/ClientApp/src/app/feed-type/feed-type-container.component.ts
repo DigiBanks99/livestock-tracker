@@ -1,15 +1,15 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { State, selectors } from '@store';
 import { Observable } from 'rxjs';
-import { FeedType } from './feed-type.model';
+import { State, selectors } from '@store';
+import { FeedType } from '@feed-type/feed-type.model';
 import {
   AddFeedType,
   SelectFeedType,
   UpdateFeedType,
   RemoveFeedType
 } from '@feed-type-store/actions';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-feed-type-container',

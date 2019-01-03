@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Livestock } from '@livestock/livestock.model';
 import { State, selectors } from '@store';
 import { SelectAnimal } from '@animal-store/actions';
+import { Livestock } from '@livestock/livestock.model';
 
 @Component({
   selector: 'app-animal-select-container',

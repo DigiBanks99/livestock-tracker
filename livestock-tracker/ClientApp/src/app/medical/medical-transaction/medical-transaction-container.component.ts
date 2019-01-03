@@ -1,8 +1,8 @@
-import { Store, select } from '@ngrx/store';
-import { State, selectors } from '@store';
-import { Observable } from 'rxjs';
-import { Unit } from '@unit/unit.model';
 import { Component, Input } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { State, selectors } from '@store';
+import { Unit } from '@unit/unit.model';
 import { MedicalTransaction } from '@medical/medical-transaction.model';
 
 @Component({

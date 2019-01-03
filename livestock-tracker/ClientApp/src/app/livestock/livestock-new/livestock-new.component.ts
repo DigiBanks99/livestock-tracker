@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { AddAnimal } from '@animal-store/actions';
-import { Livestock } from '@livestock/livestock.model';
 import { Location } from '@angular/common';
+import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { State, selectors } from '@store';
+import { AddAnimal } from '@animal-store/actions';
+import { Livestock } from '@livestock/livestock.model';
 
 @Component({
   selector: 'app-livestock-new',

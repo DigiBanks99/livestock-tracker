@@ -2,9 +2,8 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { isNullOrUndefined } from 'util';
-
-import { MedicineType } from '../../medicine-type.model';
-import { MedicineTypeService } from '../medicine-type.service';
+import { MedicineType } from '@medical/medicine-type.model';
+import { MedicineTypeService } from '@medical/medicine-type/medicine-type.service';
 
 @Component({
   selector: 'app-medicine-type-detail',
@@ -32,7 +31,9 @@ export class MedicineTypeDetailComponent implements OnInit, OnDestroy {
 
   private initForm() {
     this.medicineTypeForm = new FormGroup({
-      description: new FormControl(this.medicineType.description, [Validators.required])
+      description: new FormControl(this.medicineType.description, [
+        Validators.required
+      ])
     });
 
     this.onDescriptionChanged = this.medicineTypeForm

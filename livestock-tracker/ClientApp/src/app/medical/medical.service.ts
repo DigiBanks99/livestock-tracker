@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { isNullOrUndefined, isUndefined } from 'util';
-import { MedicalTransaction } from './medical-transaction.model';
-import { environment } from '../../environments/environment.prod';
+import { MedicalTransaction } from '@medical/medical-transaction.model';
+import { environment } from '@env/environment';
 
 export interface IMedicalService {
   medicalTransactionsChanged: Subject<MedicalTransaction[]>;

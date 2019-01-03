@@ -1,7 +1,7 @@
 import { PageEvent } from '@angular/material';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { Unit } from './unit.model';
+import { Unit } from '@unit/unit.model';
 import { environment } from '@env/environment';
 
 @Component({

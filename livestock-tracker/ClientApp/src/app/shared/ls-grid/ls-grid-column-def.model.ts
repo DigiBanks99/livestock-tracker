@@ -1,4 +1,4 @@
-import { LsGridColumnType } from './ls-grid-column-type.enum';
+import { LsGridColumnType } from '@shared/ls-grid/ls-grid-column-type.enum';
 import { isFunction } from 'util';
 
 export class LsGridColumnDef {

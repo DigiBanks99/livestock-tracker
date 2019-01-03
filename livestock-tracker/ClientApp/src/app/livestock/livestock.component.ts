@@ -1,11 +1,10 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
-import { State } from '@app/store';
 import { Observable } from 'rxjs';
+import { State, selectors } from '@store';
 import { Livestock } from '@livestock/livestock.model';
-import { selectors } from '@app/store';
-import { RemoveAnimal, SelectAnimal } from '@app/store/animal.actions';
+import { RemoveAnimal, SelectAnimal } from '@animal-store/actions';
 
 @Component({
   selector: 'app-livestock',
@@ -38,8 +37,8 @@ export class LivestockComponent implements OnInit {
   }
 
   public deleteAnimal(animal: Livestock) {
-    const r = confirm('Are you sure?');
-    if (r) {
+    const response = confirm('Are you sure?');
+    if (response) {
       this.store.dispatch(new RemoveAnimal(animal.id));
     }
   }

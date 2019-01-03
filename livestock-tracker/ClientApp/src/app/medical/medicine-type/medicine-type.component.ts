@@ -1,10 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material';
 import { Subscription } from 'rxjs';
-
-import { MedicineType } from '../medicine-type.model';
-import { MedicineTypeService } from './medicine-type.service';
-import { environment } from '../../../environments/environment';
+import { environment } from '@env/environment';
+import { MedicineType } from '@medical/medicine-type.model';
+import { MedicineTypeService } from '@medical/medicine-type/medicine-type.service';
 
 @Component({
   selector: 'app-medicine-type',

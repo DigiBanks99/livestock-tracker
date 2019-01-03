@@ -1,6 +1,6 @@
-import { LsGridColumnDef } from './ls-grid-column-def.model';
-import { ILsDataService } from './ls-data-service.interface';
 import { EventEmitter } from '@angular/core';
+import { LsGridColumnDef } from '@shared/ls-grid/ls-grid-column-def.model';
+import { ILsDataService } from '@shared/ls-grid/ls-data-service.interface';
 
 export class LsGridConfig {
   columnDef: LsGridColumnDef[];

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
-
-import { environment } from '../../../environments/environment';
-import { MedicineType } from '../medicine-type.model';
+import { environment } from '@env/environment';
+import { MedicineType } from '@medical/medicine-type.model';
 import { isNullOrUndefined } from 'util';
 
 export interface IMedicineTypeService {
@@ -91,7 +90,13 @@ export class MockMedicineTypeService implements IMedicineTypeService {
   getMedicineTypes() {
     this.medicineTypesChanged.next([]);
   }
-  addMedicineType(medicineType: MedicineType) {}
-  deleteMedicineType(typeCode: number) {}
-  updateMedicineType(medicineTypeToUpdate: MedicineType) {}
+  addMedicineType(medicineType: MedicineType) {
+    throw new Error('Not implemented');
+  }
+  deleteMedicineType(typeCode: number) {
+    throw new Error('Not implemented');
+  }
+  updateMedicineType(medicineTypeToUpdate: MedicineType) {
+    throw new Error('Not implemented');
+  }
 }

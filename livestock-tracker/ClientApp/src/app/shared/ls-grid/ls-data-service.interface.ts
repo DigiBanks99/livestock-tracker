@@ -1,4 +1,4 @@
-import { Observable } from '../../../../node_modules/rxjs';
+import { Observable } from 'rxjs';
 
 export interface ILsDataService {
   get(fetchKey?: any): Observable<Object>;

@@ -5,8 +5,8 @@ import { isNullOrUndefined } from 'util';
 
 import * as moment from 'moment';
 
-import { Livestock, Animal } from '@app/livestock/livestock.model';
-import { LiveStockType } from '@app/livestock/livestock-type.model';
+import { Livestock, Animal } from '@livestock/livestock.model';
+import { LiveStockType } from '@livestock/livestock-type.model';
 import { environment } from '@env/environment';
 
 interface ILivestockService {

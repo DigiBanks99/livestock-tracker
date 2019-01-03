@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { State } from '@store';
-import { Observable } from 'rxjs';
-import { Livestock } from '@livestock/livestock.model';
-import { selectors } from '@store';
-import { FeedingTransaction } from './feeding-transaction.model';
 import { Router } from '@angular/router';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { State, selectors } from '@store';
+import { Livestock } from '@livestock/livestock.model';
+import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
 import {
   SelectFeedTransaction,
   RemoveFeedTransaction
