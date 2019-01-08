@@ -27,7 +27,7 @@
     "@ngrx/effects": "^6.1.2",
     "@ngrx/entity": "^6.1.2",
     "@ngrx/store": "^6.1.2",
-    "@nguniversal/module-map-ngfactory-loader": "^5.0.0",
+    "@nguniversal/module-map-ngfactory-loader": "^6.0.1",
     "aspnet-prerendering": "^3.0.1",
     "core-js": "^2.4.1",
     "karma": "^3.1.4",
@@ -56,6 +56,6 @@
     "protractor": "^5.4.1",
     "ts-node": "~4.1.0",
     "tslint": "^5.10.0",
-    "typescript": "^2.7.2"
+    "typescript": "~2.7.0"
   }
 }
