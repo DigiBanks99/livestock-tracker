@@ -6,4 +6,10 @@
     bottom: 16px;
     right: 16px;
   }
+
+  mat-list-item.ls-grid-list-item.mat-list-item.ng-star-inserted {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

@@ -4,6 +4,7 @@
 .animal-select-container {
   display: flex;
   flex: 1;
+  color: $dark-primary-text;
 
   .animal-select-svg {
     margin-right: 8px;
@@ -13,4 +14,17 @@
     background-color: mat-color($candy-app-accent);
     border-radius: 50%;
   }
+}
+
+.form-detail
+  .form-detail-content
+  .form-detail-content__card
+  .mat-card-header
+  .mat-card-header-text
+  .mat-card-title
+  .mat-icon {
+  background-color: unset;
+  font-size: unset;
+  border-radius: 0;
+  padding: 0;
 }

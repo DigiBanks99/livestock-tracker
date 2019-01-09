@@ -21,7 +21,6 @@ export class MedicalComponent implements OnInit, OnChanges, OnDestroy {
   private lastPage: number;
 
   constructor(private medicalService: MedicalService) {
-    this.currentAnimal = null;
     this.medicalTransactions = [];
     this.filteredMedicalTransactions = [];
     this.pageSize = environment.pageSize;

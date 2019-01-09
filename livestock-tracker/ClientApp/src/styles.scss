@@ -457,3 +457,22 @@ app-animal-select-container {
     flex: 1;
   }
 }
+
+app-feeding-transaction {
+  .ls-grid-list-item.mat-list-item {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+app-feeding-transaction-form {
+  .mat-card-title {
+    margin-bottom: 0;
+  }
+
+  app-animal-select-container {
+    margin-bottom: 20px;
+    font-size: 20px;
+  }
+}
