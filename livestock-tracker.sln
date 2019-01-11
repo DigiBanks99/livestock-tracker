@@ -22,6 +22,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker", "livest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.database.sqlite", "livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj", "{42CC84FA-30B9-4F18-A081-314B30934764}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "livestock-tracker.updater", "livestock-tracker.updater\livestock-tracker.updater.csproj", "{7ACD96E0-2D6C-4C0A-A11A-87F45A335D64}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{42CC84FA-30B9-4F18-A081-314B30934764}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42CC84FA-30B9-4F18-A081-314B30934764}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42CC84FA-30B9-4F18-A081-314B30934764}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ACD96E0-2D6C-4C0A-A11A-87F45A335D64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ACD96E0-2D6C-4C0A-A11A-87F45A335D64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ACD96E0-2D6C-4C0A-A11A-87F45A335D64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ACD96E0-2D6C-4C0A-A11A-87F45A335D64}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
