@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LivestockTracker.Database.Migrations
 {
-    public partial class FeedingTransactionAnimal : Migration
+  public partial class FeedingTransactionAnimal : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

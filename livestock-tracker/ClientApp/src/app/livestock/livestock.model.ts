@@ -55,12 +55,12 @@ declare global {
 Date.daysInMonth = daysInMonth;
 
 function daysInMonth(month, year): number {
-  const date = new Date(year, month, 0);
-  return date.getDate();
+  const date = moment(new Date(year, month, 0));
+  return date.date();
 }
 
 export function getAge(animalBirthDate: Date): string {
-  const today = moment().utc();
+  const today = moment();
   const birthDate = moment(animalBirthDate);
   let year = today.year() - birthDate.year();
   let month = today.month() - birthDate.month();
@@ -73,17 +73,23 @@ export function getAge(animalBirthDate: Date): string {
     return '0 days';
   }
 
+  const birthMonth = birthDate.month() + 1; // add 1 becuase for some stupid reason month is 0 based
+  const birthYear = birthDate.year();
+  const daysInMnth = Date.daysInMonth(birthMonth, birthYear);
+
   if (month > 0 && day < 0) {
     month--;
-    const birthMonth = birthDate.month() + 1; // add 1 becuase for some stupid reason month is 0 based
-    const birthYear = birthDate.year();
-    const daysInMnth = Date.daysInMonth(birthMonth, birthYear);
     day = daysInMnth + day;
   }
 
   if (year > 0 && month < 0) {
     year--;
     month = 12 + month;
+  }
+
+  if (day < 0) {
+    month--;
+    day = daysInMnth + day;
   }
 
   let displayAge = addAgeSection(year, 'year');
