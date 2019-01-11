@@ -14,23 +14,15 @@ import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.mod
 import { MAT_DATE_FORMATS, MatSnackBar } from '@angular/material';
 import { FeedType } from '@feed-type/feed-type.model';
 import { Unit } from '@unit/unit.model';
+import { environment } from '@env/environment';
 
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'LL'
-  },
-  display: {
-    dateInput: 'DD MMMM YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  }
-};
 @Component({
   selector: 'app-feeding-transaction-form',
   templateUrl: './feeding-transaction-form.component.html',
   styleUrls: ['./feeding-transaction-form.component.scss'],
-  providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }]
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
+  ]
 })
 export class FeedingTransactionFormComponent
   implements OnInit, OnChanges, OnDestroy {
@@ -116,7 +108,12 @@ export class FeedingTransactionFormComponent
       id: new FormControl(null),
       animalID: new FormControl(this.selectedAnimalId),
       transactionDate: new FormControl(
-        { value: moment(), disabled: this.isPending },
+        {
+          value: moment()
+            .utc()
+            .toDate(),
+          disabled: this.isPending
+        },
         Validators.required
       ),
       feedID: new FormControl(

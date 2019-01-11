@@ -22,6 +22,7 @@ import { Livestock, getAge } from '@livestock/livestock.model';
 import { LiveStockType } from '@livestock/livestock-type.model';
 import { LivestockService } from '@livestock/livestock.service';
 import { MatSnackBar } from '@angular/material';
+import { environment } from '@env/environment';
 
 const Constants = {
   Controls: {
@@ -43,22 +44,13 @@ const Constants = {
   }
 };
 
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'LL'
-  },
-  display: {
-    dateInput: 'DD MMMM YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  }
-};
 @Component({
   selector: 'app-livestock-form',
   templateUrl: './livestock-form.component.html',
   styleUrls: ['./livestock-form.component.scss'],
-  providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }]
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.short }
+  ]
 })
 export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public currentAnimal: Livestock = {

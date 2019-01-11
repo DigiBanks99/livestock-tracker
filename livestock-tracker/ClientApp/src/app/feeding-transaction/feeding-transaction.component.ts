@@ -6,7 +6,7 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { MatSelect } from '@angular/material';
+import { MatSelect, MAT_DATE_FORMATS } from '@angular/material';
 import { formatDate } from '@angular/common';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -20,11 +20,15 @@ import { LsGridConfig } from '@shared/ls-grid/ls-grid-config.model';
 import { LsGridColumnDef } from '@shared/ls-grid/ls-grid-column-def.model';
 import { LsGridColumnType } from '@shared/ls-grid/ls-grid-column-type.enum';
 import { isNullOrUndefined } from 'util';
+import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-feeding-transaction',
   templateUrl: './feeding-transaction.component.html',
-  styleUrls: ['./feeding-transaction.component.scss']
+  styleUrls: ['./feeding-transaction.component.scss'],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
+  ]
 })
 export class FeedingTransactionComponent implements OnDestroy {
   private showDetailTriggered: Subscription;
