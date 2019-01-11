@@ -7,23 +7,15 @@ import { MedicalTransaction } from '@medical/medical-transaction.model';
 import { MedicalService } from '@medical/medical.service';
 import { MedicineType } from '@medical/medicine-type.model';
 import { Unit } from '@unit/unit.model';
+import { environment } from '@env/environment';
 
-export const MY_FORMATS = {
-  parse: {
-    dateInput: 'LL'
-  },
-  display: {
-    dateInput: 'DD MMMM YYYY HH:mm',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  }
-};
 @Component({
   selector: 'app-medical-transaction',
   templateUrl: './medical-transaction.component.html',
   styleUrls: ['./medical-transaction.component.scss'],
-  providers: [{ provide: MAT_DATE_FORMATS, useValue: MY_FORMATS }]
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
+  ]
 })
 export class MedicalTransactionComponent implements OnInit, OnDestroy {
   @Input() public medicalTransaction: MedicalTransaction;
