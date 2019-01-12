@@ -117,7 +117,7 @@ namespace LivestockTracker.ProcessManager
     {
       return new ProcessStartInfo
       {
-        Arguments = string.Join(',', _configuration.Arguments),
+        Arguments = string.Join(",", _configuration.Arguments),
         FileName = string.IsNullOrEmpty(_configuration.ExecutableDirectory) ? _configuration.Executeable : System.IO.Path.Combine(_configuration.ExecutableDirectory, _configuration.Executeable),
         CreateNoWindow = !_configuration.NewWindow,
         UseShellExecute = true,

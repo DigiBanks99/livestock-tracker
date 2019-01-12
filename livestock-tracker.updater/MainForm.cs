@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Windows.Forms;
 
 namespace LivestockTracker.Updater
@@ -15,6 +8,10 @@ namespace LivestockTracker.Updater
     public MainForm()
     {
       InitializeComponent();
+
+      var path = Path.Combine("C:\\", "sandbox", "livestock-tracker", "livestock-tracker.process-manager", "bin", "debug", "netstandard2.0", "livestock-tracker.process-manager.dll");
+      var versionChecker = new ProcessManager.DotnetCoreAppVersionChecker(new FileInfo(path));
+      MessageBox.Show(versionChecker.GetVersion());
     }
   }
 }

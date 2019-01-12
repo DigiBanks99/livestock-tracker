@@ -77,5 +77,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\livestock-tracker.process-manager\livestock-tracker.process-manager.csproj">
+      <Project>{80ff71e3-407f-4761-a1af-921e1be84e2e}</Project>
+      <Name>livestock-tracker.process-manager</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace LivestockTracker.ProcessManager
@@ -30,7 +29,21 @@ namespace LivestockTracker.ProcessManager
 
     public Task<RunnableProcess> RunProcessAsync(ProcessConfiguration configuration)
     {
-      throw new NotImplementedException();
+      var process = new RunnableProcess(configuration);
+      process.CreateProcess();
+      ProcessList.Add(process);
+
+      var task = new Task<RunnableProcess>(() => RunProcess(process));
+      task.Start();
+      return task;
+    }
+
+    private IList<RunnableProcess> ProcessList { get { return (IList<RunnableProcess>)Processes; } }
+
+    private RunnableProcess RunProcess(RunnableProcess process)
+    {
+      process.Process.Start();
+      return process;
     }
   }
 }
