@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace livestock_tracker.updater
+namespace LivestockTracker.Updater
 {
   static class Program
   {

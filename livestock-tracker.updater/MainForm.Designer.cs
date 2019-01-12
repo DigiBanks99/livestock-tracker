@@ -1,4 +1,4 @@
-﻿namespace livestock_tracker.updater
+﻿namespace LivestockTracker.Updater
 {
   partial class MainForm
   {

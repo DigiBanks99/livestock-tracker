@@ -4,7 +4,7 @@ using LivestockTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace livestock_tracker.Controllers
+namespace LivestockTracker.Controllers
 {
   [Produces("application/json")]
   [Route("api/FeedType")]
