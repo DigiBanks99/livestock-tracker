@@ -11,6 +11,7 @@
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <RootNamespace>LivestockTracker</RootNamespace>
+    <Version>0.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -27,17 +28,21 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="ClientApp\dist\**" />
     <Compile Remove="livestock-tracker.base\**" />
     <Compile Remove="livestock-tracker.models\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\dist\**" />
     <Content Remove="livestock-tracker.base\**" />
     <Content Remove="livestock-tracker.models\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="ClientApp\dist\**" />
     <EmbeddedResource Remove="livestock-tracker.base\**" />
     <EmbeddedResource Remove="livestock-tracker.models\**" />
+    <None Remove="ClientApp\dist\**" />
     <None Remove="livestock-tracker.base\**" />
     <None Remove="livestock-tracker.models\**" />
   </ItemGroup>

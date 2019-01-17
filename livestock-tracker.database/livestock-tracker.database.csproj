@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>LivestockTracker.Database</RootNamespace>
+    <Version>0.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

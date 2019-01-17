@@ -1,22 +1,31 @@
+using Autofac;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LivestockTracker.Updater
 {
-  static class Program
+  internal static class Program
   {
+    public static IContainer Container { get; set; }
+
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
     [STAThread]
-    static void Main()
+    private static void Main()
     {
+      Container = UpdaterContainerBuilder.RegisterComponents();
       Application.EnableVisualStyles();
       Application.SetCompatibleTextRenderingDefault(false);
       Application.Run(new MainForm());
+    }
+
+    public static T ResolveDependency<T>()
+    {
+      using (var scope = Container.BeginLifetimeScope())
+      {
+        return scope.Resolve<T>();
+      }
     }
   }
 }
