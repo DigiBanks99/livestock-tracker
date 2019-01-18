@@ -12,6 +12,7 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <RootNamespace>LivestockTracker</RootNamespace>
     <Version>0.0.2</Version>
+    <Configurations>Debug;Release;Debug Updater</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

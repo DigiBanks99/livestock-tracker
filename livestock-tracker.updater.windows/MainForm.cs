@@ -1,17 +1,16 @@
 using System;
-using System.IO;
 using System.Windows.Forms;
 
-namespace LivestockTracker.Updater
+namespace LivestockTracker.Updater.Windows
 {
   public partial class MainForm : Form
   {
     private readonly IUpdaterService _updaterService;
 
-    public MainForm()
+    public MainForm(IUpdaterService updaterService)
     {
+      _updaterService = updaterService;
       InitializeComponent();
-      _updaterService = Program.ResolveDependency<IUpdaterService>();
     }
 
     #region Events

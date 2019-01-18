@@ -4,6 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>LivestockTracker.ProcessManager</RootNamespace>
     <Version>0.0.2</Version>
+    <Configurations>Debug;Release;Debug Updater</Configurations>
   </PropertyGroup>
 
 </Project>
