@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>LivestockTracker.Updater.Windows</RootNamespace>
     <AssemblyName>livestock-tracker.updater.windows</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
@@ -124,6 +124,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj">
+      <Project>{e02d2a40-6988-4e78-b6b6-cae4d3ee77fa}</Project>
+      <Name>livestock-tracker.base</Name>
+    </ProjectReference>
     <ProjectReference Include="..\livestock-tracker.updater\livestock-tracker.updater.csproj">
       <Project>{08352b06-6bbc-4752-9a15-c45bbb0fb956}</Project>
       <Name>livestock-tracker.updater</Name>

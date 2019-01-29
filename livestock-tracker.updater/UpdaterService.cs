@@ -1,5 +1,8 @@
+using LivestockTracker.Base;
 using LivestockTracker.Base.Extensions.System.IO;
+using LivestockTracker.ProcessManager;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -9,23 +12,29 @@ namespace LivestockTracker.Updater
   {
     private DirectoryInfo _installPath;
 
+    public UpdaterService() { }
+
     public UpdaterModel DetermineInitialUpdateInformation()
     {
       _installPath = FindInstallPath();
+      var oldFiles = GetFiles();
+      FileInfo startUpDllFileInfo = _installPath.GetFiles("livestock-tracker.dll").FirstOrDefault();
+      DotnetCoreAppVersionChecker versionChecker = new DotnetCoreAppVersionChecker(startUpDllFileInfo);
 
       return new UpdaterModel
       {
         InstallPath = _installPath.FullName,
-        OldVersion = "1.0.0",
-        NewVersion = this.GetType().Assembly.ImageRuntimeVersion
+        OldVersion = versionChecker.GetVersion(),
+        NewVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace("file:///", "")).FileVersion,
+        OldFiles = oldFiles
       };
     }
 
     public DirectoryInfo FindInstallPath()
     {
-      var root = Path.GetPathRoot(Environment.SystemDirectory);
-      var solutionFolder = "livestock-tracker";
-      var entryPoints = new string[]
+      string root = Path.GetPathRoot(Environment.SystemDirectory);
+      string solutionFolder = "livestock-tracker";
+      string[] entryPoints = new string[]
       {
         Path.Combine(root, "Programs"),
         Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles).Replace(" (x86)", ""),
@@ -36,9 +45,9 @@ namespace LivestockTracker.Updater
       int index = 0;
       do
       {
-        var currentEntryPoint = entryPoints[index++];
-        var path = new DirectoryInfo(currentEntryPoint);
-        var searchResult = DoSearch(path, solutionFolder);
+        string currentEntryPoint = entryPoints[index++];
+        DirectoryInfo path = new DirectoryInfo(currentEntryPoint);
+        DirectoryInfo searchResult = DoSearch(path, solutionFolder);
         if (!searchResult.IsNull())
           installPath = searchResult;
       }
@@ -49,17 +58,22 @@ namespace LivestockTracker.Updater
 
     public DirectoryInfo DoSearch(DirectoryInfo path, string term)
     {
-      var validPaths = path.GetDirectories(term);
+      DirectoryInfo[] validPaths = path.GetDirectories(term);
       if (validPaths != null && validPaths.Any())
         return validPaths.First();
 
-      foreach (var subPath in path.GetDirectories())
+      foreach (DirectoryInfo subPath in path.GetDirectories())
       {
-        var searchResult = DoSearch(subPath, term);
+        DirectoryInfo searchResult = DoSearch(subPath, term);
         if (searchResult != null) return searchResult;
       }
 
       return path.Null();
+    }
+
+    public IEnumerable<TreeItem<string>> GetFiles()
+    {
+      return _installPath.GetFiles().Select(x => new TreeItem<string>(x.Name, x.DirectoryName));
     }
   }
 }

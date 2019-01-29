@@ -1,3 +1,4 @@
+using LivestockTracker.Base;
 using System.Collections.Generic;
 
 namespace LivestockTracker.Updater
@@ -7,7 +8,7 @@ namespace LivestockTracker.Updater
     public string InstallPath { get; set; }
     public string OldVersion { get; set; }
     public string NewVersion { get; set; }
-    public IEnumerable<string> OldFiles { get; set; }
-    public IEnumerable<string> NewFiles { get; set; }
+    public IEnumerable<TreeItem<string>> OldFiles { get; set; }
+    public IEnumerable<TreeItem<string>> NewFiles { get; set; }
   }
 }
