@@ -83,6 +83,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\FileService.cs" />
+    <Compile Include="Services\IFileService.cs" />
     <Compile Include="UpdaterContainerBuilder.cs" />
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
@@ -133,6 +135,90 @@
       <Name>livestock-tracker.updater</Name>
     </ProjectReference>
     <PackageReference Include="Autofac" Version="4.8.1" Condition="'$(TargetFramework)' == 'net47'" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_closed_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_closed_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_closed_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_closed_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_closed_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_closed_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_closed_512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_open_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_open_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_open_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_open_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_open_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_open_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\folder_open_512.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_css_16.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_css_24.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_css_32.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_css_64.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_css_128.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_css_256.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\file_css_512.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

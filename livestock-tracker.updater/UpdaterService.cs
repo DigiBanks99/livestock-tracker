@@ -14,18 +14,18 @@ namespace LivestockTracker.Updater
 
     public UpdaterService() { }
 
-    public UpdaterModel DetermineInitialUpdateInformation()
+    public UpdaterModel DetermineInitialUpdateInformation(string installPath = null)
     {
-      _installPath = FindInstallPath();
+      _installPath = string.IsNullOrEmpty(installPath) ? FindInstallPath() : new DirectoryInfo(installPath);
       var oldFiles = GetFiles();
-      FileInfo startUpDllFileInfo = _installPath.GetFiles("livestock-tracker.dll").FirstOrDefault();
+      FileInfo startUpDllFileInfo = _installPath.GetFiles(Constants.SOLUTION_ENTRYPOINT_DLL_NAME).FirstOrDefault();
       DotnetCoreAppVersionChecker versionChecker = new DotnetCoreAppVersionChecker(startUpDllFileInfo);
 
       return new UpdaterModel
       {
         InstallPath = _installPath.FullName,
         OldVersion = versionChecker.GetVersion(),
-        NewVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace("file:///", "")).FileVersion,
+        NewVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace(Constants.FILE_URI_PREFIX, "")).FileVersion,
         OldFiles = oldFiles
       };
     }
@@ -33,7 +33,7 @@ namespace LivestockTracker.Updater
     public DirectoryInfo FindInstallPath()
     {
       string root = Path.GetPathRoot(Environment.SystemDirectory);
-      string solutionFolder = "livestock-tracker";
+      string solutionFolder = Constants.SOLUTION_ENTRYPOINT_NAME;
       string[] entryPoints = new string[]
       {
         Path.Combine(root, "Programs"),
@@ -73,7 +73,36 @@ namespace LivestockTracker.Updater
 
     public IEnumerable<TreeItem<string>> GetFiles()
     {
-      return _installPath.GetFiles().Select(x => new TreeItem<string>(x.Name, x.DirectoryName));
+      var oldFiles = new List<TreeItem<string>>
+      {
+        new TreeItem<string>(_installPath.FullName, null)
+      };
+      AddChildDirectoryAndFiles(oldFiles, _installPath);
+      return oldFiles;
+    }
+
+    private void AddChildDirectoryAndFiles(IEnumerable<TreeItem<string>> files, DirectoryInfo directory)
+    {
+      var listRef = files as IList<TreeItem<string>>;
+      if (!directory.Exists || listRef == null)
+        return;
+
+      var dirs = directory.GetDirectories();
+      if (dirs.Any())
+      {
+        foreach (var dir in dirs)
+        {
+          listRef.Add(new TreeItem<string>(dir.FullName, directory.FullName));
+          AddChildDirectoryAndFiles(files, dir);
+        }
+      }
+
+      var dirFiles = directory.GetFiles().OrderBy(f => f.Name);
+      if (dirFiles.Any())
+      {
+        foreach (var file in dirFiles)
+          listRef.Add(new TreeItem<string>(file.FullName, directory.FullName));
+      }
     }
   }
 }

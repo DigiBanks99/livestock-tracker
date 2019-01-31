@@ -8,6 +8,6 @@ namespace LivestockTracker.Updater
 {
   public interface IUpdaterService
   {
-    UpdaterModel DetermineInitialUpdateInformation();
+    UpdaterModel DetermineInitialUpdateInformation(string installPath = null);
   }
 }

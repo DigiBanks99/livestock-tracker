@@ -1,4 +1,5 @@
 using Autofac;
+using LivestockTracker.Updater.Windows.Services;
 
 namespace LivestockTracker.Updater.Windows
 {
@@ -14,6 +15,7 @@ namespace LivestockTracker.Updater.Windows
       var builder = new ContainerBuilder();
 
       builder.RegisterType<MainForm>();
+      builder.RegisterType<FileService>().As<IFileService>();
       builder.RegisterType<UpdaterService>().As<IUpdaterService>();
 
       return builder.Build();
