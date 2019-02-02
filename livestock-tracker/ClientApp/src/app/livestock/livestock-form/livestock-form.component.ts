@@ -54,7 +54,7 @@ const Constants = {
 })
 export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public currentAnimal: Livestock = {
-    id: undefined,
+    id: 0,
     number: null,
     birthDate: new Date(),
     type: LiveStockType.Cattle,
@@ -198,7 +198,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       deceased = animal.deceased;
       dateOfDeath = animal.dateOfDeath;
     } else {
-      this.currentAnimal = null;
+      id = 0;
     }
 
     this.livestockForm.get(Constants.Controls.ID).setValue(id);
@@ -269,10 +269,12 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       if (!sold) {
         sellPrice = null;
       }
+    } else {
+      id = 0;
     }
 
     this.livestockForm = this.formBuilder.group({
-      id: [id],
+      id: new FormControl(id),
       type: new FormControl(type, [Validators.required]),
       subspecies: new FormControl(subspecies, []),
       number: new FormControl(number, [Validators.required]),

@@ -19,6 +19,14 @@
       "url": "http://localhost:5000",
       "webRoot": "${workspaceFolder}",
       "smartStep": true
+    },
+    {
+      "type": "brave",
+      "request": "launch",
+      "name": "Launch in Brave",
+      "url": "http://localhost:5000",
+      "webRoot": "${workspaceFolder}",
+      "smartStep": true
     }
   ]
 }

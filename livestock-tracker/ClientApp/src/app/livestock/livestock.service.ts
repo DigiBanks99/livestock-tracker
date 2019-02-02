@@ -110,8 +110,7 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
       throw new Error('Animal is required');
     }
 
-    animal.id = this.lastNewID--;
-    this.livestock.push(animal);
+    if (animal.id === null) animal.id = 0;
     return this.http.post<Livestock>(this.apiUrl + 'animal', animal);
   }
 
