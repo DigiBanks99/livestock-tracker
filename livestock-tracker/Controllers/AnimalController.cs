@@ -31,9 +31,9 @@ namespace LivestockTracker.Controllers
       if (!ModelState.IsValid)
         return BadRequest();
 
-      _animalService.Add(animal);
+      var savedAnimal = _animalService.Add(animal);
       _animalService.Save();
-      return CreatedAtAction("Get", new { id = animal.ID }, animal);
+      return CreatedAtAction("Get", new { id = savedAnimal.ID }, savedAnimal);
     }
 
     [HttpPatch]

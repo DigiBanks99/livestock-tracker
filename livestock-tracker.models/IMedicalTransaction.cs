@@ -1,4 +1,4 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker.Database;
 using System;
 
 namespace LivestockTracker.Models
@@ -10,7 +10,7 @@ namespace LivestockTracker.Models
         Animal AnimalObject { get; set; }
         decimal Dose { get; set; }
         int MedicineTypeCode { get; set; }
-        DateTime TransactionDate { get; set; }
+        DateTimeOffset TransactionDate { get; set; }
         int Unit { get; set; }
     }
 }
