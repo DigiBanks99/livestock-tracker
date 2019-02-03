@@ -38,6 +38,7 @@ namespace LivestockTracker.Updater.Windows
       SetupImages();
       SetupDataSource();
       LocaliseControls();
+      SetupControlProperties();
     }
 
     private void SetupDataSource()
@@ -58,7 +59,10 @@ namespace LivestockTracker.Updater.Windows
       labelNewVersion.Text = nameof(dummy.NewVersion);
       labelOldVersion.Text = nameof(dummy.OldVersion);
       labelOldFiles.Text = nameof(dummy.OldFiles);
-      buttonInstallPath.Text = "Browse";
+      labelNewFiles.Text = nameof(dummy.NewFiles);
+      buttonInstallPath.Text = "&Browse";
+      buttonCancel.Text = "&Cancel";
+      buttonOk.Text = "&Update";
     }
 
     private void PopulateOldFiles()
@@ -104,6 +108,13 @@ namespace LivestockTracker.Updater.Windows
       treeViewOldFiles.ImageList = _fileService.GetFileImageList();
       treeViewOldFiles.StateImageList = _fileService.GetFileImageList();
       ResumeLayout();
+    }
+
+    private void SetupControlProperties()
+    {
+      textOldVersion.ReadOnly = true;
+      textBoxNewVersion.ReadOnly = true;
+      textBoxInstallPath.ReadOnly = true;
     }
     #endregion
   }
