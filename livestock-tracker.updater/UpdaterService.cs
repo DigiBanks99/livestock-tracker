@@ -1,6 +1,7 @@
 using LivestockTracker.Base;
 using LivestockTracker.Base.Extensions.System.IO;
 using LivestockTracker.ProcessManager;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,12 +11,17 @@ namespace LivestockTracker.Updater
 {
   public class UpdaterService : IUpdaterService
   {
+    private readonly ILogger _logger;
     private DirectoryInfo _installPath;
 
-    public UpdaterService() { }
+    public UpdaterService(ILogger logger)
+    {
+      _logger = logger;
+    }
 
     public UpdaterModel DetermineInitialUpdateInformation(string installPath = null)
     {
+      _logger.LogDebug("Determining Initial Update Information: {installPath}", installPath);
       _installPath = string.IsNullOrEmpty(installPath) ? FindInstallPath() : new DirectoryInfo(installPath);
       var oldFiles = GetFiles();
       FileInfo startUpDllFileInfo = _installPath.GetFiles(Constants.SOLUTION_ENTRYPOINT_DLL_NAME).FirstOrDefault();

@@ -1,5 +1,6 @@
 using LivestockTracker.Base;
 using LivestockTracker.Updater.Windows.Services;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,18 +13,38 @@ namespace LivestockTracker.Updater.Windows
   {
     private readonly IFileService _fileService;
     private readonly IUpdaterService _updaterService;
+    private readonly ILogger _logger;
 
-    public MainForm(IUpdaterService updaterService, IFileService fileService)
+    public MainForm(IUpdaterService updaterService, IFileService fileService, ILogger logger)
     {
-      _fileService = fileService;
-      _updaterService = updaterService;
-      InitializeComponent();
+      try
+      {
+        _fileService = fileService;
+        _updaterService = updaterService;
+        _logger = logger;
+        InitializeComponent();
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical(ex, "Main form failed to create.");
+        MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        this.Close();
+      }
     }
 
     #region Events
     private void MainForm_Load(object sender, EventArgs e)
     {
-      InitializeForm();
+      try
+      {
+        InitializeForm();
+      }
+      catch (Exception ex)
+      {
+        _logger.LogCritical(ex, "Main form failed to load.");
+        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        this.Close();
+      }
     }
 
     private void buttonInstallPath_Click(object sender, EventArgs e)
