@@ -7,14 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
-    <ProjectReference Include="..\livestock-tracker.process-manager\livestock-tracker.process-manager.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.Extensions.Logging.Abstractions">
-      <HintPath>..\..\..\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.extensions.logging.abstractions\2.1.1\lib\netstandard2.0\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
+    <ProjectReference Include="..\livestock-tracker.process-manager\livestock-tracker.process-manager.csproj" />
   </ItemGroup>
 
 </Project>

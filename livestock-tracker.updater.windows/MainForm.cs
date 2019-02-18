@@ -1,4 +1,5 @@
 using LivestockTracker.Base;
+using LivestockTracker.Base.Extensions.System;
 using LivestockTracker.Updater.Windows.Services;
 using Microsoft.Extensions.Logging;
 using System;
@@ -76,11 +77,11 @@ namespace LivestockTracker.Updater.Windows
 #pragma warning disable S1854 // Dead stores should be removed
       var dummy = new UpdaterModel();
 #pragma warning restore S1854 // Dead stores should be removed
-      labelInstallPath.Text = nameof(dummy.InstallPath);
-      labelNewVersion.Text = nameof(dummy.NewVersion);
-      labelOldVersion.Text = nameof(dummy.OldVersion);
-      labelOldFiles.Text = nameof(dummy.OldFiles);
-      labelNewFiles.Text = nameof(dummy.NewFiles);
+      labelInstallPath.Text = nameof(dummy.InstallPath).SplitCamelCase();
+      labelNewVersion.Text = nameof(dummy.NewVersion).SplitCamelCase();
+      labelOldVersion.Text = nameof(dummy.OldVersion).SplitCamelCase();
+      labelOldFiles.Text = nameof(dummy.OldFiles).SplitCamelCase();
+      labelNewFiles.Text = nameof(dummy.NewFiles).SplitCamelCase();
       buttonInstallPath.Text = "&Browse";
       buttonCancel.Text = "&Cancel";
       buttonOk.Text = "&Update";

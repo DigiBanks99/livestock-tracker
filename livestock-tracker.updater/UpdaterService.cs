@@ -4,6 +4,7 @@ using LivestockTracker.ProcessManager;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -24,14 +25,25 @@ namespace LivestockTracker.Updater
       _logger.LogDebug("Determining Initial Update Information: {installPath}", installPath);
       _installPath = string.IsNullOrEmpty(installPath) ? FindInstallPath() : new DirectoryInfo(installPath);
       var oldFiles = GetFiles();
-      FileInfo startUpDllFileInfo = _installPath.GetFiles(Constants.SOLUTION_ENTRYPOINT_DLL_NAME).FirstOrDefault();
+      FileInfo startUpDllFileInfo = null;
+      try
+      {
+        startUpDllFileInfo = _installPath.GetFiles(Constants.SOLUTION_ENTRYPOINT_DLL_NAME).FirstOrDefault();
+      }
+      catch (DirectoryNotFoundException)
+      {
+        return new UpdaterModel
+        {
+          NewVersion = FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace(Constants.FILE_URI_PREFIX, "")).FileVersion
+        };
+      }
       DotnetCoreAppVersionChecker versionChecker = new DotnetCoreAppVersionChecker(startUpDllFileInfo);
 
       return new UpdaterModel
       {
         InstallPath = _installPath.FullName,
         OldVersion = versionChecker.GetVersion(),
-        NewVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace(Constants.FILE_URI_PREFIX, "")).FileVersion,
+        NewVersion = FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace(Constants.FILE_URI_PREFIX, "")).FileVersion,
         OldFiles = oldFiles
       };
     }
