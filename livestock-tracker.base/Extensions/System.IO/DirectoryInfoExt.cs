@@ -1,6 +1,4 @@
-using System.IO;
-
-namespace LivestockTracker.Base.Extensions.System.IO
+namespace System.IO
 {
   public static class DirectoryInfoExt
   {

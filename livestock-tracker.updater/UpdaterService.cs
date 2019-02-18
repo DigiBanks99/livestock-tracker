@@ -1,5 +1,4 @@
 using LivestockTracker.Base;
-using LivestockTracker.Base.Extensions.System.IO;
 using LivestockTracker.ProcessManager;
 using Microsoft.Extensions.Logging;
 using System;
@@ -13,7 +12,6 @@ namespace LivestockTracker.Updater
   public class UpdaterService : IUpdaterService
   {
     private readonly ILogger _logger;
-    private DirectoryInfo _installPath;
 
     public UpdaterService(ILogger logger)
     {
@@ -23,12 +21,12 @@ namespace LivestockTracker.Updater
     public UpdaterModel DetermineInitialUpdateInformation(string installPath = null)
     {
       _logger.LogDebug("Determining Initial Update Information: {installPath}", installPath);
-      _installPath = string.IsNullOrEmpty(installPath) ? FindInstallPath() : new DirectoryInfo(installPath);
-      var oldFiles = GetFiles();
+      var installDir = string.IsNullOrEmpty(installPath) ? FindInstallPath() : new DirectoryInfo(installPath);
+      var oldFiles = GetFiles(installDir);
       FileInfo startUpDllFileInfo = null;
       try
       {
-        startUpDllFileInfo = _installPath.GetFiles(Constants.SOLUTION_ENTRYPOINT_DLL_NAME).FirstOrDefault();
+        startUpDllFileInfo = installDir.GetFiles(Constants.SOLUTION_ENTRYPOINT_DLL_NAME).FirstOrDefault();
       }
       catch (DirectoryNotFoundException)
       {
@@ -41,7 +39,7 @@ namespace LivestockTracker.Updater
 
       return new UpdaterModel
       {
-        InstallPath = _installPath.FullName,
+        InstallPath = installDir.FullName,
         OldVersion = versionChecker.GetVersion(),
         NewVersion = FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace(Constants.FILE_URI_PREFIX, "")).FileVersion,
         OldFiles = oldFiles
@@ -89,14 +87,14 @@ namespace LivestockTracker.Updater
       return path.Null();
     }
 
-    public IEnumerable<TreeItem<string>> GetFiles()
+    public IEnumerable<TreeItem<string>> GetFiles(DirectoryInfo path)
     {
-      var oldFiles = new List<TreeItem<string>>
+      var files = new List<TreeItem<string>>
       {
-        new TreeItem<string>(_installPath.FullName, null)
+        new TreeItem<string>(path.FullName, null)
       };
-      AddChildDirectoryAndFiles(oldFiles, _installPath);
-      return oldFiles;
+      AddChildDirectoryAndFiles(files, path);
+      return files;
     }
 
     private void AddChildDirectoryAndFiles(IEnumerable<TreeItem<string>> files, DirectoryInfo directory)

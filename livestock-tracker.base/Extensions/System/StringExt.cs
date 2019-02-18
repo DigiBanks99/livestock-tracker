@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace LivestockTracker.Base.Extensions.System
+namespace System
 {
   public static class StringExt
   {

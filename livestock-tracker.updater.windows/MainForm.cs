@@ -1,5 +1,4 @@
 using LivestockTracker.Base;
-using LivestockTracker.Base.Extensions.System;
 using LivestockTracker.Updater.Windows.Services;
 using Microsoft.Extensions.Logging;
 using System;
