@@ -34,7 +34,6 @@ namespace LivestockTracker.Updater.Windows
             this.labelInstallPath = new System.Windows.Forms.Label();
             this.buttonInstallPath = new System.Windows.Forms.Button();
             this.textBoxInstallPath = new System.Windows.Forms.TextBox();
-            this.updaterModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lcOldVersion = new System.Windows.Forms.Panel();
             this.textOldVersion = new System.Windows.Forms.TextBox();
@@ -52,15 +51,16 @@ namespace LivestockTracker.Updater.Windows
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.updaterModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.layoutMain.SuspendLayout();
             this.lcInstallPath.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.lcOldVersion.SuspendLayout();
             this.lcOldFiles.SuspendLayout();
             this.lcNewVersion.SuspendLayout();
             this.lcNewFiles.SuspendLayout();
             this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutMain
@@ -113,10 +113,6 @@ namespace LivestockTracker.Updater.Windows
             this.textBoxInstallPath.Name = "textBoxInstallPath";
             this.textBoxInstallPath.Size = new System.Drawing.Size(576, 20);
             this.textBoxInstallPath.TabIndex = 0;
-            // 
-            // updaterModelBindingSource
-            // 
-            this.updaterModelBindingSource.DataSource = typeof(LivestockTracker.Updater.UpdaterModel);
             // 
             // tableLayoutPanel1
             // 
@@ -212,6 +208,7 @@ namespace LivestockTracker.Updater.Windows
             this.textBoxNewVersion.Name = "textBoxNewVersion";
             this.textBoxNewVersion.Size = new System.Drawing.Size(263, 20);
             this.textBoxNewVersion.TabIndex = 1;
+            this.textBoxNewVersion.TextChanged += new System.EventHandler(this.textBoxNewVersion_TextChanged);
             // 
             // labelNewVersion
             // 
@@ -274,10 +271,15 @@ namespace LivestockTracker.Updater.Windows
             this.buttonCancel.TabIndex = 0;
             this.buttonCancel.Text = "buttonCancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
+            this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
             // folderBrowserDialog
             // 
             this.folderBrowserDialog.Description = "Installation Path";
+            // 
+            // updaterModelBindingSource
+            // 
+            this.updaterModelBindingSource.DataSource = typeof(LivestockTracker.Updater.UpdaterModel);
             // 
             // MainForm
             // 
@@ -296,7 +298,6 @@ namespace LivestockTracker.Updater.Windows
             this.layoutMain.PerformLayout();
             this.lcInstallPath.ResumeLayout(false);
             this.lcInstallPath.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.lcOldVersion.ResumeLayout(false);
@@ -308,6 +309,7 @@ namespace LivestockTracker.Updater.Windows
             this.lcNewFiles.ResumeLayout(false);
             this.lcNewFiles.PerformLayout();
             this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).EndInit();
             this.ResumeLayout(false);
 
     }

@@ -14,6 +14,15 @@ namespace LivestockTracker.ProcessManager
 
     public string GetVersion()
     {
+      if (_dotnetDllFileInfo == null)
+        throw new FileNotFoundException();
+
+      if (!File.Exists(_dotnetDllFileInfo.FullName))
+      {
+        var exc = new FileNotFoundException();
+        exc.Data.Add(nameof(_dotnetDllFileInfo), _dotnetDllFileInfo);
+      }
+
       FileVersionInfo versionInfo = FileVersionInfo.GetVersionInfo(_dotnetDllFileInfo.FullName);
       return versionInfo.FileVersion;
     }

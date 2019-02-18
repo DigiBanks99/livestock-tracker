@@ -6,6 +6,8 @@ using Serilog;
 using System.Linq;
 using System;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
+using LivestockTracker.Updater.Windows.Config;
+using LivestockTracker.Updater.Config;
 
 namespace LivestockTracker.Updater.Windows
 {
@@ -24,6 +26,7 @@ namespace LivestockTracker.Updater.Windows
 
       builder.RegisterType<MainForm>();
       builder.RegisterType<FileService>().As<IFileService>();
+      builder.RegisterType<FtpConfig>().As<IFtpConfig>();
       builder.RegisterType<UpdaterService>().As<IUpdaterService>();
       builder.RegisterInstance(loggerInstance);
 
