@@ -2,7 +2,6 @@ using LivestockTracker.Database;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -51,12 +50,11 @@ namespace LivestockTracker
     {
       if (env.IsDevelopment())
       {
-        app.UseDeveloperExceptionPage();
-        SeedDevData(app);
+        SeedDevDatabase(app);
       }
       else
       {
-        app.UseExceptionHandler();
+        SeedDatabase(app);
       }
 
       app.UseStaticFiles();
@@ -84,7 +82,27 @@ namespace LivestockTracker
       });
     }
 
-    private static void SeedDevData(IApplicationBuilder app)
+    private static void SeedDevDatabase(IApplicationBuilder app)
+    {
+      using (var serviceScope = app.ApplicationServices.CreateScope())
+      {
+        using (var context = serviceScope.ServiceProvider.GetRequiredService<LivestockContext>())
+        {
+          try
+          {
+            SeedData.Initialize(serviceScope.ServiceProvider);
+            SeedData.SeedDevData(serviceScope.ServiceProvider);
+          }
+          catch (Exception ex)
+          {
+            var logger = app.ApplicationServices.GetRequiredService<ILogger<Program>>();
+            logger.LogError(ex, "An error occurred seeding the DB.");
+          }
+        }
+      }
+    }
+
+    private static void SeedDatabase(IApplicationBuilder app)
     {
       using (var serviceScope = app.ApplicationServices.CreateScope())
       {
