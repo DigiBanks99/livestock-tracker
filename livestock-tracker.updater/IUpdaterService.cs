@@ -1,6 +1,9 @@
 using LivestockTracker.Base;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Updater
 {
@@ -10,7 +13,7 @@ namespace LivestockTracker.Updater
     DirectoryInfo FindInstallPath();
     DirectoryInfo DoSearch(DirectoryInfo path, string term);
     IEnumerable<TreeItem<string>> GetFiles(DirectoryInfo path);
-    DirectoryInfo Download(string fileName, string savePath);
+    Task<DirectoryInfo> DownloadAsync(string fileName, string savePath, IProgress<int> progress, CancellationToken cancellationToken);
     UpdaterModel GetNewFiles(FileInfo archivePath, UpdaterModel currentData);
   }
 }

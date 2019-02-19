@@ -9,6 +9,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Updater
 {
@@ -120,13 +122,19 @@ namespace LivestockTracker.Updater
       return files;
     }
 
-    public DirectoryInfo Download(string fileName, string savePath)
+    public async Task<DirectoryInfo> DownloadAsync(string fileName, string savePath, IProgress<int> progress, CancellationToken cancellationToken)
     {
-      _logger.LogDebug("Downloading {0} to {1}", fileName, savePath);
+      _logger.LogDebug("Downloading {0} to {1} [{progress}]", fileName, savePath, progress);
 
       int bytesRead = 0;
       byte[] buffer = new byte[1024];
       string downloadPath = $"{_ftpConfig.Server}{fileName}";
+
+      var contentLength = GetContentLength(downloadPath);
+      if (cancellationToken.IsCancellationRequested)
+        return new DirectoryInfo(savePath);
+
+      var progressValue = 0;
 
       var request = (FtpWebRequest)WebRequest.Create(downloadPath);
       request.Method = WebRequestMethods.Ftp.DownloadFile;
@@ -137,21 +145,29 @@ namespace LivestockTracker.Updater
       request.Credentials = new NetworkCredential(_ftpConfig.Username, _ftpConfig.Password);
 
       var response = (FtpWebResponse)request.GetResponse();
-      Stream responseStream = response.GetResponseStream();
       try
       {
+        Stream responseStream = response.GetResponseStream();
         using (FileStream fs = new FileStream(savePath, FileMode.CreateNew))
         {
-          while (true)
+          while (!cancellationToken.IsCancellationRequested)
           {
-            bytesRead = responseStream.Read(buffer, 0, buffer.Length);
-
+            bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length);
+            progressValue = (int)(fs.Position / (contentLength * 1m) * 100);
             if (bytesRead == 0)
+            {
+              progress.Report(100);
               break;
+            }
 
-            fs.Write(buffer, 0, bytesRead);
+            await fs.WriteAsync(buffer, 0, bytesRead);
+            progress.Report(progressValue);
           }
         }
+        responseStream.Close();
+
+        if (cancellationToken.IsCancellationRequested)
+          CleanUpDownload(savePath);
       }
       catch (IOException ex)
       {
@@ -168,7 +184,8 @@ namespace LivestockTracker.Updater
       if (!unpackedDirectory.Exists)
       {
         unpackedDirectory.Create();
-        ZipFile.ExtractToDirectory(archivePath.FullName, unpackedPath);
+        ZipFile.ExtractToDirectory(archivePath.FullName, unpackedDirectory.FullName);
+        Thread.Sleep(10);
       }
 
       var newFiles = GetFiles(unpackedDirectory);
@@ -181,6 +198,28 @@ namespace LivestockTracker.Updater
         OldFiles = currentData.OldFiles,
         OldVersion = currentData.OldVersion
       };
+    }
+
+    private void CleanUpDownload(string savePath)
+    {
+      bool retry = true;
+      int maxRetry = 10;
+      int retryCount = 0;
+      do
+      {
+        try
+        {
+          File.Delete(savePath);
+          retry = false;
+        }
+        catch (IOException ex)
+        {
+          _logger.LogError(ex, "Failed to delete {0} and extracted files. Retry attempt: {1}", savePath, retryCount++);
+          if (retryCount == maxRetry)
+            throw new IOException($"Could not cleanup files after cancelling. Please remove these files manually before trying again:{Environment.NewLine}\t{savePath}");
+        }
+      }
+      while (retry);
     }
 
     private void AddChildDirectoryAndFiles(IEnumerable<TreeItem<string>> files, DirectoryInfo directory)
@@ -211,13 +250,12 @@ namespace LivestockTracker.Updater
     {
       var updaterModel = new UpdaterModel();
       var files = GetAllAvailableVersions();
-      var comparer = new SemVersion.VersionComparer();
-      SemVersion.SemanticVersion latestSemanticVersion = null;
+      Semver.SemVersion latestSemanticVersion = null;
       foreach (var file in files)
       {
         var versionString = file.ToLowerInvariant().Replace(".zip", "");
         versionString = versionString.Substring(versionString.LastIndexOf('_') + 1);
-        if (!SemVersion.SemanticVersion.TryParse(versionString, out SemVersion.SemanticVersion semanticVersion))
+        if (!Semver.SemVersion.TryParse(versionString, out Semver.SemVersion semanticVersion))
           continue;
 
         if (latestSemanticVersion == null)
@@ -225,7 +263,7 @@ namespace LivestockTracker.Updater
           latestSemanticVersion = semanticVersion;
           updaterModel.NewVersionName = file;
         }
-        else if (comparer.Compare(latestSemanticVersion, semanticVersion) > 0)
+        else if (semanticVersion.CompareTo(latestSemanticVersion) > 0)
         {
           latestSemanticVersion = semanticVersion;
           updaterModel.NewVersionName = file;
@@ -248,6 +286,14 @@ namespace LivestockTracker.Updater
       StreamReader reader = new StreamReader(responseStream);
       var lines = reader.ReadToEnd();
       return lines.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+    }
+
+    private long GetContentLength(string downloadPath)
+    {
+      var sizeRequest = (FtpWebRequest)WebRequest.Create(downloadPath);
+      sizeRequest.Method = WebRequestMethods.Ftp.GetFileSize;
+      sizeRequest.Credentials = new NetworkCredential(_ftpConfig.Username, _ftpConfig.Password);
+      return sizeRequest.GetResponse().ContentLength;
     }
   }
 }

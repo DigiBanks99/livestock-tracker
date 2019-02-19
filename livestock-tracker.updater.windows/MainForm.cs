@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace LivestockTracker.Updater.Windows
@@ -14,6 +16,7 @@ namespace LivestockTracker.Updater.Windows
     private readonly IFileService _fileService;
     private readonly IUpdaterService _updaterService;
     private readonly ILogger _logger;
+    private readonly CancellationTokenSource _cancellationTokenSource;
 
     public MainForm(IUpdaterService updaterService, IFileService fileService, ILogger logger)
     {
@@ -22,6 +25,7 @@ namespace LivestockTracker.Updater.Windows
         _fileService = fileService;
         _updaterService = updaterService;
         _logger = logger;
+        _cancellationTokenSource = new CancellationTokenSource();
         InitializeComponent();
       }
       catch (Exception ex)
@@ -85,18 +89,12 @@ namespace LivestockTracker.Updater.Windows
       }
     }
 
-    private void textBoxNewVersion_TextChanged(object sender, EventArgs e)
+    private async void buttonDownload_Click(object sender, EventArgs e)
     {
-      _logger.LogDebug("Event: {0}, sender: {1}, e: {2}", nameof(textBoxNewVersion_TextChanged), sender, e);
+      _logger.LogDebug("Event: {0}, sender: {1}, e: {2}", nameof(buttonDownload_Click), sender, e);
       try
       {
-        var textBox = sender as TextBox;
-        if (string.IsNullOrWhiteSpace(textBox.Text))
-          return;
-
-        var fileInfo = DownloadNewFiles();
-        var newModel = _updaterService.GetNewFiles(fileInfo, this.updaterModelBindingSource.Current as UpdaterModel);
-        UpdateDataSource(newModel);
+        await RequestDownload();
       }
       catch (Exception ex)
       {
@@ -110,10 +108,10 @@ namespace LivestockTracker.Updater.Windows
     #region Privates
     private void InitializeForm()
     {
-      SetupImages();
-      SetupDataSource();
-      LocaliseControls();
       SetupControlProperties();
+      SetupImages();
+      LocaliseControls();
+      SetupDataSource();
     }
 
     private void SetupDataSource(string installPath = null)
@@ -148,6 +146,7 @@ namespace LivestockTracker.Updater.Windows
       buttonInstallPath.Text = "&Browse";
       buttonCancel.Text = "&Cancel";
       buttonOk.Text = "&Update";
+      buttonDownload.Text = "&Download";
     }
 
     private void PopulateOldFiles()
@@ -223,25 +222,71 @@ namespace LivestockTracker.Updater.Windows
       textOldVersion.ReadOnly = true;
       textBoxNewVersion.ReadOnly = true;
       textBoxInstallPath.ReadOnly = true;
+
+      progressBar.Maximum = 100;
+      SetProgressBarValue(0);
     }
 
-    private FileInfo DownloadNewFiles()
+    private async Task RequestDownload()
+    {
+      if (MessageBox.Show("The livestock-tracker Update tool will download the latest version.", "Download", MessageBoxButtons.OK, MessageBoxIcon.Information) != DialogResult.OK)
+        return;
+
+      buttonDownload.Enabled = false;
+      buttonOk.Enabled = false;
+      buttonInstallPath.Enabled = false;
+
+      SetProgressBarValue(0);
+      var newModel = await ManageDownload();
+      UpdateDataSource(newModel);
+
+      buttonDownload.Enabled = true;
+      buttonOk.Enabled = true;
+      buttonInstallPath.Enabled = true;
+    }
+
+    private async Task<UpdaterModel> ManageDownload()
+    {
+      var cancellationToken = _cancellationTokenSource.Token;
+      var fileInfo = await DownloadNewFilesAsync(cancellationToken);
+      return _updaterService.GetNewFiles(fileInfo, this.updaterModelBindingSource.Current as UpdaterModel);
+    }
+
+    private async Task<FileInfo> DownloadNewFilesAsync(CancellationToken cancellationToken)
     {
       var downloadsPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME, Constants.SOLUTION_DOWNLOADS_NAME);
       var downloadsDir = new DirectoryInfo(downloadsPath);
       if (!downloadsDir.Exists)
         downloadsDir.Create();
 
+      var progress = new Progress<int>(value => progressBar.Value = value);
       var currentUpdaterModel = this.updaterModelBindingSource.Current as UpdaterModel;
       if (currentUpdaterModel == null)
+      {
+        SetProgressBarValue(100);
         return null;
+      }
 
       var downloadName = Path.Combine(downloadsDir.FullName, currentUpdaterModel.NewVersionName);
       var fileInfo = new FileInfo(downloadName);
+
+      if (cancellationToken.IsCancellationRequested)
+        return fileInfo;
+
       if (!fileInfo.Exists)
-        _updaterService.Download(currentUpdaterModel.NewVersionName, fileInfo.FullName);
+        await Task.Run(async () => await _updaterService.DownloadAsync(currentUpdaterModel.NewVersionName, fileInfo.FullName, progress, cancellationToken));
+      else
+        SetProgressBarValue(100);
 
       return fileInfo;
+    }
+
+    private void SetProgressBarValue(int value)
+    {
+      progressBar.Invoke((MethodInvoker)(() =>
+      {
+        progressBar.Value = value;
+      }));
     }
     #endregion
   }

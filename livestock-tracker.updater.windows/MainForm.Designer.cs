@@ -34,6 +34,7 @@ namespace LivestockTracker.Updater.Windows
             this.labelInstallPath = new System.Windows.Forms.Label();
             this.buttonInstallPath = new System.Windows.Forms.Button();
             this.textBoxInstallPath = new System.Windows.Forms.TextBox();
+            this.updaterModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.lcOldVersion = new System.Windows.Forms.Panel();
             this.textOldVersion = new System.Windows.Forms.TextBox();
@@ -48,19 +49,20 @@ namespace LivestockTracker.Updater.Windows
             this.treeViewNewFiles = new System.Windows.Forms.TreeView();
             this.labelNewFiles = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.updaterModelBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.buttonDownload = new System.Windows.Forms.Button();
             this.layoutMain.SuspendLayout();
             this.lcInstallPath.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.lcOldVersion.SuspendLayout();
             this.lcOldFiles.SuspendLayout();
             this.lcNewVersion.SuspendLayout();
             this.lcNewFiles.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // layoutMain
@@ -113,6 +115,10 @@ namespace LivestockTracker.Updater.Windows
             this.textBoxInstallPath.Name = "textBoxInstallPath";
             this.textBoxInstallPath.Size = new System.Drawing.Size(576, 20);
             this.textBoxInstallPath.TabIndex = 0;
+            // 
+            // updaterModelBindingSource
+            // 
+            this.updaterModelBindingSource.DataSource = typeof(LivestockTracker.Updater.UpdaterModel);
             // 
             // tableLayoutPanel1
             // 
@@ -194,21 +200,21 @@ namespace LivestockTracker.Updater.Windows
             // 
             this.lcNewVersion.AutoSize = true;
             this.lcNewVersion.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.lcNewVersion.Controls.Add(this.buttonDownload);
             this.lcNewVersion.Controls.Add(this.textBoxNewVersion);
             this.lcNewVersion.Controls.Add(this.labelNewVersion);
             this.lcNewVersion.Location = new System.Drawing.Point(403, 3);
             this.lcNewVersion.Name = "lcNewVersion";
-            this.lcNewVersion.Size = new System.Drawing.Size(394, 29);
+            this.lcNewVersion.Size = new System.Drawing.Size(393, 29);
             this.lcNewVersion.TabIndex = 1;
             // 
             // textBoxNewVersion
             // 
             this.textBoxNewVersion.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.updaterModelBindingSource, "NewVersion", true));
-            this.textBoxNewVersion.Location = new System.Drawing.Point(128, 6);
+            this.textBoxNewVersion.Location = new System.Drawing.Point(101, 6);
             this.textBoxNewVersion.Name = "textBoxNewVersion";
-            this.textBoxNewVersion.Size = new System.Drawing.Size(263, 20);
+            this.textBoxNewVersion.Size = new System.Drawing.Size(200, 20);
             this.textBoxNewVersion.TabIndex = 1;
-            this.textBoxNewVersion.TextChanged += new System.EventHandler(this.textBoxNewVersion_TextChanged);
             // 
             // labelNewVersion
             // 
@@ -247,12 +253,20 @@ namespace LivestockTracker.Updater.Windows
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.progressBar);
             this.panel2.Controls.Add(this.buttonOk);
             this.panel2.Controls.Add(this.buttonCancel);
             this.panel2.Location = new System.Drawing.Point(3, 340);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(800, 30);
             this.panel2.TabIndex = 4;
+            // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(3, 4);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(632, 23);
+            this.progressBar.TabIndex = 1;
             // 
             // buttonOk
             // 
@@ -277,9 +291,15 @@ namespace LivestockTracker.Updater.Windows
             // 
             this.folderBrowserDialog.Description = "Installation Path";
             // 
-            // updaterModelBindingSource
+            // buttonDownload
             // 
-            this.updaterModelBindingSource.DataSource = typeof(LivestockTracker.Updater.UpdaterModel);
+            this.buttonDownload.Location = new System.Drawing.Point(307, 3);
+            this.buttonDownload.Name = "buttonDownload";
+            this.buttonDownload.Size = new System.Drawing.Size(83, 23);
+            this.buttonDownload.TabIndex = 2;
+            this.buttonDownload.Text = "buttonDownload";
+            this.buttonDownload.UseVisualStyleBackColor = true;
+            this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
             // 
             // MainForm
             // 
@@ -298,6 +318,7 @@ namespace LivestockTracker.Updater.Windows
             this.layoutMain.PerformLayout();
             this.lcInstallPath.ResumeLayout(false);
             this.lcInstallPath.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.lcOldVersion.ResumeLayout(false);
@@ -309,7 +330,6 @@ namespace LivestockTracker.Updater.Windows
             this.lcNewFiles.ResumeLayout(false);
             this.lcNewFiles.PerformLayout();
             this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).EndInit();
             this.ResumeLayout(false);
 
     }
@@ -339,6 +359,8 @@ namespace LivestockTracker.Updater.Windows
     private System.Windows.Forms.TreeView treeViewNewFiles;
     private System.Windows.Forms.Button buttonOk;
     private System.Windows.Forms.Button buttonCancel;
+    private System.Windows.Forms.ProgressBar progressBar;
+    private System.Windows.Forms.Button buttonDownload;
   }
 }
 

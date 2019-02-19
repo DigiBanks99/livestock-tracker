@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="2.0.0" />
-    <PackageReference Include="SemanticVersion" Version="2.0.0" />
+    <PackageReference Include="Semver" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>
