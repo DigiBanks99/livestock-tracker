@@ -2,6 +2,9 @@ export const environment = {
   production: true,
   apiUrl: 'http://localhost:5000/api/',
   pageSize: 10,
+<<<<<<< HEAD
+  defaultLastPage: 0
+=======
   defaultLastPage: 0,
   myFormats: {
     short: {
@@ -27,4 +30,5 @@ export const environment = {
       }
     }
   }
+>>>>>>> master
 };
