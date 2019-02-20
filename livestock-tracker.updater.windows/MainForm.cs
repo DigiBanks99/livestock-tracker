@@ -18,6 +18,7 @@ namespace LivestockTracker.Updater.Windows
     private readonly ILogger _logger;
     private readonly CancellationTokenSource _cancellationTokenSource;
     private bool _downloading = false;
+    private bool _updating = false;
 
     public MainForm(IUpdaterService updaterService, IFileService fileService, ILogger logger)
     {
@@ -85,6 +86,11 @@ namespace LivestockTracker.Updater.Windows
           if (MessageBox.Show("Do you want to cancel the download?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             _cancellationTokenSource.Cancel();
         }
+        else if (_updating)
+        {
+          if (MessageBox.Show("Do you want to cancel the update?", "Cancel", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            _cancellationTokenSource.Cancel();
+        }
         else
         {
           this.Close();
@@ -108,13 +114,33 @@ namespace LivestockTracker.Updater.Windows
       }
       catch (Exception ex)
       {
-        _logger.LogError(ex, "Retrieving new files failed");
+        _logger.LogError(ex, "Download failed");
         MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         Application.Exit();
       }
       finally
       {
         _downloading = false;
+      }
+    }
+
+    private void buttonOk_Click(object sender, EventArgs e)
+    {
+      _logger.LogDebug("Event: {0}, sender: {1}, e: {2}", nameof(buttonOk_Click), sender, e);
+      try
+      {
+        _updating = true;
+        StartUpdate();
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError(ex, "Update failed");
+        MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        Application.Exit();
+      }
+      finally
+      {
+        _updating = false;
       }
     }
     #endregion
@@ -159,7 +185,7 @@ namespace LivestockTracker.Updater.Windows
       labelNewFiles.Text = nameof(dummy.NewFiles).SplitCamelCase();
       labelStatus.Text = "Ready";
       buttonInstallPath.Text = "&Browse";
-      buttonCancel.Text = "&Cancel";
+      buttonCancel.Text = _downloading || _updating ? "&Cancel" : "&Close";
       buttonOk.Text = "&Update";
       buttonDownload.Text = "&Download";
     }
@@ -257,27 +283,32 @@ namespace LivestockTracker.Updater.Windows
       buttonDownload.Enabled = false;
       buttonOk.Enabled = false;
       buttonInstallPath.Enabled = false;
+      buttonCancel.Text = "&Cancel";
 
-      progressBar.Value = 0;
-      UpdateStatus("Donwloading... 0%");
       var newModel = await ManageDownload();
-      UpdateStatus("Donwloaded");
       UpdateDataSource(newModel);
 
       buttonDownload.Enabled = true;
       buttonOk.Enabled = true;
       buttonInstallPath.Enabled = true;
+      buttonCancel.Text = "&Close";
     }
 
     private async Task<UpdaterModel> ManageDownload()
     {
+      progressBar.Value = 0;
+      UpdateStatus("Donwloading... 0%");
       var cancellationToken = _cancellationTokenSource.Token;
       var currentModel = this.updaterModelBindingSource.Current as UpdaterModel;
       var fileInfo = await DownloadNewFilesAsync(cancellationToken);
       if (!cancellationToken.IsCancellationRequested)
+      {
+        UpdateStatus("Donwloaded");
         return _updaterService.GetNewFiles(fileInfo, currentModel);
+      }
 
       this.progressBar.Value = 0;
+      ResetStatus();
       return new UpdaterModel
       {
         InstallPath = currentModel.InstallPath,
@@ -300,6 +331,7 @@ namespace LivestockTracker.Updater.Windows
         UpdateStatus($"Donwloading... {value}%");
         progressBar.Value = value;
       });
+
       var currentUpdaterModel = this.updaterModelBindingSource.Current as UpdaterModel;
       if (currentUpdaterModel == null)
       {
@@ -326,9 +358,34 @@ namespace LivestockTracker.Updater.Windows
       labelStatus.Text = message;
     }
 
-    private void ResetStatus(string message)
+    private void ResetStatus()
     {
       labelStatus.Text = "Ready";
+    }
+
+    private void StartUpdate()
+    {
+      var cancellationToken = _cancellationTokenSource.Token;
+      var currentUpdaterModel = this.updaterModelBindingSource.Current as UpdaterModel;
+
+      var progress = new Progress<int>(value => {
+        UpdateStatus($"Updating... {value}%");
+        progressBar.Value = value;
+      });
+
+      buttonDownload.Enabled = false;
+      buttonOk.Enabled = false;
+      buttonInstallPath.Enabled = false;
+      buttonCancel.Text = "&Cancel";
+
+      UpdateStatus("Updating... 0%");
+      _updaterService.Update(currentUpdaterModel, progress, cancellationToken);
+      UpdateStatus("Updated.");
+
+      buttonDownload.Enabled = true;
+      buttonOk.Enabled = true;
+      buttonInstallPath.Enabled = true;
+      buttonCancel.Text = "&Close";
     }
     #endregion
   }

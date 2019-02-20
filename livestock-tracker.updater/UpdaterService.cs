@@ -18,11 +18,13 @@ namespace LivestockTracker.Updater
   {
     private readonly ILogger _logger;
     private readonly IFtpConfig _ftpConfig;
+    private readonly IFileCopyService _fileCopyService;
 
-    public UpdaterService(ILogger logger, IFtpConfig ftpConfig)
+    public UpdaterService(ILogger logger, IFtpConfig ftpConfig, IFileCopyService fileCopyService)
     {
       _logger = logger;
       _ftpConfig = ftpConfig;
+      _fileCopyService = fileCopyService;
 
       _logger.LogDebug("UpdateService: FTP - Server: {0}, Username: {1}, Password: {2}", _ftpConfig.Server, _ftpConfig.Username, _ftpConfig.Password);
     }
@@ -199,6 +201,16 @@ namespace LivestockTracker.Updater
         OldFiles = currentData.OldFiles,
         OldVersion = currentData.OldVersion
       };
+    }
+
+    public void Update(UpdaterModel updaterModel, IProgress<int> progress, CancellationToken cancellationToken)
+    {
+      var newVersionPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME, Constants.SOLUTION_DOWNLOADS_NAME, updaterModel.NewVersionName);
+      var tempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME, Constants.SOLUTION_TEMP_NAME, updaterModel.OldVersion);
+
+      _fileCopyService.CopyFilesFromToRecursively(updaterModel.InstallPath, tempPath);
+
+      progress.Report(100);
     }
 
     private void CleanUpDownload(string savePath)

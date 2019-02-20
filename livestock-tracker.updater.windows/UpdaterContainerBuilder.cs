@@ -27,6 +27,7 @@ namespace LivestockTracker.Updater.Windows
       builder.RegisterType<MainForm>();
       builder.RegisterType<FileService>().As<IFileService>();
       builder.RegisterType<FtpConfig>().As<IFtpConfig>();
+      builder.RegisterType<FileCopyService>().As<IFileCopyService>();
       builder.RegisterType<UpdaterService>().As<IUpdaterService>();
       builder.RegisterInstance(loggerInstance);
 
