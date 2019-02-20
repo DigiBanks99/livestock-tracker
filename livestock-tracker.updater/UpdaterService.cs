@@ -164,6 +164,7 @@ namespace LivestockTracker.Updater
             progress.Report(progressValue);
           }
         }
+
         responseStream.Close();
 
         if (cancellationToken.IsCancellationRequested)

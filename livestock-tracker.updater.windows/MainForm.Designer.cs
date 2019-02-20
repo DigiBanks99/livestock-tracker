@@ -43,17 +43,19 @@ namespace LivestockTracker.Updater.Windows
             this.treeViewOldFiles = new System.Windows.Forms.TreeView();
             this.labelOldFiles = new System.Windows.Forms.Label();
             this.lcNewVersion = new System.Windows.Forms.Panel();
+            this.buttonDownload = new System.Windows.Forms.Button();
             this.textBoxNewVersion = new System.Windows.Forms.TextBox();
             this.labelNewVersion = new System.Windows.Forms.Label();
             this.lcNewFiles = new System.Windows.Forms.Panel();
             this.treeViewNewFiles = new System.Windows.Forms.TreeView();
             this.labelNewFiles = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.progressBar = new System.Windows.Forms.ProgressBar();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.buttonDownload = new System.Windows.Forms.Button();
+            this.statusStrip = new System.Windows.Forms.StatusStrip();
+            this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.labelStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.layoutMain.SuspendLayout();
             this.lcInstallPath.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).BeginInit();
@@ -63,6 +65,7 @@ namespace LivestockTracker.Updater.Windows
             this.lcNewVersion.SuspendLayout();
             this.lcNewFiles.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // layoutMain
@@ -70,11 +73,12 @@ namespace LivestockTracker.Updater.Windows
             this.layoutMain.Controls.Add(this.lcInstallPath);
             this.layoutMain.Controls.Add(this.tableLayoutPanel1);
             this.layoutMain.Controls.Add(this.panel2);
+            this.layoutMain.Controls.Add(this.statusStrip);
             this.layoutMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.layoutMain.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.layoutMain.Location = new System.Drawing.Point(0, 0);
             this.layoutMain.Name = "layoutMain";
-            this.layoutMain.Size = new System.Drawing.Size(808, 375);
+            this.layoutMain.Size = new System.Drawing.Size(808, 398);
             this.layoutMain.TabIndex = 0;
             // 
             // lcInstallPath
@@ -208,6 +212,16 @@ namespace LivestockTracker.Updater.Windows
             this.lcNewVersion.Size = new System.Drawing.Size(393, 29);
             this.lcNewVersion.TabIndex = 1;
             // 
+            // buttonDownload
+            // 
+            this.buttonDownload.Location = new System.Drawing.Point(307, 3);
+            this.buttonDownload.Name = "buttonDownload";
+            this.buttonDownload.Size = new System.Drawing.Size(83, 23);
+            this.buttonDownload.TabIndex = 2;
+            this.buttonDownload.Text = "buttonDownload";
+            this.buttonDownload.UseVisualStyleBackColor = true;
+            this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
+            // 
             // textBoxNewVersion
             // 
             this.textBoxNewVersion.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.updaterModelBindingSource, "NewVersion", true));
@@ -253,20 +267,12 @@ namespace LivestockTracker.Updater.Windows
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.progressBar);
             this.panel2.Controls.Add(this.buttonOk);
             this.panel2.Controls.Add(this.buttonCancel);
             this.panel2.Location = new System.Drawing.Point(3, 340);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(800, 30);
             this.panel2.TabIndex = 4;
-            // 
-            // progressBar
-            // 
-            this.progressBar.Location = new System.Drawing.Point(3, 4);
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(632, 23);
-            this.progressBar.TabIndex = 1;
             // 
             // buttonOk
             // 
@@ -291,21 +297,33 @@ namespace LivestockTracker.Updater.Windows
             // 
             this.folderBrowserDialog.Description = "Installation Path";
             // 
-            // buttonDownload
+            // statusStrip
             // 
-            this.buttonDownload.Location = new System.Drawing.Point(307, 3);
-            this.buttonDownload.Name = "buttonDownload";
-            this.buttonDownload.Size = new System.Drawing.Size(83, 23);
-            this.buttonDownload.TabIndex = 2;
-            this.buttonDownload.Text = "buttonDownload";
-            this.buttonDownload.UseVisualStyleBackColor = true;
-            this.buttonDownload.Click += new System.EventHandler(this.buttonDownload_Click);
+            this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.labelStatus,
+            this.progressBar});
+            this.statusStrip.Location = new System.Drawing.Point(0, 373);
+            this.statusStrip.Name = "statusStrip";
+            this.statusStrip.Size = new System.Drawing.Size(806, 22);
+            this.statusStrip.TabIndex = 5;
+            this.statusStrip.Text = "statusStrip1";
+            // 
+            // progressBar
+            // 
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(300, 16);
+            // 
+            // labelStatus
+            // 
+            this.labelStatus.Name = "labelStatus";
+            this.labelStatus.Size = new System.Drawing.Size(64, 17);
+            this.labelStatus.Text = "labelStatus";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(808, 375);
+            this.ClientSize = new System.Drawing.Size(808, 398);
             this.Controls.Add(this.layoutMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -330,6 +348,8 @@ namespace LivestockTracker.Updater.Windows
             this.lcNewFiles.ResumeLayout(false);
             this.lcNewFiles.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.statusStrip.ResumeLayout(false);
+            this.statusStrip.PerformLayout();
             this.ResumeLayout(false);
 
     }
@@ -359,8 +379,10 @@ namespace LivestockTracker.Updater.Windows
     private System.Windows.Forms.TreeView treeViewNewFiles;
     private System.Windows.Forms.Button buttonOk;
     private System.Windows.Forms.Button buttonCancel;
-    private System.Windows.Forms.ProgressBar progressBar;
     private System.Windows.Forms.Button buttonDownload;
+    private System.Windows.Forms.StatusStrip statusStrip;
+    private System.Windows.Forms.ToolStripStatusLabel labelStatus;
+    private System.Windows.Forms.ToolStripProgressBar progressBar;
   }
 }
 
