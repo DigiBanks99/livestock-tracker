@@ -1,4 +1,4 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker.Database;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -13,7 +13,7 @@ namespace LivestockTracker.Models
         [Required]
         public int FeedID { get; set; }
         [Required]
-        public DateTime TransactionDate { get; set; }
+        public DateTimeOffset TransactionDate { get; set; }
         [Required]
         public decimal Quantity { get; set; }
         [Required]

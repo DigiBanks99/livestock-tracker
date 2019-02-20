@@ -1,4 +1,4 @@
-﻿using LivestockTracker.Models;
+using LivestockTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -41,8 +41,8 @@ namespace LivestockTracker.Database
                     Subspecies = "Brahman",
                     Number = 1,
                     BatchNumber = 1,
-                    BirthDate = new DateTime(2018, 4, 1),
-                    PurchaseDate = new DateTime(2018, 4, 15),
+                    BirthDate = new DateTimeOffset(DateTime.UtcNow.AddDays(-15)),
+                    PurchaseDate = new DateTimeOffset(DateTime.UtcNow.AddDays(-13)),
                     PurchasePrice = 200m,
                     ArrivalWeight = 120m,
                     Sold = false,
@@ -111,7 +111,7 @@ namespace LivestockTracker.Database
                 {
                     AnimalID = animal.ID,
                     MedicineTypeCode = 1,
-                    TransactionDate = DateTime.Now,
+                    TransactionDate = DateTimeOffset.UtcNow,
                     Unit = 1,
                     Dose = 0.5m
                 });
@@ -158,7 +158,7 @@ namespace LivestockTracker.Database
                     AnimalID = animal.ID,
                     FeedID = 1,
                     Quantity = 0.5m,
-                    TransactionDate = DateTime.Now,
+                    TransactionDate = DateTimeOffset.UtcNow,
                     UnitTypeCode = 2
                 },
                 new FeedingTransaction()
@@ -167,7 +167,7 @@ namespace LivestockTracker.Database
                     AnimalID = animal.ID,
                     FeedID = 2,
                     Quantity = 1,
-                    TransactionDate = DateTime.Now.AddDays(-1),
+                    TransactionDate = DateTimeOffset.UtcNow.AddDays(-1),
                     UnitTypeCode = 2
                 });
 

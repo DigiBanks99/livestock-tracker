@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LivestockTracker.Models
@@ -11,7 +11,7 @@ namespace LivestockTracker.Models
         [Required]
         public int MedicineTypeCode { get; set; }
         [Required]
-        public DateTime TransactionDate { get; set; }
+        public DateTimeOffset TransactionDate { get; set; }
         [Required]
         public decimal Dose { get; set; }
         [Required]

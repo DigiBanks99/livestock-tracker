@@ -110,8 +110,7 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
       throw new Error('Animal is required');
     }
 
-    animal.id = this.lastNewID--;
-    this.livestock.push(animal);
+    if (animal.id === null) animal.id = 0;
     return this.http.post<Livestock>(this.apiUrl + 'animal', animal);
   }
 
@@ -172,12 +171,16 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
     clonedAnimal.sold = animal.sold;
     if (clonedAnimal.sold) {
       clonedAnimal.sellPrice = animal.sellPrice;
-      clonedAnimal.sellDate = moment(animal.sellDate).toDate();
+      clonedAnimal.sellDate = moment(animal.sellDate)
+        .utc()
+        .toDate();
     }
 
     clonedAnimal.deceased = animal.deceased;
     if (clonedAnimal.deceased) {
-      clonedAnimal.dateOfDeath = moment(animal.dateOfDeath).toDate();
+      clonedAnimal.dateOfDeath = moment(animal.dateOfDeath)
+        .utc()
+        .toDate();
     }
 
     return clonedAnimal;
