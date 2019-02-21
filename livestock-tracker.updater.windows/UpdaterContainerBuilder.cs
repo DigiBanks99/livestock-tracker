@@ -25,8 +25,9 @@ namespace LivestockTracker.Updater.Windows
       var loggerInstance = SetupLogger();
 
       builder.RegisterType<MainForm>();
-      builder.RegisterType<FileService>().As<IFileService>();
       builder.RegisterType<FtpConfig>().As<IFtpConfig>();
+      builder.RegisterType<ApiDonwloadService>().As<IDownloadService>();
+      builder.RegisterType<FileService>().As<IFileService>();
       builder.RegisterType<FileCopyService>().As<IFileCopyService>();
       builder.RegisterType<UpdaterService>().As<IUpdaterService>();
       builder.RegisterInstance(loggerInstance);

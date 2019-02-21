@@ -13,20 +13,24 @@ namespace LivestockTracker.Updater.Windows
 {
   public partial class MainForm : Form
   {
+    private readonly ILogger _logger;
     private readonly IFileService _fileService;
     private readonly IUpdaterService _updaterService;
-    private readonly ILogger _logger;
+    private readonly IDownloadService _downloadService;
     private readonly CancellationTokenSource _cancellationTokenSource;
     private bool _downloading = false;
     private bool _updating = false;
 
-    public MainForm(IUpdaterService updaterService, IFileService fileService, ILogger logger)
+    public MainForm(ILogger logger, IUpdaterService updaterService, IFileService fileService, IDownloadService downloadService)
     {
+      _logger.LogDebug("Constructing: {0}", nameof(MainForm));
+
       try
       {
+        _logger = logger;
         _fileService = fileService;
         _updaterService = updaterService;
-        _logger = logger;
+        _downloadService = downloadService;
         _cancellationTokenSource = new CancellationTokenSource();
         InitializeComponent();
       }
@@ -346,7 +350,7 @@ namespace LivestockTracker.Updater.Windows
         return fileInfo;
 
       if (!fileInfo.Exists)
-        await Task.Run(async () => await _updaterService.DownloadAsync(currentUpdaterModel.NewVersionName, fileInfo.FullName, progress, cancellationToken));
+        await Task.Run(async () => await _downloadService.DownloadAsync(currentUpdaterModel.NewVersionName, fileInfo.FullName, progress, cancellationToken));
       else
         progressBar.Value = 100;
 

@@ -17,16 +17,14 @@ namespace LivestockTracker.Updater
   public class UpdaterService : IUpdaterService
   {
     private readonly ILogger _logger;
-    private readonly IFtpConfig _ftpConfig;
     private readonly IFileCopyService _fileCopyService;
+    private readonly IDownloadService _downloadService;
 
-    public UpdaterService(ILogger logger, IFtpConfig ftpConfig, IFileCopyService fileCopyService)
+    public UpdaterService(ILogger logger, IFileCopyService fileCopyService, IDownloadService downloadService)
     {
       _logger = logger;
-      _ftpConfig = ftpConfig;
       _fileCopyService = fileCopyService;
-
-      _logger.LogDebug("UpdateService: FTP - Server: {0}, Username: {1}, Password: {2}", _ftpConfig.Server, _ftpConfig.Username, _ftpConfig.Password);
+      _downloadService = downloadService;
     }
 
     public UpdaterModel DetermineInitialUpdateInformation(string installPath = null)
@@ -59,13 +57,13 @@ namespace LivestockTracker.Updater
         version = ex.Data.Keys.Count == 0 ? Constants.VERSION_NOT_INSTALLED_TEXT : Constants.VERSION_EMPTY;
       }
 
-      var newVersionInfo = GetNewVersion();
+      var newVersionInfo = _downloadService.GetLatestVersionModel();
       return new UpdaterModel
       {
         InstallPath = installDir.FullName,
         OldVersion = version,
-        NewVersion = newVersionInfo.NewVersion,
-        NewVersionName = newVersionInfo.NewVersionName,
+        NewVersion = newVersionInfo.VersionString,
+        NewVersionName = newVersionInfo.DownloadPath,
         OldFiles = oldFiles
       };
     }
@@ -124,62 +122,6 @@ namespace LivestockTracker.Updater
       return files;
     }
 
-    public async Task<DirectoryInfo> DownloadAsync(string fileName, string savePath, IProgress<int> progress, CancellationToken cancellationToken)
-    {
-      _logger.LogDebug("Downloading {0} to {1} [{progress}]", fileName, savePath, progress);
-
-      int bytesRead = 0;
-      byte[] buffer = new byte[1024];
-      string downloadPath = $"{_ftpConfig.Server}{fileName}";
-
-      var contentLength = GetContentLength(downloadPath);
-      if (cancellationToken.IsCancellationRequested)
-        return new DirectoryInfo(savePath);
-
-      var progressValue = 0;
-
-      var request = (FtpWebRequest)WebRequest.Create(downloadPath);
-      request.Method = WebRequestMethods.Ftp.DownloadFile;
-      request.UsePassive = true;
-      request.UseBinary = true;
-      request.KeepAlive = true;
-
-      request.Credentials = new NetworkCredential(_ftpConfig.Username, _ftpConfig.Password);
-
-      var response = (FtpWebResponse)request.GetResponse();
-      try
-      {
-        Stream responseStream = response.GetResponseStream();
-        using (FileStream fs = new FileStream(savePath, FileMode.CreateNew))
-        {
-          while (!cancellationToken.IsCancellationRequested)
-          {
-            bytesRead = await responseStream.ReadAsync(buffer, 0, buffer.Length);
-            progressValue = (int)(fs.Position / (contentLength * 1m) * 100);
-            if (bytesRead == 0)
-            {
-              progress.Report(100);
-              break;
-            }
-
-            await fs.WriteAsync(buffer, 0, bytesRead);
-            progress.Report(progressValue);
-          }
-        }
-
-        responseStream.Close();
-
-        if (cancellationToken.IsCancellationRequested)
-          CleanUpDownload(savePath);
-      }
-      catch (IOException ex)
-      {
-        _logger.LogError(ex, $"Downloading {downloadPath} failed.");
-      }
-
-      return new DirectoryInfo(savePath);
-    }
-
     public UpdaterModel GetNewFiles(FileInfo archivePath, UpdaterModel currentData)
     {
       var unpackedPath = archivePath.FullName.Replace(".zip", "");
@@ -213,28 +155,6 @@ namespace LivestockTracker.Updater
       progress.Report(100);
     }
 
-    private void CleanUpDownload(string savePath)
-    {
-      bool retry = true;
-      int maxRetry = 10;
-      int retryCount = 0;
-      do
-      {
-        try
-        {
-          File.Delete(savePath);
-          retry = false;
-        }
-        catch (IOException ex)
-        {
-          _logger.LogError(ex, "Failed to delete {0} and extracted files. Retry attempt: {1}", savePath, retryCount++);
-          if (retryCount == maxRetry)
-            throw new IOException($"Could not cleanup files after cancelling. Please remove these files manually before trying again:{Environment.NewLine}\t{savePath}");
-        }
-      }
-      while (retry);
-    }
-
     private void AddChildDirectoryAndFiles(IEnumerable<TreeItem<string>> files, DirectoryInfo directory)
     {
       var listRef = files as IList<TreeItem<string>>;
@@ -257,56 +177,6 @@ namespace LivestockTracker.Updater
         foreach (var file in dirFiles)
           listRef.Add(new TreeItem<string>(file.FullName, directory.FullName));
       }
-    }
-
-    private UpdaterModel GetNewVersion()
-    {
-      var updaterModel = new UpdaterModel();
-      var files = GetAllAvailableVersions();
-      Semver.SemVersion latestSemanticVersion = null;
-      foreach (var file in files)
-      {
-        var versionString = file.ToLowerInvariant().Replace(".zip", "");
-        versionString = versionString.Substring(versionString.LastIndexOf('_') + 1);
-        if (!Semver.SemVersion.TryParse(versionString, out Semver.SemVersion semanticVersion))
-          continue;
-
-        if (latestSemanticVersion == null)
-        {
-          latestSemanticVersion = semanticVersion;
-          updaterModel.NewVersionName = file;
-        }
-        else if (semanticVersion.CompareTo(latestSemanticVersion) > 0)
-        {
-          latestSemanticVersion = semanticVersion;
-          updaterModel.NewVersionName = file;
-        }
-      }
-
-      updaterModel.NewVersion = latestSemanticVersion != null ? latestSemanticVersion.ToString() : string.Empty;
-      return updaterModel;
-    }
-
-    private IEnumerable<string> GetAllAvailableVersions()
-    {
-      var request = (FtpWebRequest)WebRequest.Create(_ftpConfig.Server);
-      request.Method = WebRequestMethods.Ftp.ListDirectory;
-
-      request.Credentials = new NetworkCredential(_ftpConfig.Username, _ftpConfig.Password);
-
-      var response = (FtpWebResponse)request.GetResponse();
-      Stream responseStream = response.GetResponseStream();
-      StreamReader reader = new StreamReader(responseStream);
-      var lines = reader.ReadToEnd();
-      return lines.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-    }
-
-    private long GetContentLength(string downloadPath)
-    {
-      var sizeRequest = (FtpWebRequest)WebRequest.Create(downloadPath);
-      sizeRequest.Method = WebRequestMethods.Ftp.GetFileSize;
-      sizeRequest.Credentials = new NetworkCredential(_ftpConfig.Username, _ftpConfig.Password);
-      return sizeRequest.GetResponse().ContentLength;
     }
   }
 }
