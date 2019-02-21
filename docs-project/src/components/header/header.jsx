@@ -6,8 +6,8 @@ import Title from './title';
 export class Header extends Component {
   render() {
     return (
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
+      <header className='app-header'>
+        <img src={logo} className='app-logo' alt='logo' />
         <Title />
       </header>
     );

@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 
+!release
 !releases
 !src/store/releases
 

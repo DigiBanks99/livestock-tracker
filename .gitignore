@@ -16,6 +16,7 @@
 [Dd]ebug/
 [Dd]ebugPublic/
 !docs-project/[Rr]releases/
+!docs-project/[Rr]release/
 [Rr]elease/
 [Rr]eleases/
 x64/

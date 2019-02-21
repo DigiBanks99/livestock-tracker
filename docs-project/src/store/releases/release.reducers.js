@@ -7,7 +7,7 @@ const InitialState = {
 };
 
 export function releaseReducer(state = InitialState, action) {
-  switch (action) {
+  switch (action.type) {
     case ReleaseActionTypes.RELEASE_FETCH:
       return { ...state, isFetching: true, error: null };
     case ReleaseActionTypes.RELEASE_FETCH_COMPLETED:

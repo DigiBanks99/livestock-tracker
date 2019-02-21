@@ -1,0 +1,26 @@
+.home {
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: 0.3fr 0.2fr auto;
+  grid-template-areas:
+    'welcome'
+    'information'
+    'release';
+
+  .welcome {
+    grid-area: welcome;
+  }
+
+  .information {
+    grid-area: information;
+  }
+
+  .platform {
+    grid-area: platform;
+  }
+
+  .release {
+    grid-area: release;
+  }
+}
