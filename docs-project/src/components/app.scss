@@ -1,0 +1,39 @@
+.app {
+  text-align: center;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60px 1.8fr;
+  grid-template-areas:
+    'header'
+    'main';
+}
+
+.app-logo {
+  height: 40px;
+  pointer-events: none;
+}
+
+.app-header {
+  background-color: #282c34;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  color: white;
+  padding: 5px;
+  grid-area: header;
+}
+
+.app-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

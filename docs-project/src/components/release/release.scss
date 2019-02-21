@@ -1,0 +1,26 @@
+.release {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: auto;
+  grid-template-areas: 'platform release';
+  grid-gap: 15px;
+
+  .platform-list {
+    grid-area: platform;
+  }
+
+  .release-list {
+    grid-area: release;
+  }
+
+  .platform-list,
+  .release-list {
+    background-color: #282c3491;
+    color: white;
+
+    li {
+      list-style: none;
+    }
+  }
+}
