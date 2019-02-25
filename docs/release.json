@@ -4,5 +4,11 @@
     "platform": "windows10-x86",
     "link": "https://www.dropbox.com/s/25e8lxsc786yhtx/win10-x86_0.0.2-alpha.zip?dl=1",
     "fileName": "win10-x86_0.0.2-alpha.zip"
+  },
+  {
+    "version": "0.0.2-beta",
+    "platform": "all",
+    "link": "https://www.dropbox.com/s/0taika7cjl066ne/all_0.0.2-beta.zip?dl=1",
+    "fileName": "all_0.0.2-beta.zip"
   }
 ]
