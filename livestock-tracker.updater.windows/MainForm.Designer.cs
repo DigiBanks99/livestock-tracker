@@ -29,6 +29,7 @@ namespace LivestockTracker.Updater.Windows
     private void InitializeComponent()
     {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.layoutMain = new System.Windows.Forms.FlowLayoutPanel();
             this.lcInstallPath = new System.Windows.Forms.Panel();
             this.labelInstallPath = new System.Windows.Forms.Label();
@@ -327,6 +328,7 @@ namespace LivestockTracker.Updater.Windows
             this.ClientSize = new System.Drawing.Size(808, 398);
             this.Controls.Add(this.layoutMain);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
