@@ -146,7 +146,7 @@ namespace LivestockTracker.Updater
       };
     }
 
-    public void Update(UpdaterModel updaterModel, IProgress<int> progress, CancellationToken cancellationToken)
+    public bool Update(UpdaterModel updaterModel, IProgress<int> progress, CancellationToken cancellationToken)
     {
       _logger.LogDebug("{0}: Executing update with data {1}", nameof(UpdaterService), updaterModel);
       var newVersionPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME, Constants.SOLUTION_DOWNLOADS_NAME, updaterModel.NewVersionModel.VersionString);
@@ -154,7 +154,24 @@ namespace LivestockTracker.Updater
 
       _fileCopyService.CopyFilesFromToRecursively(updaterModel.InstallPath, tempPath);
 
-      progress.Report(100);
+      try
+      {
+
+      }
+      catch (Exception ex)
+      {
+        _logger.LogError(ex, "{0}: Update failed.", nameof(UpdaterService));
+        _fileCopyService.DeleteFolderAndFilesRecursively(updaterModel.InstallPath);
+        _fileCopyService.CopyFilesFromToRecursively(tempPath, updaterModel.InstallPath);
+        _fileCopyService.DeleteFolderAndFilesRecursively(tempPath);
+        return false;
+      }
+      finally
+      {
+        progress.Report(100);
+      }
+
+      return true;
     }
 
     private void AddChildDirectoryAndFiles(IEnumerable<TreeItem<string>> files, DirectoryInfo directory)

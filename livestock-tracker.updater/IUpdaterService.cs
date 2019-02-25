@@ -14,6 +14,6 @@ namespace LivestockTracker.Updater
     DirectoryInfo DoSearch(DirectoryInfo path, string term);
     IEnumerable<TreeItem<string>> GetFiles(DirectoryInfo path);
     UpdaterModel GetNewFiles(FileInfo archivePath, UpdaterModel currentData);
-    void Update(UpdaterModel updaterModel, IProgress<int> progress, CancellationToken cancellationToken);
+    bool Update(UpdaterModel updaterModel, IProgress<int> progress, CancellationToken cancellationToken);
   }
 }

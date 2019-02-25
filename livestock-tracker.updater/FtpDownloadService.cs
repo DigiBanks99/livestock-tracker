@@ -108,7 +108,7 @@ namespace LivestockTracker.Updater
         return new DownloadableVersionModel
         {
           Version = version,
-          VersionString = vl.ToLowerInvariant().Replace(".zip", "").Replace("win", ""),
+          VersionString = vl.ToLowerInvariant().Substring(vl.LastIndexOf('_')).Replace(".zip", ""),
           FileName = vl,
           DownloadPath = Path.Combine(_ftpConfig.Server, vl)
         };
