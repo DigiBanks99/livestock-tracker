@@ -1,34 +1,22 @@
 using LivestockTracker.Updater.Config;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace LivestockTracker.Updater.Windows.Config
 {
-  public class ApiConfig : IApiConfig
+  public class ApiConfig : BaseConfig, IApiConfig
   {
-    private string _settingsPrefix;
-
-    public ApiConfig()
+    public ApiConfig() : base("api:")
     {
-      _settingsPrefix = "api:";
-      Configure();
     }
 
     public string BaseUrl { get; private set; }
 
     public string VersionRoute { get; private set; }
 
-    public void Configure()
+    protected override void Configure()
     {
-
-      var settings = ConfigurationManager.AppSettings.AllKeys.Select(k => new KeyValuePair<string, string>(k, ConfigurationManager.AppSettings[k]));
-      var pairs = settings.Where(s => s.Key.StartsWith(_settingsPrefix))
-                          .Select(k => new KeyValuePair<string, string>(k.Key.Substring(_settingsPrefix.Length), Environment.ExpandEnvironmentVariables(k.Value)));
-
-      BaseUrl = pairs.FirstOrDefault(p => p.Key.ToLower() == nameof(BaseUrl).ToLower()).Value;
-      VersionRoute = pairs.FirstOrDefault(p => p.Key.ToLower() == nameof(VersionRoute).ToLower()).Value;
+      BaseUrl = _properties.FirstOrDefault(p => p.Key.ToLower() == nameof(BaseUrl).ToLower()).Value;
+      VersionRoute = _properties.FirstOrDefault(p => p.Key.ToLower() == nameof(VersionRoute).ToLower()).Value;
     }
   }
 }

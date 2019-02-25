@@ -115,6 +115,7 @@ namespace LivestockTracker.Updater.Windows
       {
         _downloading = true;
         await RequestDownload();
+        buttonOk.Enabled = true;
       }
       catch (Exception ex)
       {
@@ -274,6 +275,8 @@ namespace LivestockTracker.Updater.Windows
 
       progressBar.Maximum = 100;
       progressBar.Value = 0;
+
+      buttonOk.Enabled = false;
     }
 
     private async Task RequestDownload()
@@ -387,8 +390,13 @@ namespace LivestockTracker.Updater.Windows
       buttonCancel.Text = "&Cancel";
 
       UpdateStatus("Updating... 0%");
-      _updaterService.Update(currentUpdaterModel, progress, cancellationToken);
-      UpdateStatus("Updated.");
+      if (_updaterService.Update(currentUpdaterModel, progress, cancellationToken))
+      {
+        UpdateStatus("Updated.");
+        MessageBox.Show("Update was successful. You may now run the application again.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+      }
+      else
+        MessageBox.Show("Update failed. Please submit an issue and attach the log.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
       buttonDownload.Enabled = true;
       buttonOk.Enabled = true;

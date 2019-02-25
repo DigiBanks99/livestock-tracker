@@ -52,10 +52,10 @@ namespace LivestockTracker.Updater.Windows
             this.panel2 = new System.Windows.Forms.Panel();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
-            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.labelStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.progressBar = new System.Windows.Forms.ToolStripProgressBar();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.layoutMain.SuspendLayout();
             this.lcInstallPath.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.updaterModelBindingSource)).BeginInit();
@@ -214,7 +214,7 @@ namespace LivestockTracker.Updater.Windows
             // 
             // buttonDownload
             // 
-            this.buttonDownload.Location = new System.Drawing.Point(307, 3);
+            this.buttonDownload.Location = new System.Drawing.Point(307, 4);
             this.buttonDownload.Name = "buttonDownload";
             this.buttonDownload.Size = new System.Drawing.Size(83, 23);
             this.buttonDownload.TabIndex = 2;
@@ -294,10 +294,6 @@ namespace LivestockTracker.Updater.Windows
             this.buttonCancel.UseVisualStyleBackColor = true;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
-            // folderBrowserDialog
-            // 
-            this.folderBrowserDialog.Description = "Installation Path";
-            // 
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -309,16 +305,20 @@ namespace LivestockTracker.Updater.Windows
             this.statusStrip.TabIndex = 5;
             this.statusStrip.Text = "statusStrip1";
             // 
-            // progressBar
-            // 
-            this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(300, 16);
-            // 
             // labelStatus
             // 
             this.labelStatus.Name = "labelStatus";
             this.labelStatus.Size = new System.Drawing.Size(64, 17);
             this.labelStatus.Text = "labelStatus";
+            // 
+            // progressBar
+            // 
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(300, 16);
+            // 
+            // folderBrowserDialog
+            // 
+            this.folderBrowserDialog.Description = "Installation Path";
             // 
             // MainForm
             // 

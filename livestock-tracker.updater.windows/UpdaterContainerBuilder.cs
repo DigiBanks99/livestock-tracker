@@ -1,13 +1,13 @@
 using Autofac;
 using LivestockTracker.Base;
+using LivestockTracker.ProcessManager;
+using LivestockTracker.Updater.Config;
+using LivestockTracker.Updater.Windows.Config;
 using LivestockTracker.Updater.Windows.Services;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using System.Linq;
 using System;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
-using LivestockTracker.Updater.Windows.Config;
-using LivestockTracker.Updater.Config;
 
 namespace LivestockTracker.Updater.Windows
 {
@@ -28,10 +28,12 @@ namespace LivestockTracker.Updater.Windows
       builder.RegisterType<MainForm>();
       builder.RegisterType<FtpConfig>().As<IFtpConfig>();
       builder.RegisterType<ApiConfig>().As<IApiConfig>();
+      builder.RegisterType<ApplicationConfig>().As<IApplicationConfig>();
       builder.RegisterType<ApiDonwloadService>().As<IDownloadService>();
       builder.RegisterType<FileService>().As<IFileService>();
       builder.RegisterType<FileCopyService>().As<IFileCopyService>();
       builder.RegisterType<UpdaterService>().As<IUpdaterService>();
+      builder.RegisterType<ProcessManager.ProcessManager>().As<IProcessManager>();
 
       return builder.Build();
     }

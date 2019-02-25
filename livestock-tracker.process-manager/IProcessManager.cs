@@ -8,6 +8,7 @@ namespace LivestockTracker.ProcessManager
     IEnumerable<RunnableProcess> Processes { get; }
 
     Task<RunnableProcess> RunProcessAsync(ProcessConfiguration configuration);
+    void KillProcess(RunnableProcess process);
     ProcessStatus GetProcessStatus(int processId);
     ProcessStatus GetProcessStatus(string name);
     ProcessStatus GetProcessStatus(RunnableProcess process);

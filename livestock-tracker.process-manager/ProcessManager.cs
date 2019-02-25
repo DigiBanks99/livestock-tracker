@@ -38,6 +38,11 @@ namespace LivestockTracker.ProcessManager
       return task;
     }
 
+    public void KillProcess(RunnableProcess process)
+    {
+      process.Process.Kill();
+    }
+
     private IList<RunnableProcess> ProcessList { get { return (IList<RunnableProcess>)Processes; } }
 
     private RunnableProcess RunProcess(RunnableProcess process)

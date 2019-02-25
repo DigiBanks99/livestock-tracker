@@ -8,7 +8,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,20 +16,27 @@ namespace LivestockTracker.Updater
   public class UpdaterService : IUpdaterService
   {
     private readonly ILogger _logger;
+    private readonly IApplicationConfig _appConfig;
     private readonly IFileCopyService _fileCopyService;
     private readonly IDownloadService _downloadService;
+    private readonly IProcessManager _processManager;
 
-    public UpdaterService(ILogger logger, IFileCopyService fileCopyService, IDownloadService downloadService)
+    public UpdaterService(ILogger logger, IApplicationConfig appConfig, IFileCopyService fileCopyService, IDownloadService downloadService, IProcessManager processManager)
     {
       _logger = logger;
+      _appConfig = appConfig;
       _fileCopyService = fileCopyService;
       _downloadService = downloadService;
+      _processManager = processManager;
     }
 
-    public async Task<UpdaterModel> DetermineInitialUpdateInformation(string installPath = null)
+    public async Task<UpdaterModel> DetermineInitialUpdateInformation(string installPath)
     {
       _logger.LogDebug("{0}: Determining Initial Update Information: {1}", nameof(UpdaterService), installPath);
       var installDir = string.IsNullOrEmpty(installPath) ? FindInstallPath() : new DirectoryInfo(installPath);
+      if (!installDir.Exists)
+        installDir.Create();
+
       var oldFiles = GetFiles(installDir);
 
       FileInfo startUpDllFileInfo = null;
@@ -90,7 +96,10 @@ namespace LivestockTracker.Updater
         if (!searchResult.IsNull())
           installPath = searchResult;
       }
-      while (installPath == null && index < entryPoints.Length);
+      while (installPath.IsNull() && index < entryPoints.Length);
+
+      if (installPath.IsNull())
+        return new DirectoryInfo(_appConfig.DefaultInstallPath);
 
       return installPath;
     }
@@ -125,13 +134,13 @@ namespace LivestockTracker.Updater
     public UpdaterModel GetNewFiles(FileInfo archivePath, UpdaterModel currentData)
     {
       _logger.LogDebug("{0}: Getting the new files for {1} with current data: {2}", nameof(UpdaterService), archivePath, currentData);
-      var unpackedPath = archivePath.FullName.Replace(".zip", "");
+      var unpackedPath = Path.Combine(archivePath.Directory.FullName, currentData.NewVersionModel.VersionString);
       var unpackedDirectory = new DirectoryInfo(unpackedPath);
       if (!unpackedDirectory.Exists)
       {
         unpackedDirectory.Create();
         ZipFile.ExtractToDirectory(archivePath.FullName, unpackedDirectory.FullName);
-        Thread.Sleep(10);
+        unpackedDirectory = new DirectoryInfo(unpackedPath);
       }
 
       var newFiles = GetFiles(unpackedDirectory);
@@ -156,18 +165,22 @@ namespace LivestockTracker.Updater
 
       try
       {
-
+        StopRunningService();
+        progress.Report(33);
+        _fileCopyService.DeleteFolderAndFilesRecursively(updaterModel.InstallPath);
+        progress.Report(66);
+        _fileCopyService.CopyFilesFromToRecursively(newVersionPath, updaterModel.InstallPath);
       }
       catch (Exception ex)
       {
         _logger.LogError(ex, "{0}: Update failed.", nameof(UpdaterService));
         _fileCopyService.DeleteFolderAndFilesRecursively(updaterModel.InstallPath);
         _fileCopyService.CopyFilesFromToRecursively(tempPath, updaterModel.InstallPath);
-        _fileCopyService.DeleteFolderAndFilesRecursively(tempPath);
         return false;
       }
       finally
       {
+        _fileCopyService.DeleteFolderAndFilesRecursively(tempPath);
         progress.Report(100);
       }
 
@@ -195,6 +208,35 @@ namespace LivestockTracker.Updater
       {
         foreach (var file in dirFiles)
           listRef.Add(new TreeItem<string>(file.FullName, directory.FullName));
+      }
+    }
+
+    private void StopRunningService()
+    {
+      try
+      {
+        var status = _processManager.GetProcessStatus("dotnet");
+        if (status != ProcessStatus.Running)
+          return;
+      }
+      catch (ArgumentNullException)
+      {
+        // This means the process is not managed by this app
+        return;
+      }
+
+      var dotnetProcess = _processManager.Processes.First(p => p.Name == "dotnet");
+      _processManager.KillProcess(dotnetProcess);
+
+      int maxWait = 10000;
+      int currentWait = 0;
+      while (_processManager.GetProcessStatus("dotnet") == ProcessStatus.Running)
+      {
+        if (currentWait >= maxWait)
+          throw new TimeoutException("Stopping dotnet failed");
+
+        Thread.Sleep(50);
+        currentWait = 50;
       }
     }
   }
