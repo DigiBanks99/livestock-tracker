@@ -23,7 +23,7 @@ namespace LivestockTracker.Updater.Windows
 
     public MainForm(ILogger logger, IUpdaterService updaterService, IFileService fileService, IDownloadService downloadService)
     {
-      _logger.LogDebug("Constructing: {0}", nameof(MainForm));
+      logger.LogDebug("Constructing: {0}", nameof(MainForm));
 
       try
       {
@@ -43,12 +43,12 @@ namespace LivestockTracker.Updater.Windows
     }
 
     #region Events
-    private void MainForm_Load(object sender, EventArgs e)
+    private async void MainForm_Load(object sender, EventArgs e)
     {
       _logger.LogDebug("Event: {0}, sender: {1}, e: {2}", nameof(MainForm_Load), sender, e);
       try
       {
-        InitializeForm();
+        await InitializeForm();
       }
       catch (Exception ex)
       {
@@ -58,7 +58,7 @@ namespace LivestockTracker.Updater.Windows
       }
     }
 
-    private void buttonInstallPath_Click(object sender, EventArgs e)
+    private async void buttonInstallPath_Click(object sender, EventArgs e)
     {
       _logger.LogDebug("Event: {0}, sender: {1}, e: {2}", nameof(buttonInstallPath_Click), sender, e);
       try
@@ -67,7 +67,7 @@ namespace LivestockTracker.Updater.Windows
         {
           case DialogResult.OK:
           case DialogResult.Yes:
-            SetupDataSource(folderBrowserDialog.SelectedPath);
+            await SetupDataSource(folderBrowserDialog.SelectedPath);
             return;
           default:
             return;
@@ -150,18 +150,19 @@ namespace LivestockTracker.Updater.Windows
     #endregion
 
     #region Privates
-    private void InitializeForm()
+    private async Task InitializeForm()
     {
       SetupControlProperties();
       SetupImages();
       LocaliseControls();
-      SetupDataSource();
+      await SetupDataSource();
     }
 
-    private void SetupDataSource(string installPath = null)
+    private async Task SetupDataSource(string installPath = null)
     {
+      _logger.LogDebug("{0}: Setting up data source", nameof(MainForm));
       updaterModelBindingSource.SuspendBinding();
-      updaterModelBindingSource.DataSource = _updaterService.DetermineInitialUpdateInformation(installPath);
+      updaterModelBindingSource.DataSource = await _updaterService.DetermineInitialUpdateInformation(installPath);
       PopulateOldFiles();
       updaterModelBindingSource.ResumeBinding();
       updaterModelBindingSource.ResetBindings(true);
@@ -179,11 +180,12 @@ namespace LivestockTracker.Updater.Windows
 
     private void LocaliseControls()
     {
+      _logger.LogDebug("{0}: Localising controls", nameof(MainForm));
 #pragma warning disable S1854 // Dead stores should be removed
       var dummy = new UpdaterModel();
 #pragma warning restore S1854 // Dead stores should be removed
       labelInstallPath.Text = nameof(dummy.InstallPath).SplitCamelCase();
-      labelNewVersion.Text = nameof(dummy.NewVersion).SplitCamelCase();
+      labelNewVersion.Text = nameof(dummy.NewVersionString).SplitCamelCase().Replace("String", "");
       labelOldVersion.Text = nameof(dummy.OldVersion).SplitCamelCase();
       labelOldFiles.Text = nameof(dummy.OldFiles).SplitCamelCase();
       labelNewFiles.Text = nameof(dummy.NewFiles).SplitCamelCase();
@@ -254,6 +256,7 @@ namespace LivestockTracker.Updater.Windows
 
     private void SetupImages()
     {
+      _logger.LogDebug("{0}: Setting up images", nameof(MainForm));
       SuspendLayout();
       treeViewOldFiles.ImageList = _fileService.GetFileImageList();
       treeViewOldFiles.StateImageList = _fileService.GetFileImageList();
@@ -264,6 +267,7 @@ namespace LivestockTracker.Updater.Windows
 
     private void SetupControlProperties()
     {
+      _logger.LogDebug("{0}: Setting up control properties", nameof(MainForm));
       textOldVersion.ReadOnly = true;
       textBoxNewVersion.ReadOnly = true;
       textBoxInstallPath.ReadOnly = true;
@@ -275,7 +279,7 @@ namespace LivestockTracker.Updater.Windows
     private async Task RequestDownload()
     {
       var currentModel = updaterModelBindingSource.Current as UpdaterModel;
-      if (currentModel != null && currentModel.OldVersion == currentModel.NewVersion)
+      if (currentModel != null && currentModel.OldVersion == currentModel.NewVersionString)
       {
         MessageBox.Show("You are already on the latest version.", "No Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
         return;
@@ -316,8 +320,8 @@ namespace LivestockTracker.Updater.Windows
       return new UpdaterModel
       {
         InstallPath = currentModel.InstallPath,
-        NewVersion = currentModel.NewVersion,
-        NewVersionName = currentModel.NewVersionName,
+        NewVersionString = currentModel.NewVersionString,
+        NewVersionModel = currentModel.NewVersionModel,
         NewFiles = Enumerable.Empty<TreeItem<string>>(),
         OldFiles = currentModel.OldFiles,
         OldVersion = currentModel.OldVersion
@@ -343,18 +347,18 @@ namespace LivestockTracker.Updater.Windows
         return null;
       }
 
-      var downloadName = Path.Combine(downloadsDir.FullName, currentUpdaterModel.NewVersionName);
-      var fileInfo = new FileInfo(downloadName);
+      var downloadName = Path.Combine(downloadsDir.FullName, currentUpdaterModel.NewVersionModel.FileName);
+      var downloadFileInfo = new FileInfo(downloadName);
 
       if (cancellationToken.IsCancellationRequested)
-        return fileInfo;
+        return downloadFileInfo;
 
-      if (!fileInfo.Exists)
-        await Task.Run(async () => await _downloadService.DownloadAsync(currentUpdaterModel.NewVersionName, fileInfo.FullName, progress, cancellationToken));
+      if (!downloadFileInfo.Exists)
+        await Task.Run(async () => await _downloadService.DownloadAsync(currentUpdaterModel.NewVersionModel, downloadFileInfo.FullName, progress, cancellationToken));
       else
         progressBar.Value = 100;
 
-      return fileInfo;
+      return downloadFileInfo;
     }
 
     private void UpdateStatus(string message)

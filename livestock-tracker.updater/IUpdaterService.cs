@@ -9,7 +9,7 @@ namespace LivestockTracker.Updater
 {
   public interface IUpdaterService
   {
-    UpdaterModel DetermineInitialUpdateInformation(string installPath = null);
+    Task<UpdaterModel> DetermineInitialUpdateInformation(string installPath = null);
     DirectoryInfo FindInstallPath();
     DirectoryInfo DoSearch(DirectoryInfo path, string term);
     IEnumerable<TreeItem<string>> GetFiles(DirectoryInfo path);

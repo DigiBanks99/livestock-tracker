@@ -16,12 +16,14 @@ namespace LivestockTracker.Updater
       _logger = logger;
     }
 
-    public abstract Task<DirectoryInfo> DownloadAsync(string fileName, string savePath, IProgress<int> progress, CancellationToken cancellationToken);
-    public abstract long GetContentLength(string downloadPath);
-    public abstract IEnumerable<string> GetAllAvailableVersions();
+    public abstract Task<DirectoryInfo> DownloadAsync(DownloadableVersionModel version, string savePath, IProgress<int> progress, CancellationToken cancellationToken);
+    public abstract Task<long> GetContentLength(string downloadPath);
+    public abstract Task<IEnumerable<DownloadableVersionModel>> GetAllAvailableVersions();
 
     public virtual void CleanUpDownload(string savePath)
     {
+      _logger.LogDebug("{0}: Cleaning up download data at {1}", nameof(BaseDonwloadService), savePath);
+
       bool retry = true;
       int maxRetry = 10;
       int retryCount = 0;
@@ -42,33 +44,19 @@ namespace LivestockTracker.Updater
       while (retry);
     }
 
-    public virtual VersionModel GetLatestVersionModel()
+    public virtual async Task<DownloadableVersionModel> GetLatestVersionModel()
     {
-      var model = new VersionModel();
-      var files = GetAllAvailableVersions();
-      Semver.SemVersion latestSemanticVersion = null;
-      foreach (var file in files)
-      {
-        var versionString = file.ToLowerInvariant().Replace(".zip", "");
-        versionString = versionString.Substring(versionString.LastIndexOf('_') + 1);
-        if (!Semver.SemVersion.TryParse(versionString, out Semver.SemVersion semanticVersion))
-          continue;
+      _logger.LogDebug("{0}: Getting latest version model", nameof(BaseDonwloadService));
 
-        model.Version = semanticVersion;
-        model.VersionString = versionString;
-        if (latestSemanticVersion == null)
-        {
-          latestSemanticVersion = semanticVersion;
-          model.DownloadPath = file;
-        }
-        else if (semanticVersion.CompareTo(latestSemanticVersion) > 0)
-        {
-          latestSemanticVersion = semanticVersion;
-          model.DownloadPath = file;
-        }
+      var versions = await GetAllAvailableVersions();
+      DownloadableVersionModel latestVersion = null;
+      foreach (var version in versions)
+      {
+        if (latestVersion == null || version.Version.CompareTo(latestVersion.Version) > 0)
+          latestVersion = version;
       }
 
-      return model;
+      return latestVersion;
     }
   }
 }

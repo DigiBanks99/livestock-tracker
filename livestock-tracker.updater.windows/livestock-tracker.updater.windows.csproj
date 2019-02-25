@@ -80,6 +80,7 @@
     <Reference Include="Serilog.Settings.AppSettings" ReferencePath="packages/Serilog.Settings.AppSettings.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ApiConfig.cs" />
     <Compile Include="Config\FtpConfig.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>

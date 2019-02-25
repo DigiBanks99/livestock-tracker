@@ -224,7 +224,7 @@ namespace LivestockTracker.Updater.Windows
             // 
             // textBoxNewVersion
             // 
-            this.textBoxNewVersion.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.updaterModelBindingSource, "NewVersion", true));
+            this.textBoxNewVersion.DataBindings.Add(new System.Windows.Forms.Binding("Text", this.updaterModelBindingSource, "NewVersionString", true));
             this.textBoxNewVersion.Location = new System.Drawing.Point(101, 6);
             this.textBoxNewVersion.Name = "textBoxNewVersion";
             this.textBoxNewVersion.Size = new System.Drawing.Size(200, 20);

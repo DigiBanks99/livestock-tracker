@@ -27,9 +27,9 @@ namespace LivestockTracker.Updater
       _downloadService = downloadService;
     }
 
-    public UpdaterModel DetermineInitialUpdateInformation(string installPath = null)
+    public async Task<UpdaterModel> DetermineInitialUpdateInformation(string installPath = null)
     {
-      _logger.LogDebug("Determining Initial Update Information: {installPath}", installPath);
+      _logger.LogDebug("{0}: Determining Initial Update Information: {1}", nameof(UpdaterService), installPath);
       var installDir = string.IsNullOrEmpty(installPath) ? FindInstallPath() : new DirectoryInfo(installPath);
       var oldFiles = GetFiles(installDir);
 
@@ -42,7 +42,7 @@ namespace LivestockTracker.Updater
       {
         return new UpdaterModel
         {
-          NewVersion = FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace(Constants.FILE_URI_PREFIX, "")).FileVersion
+          NewVersionString = FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace(Constants.FILE_URI_PREFIX, "")).FileVersion
         };
       }
 
@@ -57,20 +57,20 @@ namespace LivestockTracker.Updater
         version = ex.Data.Keys.Count == 0 ? Constants.VERSION_NOT_INSTALLED_TEXT : Constants.VERSION_EMPTY;
       }
 
-      var newVersionInfo = _downloadService.GetLatestVersionModel();
+      var newVersionInfo = await _downloadService.GetLatestVersionModel();
       return new UpdaterModel
       {
         InstallPath = installDir.FullName,
         OldVersion = version,
-        NewVersion = newVersionInfo.VersionString,
-        NewVersionName = newVersionInfo.DownloadPath,
+        NewVersionString = newVersionInfo.VersionString,
+        NewVersionModel = newVersionInfo,
         OldFiles = oldFiles
       };
     }
 
     public DirectoryInfo FindInstallPath()
     {
-      _logger.LogDebug("Finding installation path");
+      _logger.LogDebug("{0}: Finding installation path", nameof(UpdaterService));
       string root = Path.GetPathRoot(Environment.SystemDirectory);
       string solutionFolder = Constants.SOLUTION_ENTRYPOINT_NAME;
       string[] entryPoints = new string[]
@@ -97,7 +97,7 @@ namespace LivestockTracker.Updater
 
     public DirectoryInfo DoSearch(DirectoryInfo path, string term)
     {
-      _logger.LogDebug("Searching directory {0} for files in the pattern {1}", path, term);
+      _logger.LogDebug("{0}: Searching directory {1} for files in the pattern {2}", nameof(UpdaterService), path, term);
       DirectoryInfo[] validPaths = path.GetDirectories(term);
       if (validPaths != null && validPaths.Any())
         return validPaths.First();
@@ -113,7 +113,7 @@ namespace LivestockTracker.Updater
 
     public IEnumerable<TreeItem<string>> GetFiles(DirectoryInfo path)
     {
-      _logger.LogDebug("Obtaining directory files for {0}", path);
+      _logger.LogDebug("{0}: Obtaining directory files for {1}", nameof(UpdaterService), path);
       var files = new List<TreeItem<string>>
       {
         new TreeItem<string>(path.FullName, null)
@@ -124,6 +124,7 @@ namespace LivestockTracker.Updater
 
     public UpdaterModel GetNewFiles(FileInfo archivePath, UpdaterModel currentData)
     {
+      _logger.LogDebug("{0}: Getting the new files for {1} with current data: {2}", nameof(UpdaterService), archivePath, currentData);
       var unpackedPath = archivePath.FullName.Replace(".zip", "");
       var unpackedDirectory = new DirectoryInfo(unpackedPath);
       if (!unpackedDirectory.Exists)
@@ -138,8 +139,8 @@ namespace LivestockTracker.Updater
       {
         InstallPath = currentData.InstallPath,
         NewFiles = newFiles,
-        NewVersion = currentData.NewVersion,
-        NewVersionName = currentData.NewVersionName,
+        NewVersionString = currentData.NewVersionString,
+        NewVersionModel = currentData.NewVersionModel,
         OldFiles = currentData.OldFiles,
         OldVersion = currentData.OldVersion
       };
@@ -147,7 +148,8 @@ namespace LivestockTracker.Updater
 
     public void Update(UpdaterModel updaterModel, IProgress<int> progress, CancellationToken cancellationToken)
     {
-      var newVersionPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME, Constants.SOLUTION_DOWNLOADS_NAME, updaterModel.NewVersionName);
+      _logger.LogDebug("{0}: Executing update with data {1}", nameof(UpdaterService), updaterModel);
+      var newVersionPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME, Constants.SOLUTION_DOWNLOADS_NAME, updaterModel.NewVersionModel.VersionString);
       var tempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME, Constants.SOLUTION_TEMP_NAME, updaterModel.OldVersion);
 
       _fileCopyService.CopyFilesFromToRecursively(updaterModel.InstallPath, tempPath);

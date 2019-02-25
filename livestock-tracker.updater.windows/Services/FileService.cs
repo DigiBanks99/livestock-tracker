@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -5,12 +6,20 @@ namespace LivestockTracker.Updater.Windows.Services
 {
   public class FileService : IFileService
   {
+    private readonly ILogger _logger;
+
     private const string FILE_IMAGE_FILE16_KEY = "file_16";
     private const string FILE_IMAGE_FOLDERCLOSED16_KEY = "folder_closed_16";
     private const string FILE_IMAGE_CSS16_KEY = "css_16";
 
+    public FileService(ILogger logger)
+    {
+      _logger = logger;
+    }
+
     public string GetFileTypeImageIndex(string fileExtension)
     {
+      _logger.LogDebug("{0}: Getting file type image index for extension {1}", nameof(FileService), fileExtension);
       string ext = string.IsNullOrEmpty(fileExtension) ? string.Empty : fileExtension.ToLowerInvariant().Trim().Replace(".", "");
       switch (ext)
       {
@@ -23,6 +32,7 @@ namespace LivestockTracker.Updater.Windows.Services
 
     public ImageList GetFileImageList()
     {
+      _logger.LogDebug("{0}: Getting file image list", nameof(FileService));
       ImageList imageListFiles = new ImageList();
 
       imageListFiles.TransparentColor = Color.Transparent;

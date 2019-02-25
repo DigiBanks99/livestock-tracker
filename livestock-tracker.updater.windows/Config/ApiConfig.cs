@@ -6,30 +6,29 @@ using System.Linq;
 
 namespace LivestockTracker.Updater.Windows.Config
 {
-  public class FtpConfig : IFtpConfig
+  public class ApiConfig : IApiConfig
   {
     private string _settingsPrefix;
-    public FtpConfig()
+
+    public ApiConfig()
     {
-      _settingsPrefix = "ftp:";
+      _settingsPrefix = "api:";
       Configure();
     }
 
-    public string Server { get; private set; }
+    public string BaseUrl { get; private set; }
 
-    public string Username { get; private set; }
-
-    public string Password { get; private set; }
+    public string VersionRoute { get; private set; }
 
     public void Configure()
     {
+
       var settings = ConfigurationManager.AppSettings.AllKeys.Select(k => new KeyValuePair<string, string>(k, ConfigurationManager.AppSettings[k]));
-      var pairs = settings.Where(k => k.Key.StartsWith(_settingsPrefix))
+      var pairs = settings.Where(s => s.Key.StartsWith(_settingsPrefix))
                           .Select(k => new KeyValuePair<string, string>(k.Key.Substring(_settingsPrefix.Length), Environment.ExpandEnvironmentVariables(k.Value)));
 
-      Server = pairs.FirstOrDefault(x => x.Key.ToLower() == nameof(Server).ToLower()).Value;
-      Username = pairs.SingleOrDefault(x => x.Key.ToLower() == nameof(Username).ToLower()).Value;
-      Password = pairs.SingleOrDefault(x => x.Key.ToLower() == nameof(Password).ToLower()).Value;
+      BaseUrl = pairs.FirstOrDefault(p => p.Key.ToLower() == nameof(BaseUrl).ToLower()).Value;
+      VersionRoute = pairs.FirstOrDefault(p => p.Key.ToLower() == nameof(VersionRoute).ToLower()).Value;
     }
   }
 }

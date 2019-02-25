@@ -8,10 +8,10 @@ namespace LivestockTracker.Updater
 {
   public interface IDownloadService
   {
-    Task<DirectoryInfo> DownloadAsync(string fileName, string savePath, IProgress<int> progress, CancellationToken cancellationToken);
+    Task<DirectoryInfo> DownloadAsync(DownloadableVersionModel version, string savePath, IProgress<int> progress, CancellationToken cancellationToken);
     void CleanUpDownload(string savePath);
-    long GetContentLength(string downloadPath);
-    IEnumerable<string> GetAllAvailableVersions();
-    VersionModel GetLatestVersionModel();
+    Task<long> GetContentLength(string downloadPath);
+    Task<IEnumerable<DownloadableVersionModel>> GetAllAvailableVersions();
+    Task<DownloadableVersionModel> GetLatestVersionModel();
   }
 }

@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,15 +21,15 @@ namespace LivestockTracker.Updater
       _logger.LogDebug("FtpDownloadService: FTP - Server: {0}, Username: {1}, Password: {2}", _ftpConfig.Server, _ftpConfig.Username, _ftpConfig.Password);
     }
 
-    public async override Task<DirectoryInfo> DownloadAsync(string fileName, string savePath, IProgress<int> progress, CancellationToken cancellationToken)
+    public override async Task<DirectoryInfo> DownloadAsync(DownloadableVersionModel version, string savePath, IProgress<int> progress, CancellationToken cancellationToken)
     {
-      _logger.LogDebug("Downloading {0} to {1} [{progress}]", fileName, savePath, progress);
+      _logger.LogDebug("{0}: Downloading {1} to {2} [{progress}]", nameof(FtpDownloadService), version.DownloadPath, savePath, progress);
 
       int bytesRead = 0;
       byte[] buffer = new byte[1024];
-      string downloadPath = $"{_ftpConfig.Server}{fileName}";
+      string downloadPath = $"{_ftpConfig.Server}{version.FileName}";
 
-      var contentLength = GetContentLength(downloadPath);
+      var contentLength = await GetContentLength(downloadPath);
       if (cancellationToken.IsCancellationRequested)
         return new DirectoryInfo(savePath);
 
@@ -76,15 +77,19 @@ namespace LivestockTracker.Updater
       return new DirectoryInfo(savePath);
     }
 
-    public override long GetContentLength(string downloadPath)
+    public override async Task<long> GetContentLength(string downloadPath)
     {
-      var sizeRequest = (FtpWebRequest)WebRequest.Create(downloadPath);
-      sizeRequest.Method = WebRequestMethods.Ftp.GetFileSize;
-      sizeRequest.Credentials = new NetworkCredential(_ftpConfig.Username, _ftpConfig.Password);
-      return sizeRequest.GetResponse().ContentLength;
+      var response = await Task.Run(() =>
+      {
+        var sizeRequest = (FtpWebRequest)WebRequest.Create(downloadPath);
+        sizeRequest.Method = WebRequestMethods.Ftp.GetFileSize;
+        sizeRequest.Credentials = new NetworkCredential(_ftpConfig.Username, _ftpConfig.Password);
+        return sizeRequest.GetResponse();
+      });
+      return response.ContentLength;
     }
 
-    public override IEnumerable<string> GetAllAvailableVersions()
+    public override async Task<IEnumerable<DownloadableVersionModel>> GetAllAvailableVersions()
     {
       var request = (FtpWebRequest)WebRequest.Create(_ftpConfig.Server);
       request.Method = WebRequestMethods.Ftp.ListDirectory;
@@ -95,7 +100,19 @@ namespace LivestockTracker.Updater
       Stream responseStream = response.GetResponseStream();
       StreamReader reader = new StreamReader(responseStream);
       var lines = reader.ReadToEnd();
-      return lines.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+      var versionLines = await Task.Run(() => (IEnumerable<string>)lines.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries));
+      return versionLines.Select(vl =>
+      {
+        Semver.SemVersion.TryParse(vl, out Semver.SemVersion version);
+        var fileName = vl;
+        return new DownloadableVersionModel
+        {
+          Version = version,
+          VersionString = vl.ToLowerInvariant().Replace(".zip", "").Replace("win", ""),
+          FileName = vl,
+          DownloadPath = Path.Combine(_ftpConfig.Server, vl)
+        };
+      });
     }
   }
 }
