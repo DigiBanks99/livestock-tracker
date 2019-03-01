@@ -64,6 +64,11 @@ body {
   font-family: Roboto, Arial, sans-serif;
 }
 
+.content {
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+}
+
 app-livestock-list {
   display: flex;
   position: relative;
