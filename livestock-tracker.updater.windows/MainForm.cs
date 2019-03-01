@@ -185,6 +185,8 @@ namespace LivestockTracker.Updater.Windows
 #pragma warning disable S1854 // Dead stores should be removed
       var dummy = new UpdaterModel();
 #pragma warning restore S1854 // Dead stores should be removed
+
+      this.Text = "Livestock Tracker";
       labelInstallPath.Text = nameof(dummy.InstallPath).SplitCamelCase();
       labelNewVersion.Text = nameof(dummy.NewVersionString).SplitCamelCase().Replace("String", "");
       labelOldVersion.Text = nameof(dummy.OldVersion).SplitCamelCase();
