@@ -1,4 +1,5 @@
 using Semver;
+using System;
 
 namespace LivestockTracker.Updater
 {
@@ -15,7 +16,9 @@ namespace LivestockTracker.Updater
       DownloadPath = apiVersionModel.Link;
       FileName = apiVersionModel.FileName;
 
-      SemVersion.TryParse(apiVersionModel.Version, out SemVersion version);
+      if (!SemVersion.TryParse(apiVersionModel.Version, out SemVersion version))
+        throw new InvalidCastException($"Invalid version: {apiVersionModel.Version}");
+
       Version = version;
     }
 
