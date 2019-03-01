@@ -80,7 +80,21 @@ namespace LivestockTracker.Updater
           var actionResult = await httpClient.GetAsync(_apiConfig.VersionRoute);
           var json = await actionResult.Content.ReadAsStringAsync();
           var availableVersions = JsonConvert.DeserializeObject<IEnumerable<ApiVersionModel>>(json);
-          return availableVersions.Select(v => new DownloadableVersionModel(v));
+          return availableVersions.Select(v =>
+          {
+            try
+            {
+              return new DownloadableVersionModel(v);
+            }
+            catch (InvalidCastException ex)
+            {
+              _logger.LogInformation(ex, "Invalid version published.");
+              return new DownloadableVersionModel(new ApiVersionModel
+              {
+                Version = "0.0.0"
+              });
+            }
+          });
         }
         catch (HttpRequestException ex)
         {
