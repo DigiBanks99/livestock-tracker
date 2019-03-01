@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>LivestockTracker.ProcessManager</RootNamespace>
-    <Version>0.0.2</Version>
+    <Version>0.0.3</Version>
     <Configurations>Debug;Release;Debug Updater</Configurations>
   </PropertyGroup>
 

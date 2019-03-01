@@ -9,7 +9,7 @@
     <!-- Set this to true if you enable server-side prerendering -->
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <RootNamespace>LivestockTracker</RootNamespace>
-    <Version>0.0.2.1</Version>
+    <Version>0.0.3</Version>
     <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
   <ItemGroup>
