@@ -6,7 +6,7 @@ import {
   OnInit,
   OnChanges
 } from '@angular/core';
-import { MatSelectChange } from '@angular/material';
+import { MatSelectChange } from '@angular/material/select';
 import { Livestock } from '@livestock/livestock.model';
 import { LivestockService } from '@livestock/livestock.service';
 

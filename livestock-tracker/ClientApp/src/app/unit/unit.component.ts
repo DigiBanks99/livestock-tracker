@@ -1,4 +1,4 @@
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { Unit } from '@unit/unit.model';

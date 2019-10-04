@@ -6,7 +6,8 @@ import {
   Output,
   EventEmitter
 } from '@angular/core';
-import { MatSelect, MAT_DATE_FORMATS } from '@angular/material';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 import { formatDate } from '@angular/common';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
@@ -41,8 +42,8 @@ export class FeedingTransactionComponent implements OnDestroy {
   @Output() public showDetail = new EventEmitter<FeedingTransaction>();
   @Output() public removeTransaction = new EventEmitter<number>();
 
-  @ViewChild('data') dataGrid: LsGridComponent;
-  @ViewChild('animalSelector') animalSelector: MatSelect;
+  @ViewChild('data', { static: true }) dataGrid: LsGridComponent;
+  @ViewChild('animalSelector', { static: false }) animalSelector: MatSelect;
 
   constructor(private feedingTransactionService: FeedingTransactionService) {
     this.showDetailTriggered = new Subscription();

@@ -2,7 +2,12 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MedicineTypeComponent } from './medicine-type.component';
 import { MedicineTypeService, MockMedicineTypeService } from './medicine-type.service';
-import { MatToolbarModule, MatListModule, MatPaginatorModule, MatIconModule, MatDividerModule, MatFormFieldModule } from '@angular/material';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MedicineTypeDetailComponent } from './medicine-type-detail/medicine-type-detail.component';
 import { ReactiveFormsModule } from '@angular/forms';
 

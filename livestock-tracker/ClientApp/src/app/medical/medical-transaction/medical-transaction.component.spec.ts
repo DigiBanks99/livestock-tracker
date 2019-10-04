@@ -1,7 +1,12 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MedicalTransactionComponent } from './medical-transaction.component';
-import { MatOptionModule, MatSelectModule, MatFormFieldModule, MatDatepickerModule, MatInputModule, MatIconModule, NativeDateModule } from '@angular/material';
+import { MatOptionModule, NativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MockMedicalService, MedicalService } from '../medical.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';

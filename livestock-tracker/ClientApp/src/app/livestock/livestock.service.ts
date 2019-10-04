@@ -242,13 +242,13 @@ export class MockLivestockService implements ILivestockService {
   }
 
   public removeLivestock(id: number): Observable<Livestock> {
-    return from(null);
+    return of(null);
   }
   public addAnimal(animal: Livestock): Observable<Livestock> {
-    return from(null);
+    return of(null);
   }
   public updateAnimal(animal: Livestock): Observable<Livestock> {
-    return from(null);
+    return of(null);
   }
   public getSvgIcon(animal: Livestock): string {
     return null;

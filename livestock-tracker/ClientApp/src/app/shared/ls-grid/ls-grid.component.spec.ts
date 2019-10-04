@@ -1,11 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import {
-  MatListModule,
-  MatIconModule,
-  MatToolbarModule,
-  MatPaginatorModule,
-  MatDividerModule
-} from '@angular/material';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { LsGridComponent } from './ls-grid.component';
 import { FormsModule } from '@angular/forms';

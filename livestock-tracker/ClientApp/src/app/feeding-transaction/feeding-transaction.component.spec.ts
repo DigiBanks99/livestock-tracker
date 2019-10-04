@@ -5,16 +5,14 @@ import {
   FeedingTransactionService,
   MockFeedingTransactionService
 } from './feeding-transaction.service';
-import {
-  MatIconModule,
-  MatInputModule,
-  MatOptionModule,
-  MatSelectModule,
-  MatToolbarModule,
-  MatButtonModule,
-  MatPaginatorModule,
-  MatListModule
-} from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatOptionModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LsGridComponent } from '@app/shared/ls-grid/ls-grid.component';
 import { RouterTestingModule } from '@angular/router/testing';

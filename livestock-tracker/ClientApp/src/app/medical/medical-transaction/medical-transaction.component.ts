@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { MAT_DATE_FORMATS } from '@angular/material';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MedicineTypeService } from '@medical/medicine-type/medicine-type.service';
