@@ -2,7 +2,9 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnitDetailComponent } from './unit-detail.component';
 import { UnitService, MockUnitService } from '../unit.service';
-import { MatFormFieldModule, MatIconModule, MatInputModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Unit } from '../unit.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';

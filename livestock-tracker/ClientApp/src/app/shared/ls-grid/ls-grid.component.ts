@@ -6,7 +6,7 @@ import {
   SimpleChanges,
   OnChanges
 } from '@angular/core';
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 import { Params } from '@angular/router';
 import { Subscription, Observable } from 'rxjs';
 import { isNullOrUndefined, isFunction } from 'util';
