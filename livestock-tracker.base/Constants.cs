@@ -7,6 +7,8 @@ namespace LivestockTracker.Base
     public const string SOLUTION_ENTRYPOINT_DLL_NAME = "livestock-tracker.dll";
     public const string SOLUTION_DOWNLOADS_NAME = "downloads";
     public const string SOLUTION_TEMP_NAME = "temp";
+    public const string SOLUTION_BACKUP_NAME = "backup";
+    public const string SOLUTION_DATABASE_NAME = "livestock.db";
     public const string VERSION_NOT_INSTALLED_TEXT = "Not yet installed";
     public const string VERSION_EMPTY = "0.0.0";
   }

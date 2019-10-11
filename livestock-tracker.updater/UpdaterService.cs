@@ -158,10 +158,20 @@ namespace LivestockTracker.Updater
     public bool Update(UpdaterModel updaterModel, IProgress<int> progress, CancellationToken cancellationToken)
     {
       _logger.LogDebug("{0}: Executing update with data {1}", nameof(UpdaterService), updaterModel);
-      var newVersionPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME, Constants.SOLUTION_DOWNLOADS_NAME, updaterModel.NewVersionModel.VersionString);
-      var tempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME, Constants.SOLUTION_TEMP_NAME, updaterModel.OldVersion);
+      var basePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), Constants.SOLUTION_ENTRYPOINT_NAME);
+      var newVersionPath = Path.Combine(basePath, Constants.SOLUTION_DOWNLOADS_NAME, updaterModel.NewVersionModel.VersionString);
+      var tempPath = Path.Combine(basePath, Constants.SOLUTION_TEMP_NAME, updaterModel.OldVersion);
+      var backupPath = Path.Combine(basePath, Constants.SOLUTION_BACKUP_NAME, updaterModel.OldVersion);
+      var dbPath = Path.Combine(updaterModel.InstallPath, Constants.SOLUTION_DATABASE_NAME);
+      var dbFileInfo = new FileInfo(dbPath);
+      var backupDbPath = Path.Combine(backupPath, dbFileInfo.Name);
+
+      if (!Directory.Exists(backupPath))
+        Directory.CreateDirectory(backupPath);
 
       _fileCopyService.CopyFilesFromToRecursively(updaterModel.InstallPath, tempPath);
+      if (dbFileInfo.Exists)
+        File.Copy(dbPath, backupDbPath, true);
 
       try
       {
@@ -170,6 +180,9 @@ namespace LivestockTracker.Updater
         _fileCopyService.DeleteFolderAndFilesRecursively(updaterModel.InstallPath);
         progress.Report(66);
         _fileCopyService.CopyFilesFromToRecursively(newVersionPath, updaterModel.InstallPath);
+
+        if (File.Exists(backupDbPath))
+          File.Copy(backupDbPath, dbPath, true);
       }
       catch (Exception ex)
       {

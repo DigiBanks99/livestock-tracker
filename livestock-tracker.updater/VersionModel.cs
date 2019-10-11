@@ -1,5 +1,6 @@
 using LivestockTracker.Updater.Exceptions;
 using Semver;
+using System;
 
 namespace LivestockTracker.Updater
 {
