@@ -1,15 +1,13 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FeedingTransactionDetailComponent } from './feeding-transaction-detail.component';
-import {
-  MatIconModule,
-  MatToolbarModule,
-  MatListModule,
-  MatCardModule,
-  MatDatepickerModule,
-  MatFormFieldModule,
-  MatInputModule
-} from '@angular/material';
+import { MatCardModule } from '@angular/material/card';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MomentDateModule,

@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netStandard2.0</TargetFramework>
+    <TargetFramework>netStandard2.1</TargetFramework>
     <RootNamespace>LivestockTracker.Base</RootNamespace>
     <Version>0.0.3</Version>
     <Configurations>Debug;Release;Debug Updater</Configurations>

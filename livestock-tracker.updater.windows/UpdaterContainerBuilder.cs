@@ -6,6 +6,7 @@ using LivestockTracker.Updater.Windows.Config;
 using LivestockTracker.Updater.Windows.Services;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Formatting.Display;
 using System;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
@@ -58,8 +59,9 @@ namespace LivestockTracker.Updater.Windows
         .ReadFrom.AppSettings()
         .Enrich.FromLogContext()
         .WriteTo.Async(w => w.RollingFile(
-        new Serilog.Formatting.Display.MessageTemplateTextFormatter("{Timestamp:o} {RequestId,13} [{Level:u3}] {Message} ({EventId:x8}){NewLine}{Exception}", null),
-        Environment.ExpandEnvironmentVariables("Log/log-{Date}.log")));
+          new MessageTemplateTextFormatter("{Timestamp:o} {RequestId,13} [{Level:u3}] {Message} ({EventId:x8}){NewLine}{Exception}", null),
+          Environment.ExpandEnvironmentVariables("Log/log-{Date}.log"))
+        );
 
       return configuration.CreateLogger();
     }

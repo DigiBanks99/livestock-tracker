@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 
 import { FeedType } from '@feed-type/feed-type.model';
 import { FeedTypeService } from '@feed-type/feed-type.service';

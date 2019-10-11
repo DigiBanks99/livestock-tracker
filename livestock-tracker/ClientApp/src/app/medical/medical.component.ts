@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, OnChanges } from '@angular/core';
-import { PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { Livestock } from '@livestock/livestock.model';
 import { MedicalTransaction } from '@medical/medical-transaction.model';

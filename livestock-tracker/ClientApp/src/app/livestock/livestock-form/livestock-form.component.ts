@@ -21,7 +21,7 @@ import { isNullOrUndefined } from 'util';
 import { Livestock, getAge } from '@livestock/livestock.model';
 import { LiveStockType } from '@livestock/livestock-type.model';
 import { LivestockService } from '@livestock/livestock.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '@env/environment';
 
 const Constants = {

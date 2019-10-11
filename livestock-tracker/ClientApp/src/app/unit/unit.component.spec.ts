@@ -2,7 +2,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UnitComponent } from './unit.component';
 import { UnitService, MockUnitService } from './unit.service';
-import { MatToolbarModule, MatListModule, MatPaginatorModule, MatIconModule, MatFormFieldModule } from '@angular/material';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { UnitDetailComponent } from './unit-detail/unit-detail.component';
 import { ReactiveFormsModule } from '@angular/forms';
 

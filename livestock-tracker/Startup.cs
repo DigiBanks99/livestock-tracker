@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace LivestockTracker
@@ -22,7 +23,10 @@ namespace LivestockTracker
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc();
+      services.AddMvc(options =>
+      {
+        options.EnableEndpointRouting = false;
+      });
 
       services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -46,7 +50,7 @@ namespace LivestockTracker
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
       if (env.IsDevelopment())
       {
@@ -62,9 +66,7 @@ namespace LivestockTracker
 
       app.UseMvc(routes =>
       {
-        routes.MapRoute(
-                  name: "default",
-                  template: "{controller}/{action=Index}/{id?}");
+        routes.MapRoute("default", "{controller}/{action=Index}/{id?}");
       });
 
       app.UseSpa(spa =>
@@ -76,7 +78,6 @@ namespace LivestockTracker
 
         if (env.IsDevelopment())
         {
-          //spa.UseAngularCliServer(npmScript: "start");
           spa.UseProxyToSpaDevelopmentServer(Configuration.GetSection("SpaUrl").Value);
         }
       });
