@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>LivestockTracker.Models</RootNamespace>
-    <Version>0.0.3</Version>
     <Configurations>Debug;Release;Debug Updater</Configurations>
   </PropertyGroup>
 
