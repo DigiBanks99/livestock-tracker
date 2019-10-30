@@ -1,5 +1,8 @@
 import { TestBed, getTestBed, inject } from '@angular/core/testing';
-import { HttpTestingController, HttpClientTestingModule } from '@angular/common/http/testing';
+import {
+  HttpTestingController,
+  HttpClientTestingModule
+} from '@angular/common/http/testing';
 import { LivestockService } from './livestock.service';
 import { LiveStockType } from './livestock-type.model';
 import { Livestock } from './livestock.model';
@@ -20,7 +23,18 @@ describe('livestockService', () => {
     service = injector.get(LivestockService);
     httpMock = injector.get(HttpTestingController);
 
-    model = new Livestock(1, LiveStockType.Cattle, '', 1, new Date(), null, null, null, null, null);
+    model = new Livestock(
+      1,
+      LiveStockType.Cattle,
+      '',
+      1,
+      new Date(),
+      null,
+      null,
+      null,
+      null,
+      null
+    );
   });
 
   it('#getSvgIcon should return correct value', () => {
@@ -32,7 +46,7 @@ describe('livestockService', () => {
     model.type = LiveStockType.Sheep;
     expect(service.getSvgIcon(model)).toBe('sheep');
     model.type = 4;
-    expect(function () {
+    expect(function() {
       service.getSvgIcon(model);
     }).toThrowError('4 not implemented');
   });
@@ -42,7 +56,7 @@ describe('livestockService', () => {
     expect(service.getSvgIconByType(LiveStockType.Pig)).toBe('pig');
     expect(service.getSvgIconByType(LiveStockType.Chicken)).toBe('chicken');
     expect(service.getSvgIconByType(LiveStockType.Sheep)).toBe('sheep');
-    expect(function () {
+    expect(function() {
       service.getSvgIconByType(4);
     }).toThrowError('4 not implemented');
   });
@@ -52,7 +66,7 @@ describe('livestockService', () => {
     expect(service.getSvgIconByString('Pig')).toBe('pig');
     expect(service.getSvgIconByString('Chicken')).toBe('chicken');
     expect(service.getSvgIconByString('Sheep')).toBe('sheep');
-    expect(function () {
+    expect(function() {
       service.getSvgIconByString('donkey');
     }).toThrowError('donkey not implemented');
   });
@@ -64,7 +78,7 @@ describe('livestockService', () => {
 
     service.livestockChanged.subscribe((animals: Livestock[]) => {
       expect(service.getAnimal(4).id).toBe(4);
-      expect(function () {
+      expect(function() {
         service.getAnimal(33);
       }).toThrowError('Item not found');
 
@@ -72,7 +86,7 @@ describe('livestockService', () => {
         service.removeLivestock(animal.id);
       }
 
-      expect(function () {
+      expect(function() {
         service.getAnimal(model.id);
       }).toThrowError('Item not found');
     });
@@ -83,11 +97,11 @@ describe('livestockService', () => {
     service.livestockChanged.subscribe(() => {
       expect(service.getAnimal(1).id).toBe(1);
       service.removeLivestock(1);
-      expect(function () {
+      expect(function() {
         service.getAnimal(1);
       }).toThrowError(null);
 
-      expect(function () {
+      expect(function() {
         service.removeLivestock(1);
       }).toThrowError('Item not found');
     });
@@ -109,11 +123,22 @@ describe('livestockService', () => {
         expect(lastItem.id).toBe(-1);
         expect(lastItem.type).toBe(LiveStockType.Cattle);
         model.type = LiveStockType.Pig;
-        expect(function () {
+        expect(function() {
           service.addAnimal(model);
         }).toThrowError('Animal already exists. Use updateAnimal instead.');
 
-        const newAnimal = new Livestock(0, LiveStockType.Chicken, 'cockadoodle', 55, new Date(), new Date(), 20, null, 1, 2);
+        const newAnimal = new Livestock(
+          0,
+          LiveStockType.Chicken,
+          'cockadoodle',
+          55,
+          new Date(),
+          new Date(),
+          20,
+          null,
+          1,
+          2
+        );
         service.addAnimal(newAnimal);
         service.livestockChanged.subscribe((animals3: Livestock[]) => {
           list = animals3;
@@ -124,29 +149,6 @@ describe('livestockService', () => {
           expect(lastItem.subspecies).toBe('cockadoodle');
         });
         service.getLivestock();
-      });
-      service.getLivestock();
-    });
-    service.getLivestock();
-  });
-
-  it('#updateAnimal should update the existing item or throw an error if it does not exist.', () => {
-    model.id = 12;
-    expect(function () {
-      service.updateAnimal(model);
-    }).toThrowError('Animal does not exist in list. Use addAnimal instead.');
-
-    model.id = 1;
-    service.livestockChanged.subscribe((list) => {
-      expect(list.length).toBe(10);
-      let existingAnimal = service.getAnimal(model.id);
-      expect(existingAnimal.type).toBe(LiveStockType.Cattle);
-      model.type = LiveStockType.Pig;
-      service.updateAnimal(model);
-      service.livestockChanged.subscribe((data) => {
-        expect(data.length).toBe(10);
-        existingAnimal = service.getAnimal(model.id);
-        expect(existingAnimal.type).toBe(LiveStockType.Pig);
       });
       service.getLivestock();
     });

@@ -112,16 +112,16 @@ export class MedicalService implements IMedicalService, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (isUndefined(this.httpGetSubscription)) {
+    if (this.httpGetSubscription) {
       this.httpGetSubscription.unsubscribe();
     }
-    if (isUndefined(this.httpPostSubscription)) {
+    if (this.httpPostSubscription) {
       this.httpPostSubscription.unsubscribe();
     }
-    if (isUndefined(this.httpPutSubscription)) {
+    if (this.httpPutSubscription) {
       this.httpPutSubscription.unsubscribe();
     }
-    if (isUndefined(this.httpDeleteSubscription)) {
+    if (this.httpDeleteSubscription) {
       this.httpDeleteSubscription.unsubscribe();
     }
   }

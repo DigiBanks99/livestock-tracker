@@ -1,14 +1,30 @@
-import { animalsReducer, initialState } from './animal.reducers';
+import {
+  animalsReducer,
+  initialState as animalInitialState,
+  AnimalState
+} from './animal.reducers';
 import {
   AddAnimal,
   SelectAnimal,
   SetAnimals,
-  RemoveAnimalSucceeded
+  RemoveAnimalSucceeded,
+  AddAnimalSucceeded
 } from './animal.actions';
 import { Livestock } from '../livestock/livestock.model';
 import { LiveStockType } from '../livestock/livestock-type.model';
 
 describe('animals reducer', () => {
+  let initialState: AnimalState;
+
+  beforeEach(() => {
+    initialState = {
+      ...animalInitialState,
+      entities: { ...animalInitialState.entities },
+      error: { ...animalInitialState.error },
+      ids: (animalInitialState.ids || []).slice()
+    };
+  });
+
   it('should add another animal to the list when action is of type ADD_ANIMAL', () => {
     const animal1 = new Livestock(
       1,
@@ -22,10 +38,10 @@ describe('animals reducer', () => {
       120,
       1
     );
-    const addAnimalTask1 = new AddAnimal();
-    addAnimalTask1.animal = animal1;
+    const addAnimalTask1 = new AddAnimalSucceeded(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
     expect(state1).not.toBe(null);
+    console.log(state1);
     expect(state1.entities[1]).toBeDefined();
     expect(state1.entities[1].id).toBe(animal1.id);
     expect(state1.entities[1].number).toBe(animal1.number);
@@ -44,8 +60,7 @@ describe('animals reducer', () => {
       1,
       2
     );
-    const addAnimalTask2 = new AddAnimal();
-    addAnimalTask2.animal = animal2;
+    const addAnimalTask2 = new AddAnimalSucceeded(animal2);
 
     const state2 = animalsReducer(state1, addAnimalTask2);
     expect(state2).not.toBe(null);
@@ -73,8 +88,7 @@ describe('animals reducer', () => {
       200,
       3
     );
-    const addAnimalTask3 = new AddAnimal();
-    addAnimalTask3.animal = animal3;
+    const addAnimalTask3 = new AddAnimalSucceeded(animal3);
 
     const state3 = animalsReducer(state2, addAnimalTask3);
     expect(state3).not.toBe(null);
@@ -110,8 +124,7 @@ describe('animals reducer', () => {
       120,
       1
     );
-    const addAnimalTask1 = new AddAnimal();
-    addAnimalTask1.animal = animal1;
+    const addAnimalTask1 = new AddAnimalSucceeded(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
 
     const animal2 = new Livestock(
@@ -126,8 +139,7 @@ describe('animals reducer', () => {
       1,
       2
     );
-    const addAnimalTask2 = new AddAnimal();
-    addAnimalTask2.animal = animal2;
+    const addAnimalTask2 = new AddAnimalSucceeded(animal2);
     const state2 = animalsReducer(state1, addAnimalTask2);
 
     const animal3 = new Livestock(
@@ -142,8 +154,7 @@ describe('animals reducer', () => {
       200,
       3
     );
-    const addAnimalTask3 = new AddAnimal();
-    addAnimalTask3.animal = animal3;
+    const addAnimalTask3 = new AddAnimalSucceeded(animal3);
     const state3 = animalsReducer(state2, addAnimalTask3);
 
     const removeAnimal2 = new RemoveAnimalSucceeded(2);
@@ -181,8 +192,7 @@ describe('animals reducer', () => {
       120,
       1
     );
-    const addAnimalTask1 = new AddAnimal();
-    addAnimalTask1.animal = animal1;
+    const addAnimalTask1 = new AddAnimalSucceeded(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
 
     const animal2 = new Livestock(
@@ -197,8 +207,7 @@ describe('animals reducer', () => {
       1,
       2
     );
-    const addAnimalTask2 = new AddAnimal();
-    addAnimalTask2.animal = animal2;
+    const addAnimalTask2 = new AddAnimalSucceeded(animal2);
     const state2 = animalsReducer(state1, addAnimalTask2);
 
     const animal3 = new Livestock(
@@ -213,8 +222,7 @@ describe('animals reducer', () => {
       200,
       3
     );
-    const addAnimalTask3 = new AddAnimal();
-    addAnimalTask3.animal = animal3;
+    const addAnimalTask3 = new AddAnimalSucceeded(animal3);
     const state3 = animalsReducer(state2, addAnimalTask3);
 
     const selectAnimal2 = new SelectAnimal(2);

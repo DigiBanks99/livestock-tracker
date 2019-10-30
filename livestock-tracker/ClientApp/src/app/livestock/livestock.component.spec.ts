@@ -23,6 +23,7 @@ import { LivestockDetailComponent } from './livestock-detail/livestock-detail.co
 import { LivestockService, MockLivestockService } from './livestock.service';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from '@app/store';
+import { Observable, from } from 'rxjs';
 
 describe('LivestockComponent', () => {
   let component: LivestockComponent;
@@ -65,6 +66,7 @@ describe('LivestockComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LivestockComponent);
     component = fixture.componentInstance;
+    component.animals$ = from([]);
     fixture.detectChanges();
   });
 

@@ -25,6 +25,15 @@ import {
   MockFeedTypeService
 } from '@app/feed-type/feed-type.service';
 import { UnitService, MockUnitService } from '@app/unit/unit.service';
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-animal-select-container',
+  template: '<div></div>'
+})
+class AnimalSelectContainerComponent {
+  @Input() public disabled: boolean;
+}
 
 describe('FeedingTransactionComponent', () => {
   let component: FeedingTransactionComponent;
@@ -32,7 +41,11 @@ describe('FeedingTransactionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FeedingTransactionComponent, LsGridComponent],
+      declarations: [
+        FeedingTransactionComponent,
+        LsGridComponent,
+        AnimalSelectContainerComponent
+      ],
       providers: [
         { provide: LivestockService, useClass: MockLivestockService },
         {
