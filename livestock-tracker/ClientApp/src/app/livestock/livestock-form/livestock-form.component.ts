@@ -18,11 +18,12 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
 import { isNullOrUndefined } from 'util';
-import { Livestock, getAge } from '@livestock/livestock.model';
+import { Livestock } from '@livestock/livestock.model';
 import { LiveStockType } from '@livestock/livestock-type.model';
 import { LivestockService } from '@livestock/livestock.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '@env/environment';
+import { AgeCalculatorService } from '@livestock/age-calculator.service';
 
 const Constants = {
   Controls: {
@@ -78,13 +79,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
   public livestockForm: FormGroup;
   public livestockTypes = LiveStockType;
-  public keys: number[] = Object.keys(LiveStockType)
-    .filter(Number)
-    .map(type => {
-      const x = +type;
-      return x;
-    })
-    .concat(0);
+  public keys: number[] = Object.keys(LiveStockType).map(type => +type);
 
   private soldChanged: Subscription;
   private deceasedChanged: Subscription;
@@ -93,7 +88,8 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private livestockService: LivestockService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private ageCalculatorService: AgeCalculatorService
   ) {}
 
   public ngOnInit() {
@@ -193,7 +189,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       batchNumber = animal.batchNumber;
       sellPrice = animal.sellPrice;
       sold = animal.sold;
-      age = getAge(animal.birthDate);
+      age = this.ageCalculatorService.calculateAge(animal.birthDate, animal.dateOfDeath);
       sellDate = animal.sellDate;
       deceased = animal.deceased;
       dateOfDeath = animal.dateOfDeath;
@@ -261,7 +257,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       batchNumber = animal.batchNumber;
       sellPrice = animal.sellPrice;
       sold = animal.sold;
-      age = getAge(animal.birthDate);
+      age = this.ageCalculatorService.calculateAge(animal.birthDate, animal.dateOfDeath);
       sellDate = animal.sellDate;
       deceased = animal.deceased;
       dateOfDeath = animal.dateOfDeath;
@@ -303,16 +299,18 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     this.birthDateChanged = this.livestockForm
       .get(Constants.Controls.BIRTH_DATE)
       .valueChanges.subscribe((newBirthDate: Date) => {
-        const ageCtrl = this.livestockForm.get(Constants.Controls.AGE);
-        ageCtrl.setValue(getAge(newBirthDate));
-        ageCtrl.updateValueAndValidity();
-        ageCtrl.markAsTouched();
+        this.updateAgeCtrl(newBirthDate, this.livestockForm
+          .get(Constants.Controls.DECEASED).value);
       });
 
     this.deceasedChanged = this.livestockForm
       .get(Constants.Controls.DECEASED)
       .valueChanges.subscribe((value: boolean) =>
         this.updateDateOfDeathCtrl(value)
+        this.updateAgeCtrl(this.livestockForm
+          .get(Constants.Controls.BIRTH_DATE).value, this.livestockForm.get(
+            Constants.Controls.DATE_OF_DEATH
+          ).value);
       );
   }
 
@@ -358,5 +356,12 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     dateOfDeathCtrl.setValidators(validators);
     dateOfDeathCtrl.updateValueAndValidity();
     dateOfDeathCtrl.markAsTouched();
+  }
+
+  private updateAgeCtrl(birthDate: Date, deceasedDate: Date) {
+    const ageCtrl = this.livestockForm.get(Constants.Controls.AGE);
+        ageCtrl.setValue(this.ageCalculatorService.calculateAge(birthDate, deceasedDate));
+        ageCtrl.updateValueAndValidity();
+        ageCtrl.markAsTouched();
   }
 }
