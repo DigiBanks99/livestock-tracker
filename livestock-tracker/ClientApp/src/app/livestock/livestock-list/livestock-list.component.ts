@@ -2,8 +2,9 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { LivestockService } from '@livestock/livestock.service';
-import { Livestock, getAge as getAnimalAge } from '@livestock/livestock.model';
+import { Livestock } from '@livestock/livestock.model';
 import { environment } from '@env/environment';
+import { AgeCalculatorService } from '@livestock/age-calculator.service';
 
 @Component({
   selector: 'app-livestock-list',
@@ -18,7 +19,10 @@ export class LivestockListComponent implements OnInit {
 
   public pageSize: number;
 
-  constructor(private livestockService: LivestockService) {}
+  constructor(
+    private livestockService: LivestockService,
+    private ageCalculatorService: AgeCalculatorService
+  ) {}
 
   ngOnInit() {
     this.pageSize = environment.pageSize;
@@ -45,6 +49,9 @@ export class LivestockListComponent implements OnInit {
   public onPage(pageEvent: PageEvent) {}
 
   public getAge(animal: Livestock): string {
-    return getAnimalAge(animal.birthDate);
+    return this.ageCalculatorService.calculateAge(
+      animal.birthDate,
+      animal.dateOfDeath
+    );
   }
 }

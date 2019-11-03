@@ -22,7 +22,7 @@ export class AgeCalculatorService {
 
     const birthMonth = birthDateMoment.month() + 1; // add 1 because for some stupid reason month is 0 based
     const birthYear = birthDateMoment.year();
-    const daysInMonth = Date.daysInMonth(birthMonth, birthYear);
+    const daysInMonth = this.daysInMonth(birthMonth, birthYear);
 
     if (month > 0 && day < 0) {
       month--;
@@ -60,5 +60,10 @@ export class AgeCalculatorService {
     }
     displayAge += ' ';
     return displayAge;
+  }
+
+  private daysInMonth(month: number, year: number): number {
+    const date = moment(new Date(year, month, 0));
+    return date.date();
   }
 }

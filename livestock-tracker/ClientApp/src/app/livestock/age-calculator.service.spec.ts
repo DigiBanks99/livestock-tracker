@@ -1,10 +1,12 @@
-import { Livestock, getAge } from './livestock.model';
+import { Livestock } from './livestock.model';
 import { LiveStockType } from './livestock-type.model';
+import { AgeCalculatorService } from './age-calculator.service';
 
-describe('LivestockModel', () => {
+describe('AgeCalculatorService', () => {
   let model: Livestock;
+  let ageCalculatorService = new AgeCalculatorService();
 
-  it('#getAge should return 0 days', () => {
+  it('#calculateAge should return 0 days', () => {
     const now = new Date();
     model = new Livestock(
       1,
@@ -18,10 +20,10 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model.birthDate)).toBe('0 days');
+    expect(ageCalculatorService.calculateAge(model.birthDate)).toBe('0 days');
   });
 
-  it('#getAge should return 1 day', () => {
+  it('#calculateAge should return 1 day', () => {
     const now = new Date();
     const newYear = now.getFullYear();
     const newMonth = now.getMonth();
@@ -47,10 +49,10 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model.birthDate)).toBe('1 day');
+    expect(ageCalculatorService.calculateAge(model.birthDate)).toBe('1 day');
   });
 
-  it('#getAge should return 27 days', () => {
+  it('#calculateAge should return 27 days', () => {
     const now = new Date();
     const newYear = now.getFullYear();
     const newMonth = now.getMonth();
@@ -76,10 +78,10 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model.birthDate)).toBe('27 days');
+    expect(ageCalculatorService.calculateAge(model.birthDate)).toBe('27 days');
   });
 
-  it('#getAge should return 1 year', () => {
+  it('#calculateAge should return 1 year', () => {
     const now = new Date();
     const date = new Date(
       now.getFullYear() - 1,
@@ -102,10 +104,10 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model.birthDate)).toBe('1 year');
+    expect(ageCalculatorService.calculateAge(model.birthDate)).toBe('1 year');
   });
 
-  it('#getAge should return 1 year 4 months', () => {
+  it('#calculateAge should return 1 year 4 months', () => {
     const now = new Date();
     const date = new Date(
       now.getFullYear() - 1,
@@ -128,10 +130,12 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model.birthDate)).toBe('1 year 4 months');
+    expect(ageCalculatorService.calculateAge(model.birthDate)).toBe(
+      '1 year 4 months'
+    );
   });
 
-  it('#getAge should return 1 year 4 months 3 days', () => {
+  it('#calculateAge should return 1 year 4 months 3 days', () => {
     const now = new Date();
     const newYear = now.getFullYear() - 1;
     const newMonth = now.getMonth() - 4;
@@ -157,10 +161,12 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model.birthDate)).toBe('1 year 4 months 3 days');
+    expect(ageCalculatorService.calculateAge(model.birthDate)).toBe(
+      '1 year 4 months 3 days'
+    );
   });
 
-  it('#getAge should return 4 months 1 day', () => {
+  it('#calculateAge should return 4 months 1 day', () => {
     const now = new Date();
     const newYear = now.getFullYear();
     const newMonth = now.getMonth() - 4;
@@ -186,10 +192,12 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model.birthDate)).toBe('4 months 1 day');
+    expect(ageCalculatorService.calculateAge(model.birthDate)).toBe(
+      '4 months 1 day'
+    );
   });
 
-  it('#getAge should return 1 month 12 days', () => {
+  it('#calculateAge should return 1 month 12 days', () => {
     const now = new Date();
     const newYear = now.getFullYear();
     const newMonth = now.getMonth() - 1;
@@ -215,6 +223,8 @@ describe('LivestockModel', () => {
       null,
       null
     );
-    expect(getAge(model.birthDate)).toBe('1 month 12 days');
+    expect(ageCalculatorService.calculateAge(model.birthDate)).toBe(
+      '1 month 12 days'
+    );
   });
 });

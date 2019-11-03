@@ -11,13 +11,18 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { CUSTOM_ELEMENTS_SCHEMA, EventEmitter } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { LivestockListComponent } from './livestock-list.component';
 import { LivestockService, MockLivestockService } from '../livestock.service';
-import { Livestock } from '../livestock.model';
-import { animalsAdapter } from '@app/store/animal.reducers';
+import { AgeCalculatorService } from '@livestock/age-calculator.service';
+
+class MockAgeCalculatorService {
+  public calculateAge(birthDate: Date, deceasedDate?: Date): string {
+    return '';
+  }
+}
 
 describe('LivestockListComponent', () => {
   let component: LivestockListComponent;
@@ -27,7 +32,8 @@ describe('LivestockListComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LivestockListComponent],
       providers: [
-        { provide: LivestockService, useClass: MockLivestockService }
+        { provide: LivestockService, useClass: MockLivestockService },
+        { provide: AgeCalculatorService, useClass: MockAgeCalculatorService }
       ],
       imports: [
         MatIconModule,
