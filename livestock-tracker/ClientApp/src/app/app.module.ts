@@ -62,6 +62,7 @@ import { FeedTypeContainerComponent } from '@feed-type/feed-type-container.compo
 import { UnitContainerComponent } from '@unit/unit-container.component';
 import { UnitEffects } from '@unit-store/effects';
 import { FeedTypeEffects } from '@feed-type-store/effects';
+import { AgeCalculatorService } from '@livestock/age-calculator.service';
 
 @NgModule({
   declarations: [
@@ -128,6 +129,7 @@ import { FeedTypeEffects } from '@feed-type-store/effects';
     ])
   ],
   providers: [
+    AgeCalculatorService,
     LivestockService,
     MedicalService,
     MedicineTypeService,

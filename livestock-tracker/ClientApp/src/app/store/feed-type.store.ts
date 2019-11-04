@@ -1,14 +1,24 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeedTypeState, feedTypeAdapter } from './feed-type.reducer';
+import { FeedType } from '@feed-type/feed-type.model';
+import { Dictionary } from '@ngrx/entity';
 
 const getFeedTypeState = createFeatureSelector<FeedTypeState>('feedTypes');
 
 const {
-  selectAll: getFeedTypes,
   selectEntities: getFeedTypeEntities,
   selectIds: getFeedTypeIds,
   selectTotal: getFeedTypeCount
 } = feedTypeAdapter.getSelectors(getFeedTypeState);
+
+const getFeedTypes = createSelector(
+  getFeedTypeEntities,
+  getFeedTypeIds,
+  (entities: Dictionary<FeedType>, ids: (string | number)[]) =>
+    ids
+      .map(id => entities[id])
+      .filter((feedType): feedType is FeedType => feedType !== null)
+);
 
 const getSelectedFeedTypeId = createSelector(
   getFeedTypeState,

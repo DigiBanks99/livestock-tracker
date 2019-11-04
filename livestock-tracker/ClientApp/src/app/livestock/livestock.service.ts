@@ -1,6 +1,6 @@
 import { OnInit, Injectable, OnDestroy } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Subject, Subscription, throwError, Observable, from, of } from 'rxjs';
+import { Subject, Subscription, throwError, Observable, of } from 'rxjs';
 import { isNullOrUndefined } from 'util';
 
 import * as moment from 'moment';
@@ -27,7 +27,6 @@ interface ILivestockService {
 @Injectable()
 export class LivestockService implements ILivestockService, OnInit, OnDestroy {
   private livestock: Livestock[];
-  private lastNewID: number;
   private readonly apiUrl = environment.apiUrl;
   private httpGetSubscription: Subscription;
   private httpDeleteSubscription: Subscription;
@@ -39,7 +38,6 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
 
   constructor(private http: HttpClient) {
     this.livestock = [];
-    this.lastNewID = 0;
 
     this.livestockChanged = new Subject<Livestock[]>();
     this.editingStarted = new Subject<number>();

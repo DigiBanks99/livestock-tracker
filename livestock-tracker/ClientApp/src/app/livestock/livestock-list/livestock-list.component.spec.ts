@@ -11,22 +11,25 @@ import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { CUSTOM_ELEMENTS_SCHEMA, EventEmitter } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 
 import { LivestockListComponent } from './livestock-list.component';
 import { LivestockService, MockLivestockService } from '../livestock.service';
-import { Livestock } from '../livestock.model';
-import { animalsAdapter } from '@app/store/animal.reducers';
+import { AgeCalculatorService } from '@livestock/age-calculator.service';
 
 describe('LivestockListComponent', () => {
   let component: LivestockListComponent;
   let fixture: ComponentFixture<LivestockListComponent>;
+  let spy: jasmine.SpyObj<AgeCalculatorService>;
 
   beforeEach(async(() => {
+    spy = jasmine.createSpyObj('AgeCalculatorService', ['calculateAge']);
+
     TestBed.configureTestingModule({
       declarations: [LivestockListComponent],
       providers: [
+        { provide: AgeCalculatorService, useValue: spy },
         { provide: LivestockService, useClass: MockLivestockService }
       ],
       imports: [

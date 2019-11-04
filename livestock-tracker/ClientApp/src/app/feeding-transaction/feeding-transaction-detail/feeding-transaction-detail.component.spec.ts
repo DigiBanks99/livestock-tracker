@@ -23,6 +23,33 @@ import {
   MockFeedingTransactionService
 } from '../feeding-transaction.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Component, Input, EventEmitter, Output } from '@angular/core';
+import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
+import { FeedType } from '@feed-type/feed-type.model';
+import { Unit } from '@unit/unit.model';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { FeedingTransactionState } from '@feeding-transaction-store/reducer';
+import { Store } from '@ngrx/store';
+import { selectors } from '@store';
+import { Livestock } from '@livestock/livestock.model';
+import { LiveStockType } from '@livestock/livestock-type.model';
+
+@Component({
+  selector: 'app-feeding-transaction-form',
+  template: '<div></div>'
+})
+class FeedingTransactionFormComponent {
+  @Input() selectedAnimalId: number;
+  @Input() feedingTransaction: FeedingTransaction;
+  @Input() isPending: boolean;
+  @Input() error: Error;
+  @Input() header: string;
+  @Input() successMessage: string;
+  @Input() feedTypes: FeedType[];
+  @Input() unitTypes: Unit[] = [];
+  @Output() save = new EventEmitter<FeedingTransaction>();
+  @Output() navigateBack = new EventEmitter();
+}
 
 describe('FeedingTransactionDetailComponent', () => {
   let component: FeedingTransactionDetailComponent;
@@ -30,13 +57,44 @@ describe('FeedingTransactionDetailComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [FeedingTransactionDetailComponent],
+      declarations: [
+        FeedingTransactionDetailComponent,
+        FeedingTransactionFormComponent
+      ],
       providers: [
         { provide: LivestockService, useClass: MockLivestockService },
         {
           provide: FeedingTransactionService,
           useClass: MockFeedingTransactionService
-        }
+        },
+        provideMockStore({
+          selectors: [
+            {
+              selector: selectors.animalSelectors.getSelectedAnimalId,
+              value: 1
+            },
+            {
+              selector:
+                selectors.feedingTransactionSelectors
+                  .getSelectedFeedingTransaction,
+              value: null
+            },
+            {
+              selector:
+                selectors.feedingTransactionSelectors
+                  .getFeedingTransactionPendingState,
+              value: false
+            },
+            {
+              selector:
+                selectors.feedingTransactionSelectors
+                  .getFeedingTransactionErrorState,
+              value: null
+            },
+            { selector: selectors.feedTypeSelectors.getFeedTypes, value: [] },
+            { selector: selectors.unitSelectors.getUnits, value: [] }
+          ]
+        })
       ],
       imports: [
         BrowserAnimationsModule,
@@ -59,6 +117,7 @@ describe('FeedingTransactionDetailComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FeedingTransactionDetailComponent);
     component = fixture.componentInstance;
+
     fixture.detectChanges();
   });
 

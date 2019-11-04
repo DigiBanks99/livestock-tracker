@@ -17,9 +17,7 @@ describe('UnitComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UnitComponent, UnitDetailComponent],
-      providers: [
-        { provide: UnitService, useClass: MockUnitService },
-      ],
+      providers: [{ provide: UnitService, useClass: MockUnitService }],
       imports: [
         ReactiveFormsModule,
         MatFormFieldModule,
@@ -28,13 +26,13 @@ describe('UnitComponent', () => {
         MatPaginatorModule,
         MatIconModule
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnitComponent);
     component = fixture.componentInstance;
+    component.units = [];
     fixture.detectChanges();
   });
 
