@@ -14,8 +14,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 
 import { LivestockDetailComponent } from './livestock-detail.component';
 import { LivestockService, MockLivestockService } from '../livestock.service';
-import { LiveStockType } from '../livestock-type.model';
-import { ActivatedRoute } from '@angular/router';
+import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import { Store } from '@ngrx/store';
+import { selectors } from '@animal-store/store';
 
 describe('LivestockDetailComponent', () => {
   let component: LivestockDetailComponent;
@@ -25,7 +26,14 @@ describe('LivestockDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [LivestockDetailComponent],
       providers: [
-        { provide: LivestockService, useClass: MockLivestockService }
+        { provide: LivestockService, useClass: MockLivestockService },
+        provideMockStore({
+          selectors: [
+            { selector: selectors.getAnimalsPendingState, value: false },
+            { selector: selectors.getAnimalsError, value: null },
+            { selector: selectors.getSelectedAnimal, value: null }
+          ]
+        })
       ],
       imports: [
         ReactiveFormsModule,

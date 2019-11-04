@@ -39,6 +39,7 @@ export function animalsReducer(
     case ActionTypes.ADD_ANIMAL:
     case ActionTypes.UPDATE_ANIMAL:
     case ActionTypes.REMOVE_ANIMAL:
+      console.log('setting isPending', action);
       return {
         ...state,
         isPending: true

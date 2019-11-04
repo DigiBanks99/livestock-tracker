@@ -1,15 +1,22 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UnitState, unitAdapter } from './unit.reducers';
+import { Dictionary } from '@ngrx/entity';
+import { Unit } from '@unit/unit.model';
 
 const unitState = createFeatureSelector<UnitState>('units');
 
 const {
-  selectAll: getUnits,
   selectEntities: getUnitEntities,
   selectIds: getUnitIds,
   selectTotal: getUnitCount
 } = unitAdapter.getSelectors(unitState);
 
+const getUnits = createSelector(
+  getUnitEntities,
+  getUnitIds,
+  (entities: Dictionary<Unit>, ids: (number | string)[]) =>
+    ids.map(id => entities[id]).filter((unit): unit is Unit => unit !== null)
+);
 const getSelectedUnitId = createSelector(
   unitState,
   state => state.selectedUnitId
