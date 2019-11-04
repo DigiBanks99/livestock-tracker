@@ -114,7 +114,7 @@ namespace LivestockTracker.Updater
         HttpResponseMessage response = await httpClient.GetAsync(downloadPath);
         if (response.IsSuccessStatusCode)
         {
-          return long.Parse(response.Content.Headers.First(h => h.Key == "Content-Length").Value.First());
+          return response.Content.Headers.ContentLength ?? 0;
         }
 
         throw new InvalidOperationException("Could not retrieve the size of the download file");
