@@ -24,7 +24,7 @@ export class LivestockListComponent implements OnInit {
     private ageCalculatorService: AgeCalculatorService
   ) {}
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.pageSize = environment.pageSize;
   }
 
@@ -32,21 +32,21 @@ export class LivestockListComponent implements OnInit {
     return this.livestockService.getSvgIcon(animal);
   }
 
-  public removeLivestock(selectedItems: MatListOption[]) {
+  public removeLivestock(selectedItems: MatListOption[]): void {
     for (const item of selectedItems) {
       this.remove.emit(item.value);
     }
   }
 
-  public onEditAnimal(id: number) {
+  public onEditAnimal(id: number): void {
     this.showDetail.emit(id);
   }
 
-  public onAddAnimal() {
+  public onAddAnimal(): void {
     this.addAnimal.emit();
   }
 
-  public onPage(pageEvent: PageEvent) {}
+  public onPage(pageEvent: PageEvent): void {}
 
   public getAge(animal: Livestock): string {
     return this.ageCalculatorService.calculateAge(

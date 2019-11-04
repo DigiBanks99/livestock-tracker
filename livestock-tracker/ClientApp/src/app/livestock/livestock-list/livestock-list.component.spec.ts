@@ -18,22 +18,19 @@ import { LivestockListComponent } from './livestock-list.component';
 import { LivestockService, MockLivestockService } from '../livestock.service';
 import { AgeCalculatorService } from '@livestock/age-calculator.service';
 
-class MockAgeCalculatorService {
-  public calculateAge(birthDate: Date, deceasedDate?: Date): string {
-    return '';
-  }
-}
-
 describe('LivestockListComponent', () => {
   let component: LivestockListComponent;
   let fixture: ComponentFixture<LivestockListComponent>;
+  let spy: jasmine.SpyObj<AgeCalculatorService>;
 
   beforeEach(async(() => {
+    spy = jasmine.createSpyObj('AgeCalculatorService', ['calculateAge']);
+
     TestBed.configureTestingModule({
       declarations: [LivestockListComponent],
       providers: [
-        { provide: LivestockService, useClass: MockLivestockService },
-        { provide: AgeCalculatorService, useClass: MockAgeCalculatorService }
+        { provide: AgeCalculatorService, useValue: spy },
+        { provide: LivestockService, useClass: MockLivestockService }
       ],
       imports: [
         MatIconModule,

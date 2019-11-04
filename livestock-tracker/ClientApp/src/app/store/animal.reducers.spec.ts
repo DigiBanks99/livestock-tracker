@@ -41,7 +41,6 @@ describe('animals reducer', () => {
     const addAnimalTask1 = new AddAnimalSucceeded(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
     expect(state1).not.toBe(null);
-    console.log(state1);
     expect(state1.entities[1]).toBeDefined();
     expect(state1.entities[1].id).toBe(animal1.id);
     expect(state1.entities[1].number).toBe(animal1.number);

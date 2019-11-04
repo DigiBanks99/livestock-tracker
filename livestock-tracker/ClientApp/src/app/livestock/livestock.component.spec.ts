@@ -23,13 +23,17 @@ import { LivestockDetailComponent } from './livestock-detail/livestock-detail.co
 import { LivestockService, MockLivestockService } from './livestock.service';
 import { StoreModule } from '@ngrx/store';
 import { reducers } from '@app/store';
-import { Observable, from } from 'rxjs';
+import { from } from 'rxjs';
+import { AgeCalculatorService } from './age-calculator.service';
 
 describe('LivestockComponent', () => {
   let component: LivestockComponent;
   let fixture: ComponentFixture<LivestockComponent>;
+  let spy: jasmine.SpyObj<AgeCalculatorService>;
 
   beforeEach(async(() => {
+    spy = jasmine.createSpyObj('AgeCalculatorService', ['calculateAge']);
+
     TestBed.configureTestingModule({
       declarations: [
         LivestockComponent,
@@ -37,7 +41,8 @@ describe('LivestockComponent', () => {
         LivestockDetailComponent
       ],
       providers: [
-        { provide: LivestockService, useClass: MockLivestockService }
+        { provide: LivestockService, useClass: MockLivestockService },
+        { provide: AgeCalculatorService, useValue: spy }
       ],
       imports: [
         MatSidenavModule,
