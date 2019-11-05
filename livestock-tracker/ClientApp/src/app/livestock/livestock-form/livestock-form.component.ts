@@ -79,7 +79,10 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
   public livestockForm: FormGroup;
   public livestockTypes = LiveStockType;
-  public keys: number[] = Object.keys(LiveStockType).map(type => +type);
+  public keys: number[] = Object.keys(LiveStockType)
+    .filter(Number)
+    .map(type => +type)
+    .concat(0);
 
   private soldChanged: Subscription;
   private deceasedChanged: Subscription;
@@ -189,7 +192,10 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       batchNumber = animal.batchNumber;
       sellPrice = animal.sellPrice;
       sold = animal.sold;
-      age = this.ageCalculatorService.calculateAge(animal.birthDate, animal.dateOfDeath);
+      age = this.ageCalculatorService.calculateAge(
+        animal.birthDate,
+        animal.dateOfDeath
+      );
       sellDate = animal.sellDate;
       deceased = animal.deceased;
       dateOfDeath = animal.dateOfDeath;
@@ -257,7 +263,10 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       batchNumber = animal.batchNumber;
       sellPrice = animal.sellPrice;
       sold = animal.sold;
-      age = this.ageCalculatorService.calculateAge(animal.birthDate, animal.dateOfDeath);
+      age = this.ageCalculatorService.calculateAge(
+        animal.birthDate,
+        animal.dateOfDeath
+      );
       sellDate = animal.sellDate;
       deceased = animal.deceased;
       dateOfDeath = animal.dateOfDeath;
@@ -299,19 +308,21 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     this.birthDateChanged = this.livestockForm
       .get(Constants.Controls.BIRTH_DATE)
       .valueChanges.subscribe((newBirthDate: Date) => {
-        this.updateAgeCtrl(newBirthDate, this.livestockForm
-          .get(Constants.Controls.DECEASED).value);
+        this.updateAgeCtrl(
+          newBirthDate,
+          this.livestockForm.get(Constants.Controls.DECEASED).value
+        );
       });
 
     this.deceasedChanged = this.livestockForm
       .get(Constants.Controls.DECEASED)
-      .valueChanges.subscribe((value: boolean) =>
-        this.updateDateOfDeathCtrl(value)
-        this.updateAgeCtrl(this.livestockForm
-          .get(Constants.Controls.BIRTH_DATE).value, this.livestockForm.get(
-            Constants.Controls.DATE_OF_DEATH
-          ).value);
-      );
+      .valueChanges.subscribe((value: boolean) => {
+        this.updateDateOfDeathCtrl(value);
+        this.updateAgeCtrl(
+          this.livestockForm.get(Constants.Controls.BIRTH_DATE).value,
+          this.livestockForm.get(Constants.Controls.DATE_OF_DEATH).value
+        );
+      });
   }
 
   private updateSold(value: boolean) {
@@ -360,8 +371,10 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateAgeCtrl(birthDate: Date, deceasedDate: Date) {
     const ageCtrl = this.livestockForm.get(Constants.Controls.AGE);
-        ageCtrl.setValue(this.ageCalculatorService.calculateAge(birthDate, deceasedDate));
-        ageCtrl.updateValueAndValidity();
-        ageCtrl.markAsTouched();
+    ageCtrl.setValue(
+      this.ageCalculatorService.calculateAge(birthDate, deceasedDate)
+    );
+    ageCtrl.updateValueAndValidity();
+    ageCtrl.markAsTouched();
   }
 }
