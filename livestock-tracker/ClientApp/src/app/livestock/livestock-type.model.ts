@@ -1,6 +1,6 @@
 export enum LiveStockType {
-  Cattle,
-  Sheep,
-  Pig,
-  Chicken
+  Cattle = 0,
+  Sheep = 1,
+  Pig = 2,
+  Chicken = 3
 }
