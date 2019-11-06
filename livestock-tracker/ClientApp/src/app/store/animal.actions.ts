@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { Livestock } from '@livestock/livestock.model';
 import { Update } from '@ngrx/entity';
+import { LiveStockType } from '@livestock/livestock-type.model';
 
 export enum ActionTypes {
   ADD_ANIMAL = 'ADD_ANIMAL',
@@ -85,7 +86,11 @@ export class SetAnimals implements Action {
   selectedAnimalId: number;
 
   constructor(animals: Livestock[]) {
-    this.animals = animals;
+    this.animals = animals.map((a: Livestock) => {
+      a.type = <LiveStockType>a.type;
+      console.log(LiveStockType.Cattle, <LiveStockType>a.type, a.type);
+      return a;
+    });
     this.selectedAnimalId = this.animals.length > 0 ? this.animals[0].id : null;
   }
 }
