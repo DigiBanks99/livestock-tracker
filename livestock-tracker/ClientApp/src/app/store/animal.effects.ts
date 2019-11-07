@@ -18,7 +18,7 @@ import {
 } from '@animal-store/actions';
 import { startWith, switchMap, map, catchError } from 'rxjs/operators';
 import { LivestockService } from '@livestock/livestock.service';
-import { Livestock, Animal } from '@livestock/livestock.model';
+import { Livestock, Animal } from '@app/core/models/livestock.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()

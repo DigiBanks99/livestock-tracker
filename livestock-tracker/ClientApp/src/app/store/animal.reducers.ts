@@ -1,4 +1,4 @@
-import { Livestock } from '@livestock/livestock.model';
+import { Livestock } from '@app/core/models/livestock.model';
 import { Action } from '@ngrx/store';
 import { EntityState, createEntityAdapter, Update } from '@ngrx/entity';
 import {

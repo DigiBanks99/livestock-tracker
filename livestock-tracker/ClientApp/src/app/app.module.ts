@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ModuleWithProviders } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,11 +28,7 @@ import { AppComponent } from '@app/app.component';
 import { HomeComponent } from '@home/home.component';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { HeaderComponent } from '@header/header.component';
-import { LivestockComponent } from '@livestock/livestock.component';
 import { ReportsComponent } from '@reports/reports.component';
-import { LivestockListComponent } from '@livestock/livestock-list/livestock-list.component';
-import { LivestockDetailComponent } from '@livestock/livestock-detail/livestock-detail.component';
-import { LivestockService } from '@livestock/livestock.service';
 import { MedicalComponent } from '@medical/medical.component';
 import { MedicalService } from '@medical/medical.service';
 import { MedicalTransactionComponent } from '@medical/medical-transaction/medical-transaction.component';
@@ -47,12 +43,7 @@ import { FeedTypeService } from '@feed-type/feed-type.service';
 import { FeedTypeDetailComponent } from '@feed-type/feed-type-detail/feed-type-detail.component';
 import { FeedingTransactionComponent } from '@feeding-transaction/feeding-transaction.component';
 import { FeedingTransactionService } from '@feeding-transaction/feeding-transaction.service';
-import { LsGridComponent } from '@shared/ls-grid/ls-grid.component';
 import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-transaction-detail/feeding-transaction-detail.component';
-import { AnimalSelectContainerComponent } from '@shared/animal-select/animal-select-container.component';
-import { AnimalSelectComponent } from '@shared/animal-select/animal-select.component';
-import { LivestockFormComponent } from '@livestock/livestock-form/livestock-form.component';
-import { LivestockNewComponent } from './livestock/livestock-new/livestock-new.component';
 import { MedicalContainerComponent } from '@medical/medical-container.component';
 import { FeedingTransactionContainerComponent } from '@feeding-transaction/feeding-transaction-container.component';
 import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
@@ -62,19 +53,15 @@ import { FeedTypeContainerComponent } from '@feed-type/feed-type-container.compo
 import { UnitContainerComponent } from '@unit/unit-container.component';
 import { UnitEffects } from '@unit-store/effects';
 import { FeedTypeEffects } from '@feed-type-store/effects';
-import { AgeCalculatorService } from '@livestock/age-calculator.service';
+import { SharedModule } from '@shared/shared.module';
+import { LivestockModule } from '@livestock/livestock.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     HeaderComponent,
-    LivestockComponent,
     ReportsComponent,
-    LivestockListComponent,
-    LivestockDetailComponent,
-    LivestockFormComponent,
-    LivestockNewComponent,
     MedicalComponent,
     MedicalContainerComponent,
     MedicalTransactionContainerComponent,
@@ -84,7 +71,6 @@ import { AgeCalculatorService } from '@livestock/age-calculator.service';
     UnitDetailComponent,
     MedicineTypeComponent,
     MedicineTypeDetailComponent,
-    LsGridComponent,
     FeedTypeContainerComponent,
     FeedTypeComponent,
     FeedTypeDetailComponent,
@@ -92,9 +78,7 @@ import { AgeCalculatorService } from '@livestock/age-calculator.service';
     FeedingTransactionComponent,
     FeedingTransactionContainerComponent,
     FeedingTransactionFormComponent,
-    FeedingTransactionDetailComponent,
-    AnimalSelectContainerComponent,
-    AnimalSelectComponent
+    FeedingTransactionDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -120,6 +104,10 @@ import { AgeCalculatorService } from '@livestock/age-calculator.service';
     MatCardModule,
     MatPaginatorModule,
     MatMenuModule,
+
+    SharedModule,
+    LivestockModule,
+
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([
       AnimalEffects,
@@ -129,8 +117,6 @@ import { AgeCalculatorService } from '@livestock/age-calculator.service';
     ])
   ],
   providers: [
-    AgeCalculatorService,
-    LivestockService,
     MedicalService,
     MedicineTypeService,
     FeedTypeService,
