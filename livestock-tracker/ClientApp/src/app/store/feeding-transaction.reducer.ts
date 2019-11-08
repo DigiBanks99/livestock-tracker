@@ -1,5 +1,5 @@
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
-import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
+import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { Action } from '@ngrx/store';
 import {
   ActionTypes,

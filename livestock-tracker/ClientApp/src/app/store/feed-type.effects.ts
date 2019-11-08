@@ -16,7 +16,7 @@ import {
   FetchFeedTypes
 } from './feed-type.actions';
 import { map, switchMap, catchError, startWith } from 'rxjs/operators';
-import { FeedType } from '@feed-type/feed-type.model';
+import { FeedType } from '@core/models/feed-type.model';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()

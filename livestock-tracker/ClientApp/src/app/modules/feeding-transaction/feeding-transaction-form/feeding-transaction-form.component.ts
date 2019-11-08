@@ -10,10 +10,10 @@ import {
 } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import * as moment from 'moment';
-import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
+import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FeedType } from '@feed-type/feed-type.model';
+import { FeedType } from '@core/models/feed-type.model';
 import { Unit } from '@unit/unit.model';
 import { environment } from '@env/environment';
 

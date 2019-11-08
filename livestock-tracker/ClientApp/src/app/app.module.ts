@@ -38,23 +38,17 @@ import { UnitDetailComponent } from '@unit/unit-detail/unit-detail.component';
 import { MedicineTypeComponent } from '@medical/medicine-type/medicine-type.component';
 import { MedicineTypeDetailComponent } from '@medical/medicine-type/medicine-type-detail/medicine-type-detail.component';
 import { MedicineTypeService } from '@medical/medicine-type/medicine-type.service';
-import { FeedTypeComponent } from '@feed-type/feed-type.component';
 import { FeedTypeService } from '@feed-type/feed-type.service';
-import { FeedTypeDetailComponent } from '@feed-type/feed-type-detail/feed-type-detail.component';
-import { FeedingTransactionComponent } from '@feeding-transaction/feeding-transaction.component';
 import { FeedingTransactionService } from '@feeding-transaction/feeding-transaction.service';
-import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-transaction-detail/feeding-transaction-detail.component';
 import { MedicalContainerComponent } from '@medical/medical-container.component';
-import { FeedingTransactionContainerComponent } from '@feeding-transaction/feeding-transaction-container.component';
 import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
-import { FeedingTransactionFormComponent } from '@feeding-transaction/feeding-transaction-form/feeding-transaction-form.component';
-import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-transaction-new/feeding-transaction-new.component';
-import { FeedTypeContainerComponent } from '@feed-type/feed-type-container.component';
 import { UnitContainerComponent } from '@unit/unit-container.component';
 import { UnitEffects } from '@unit-store/effects';
 import { FeedTypeEffects } from '@feed-type-store/effects';
 import { SharedModule } from '@shared/shared.module';
 import { LivestockModule } from '@livestock/livestock.module';
+import { FeedTypeModule } from '@feed-type/feed-type.module';
+import { FeedingTransactionModule } from '@feeding-transaction/feeding-transaction.module';
 
 @NgModule({
   declarations: [
@@ -70,15 +64,7 @@ import { LivestockModule } from '@livestock/livestock.module';
     UnitComponent,
     UnitDetailComponent,
     MedicineTypeComponent,
-    MedicineTypeDetailComponent,
-    FeedTypeContainerComponent,
-    FeedTypeComponent,
-    FeedTypeDetailComponent,
-    FeedingTransactionNewComponent,
-    FeedingTransactionComponent,
-    FeedingTransactionContainerComponent,
-    FeedingTransactionFormComponent,
-    FeedingTransactionDetailComponent
+    MedicineTypeDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -107,6 +93,8 @@ import { LivestockModule } from '@livestock/livestock.module';
 
     SharedModule,
     LivestockModule,
+    FeedTypeModule,
+    FeedingTransactionModule,
 
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([

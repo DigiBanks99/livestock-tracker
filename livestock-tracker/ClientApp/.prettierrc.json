@@ -4,5 +4,6 @@
   "tabWidth": 2,
   "useTabs": false,
   "printWidth": 80,
-  "semi": true
+  "semi": true,
+  "jsxBracketSameLine": true
 }

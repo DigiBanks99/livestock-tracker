@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { FeedType } from '@feed-type/feed-type.model';
+import { FeedType } from '@core/models/feed-type.model';
 import { Update } from '@ngrx/entity';
 
 export enum ActionTypes {

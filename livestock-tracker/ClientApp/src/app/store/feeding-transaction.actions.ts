@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
+import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 
 export enum ActionTypes {
   ADD_FEED_TRANSACTION = 'ADD_FEED_TRANSACTION',

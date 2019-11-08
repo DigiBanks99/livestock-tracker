@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { FeedTypeState, feedTypeAdapter } from './feed-type.reducer';
-import { FeedType } from '@feed-type/feed-type.model';
+import { FeedType } from '@core/models/feed-type.model';
 import { Dictionary } from '@ngrx/entity';
 
 const getFeedTypeState = createFeatureSelector<FeedTypeState>('feedTypes');

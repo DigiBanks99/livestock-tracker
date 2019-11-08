@@ -24,15 +24,11 @@ import {
 } from '../feeding-transaction.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
-import { FeedType } from '@feed-type/feed-type.model';
+import { FeedingTransaction } from '@core/models/feeding-transaction.model';
+import { FeedType } from '@core/models/feed-type.model';
 import { Unit } from '@unit/unit.model';
-import { provideMockStore, MockStore } from '@ngrx/store/testing';
-import { FeedingTransactionState } from '@feeding-transaction-store/reducer';
-import { Store } from '@ngrx/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { selectors } from '@store';
-import { Livestock } from '@core/models/livestock.model';
-import { LiveStockType } from '@core/models/livestock-type.model';
 
 @Component({
   selector: 'app-feeding-transaction-form',

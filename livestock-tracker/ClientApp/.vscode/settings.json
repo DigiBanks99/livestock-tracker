@@ -17,7 +17,8 @@
     "sidenav",
     "paginator",
     "toolbar",
-    "unsubscribe"
+    "unsubscribe",
+    "checkbox"
   ],
   "cSpell.ignorePaths": [
     "**/package-lock.json",

@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { State, selectors } from '@store';
-import { Livestock } from '@app/core/models/livestock.model';
-import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
+import { Livestock } from '@core/models/livestock.model';
+import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import {
   SelectFeedTransaction,
   RemoveFeedTransaction
 } from '@feeding-transaction-store/actions';
-import { FeedType } from '@feed-type/feed-type.model';
+import { FeedType } from '@core/models/feed-type.model';
 import { Unit } from '@unit/unit.model';
 
 @Component({

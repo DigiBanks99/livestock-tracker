@@ -10,6 +10,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -19,11 +20,12 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   ],
   imports: [
     CommonModule,
-    MatSelectModule,
-    MatIconModule,
-    MatPaginatorModule,
+    MatButtonModule,
     MatDividerModule,
+    MatIconModule,
     MatListModule,
+    MatPaginatorModule,
+    MatSelectModule,
     MatToolbarModule
   ],
   providers: [AgeCalculatorService],

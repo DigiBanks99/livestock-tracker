@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FeedingTransaction } from './feeding-transaction.model';
+import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '@env/environment';
 import { ILsDataService } from '@shared/ls-grid/ls-data-service.interface';

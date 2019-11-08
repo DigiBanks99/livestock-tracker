@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject, Observable, of } from 'rxjs';
 
 import { environment } from '@env/environment';
-import { FeedType } from '@feed-type/feed-type.model';
+import { FeedType } from '@core/models/feed-type.model';
 
 export interface IFeedTypeService {
   getFeedTypes(): Observable<FeedType[]>;

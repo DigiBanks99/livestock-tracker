@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
-import { FeedType } from '@feed-type/feed-type.model';
+import { FeedType } from '@core/models/feed-type.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { isNullOrUndefined } from 'util';
 
