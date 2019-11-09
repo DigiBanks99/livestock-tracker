@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
-import { Livestock } from '@livestock/livestock.model';
+import { Livestock } from '@core/models/livestock.model';
 import { Update } from '@ngrx/entity';
-import { LiveStockType } from '@livestock/livestock-type.model';
+import { LiveStockType } from '@core/models/livestock-type.model';
 
 export enum ActionTypes {
   ADD_ANIMAL = 'ADD_ANIMAL',

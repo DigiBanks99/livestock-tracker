@@ -1,0 +1,13 @@
+@import 'app-theme';
+
+.mat-card-header,
+.mat-card-header-text,
+.mat-card-title {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.mat-card-title {
+  margin-bottom: 0;
+}

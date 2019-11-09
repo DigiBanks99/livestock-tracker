@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 
 export enum ActionTypes {
   ADD_UNIT = 'ADD_UNIT',

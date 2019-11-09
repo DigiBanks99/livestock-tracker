@@ -17,7 +17,7 @@ import {
   UpdateUnitSuccess
 } from '@unit-store/actions';
 import { UnitService } from '@unit/unit.service';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 
 @Injectable()
 export class UnitEffects {

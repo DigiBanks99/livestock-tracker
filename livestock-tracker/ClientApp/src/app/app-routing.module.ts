@@ -13,6 +13,8 @@ import { FeedingTransactionContainerComponent } from '@feeding-transaction/feedi
 import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-transaction-new/feeding-transaction-new.component';
 import { FeedTypeContainerComponent } from '@feed-type/feed-type-container.component';
 import { UnitContainerComponent } from '@unit/unit-container.component';
+import { MedicalModule } from '@medical/medical.module';
+import { LivestockModule } from '@livestock/livestock.module';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -44,7 +46,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [MedicalModule, LivestockModule, RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

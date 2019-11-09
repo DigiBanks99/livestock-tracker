@@ -14,7 +14,7 @@ import {
   RemoveFeedTransactionSucceeded
 } from '@feeding-transaction-store/actions';
 import { FeedingTransactionService } from '@feeding-transaction/feeding-transaction.service';
-import { FeedingTransaction } from '@feeding-transaction/feeding-transaction.model';
+import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import {
   ActionTypes as AnimalActionTypes,
   SelectAnimal

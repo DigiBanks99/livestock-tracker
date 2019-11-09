@@ -8,7 +8,7 @@ import { selectors as feedingTransactionSelectors } from '@feeding-transaction-s
 import { feedTypeReducer, FeedTypeState } from '@feed-type-store/reducer';
 import { selectors as feedTypeSelectors } from '@feed-type-store/store';
 import { unitReducer } from '@unit-store/reducers';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 import { unitSelectors } from '@unit-store/store';
 
 export const reducers = {

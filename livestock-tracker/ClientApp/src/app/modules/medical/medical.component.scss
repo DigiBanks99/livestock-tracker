@@ -1,0 +1,85 @@
+@import '~@angular/material/theming';
+@import 'app-theme';
+
+.medical-container {
+  position: relative;
+  display: block;
+  min-height: calc(100vh - 64px);
+  margin-left: auto;
+  margin-right: auto;
+  background-color: mat-color($candy-app-primary, 100);
+  color: mat-color($candy-app-accent, '600-contrast', 0.6);
+
+  .mat-fab-bottom-right {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .mat-toolbar.medical-toolbar {
+    background-color: mat-color($candy-app-primary, 100);
+
+    .medical-toolbar__header {
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      font-size: 16px;
+
+      > * {
+        position: relative;
+        display: flex;
+      }
+    }
+  }
+
+  .mat-toolbar.medical-toolbar,
+  .medical-list {
+    margin: auto;
+    width: 695px;
+    min-width: 695px;
+    display: flex;
+    position: relative;
+
+    .selected-animal-svg {
+      margin-right: 8px;
+      width: 24px;
+      height: 24px;
+      padding: 8px;
+      background-color: mat-color($candy-app-accent);
+      border-radius: 50%;
+    }
+  }
+
+  @media only screen and (min-width: 1100px) {
+    .mat-toolbar.medical-toolbar,
+    .medical-list {
+      margin: auto;
+      width: 920px;
+    }
+  }
+
+  @media only screen and (min-width: 1400px) {
+    .mat-toolbar.medical-toolbar,
+    .medical-list {
+      margin: auto;
+      width: 1150px;
+    }
+  }
+
+  .medical-list {
+    background-color: mat-color($candy-app-primary, 200);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mat-accent-background {
+    background-color: mat-color($candy-app-accent);
+    color: mat-color($candy-app-accent, '600-contrast', 0.6);
+  }
+
+  .medical-transaction {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+}

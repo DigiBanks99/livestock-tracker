@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { UnitState, unitAdapter } from './unit.reducers';
 import { Dictionary } from '@ngrx/entity';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 
 const unitState = createFeatureSelector<UnitState>('units');
 
