@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { environment } from '@env/environment';
-import { MedicineType } from '@medical/medicine-type.model';
+import { MedicineType } from '@core/models/medicine-type.model';
 import { isNullOrUndefined } from 'util';
 
 export interface IMedicineTypeService {

@@ -25,22 +25,9 @@ import { reducers } from '@store';
 import { AnimalEffects } from '@animal-store/effects';
 
 import { AppComponent } from '@app/app.component';
-import { HomeComponent } from '@home/home.component';
 import { AppRoutingModule } from '@app/app-routing.module';
-import { HeaderComponent } from '@header/header.component';
-import { ReportsComponent } from '@reports/reports.component';
-import { MedicalComponent } from '@medical/medical.component';
-import { MedicalService } from '@medical/medical.service';
-import { MedicalTransactionComponent } from '@medical/medical-transaction/medical-transaction.component';
-import { MedicalTransactionContainerComponent } from '@medical/medical-transaction/medical-transaction-container.component';
 import { UnitComponent } from '@unit/unit.component';
 import { UnitDetailComponent } from '@unit/unit-detail/unit-detail.component';
-import { MedicineTypeComponent } from '@medical/medicine-type/medicine-type.component';
-import { MedicineTypeDetailComponent } from '@medical/medicine-type/medicine-type-detail/medicine-type-detail.component';
-import { MedicineTypeService } from '@medical/medicine-type/medicine-type.service';
-import { FeedTypeService } from '@feed-type/feed-type.service';
-import { FeedingTransactionService } from '@feeding-transaction/feeding-transaction.service';
-import { MedicalContainerComponent } from '@medical/medical-container.component';
 import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
 import { UnitContainerComponent } from '@unit/unit-container.component';
 import { UnitEffects } from '@unit-store/effects';
@@ -49,22 +36,16 @@ import { SharedModule } from '@shared/shared.module';
 import { LivestockModule } from '@livestock/livestock.module';
 import { FeedTypeModule } from '@feed-type/feed-type.module';
 import { FeedingTransactionModule } from '@feeding-transaction/feeding-transaction.module';
+import { HeaderModule } from '@header/header.module';
+import { HomeModule } from '@home/home.module';
+import { ReportsModule } from '@reports/reports.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
-    HeaderComponent,
-    ReportsComponent,
-    MedicalComponent,
-    MedicalContainerComponent,
-    MedicalTransactionContainerComponent,
-    MedicalTransactionComponent,
     UnitContainerComponent,
     UnitComponent,
-    UnitDetailComponent,
-    MedicineTypeComponent,
-    MedicineTypeDetailComponent
+    UnitDetailComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -95,6 +76,9 @@ import { FeedingTransactionModule } from '@feeding-transaction/feeding-transacti
     LivestockModule,
     FeedTypeModule,
     FeedingTransactionModule,
+    HeaderModule,
+    HomeModule,
+    ReportsModule,
 
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([
@@ -104,12 +88,7 @@ import { FeedingTransactionModule } from '@feeding-transaction/feeding-transacti
       FeedTypeEffects
     ])
   ],
-  providers: [
-    MedicalService,
-    MedicineTypeService,
-    FeedTypeService,
-    FeedingTransactionService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

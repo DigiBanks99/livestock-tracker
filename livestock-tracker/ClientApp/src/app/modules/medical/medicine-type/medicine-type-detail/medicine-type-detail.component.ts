@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { isNullOrUndefined } from 'util';
-import { MedicineType } from '@medical/medicine-type.model';
+import { MedicineType } from '@core/models/medicine-type.model';
 import { MedicineTypeService } from '@medical/medicine-type/medicine-type.service';
 
 @Component({

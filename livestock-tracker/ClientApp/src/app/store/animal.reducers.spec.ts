@@ -10,8 +10,8 @@ import {
   RemoveAnimalSucceeded,
   AddAnimalSucceeded
 } from './animal.actions';
-import { Livestock } from '../livestock/livestock.model';
-import { LiveStockType } from '../livestock/livestock-type.model';
+import { Livestock } from '@core/models/livestock.model';
+import { LiveStockType } from '@core/models/livestock-type.model';
 
 describe('animals reducer', () => {
   let initialState: AnimalState;

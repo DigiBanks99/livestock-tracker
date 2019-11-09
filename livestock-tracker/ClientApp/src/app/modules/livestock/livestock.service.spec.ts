@@ -1,11 +1,11 @@
-import { TestBed, getTestBed, inject } from '@angular/core/testing';
+import { TestBed, getTestBed } from '@angular/core/testing';
 import {
   HttpTestingController,
   HttpClientTestingModule
 } from '@angular/common/http/testing';
 import { LivestockService } from './livestock.service';
-import { LiveStockType } from '../../core/models/livestock-type.modele.model';
-import { Livestock } from '../../core/models/livestock.model';
+import { LiveStockType } from '@core/models/livestock-type.model';
+import { Livestock } from '@core/models/livestock.model';
 
 describe('livestockService', () => {
   let injector: TestBed;

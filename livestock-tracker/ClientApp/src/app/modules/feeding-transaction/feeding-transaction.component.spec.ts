@@ -14,17 +14,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { LsGridComponent } from '@app/core/ls-grid/ls-grid.component';
+import { LsGridComponent } from '@app/modules/shared/ls-grid/ls-grid.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
   LivestockService,
   MockLivestockService
-} from '@app/livestock/livestock.service';
+} from '@app/modules/livestock/livestock.service';
 import {
   FeedTypeService,
   MockFeedTypeService
-} from '@app/feed-type/feed-type.service';
-import { UnitService, MockUnitService } from '@app/unit/unit.service';
+} from '@app/modules/feed-type/feed-type.service';
+import { UnitService, MockUnitService } from '@app/modules/unit/unit.service';
 import { Component, Input } from '@angular/core';
 
 @Component({

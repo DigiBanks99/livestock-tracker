@@ -5,8 +5,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MedicineTypeService, MockMedicineTypeService } from '../medicine-type.service';
-import { MedicineType } from '../../medicine-type.model';
+import {
+  MedicineTypeService,
+  MockMedicineTypeService
+} from '@medical/medicine-type/medicine-type.service';
+import { MedicineType } from '@core/models/medicine-type.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('MedicineTypeDetailComponent', () => {
@@ -16,7 +19,9 @@ describe('MedicineTypeDetailComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [MedicineTypeDetailComponent],
-      providers: [{ provide: MedicineTypeService, useClass: MockMedicineTypeService }],
+      providers: [
+        { provide: MedicineTypeService, useClass: MockMedicineTypeService }
+      ],
       imports: [
         ReactiveFormsModule,
         BrowserAnimationsModule,
@@ -24,8 +29,7 @@ describe('MedicineTypeDetailComponent', () => {
         MatInputModule,
         MatIconModule
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
