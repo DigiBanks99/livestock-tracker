@@ -6,7 +6,7 @@ import { MedicineTypeService } from '@medical/medicine-type/medicine-type.servic
 import { MedicalTransaction } from '@medical/medical-transaction.model';
 import { MedicalService } from '@medical/medical.service';
 import { MedicineType } from '@core/models/medicine-type.model';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 import { environment } from '@env/environment';
 
 @Component({

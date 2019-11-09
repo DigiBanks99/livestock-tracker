@@ -6,7 +6,7 @@ import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { UpdateFeedTransaction } from '@feeding-transaction-store/actions';
 import { Router } from '@angular/router';
 import { FeedType } from '@core/models/feed-type.model';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 
 @Component({
   selector: 'app-feeding-transaction-detail',

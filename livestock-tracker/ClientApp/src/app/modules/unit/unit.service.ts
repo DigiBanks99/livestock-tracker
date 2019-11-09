@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subject, Observable, of } from 'rxjs';
-import { Unit } from './unit.model';
+import { Unit } from '@core/models/unit.model';
 import { environment } from '@env/environment';
 
 export interface IUnitService {

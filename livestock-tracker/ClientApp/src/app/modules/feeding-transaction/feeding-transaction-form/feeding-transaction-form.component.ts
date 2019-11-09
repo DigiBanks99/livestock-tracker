@@ -14,7 +14,7 @@ import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FeedType } from '@core/models/feed-type.model';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 import { environment } from '@env/environment';
 
 @Component({

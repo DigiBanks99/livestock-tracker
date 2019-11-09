@@ -26,10 +26,7 @@ import { AnimalEffects } from '@animal-store/effects';
 
 import { AppComponent } from '@app/app.component';
 import { AppRoutingModule } from '@app/app-routing.module';
-import { UnitComponent } from '@unit/unit.component';
-import { UnitDetailComponent } from '@unit/unit-detail/unit-detail.component';
 import { FeedingTransactionEffects } from '@feeding-transaction-store/effect';
-import { UnitContainerComponent } from '@unit/unit-container.component';
 import { UnitEffects } from '@unit-store/effects';
 import { FeedTypeEffects } from '@feed-type-store/effects';
 import { SharedModule } from '@shared/shared.module';
@@ -39,14 +36,10 @@ import { FeedingTransactionModule } from '@feeding-transaction/feeding-transacti
 import { HeaderModule } from '@header/header.module';
 import { HomeModule } from '@home/home.module';
 import { ReportsModule } from '@reports/reports.module';
+import { UnitModule } from '@unit/unit.module';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    UnitContainerComponent,
-    UnitComponent,
-    UnitDetailComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
@@ -79,6 +72,7 @@ import { ReportsModule } from '@reports/reports.module';
     HeaderModule,
     HomeModule,
     ReportsModule,
+    UnitModule,
 
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([

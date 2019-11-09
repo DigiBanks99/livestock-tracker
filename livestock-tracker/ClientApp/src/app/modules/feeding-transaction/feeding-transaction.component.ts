@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 import { Livestock } from '@core/models/livestock.model';
 import { FeedType } from '@core/models/feed-type.model';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { FeedingTransactionService } from '@feeding-transaction/feeding-transaction.service';
 import { LsGridComponent } from '@shared/ls-grid/ls-grid.component';

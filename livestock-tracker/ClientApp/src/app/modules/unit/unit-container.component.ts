@@ -2,7 +2,7 @@ import { Store, select } from '@ngrx/store';
 import { State, selectors } from '@store';
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 import { AddUnit, UpdateUnit, RemoveUnit } from '@unit-store/actions';
 
 @Component({

@@ -1,7 +1,7 @@
 import { PageEvent } from '@angular/material/paginator';
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 import { environment } from '@env/environment';
 
 @Component({

@@ -1,6 +1,6 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 
 @Component({
   selector: 'app-unit-detail',

@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Unit } from '../unit.model';
+import { Unit } from '../../../core/models/unit.model';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('UnitDetailComponent', () => {
@@ -16,9 +16,7 @@ describe('UnitDetailComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [UnitDetailComponent],
-      providers: [
-        { provide: UnitService, useClass: MockUnitService }
-      ],
+      providers: [{ provide: UnitService, useClass: MockUnitService }],
       imports: [
         ReactiveFormsModule,
         BrowserAnimationsModule,
@@ -26,8 +24,7 @@ describe('UnitDetailComponent', () => {
         MatInputModule,
         MatIconModule
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(async(() => {

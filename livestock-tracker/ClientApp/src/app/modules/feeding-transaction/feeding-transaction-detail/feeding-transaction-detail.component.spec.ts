@@ -26,7 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { FeedType } from '@core/models/feed-type.model';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 import { provideMockStore } from '@ngrx/store/testing';
 import { selectors } from '@store';
 

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { State, selectors } from '@store';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 import { MedicalTransaction } from '@medical/medical-transaction.model';
 
 @Component({

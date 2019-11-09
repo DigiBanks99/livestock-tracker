@@ -1,5 +1,5 @@
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
-import { Unit } from '@unit/unit.model';
+import { Unit } from '@core/models/unit.model';
 import { Action } from '@ngrx/store';
 import {
   ActionTypes,
