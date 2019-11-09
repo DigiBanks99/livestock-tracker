@@ -7,7 +7,6 @@ import { LivestockDetailComponent } from './livestock-detail/livestock-detail.co
 import { LivestockFormComponent } from './livestock-form/livestock-form.component';
 import { LivestockService } from './livestock.service';
 import { CommonModule } from '@angular/common';
-import { AppRoutingModule } from '@app/app-routing.module';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,6 +21,9 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -32,10 +34,9 @@ import { MatButtonModule } from '@angular/material/button';
     LivestockFormComponent
   ],
   imports: [
-    AppRoutingModule,
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
+    HttpClientModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
@@ -50,6 +51,9 @@ import { MatButtonModule } from '@angular/material/button';
     MatDividerModule,
     MatToolbarModule,
     MatSelectModule,
+    MatSnackBarModule,
+    ReactiveFormsModule,
+    RouterModule,
     SharedModule
   ],
   providers: [LivestockService],

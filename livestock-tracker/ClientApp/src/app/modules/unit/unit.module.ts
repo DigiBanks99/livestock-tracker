@@ -12,12 +12,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [UnitContainerComponent, UnitComponent, UnitDetailComponent],
   imports: [
     CommonModule,
     FormsModule,
+    HttpClientModule,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,

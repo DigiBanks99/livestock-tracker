@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,7 @@ import { MatInputModule } from '@angular/material/input';
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule,
+    HttpClientModule,
     MatToolbarModule,
     MatListModule,
     MatIconModule,
@@ -31,7 +32,8 @@ import { MatInputModule } from '@angular/material/input';
     MatPaginatorModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    ReactiveFormsModule
   ],
   providers: [FeedTypeService],
   exports: [FeedTypeContainerComponent]
