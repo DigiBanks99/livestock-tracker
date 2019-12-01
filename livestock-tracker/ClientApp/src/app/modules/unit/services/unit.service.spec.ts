@@ -6,7 +6,10 @@ import { UnitService } from './unit.service';
 describe('UnitService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [UnitService],
+      providers: [
+        UnitService,
+        { provide: 'BASE_URL', value: 'http://localhost:5000/api' }
+      ],
       imports: [HttpClientTestingModule]
     });
   });

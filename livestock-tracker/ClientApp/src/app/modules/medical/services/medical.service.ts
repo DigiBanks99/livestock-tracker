@@ -1,7 +1,7 @@
 import { Subject, Subscription } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { Injectable, OnDestroy } from '@angular/core';
+import { Inject, Injectable, OnDestroy } from '@angular/core';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { environment } from '@env/environment';
 
@@ -19,21 +19,22 @@ export interface IMedicalService {
 export class MedicalService implements IMedicalService, OnDestroy {
   public medicalTransactionsChanged: Subject<MedicalTransaction[]>;
 
-  private urlBase = environment.apiUrl + 'medicalTransactions/';
+  private readonly apiUrl: string;
   private medicalTransactions: MedicalTransaction[];
   private httpGetSubscription: Subscription;
   private httpPostSubscription: Subscription;
   private httpPutSubscription: Subscription;
   private httpDeleteSubscription: Subscription;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    this.apiUrl = baseUrl + 'medicalTransactions/';
     this.medicalTransactions = [];
     this.medicalTransactionsChanged = new Subject<MedicalTransaction[]>();
   }
 
   public getMedicalTransactions(animalID: number) {
     this.httpGetSubscription = this.http
-      .get(this.urlBase + animalID)
+      .get(this.apiUrl + animalID)
       .subscribe((transactions: MedicalTransaction[]) => {
         this.medicalTransactions = transactions;
         this.emitMedicalTransactionsChanged();
@@ -58,7 +59,7 @@ export class MedicalService implements IMedicalService, OnDestroy {
     medicalTransaction.transactionDate = new Date();
     medicalTransaction.unit = 1;
     this.httpPostSubscription = this.http
-      .post(this.urlBase, medicalTransaction)
+      .post(this.apiUrl, medicalTransaction)
       .subscribe((savedTransaction: MedicalTransaction) => {
         medicalTransaction = savedTransaction;
         this.medicalTransactions.push(medicalTransaction);
@@ -74,7 +75,7 @@ export class MedicalService implements IMedicalService, OnDestroy {
 
     const transactionToUpdate = this.medicalTransactions[index];
     this.httpPutSubscription = this.http
-      .patch(this.urlBase + medicalTransaction.id, medicalTransaction)
+      .patch(this.apiUrl + medicalTransaction.id, medicalTransaction)
       .subscribe((updatedTransaction: MedicalTransaction) => {
         medicalTransaction = updatedTransaction;
         this.emitMedicalTransactionsChanged();
@@ -83,7 +84,7 @@ export class MedicalService implements IMedicalService, OnDestroy {
 
   public deleteMedicalTransaction(id: number) {
     this.httpDeleteSubscription = this.http
-      .delete(this.urlBase + id)
+      .delete(this.apiUrl + id)
       .subscribe((deletedMedicalTransaction: MedicalTransaction) => {
         this.getMedicalTransactions(deletedMedicalTransaction.animalID);
       });

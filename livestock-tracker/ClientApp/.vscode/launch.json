@@ -21,10 +21,10 @@
       "smartStep": true
     },
     {
-      "type": "brave",
+      "type": "chrome",
       "request": "launch",
-      "name": "Launch in Brave",
-      "url": "http://localhost:5000",
+      "name": "Launch in Chrome HTTPS",
+      "url": "https://localhost:5001",
       "webRoot": "${workspaceFolder}",
       "smartStep": true
     }

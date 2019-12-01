@@ -7,7 +7,10 @@ describe('FeedingTransactionService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [FeedingTransactionService]
+      providers: [
+        FeedingTransactionService,
+        { provide: 'BASE_URL', value: 'http://localhost:5000/api' }
+      ]
     });
   });
 

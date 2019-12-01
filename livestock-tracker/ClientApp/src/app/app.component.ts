@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
     private sanitizer: DomSanitizer
   ) {}
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.matIconRegistry.addSvgIcon(
       'farmer',
       this.sanitizer.bypassSecurityTrustResourceUrl('./../assets/farmer.svg')

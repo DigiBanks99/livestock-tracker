@@ -1,9 +1,8 @@
 import { Subject } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { MedicineType } from '@core/models/medicine-type.model';
-import { environment } from '@env/environment';
 
 export interface IMedicineTypeService {
   medicineTypesChanged: Subject<MedicineType[]>;
@@ -18,16 +17,17 @@ export interface IMedicineTypeService {
 export class MedicineTypeService implements IMedicineTypeService {
   public medicineTypesChanged: Subject<MedicineType[]>;
 
-  private urlBase = environment.apiUrl + 'Medicine/';
+  private readonly apiUrl: string;
   private medicineTypes: MedicineType[];
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    this.apiUrl = baseUrl + 'medicine/';
     this.medicineTypes = [];
     this.medicineTypesChanged = new Subject<MedicineType[]>();
   }
 
   public getMedicineTypes() {
-    this.http.get(this.urlBase).subscribe((medicineTypes: MedicineType[]) => {
+    this.http.get(this.apiUrl).subscribe((medicineTypes: MedicineType[]) => {
       this.medicineTypes = medicineTypes;
       this.emitMedicineTypeChanged();
     });
@@ -35,7 +35,7 @@ export class MedicineTypeService implements IMedicineTypeService {
 
   public addMedicineType(medicineType: MedicineType) {
     this.http
-      .post(this.urlBase, medicineType)
+      .post(this.apiUrl, medicineType)
       .subscribe((savedMedicineType: MedicineType) => {
         this.medicineTypes.push(savedMedicineType);
         this.emitMedicineTypeChanged();
@@ -43,14 +43,14 @@ export class MedicineTypeService implements IMedicineTypeService {
   }
 
   public deleteMedicineType(typeCode: number) {
-    this.http.delete(this.urlBase + typeCode).subscribe(() => {
+    this.http.delete(this.apiUrl + typeCode).subscribe(() => {
       this.getMedicineTypes();
     });
   }
 
   public updateMedicineType(medicineTypeToUpdate: MedicineType) {
     this.http
-      .patch(this.urlBase + medicineTypeToUpdate.typeCode, medicineTypeToUpdate)
+      .patch(this.apiUrl + medicineTypeToUpdate.typeCode, medicineTypeToUpdate)
       .subscribe(() => {
         this.emitMedicineTypeChanged();
       });

@@ -17,7 +17,10 @@ describe('livestockService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [LivestockService]
+      providers: [
+        LivestockService,
+        { provide: 'BASE_URL', value: 'http://localhost:5000/api' }
+      ]
     });
 
     injector = getTestBed();
@@ -131,7 +134,7 @@ describe('livestockService', () => {
         const newAnimal = new Livestock(
           0,
           LiveStockType.Chicken,
-          'cockadoodle',
+          'Roberto',
           55,
           new Date(),
           new Date(),
@@ -147,7 +150,7 @@ describe('livestockService', () => {
           lastItem = list[list.length - 1];
           expect(lastItem.id).toBe(-2);
           expect(lastItem.type).toBe(LiveStockType.Chicken);
-          expect(lastItem.subspecies).toBe('cockadoodle');
+          expect(lastItem.subspecies).toBe('Roberto');
         });
         service.getLivestock();
       });

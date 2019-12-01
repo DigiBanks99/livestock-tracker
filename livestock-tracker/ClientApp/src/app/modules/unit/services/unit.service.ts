@@ -1,9 +1,8 @@
 import { Observable, of, Subject } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Unit } from '@core/models/unit.model';
-import { environment } from '@env/environment';
 
 export interface IUnitService {
   getUnits(): Observable<Unit[]>;
@@ -17,28 +16,30 @@ export interface IUnitService {
   providedIn: 'root'
 })
 export class UnitService implements IUnitService {
-  private urlBase = environment.apiUrl + 'unit/';
+  private readonly apiUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    this.apiUrl = baseUrl + 'unit/';
+  }
 
   public getUnits(): Observable<Unit[]> {
-    return this.http.get<Unit[]>(this.urlBase);
+    return this.http.get<Unit[]>(this.apiUrl);
   }
 
   public getUnit(typeCode: number): Observable<Unit> {
-    return this.http.get<Unit>(this.urlBase + typeCode);
+    return this.http.get<Unit>(this.apiUrl + typeCode);
   }
 
   public addUnit(unit: Unit): Observable<Unit> {
-    return this.http.post<Unit>(this.urlBase, unit);
+    return this.http.post<Unit>(this.apiUrl, unit);
   }
 
   public updateUnit(unit: Unit): Observable<Unit> {
-    return this.http.patch<Unit>(this.urlBase + unit.typeCode, unit);
+    return this.http.patch<Unit>(this.apiUrl + unit.typeCode, unit);
   }
 
   public deleteUnit(typeCode: number): Observable<number> {
-    return this.http.delete<number>(this.urlBase + typeCode);
+    return this.http.delete<number>(this.apiUrl + typeCode);
   }
 }
 

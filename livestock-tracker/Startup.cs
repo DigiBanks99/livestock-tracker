@@ -2,6 +2,7 @@ using LivestockTracker.Database;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,10 +24,7 @@ namespace LivestockTracker
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      services.AddMvc(options =>
-      {
-        options.EnableEndpointRouting = false;
-      });
+      services.AddControllersWithViews();
 
       services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -54,6 +52,17 @@ namespace LivestockTracker
     {
       if (env.IsDevelopment())
       {
+        app.UseDeveloperExceptionPage();
+      }
+      else
+      {
+        app.UseExceptionHandler("/Error");
+        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+        app.UseHsts();
+      }
+
+      if (env.IsDevelopment())
+      {
         SeedDevDatabase(app);
       }
       else
@@ -61,12 +70,18 @@ namespace LivestockTracker
         SeedDatabase(app);
       }
 
+      app.UseHttpsRedirection();
       app.UseStaticFiles();
-      app.UseSpaStaticFiles();
-
-      app.UseMvc(routes =>
+      if (!env.IsDevelopment())
       {
-        routes.MapRoute("default", "{controller}/{action=Index}/{id?}");
+        app.UseSpaStaticFiles();
+      }
+
+      app.UseRouting();
+
+      app.UseEndpoints(endpoints =>
+      {
+        endpoints.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
       });
 
       app.UseSpa(spa =>
@@ -78,8 +93,9 @@ namespace LivestockTracker
 
         if (env.IsDevelopment())
         {
-          spa.UseProxyToSpaDevelopmentServer(Configuration.GetSection("SpaUrl").Value);
+          spa.UseAngularCliServer("start");
         }
+
       });
     }
 
@@ -96,7 +112,7 @@ namespace LivestockTracker
           }
           catch (Exception ex)
           {
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<Program>>();
+            var logger = app.ApplicationServices.GetRequiredService<ILogger>();
             logger.LogError(ex, "An error occurred seeding the DB.");
           }
         }
@@ -115,7 +131,7 @@ namespace LivestockTracker
           }
           catch (Exception ex)
           {
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<Program>>();
+            var logger = app.ApplicationServices.GetRequiredService<ILogger>();
             logger.LogError(ex, "An error occurred seeding the DB.");
           }
         }

@@ -1,9 +1,8 @@
 import { Observable, of, Subject } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { FeedType } from '@core/models/feed-type.model';
-import { environment } from '@env/environment';
 
 export interface IFeedTypeService {
   getFeedTypes(): Observable<FeedType[]>;
@@ -15,28 +14,30 @@ export interface IFeedTypeService {
 
 @Injectable()
 export class FeedTypeService implements IFeedTypeService {
-  private urlBase = environment.apiUrl + 'feedtype/';
+  private readonly apiUrl: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+    this.apiUrl = baseUrl + 'feedType/';
+  }
 
   public getFeedTypes(): Observable<FeedType[]> {
-    return this.http.get<FeedType[]>(this.urlBase);
+    return this.http.get<FeedType[]>(this.apiUrl);
   }
 
   public getFromServer(id: number): Observable<FeedType> {
-    return this.http.get<FeedType>(this.urlBase + id);
+    return this.http.get<FeedType>(this.apiUrl + id);
   }
 
   public add(feedType: FeedType): Observable<FeedType> {
-    return this.http.post<FeedType>(this.urlBase, feedType);
+    return this.http.post<FeedType>(this.apiUrl, feedType);
   }
 
   public update(feedType: FeedType): Observable<FeedType> {
-    return this.http.patch<FeedType>(this.urlBase + feedType.id, feedType);
+    return this.http.patch<FeedType>(this.apiUrl + feedType.id, feedType);
   }
 
   public delete(id: number): Observable<number> {
-    return this.http.delete<number>(this.urlBase + id);
+    return this.http.delete<number>(this.apiUrl + id);
   }
 }
 
