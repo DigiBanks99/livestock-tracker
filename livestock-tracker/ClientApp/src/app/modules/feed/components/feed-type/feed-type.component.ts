@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { FeedType } from '@core/models/feed-type.model';
 import { environment } from '@env/environment';
@@ -9,7 +9,7 @@ import { FeedTypeService } from '@feed/services/feed-type.service';
   templateUrl: './feed-type.component.html',
   styleUrls: ['./feed-type.component.scss']
 })
-export class FeedTypeComponent implements OnInit {
+export class FeedTypeComponent {
   @Input() public feedTypes: FeedType[];
   @Output() public add = new EventEmitter<FeedType>();
   @Output() public remove = new EventEmitter<number>();
@@ -24,10 +24,6 @@ export class FeedTypeComponent implements OnInit {
     this.filteredFeedTypes = [];
     this.pageSize = environment.pageSize;
     this.lastPage = environment.defaultLastPage;
-  }
-
-  ngOnInit() {
-    this.feedTypeService.getFeedTypes();
   }
 
   public addFeedType() {

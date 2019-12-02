@@ -1,4 +1,5 @@
 import { FeedType } from '@core/models/feed-type.model';
+import { crudActionsFactory } from '@core/store';
 import { Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
@@ -15,7 +16,7 @@ export enum ActionTypes {
   FEED_TYPE_ERROR = 'FEED_TYPE_ERROR'
 }
 
-export class AddFeedType implements Action {
+/*export class AddFeedType implements Action {
   readonly type = ActionTypes.ADD_FEED_TYPE;
   feedType: FeedType;
 
@@ -80,7 +81,7 @@ export class SetFeedTypes implements Action {
   constructor(feedTypes: FeedType[]) {
     this.feedTypes = feedTypes;
   }
-}
+}*/
 
 export class SelectFeedType implements Action {
   readonly type = ActionTypes.SELECT_FEED_TYPE;
@@ -91,11 +92,13 @@ export class SelectFeedType implements Action {
   }
 }
 
-export class FeedTypeError implements Action {
+/*export class FeedTypeError implements Action {
   readonly type = ActionTypes.FEED_TYPE_ERROR;
   error: Error;
 
   constructor(error: Error) {
     this.error = error;
   }
-}
+}*/
+
+export const actions = crudActionsFactory<FeedType, number>('FEED_TYPE');

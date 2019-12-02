@@ -1,15 +1,9 @@
+import { KeyValue } from '@angular/common';
 import { FeedType } from '@core/models/feed-type.model';
+import { PayloadAction } from '@core/store';
 import { FeedTypeState } from '@core/store/feed-type-state.interface';
-import {
-  ActionTypes,
-  AddFeedTypeSuccess,
-  FeedTypeError,
-  RemoveFeedTypeSuccess,
-  SelectFeedType,
-  SetFeedTypes,
-  UpdateFeedTypeSuccess
-} from '@feed/store/feed-type.actions';
-import { createEntityAdapter } from '@ngrx/entity';
+import { ActionTypes, SelectFeedType } from '@feed/store/feed-type.actions';
+import { createEntityAdapter, Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 export const feedTypeAdapter = createEntityAdapter<FeedType>({
@@ -38,20 +32,27 @@ export function feedTypeReducer(
         ...state
       };
     case ActionTypes.ADD_FEED_TYPE_SUCCESS:
+    case 'API_ADD_FEED_TYPE':
       return {
-        ...addOne(state, <AddFeedTypeSuccess>action)
+        ...addOne(state, <PayloadAction<FeedType>>action)
       };
     case ActionTypes.UPDATE_FEED_TYPE_SUCCESS:
+    case 'API_UPDATE_FEED_TYPE':
       return {
-        ...updateOne(state, <UpdateFeedTypeSuccess>action)
+        ...updateOne(
+          state,
+          <PayloadAction<KeyValue<number, Update<FeedType>>>>action
+        )
       };
     case ActionTypes.REMOVE_FEED_TYPE_SUCCESS:
+    case 'API_DELETE_FEED_TYPE':
       return {
-        ...removeOne(state, <RemoveFeedTypeSuccess>action)
+        ...removeOne(state, <PayloadAction<number>>action)
       };
     case ActionTypes.SET_FEED_TYPES:
+    case 'API_FETCH_FEED_TYPE':
       return {
-        ...setAll(state, <SetFeedTypes>action)
+        ...setAll(state, <PayloadAction<FeedType[]>>action)
       };
     case ActionTypes.SELECT_FEED_TYPE:
       return {
@@ -59,8 +60,9 @@ export function feedTypeReducer(
         ...state
       };
     case ActionTypes.FEED_TYPE_ERROR:
+    case 'API_ERROR_FEED_TYPE':
       return {
-        error: (<FeedTypeError>action).error,
+        error: (<PayloadAction<Error>>action).payload,
         isPending: false,
         ...state
       };
@@ -71,9 +73,9 @@ export function feedTypeReducer(
 
 function addOne(
   state: FeedTypeState,
-  action: AddFeedTypeSuccess
+  action: PayloadAction<FeedType>
 ): FeedTypeState {
-  const newState = feedTypeAdapter.addOne(action.feedType, state);
+  const newState = feedTypeAdapter.addOne(action.payload, state);
   return {
     isPending: false,
     error: null,
@@ -83,9 +85,9 @@ function addOne(
 
 function updateOne(
   state: FeedTypeState,
-  action: UpdateFeedTypeSuccess
+  action: PayloadAction<KeyValue<number, Update<FeedType>>>
 ): FeedTypeState {
-  const newState = feedTypeAdapter.updateOne(action.feedType, state);
+  const newState = feedTypeAdapter.updateOne(action.payload.value, state);
   return {
     isPending: false,
     error: null,
@@ -95,9 +97,9 @@ function updateOne(
 
 function removeOne(
   state: FeedTypeState,
-  action: RemoveFeedTypeSuccess
+  action: PayloadAction<number>
 ): FeedTypeState {
-  const newState = feedTypeAdapter.removeOne(action.id, state);
+  const newState = feedTypeAdapter.removeOne(action.payload, state);
   return {
     isPending: false,
     error: null,
@@ -105,8 +107,11 @@ function removeOne(
   };
 }
 
-function setAll(state: FeedTypeState, action: SetFeedTypes): FeedTypeState {
-  const newState = feedTypeAdapter.addAll(action.feedTypes, state);
+function setAll(
+  state: FeedTypeState,
+  action: PayloadAction<FeedType[]>
+): FeedTypeState {
+  const newState = feedTypeAdapter.addAll(action.payload, state);
   return {
     isPending: false,
     error: null,

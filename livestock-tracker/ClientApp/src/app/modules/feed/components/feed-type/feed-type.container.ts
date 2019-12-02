@@ -1,16 +1,11 @@
 import { Observable } from 'rxjs';
 
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedTypeState } from '@core/store';
 import { feedTypeStore } from '@feed-store';
-import {
-  AddFeedType,
-  RemoveFeedType,
-  SelectFeedType,
-  UpdateFeedType
-} from '@feed/store/feed-type.actions';
+import { actions, SelectFeedType } from '@feed/store/feed-type.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -24,7 +19,7 @@ import { select, Store } from '@ngrx/store';
     ></app-feed-type>
   `
 })
-export class FeedTypeContainerComponent {
+export class FeedTypeContainerComponent implements OnInit {
   public feedTypes$: Observable<FeedType[]>;
   public isPending$: Observable<boolean>;
   public error$: Observable<Error>;
@@ -41,12 +36,16 @@ export class FeedTypeContainerComponent {
     );
   }
 
+  public ngOnInit(): void {
+    actions.fetchItems();
+  }
+
   public onAdd(feedType: FeedType) {
-    this.store.dispatch(new AddFeedType(feedType));
+    this.store.dispatch(actions.addItem(feedType));
   }
 
   public onRemove(id: number) {
-    this.store.dispatch(new RemoveFeedType(id));
+    this.store.dispatch(actions.deleteItem(id));
   }
 
   public onShowDetail(feedType: FeedType) {
@@ -55,6 +54,6 @@ export class FeedTypeContainerComponent {
   }
 
   public onSave(feedType: FeedType) {
-    this.store.dispatch(new UpdateFeedType(feedType));
+    this.store.dispatch(actions.updateItem(feedType, feedType.id));
   }
 }
