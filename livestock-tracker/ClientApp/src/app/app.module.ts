@@ -4,8 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { AppComponent } from '@app/app.component';
 import { FeedModule } from '@feed/feed.module';
-import { FeedTypeEffects } from '@feed/store/feed-type.effects';
-import { FeedingTransactionEffects } from '@feed/store/feeding-transaction.effect';
 import { HeaderModule } from '@header/header.module';
 import { HomeModule } from '@home/home.module';
 import { LivestockModule } from '@livestock/livestock.module';
@@ -31,11 +29,7 @@ import { UnitModule } from '@unit/unit.module';
     ReportsModule,
 
     StoreModule.forRoot({}),
-    EffectsModule.forRoot([
-      AnimalEffects,
-      FeedingTransactionEffects,
-      FeedTypeEffects
-    ]),
+    EffectsModule.forRoot([]),
     UnitModule
   ],
   bootstrap: [AppComponent]

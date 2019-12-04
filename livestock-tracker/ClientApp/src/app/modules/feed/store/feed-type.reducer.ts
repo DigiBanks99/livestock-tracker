@@ -22,21 +22,19 @@ export function feedTypeReducer(
   action: Action
 ) {
   switch (action.type) {
-    case ActionTypes.ADD_FEED_TYPE:
-    case ActionTypes.UPDATE_FEED_TYPE:
-    case ActionTypes.REMOVE_FEED_TYPE:
-    case ActionTypes.FETCH_FEED_TYPES:
+    case 'ADD_FEED_TYPE':
+    case 'UPDATE_FEED_TYPE':
+    case 'DELETE_FEED_TYPE':
+    case 'FETCH_FEED_TYPE':
       return {
         isPending: true,
         error: null,
         ...state
       };
-    case ActionTypes.ADD_FEED_TYPE_SUCCESS:
     case 'API_ADD_FEED_TYPE':
       return {
         ...addOne(state, <PayloadAction<FeedType>>action)
       };
-    case ActionTypes.UPDATE_FEED_TYPE_SUCCESS:
     case 'API_UPDATE_FEED_TYPE':
       return {
         ...updateOne(
@@ -44,12 +42,10 @@ export function feedTypeReducer(
           <PayloadAction<KeyValue<number, Update<FeedType>>>>action
         )
       };
-    case ActionTypes.REMOVE_FEED_TYPE_SUCCESS:
     case 'API_DELETE_FEED_TYPE':
       return {
         ...removeOne(state, <PayloadAction<number>>action)
       };
-    case ActionTypes.SET_FEED_TYPES:
     case 'API_FETCH_FEED_TYPE':
       return {
         ...setAll(state, <PayloadAction<FeedType[]>>action)
@@ -59,7 +55,6 @@ export function feedTypeReducer(
         selectedFeedTypeId: (<SelectFeedType>action).id,
         ...state
       };
-    case ActionTypes.FEED_TYPE_ERROR:
     case 'API_ERROR_FEED_TYPE':
       return {
         error: (<PayloadAction<Error>>action).payload,

@@ -1,4 +1,5 @@
 import { KeyValue } from '@angular/common';
+import { KeyEntity } from '@core/models/key-entity.interface';
 import { Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
@@ -6,7 +7,7 @@ export interface PayloadAction<T> extends Action {
   payload: T;
 }
 
-export interface CrudActions<T, K> {
+export interface CrudActions<T extends KeyEntity<K>, K> {
   addItem: (item: T) => PayloadAction<T>;
   apiAddItem: (item: T) => PayloadAction<T>;
   updateItem: (item: T, key: K) => PayloadAction<KeyValue<K, T>>;
@@ -97,7 +98,9 @@ function apiError(error: Error, typeName: string): PayloadAction<Error> {
   };
 }
 
-export function crudActionsFactory<T, K>(typeName: string): CrudActions<T, K> {
+export function crudActionsFactory<T extends KeyEntity<K>, K>(
+  typeName: string
+): CrudActions<T, K> {
   return {
     addItem: (item: T): PayloadAction<T> => addItem(item, typeName),
     apiAddItem: (item: T): PayloadAction<T> => apiAddItem(item, typeName),
