@@ -1,9 +1,6 @@
 import { FeedingTransaction } from '@core/models';
-import { EntityState } from '@ngrx/entity';
+
+import { CrudState } from './crud-state.interface';
 
 export interface FeedingTransactionState
-  extends EntityState<FeedingTransaction> {
-  selectedTransactionId: number;
-  isPending: boolean;
-  error?: Error;
-}
+  extends CrudState<FeedingTransaction, number> {}

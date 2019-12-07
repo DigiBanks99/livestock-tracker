@@ -15,7 +15,7 @@ const {
 const getSelectedFeedingTransactionId = createSelector(
   getFeedingTransactionState,
   state => {
-    return state.selectedTransactionId;
+    return state.selectedId;
   }
 );
 

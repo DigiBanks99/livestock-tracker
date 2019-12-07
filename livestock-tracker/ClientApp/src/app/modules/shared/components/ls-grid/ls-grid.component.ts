@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Params } from '@angular/router';
+import { KeyEntity } from '@core/models/key-entity.interface';
 import { LsGridColumnDef } from '@core/models/ls-grid-column-def.model';
 import { LsGridConfig } from '@core/models/ls-grid-config.model';
 import { LsGridColumnType } from '@shared/components/ls-grid/ls-grid-column-type.enum';
@@ -23,7 +24,10 @@ export class LsGridComponent implements OnChanges, OnDestroy {
   private data: any[];
   private loading: boolean;
 
-  @Input() public config: LsGridConfig;
+  @Input() public config: LsGridConfig<
+    KeyEntity<string | number>,
+    string | number
+  >;
   @Input() dataSource?: any[];
 
   constructor() {
@@ -165,7 +169,10 @@ export class LsGridComponent implements OnChanges, OnDestroy {
     return this.getColumnDef(index).type === LsGridColumnType.Delete;
   }
 
-  private getConfig(): LsGridConfig {
+  private getConfig(): LsGridConfig<
+    KeyEntity<string | number>,
+    string | number
+  > {
     if (this.config === undefined || this.config === null) {
       throw new Error('ERROR: config not supplied.');
     }

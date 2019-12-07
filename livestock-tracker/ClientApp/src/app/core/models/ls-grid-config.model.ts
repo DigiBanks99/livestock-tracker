@@ -2,10 +2,10 @@ import { EventEmitter } from '@angular/core';
 import { ILsDataService } from '@core/models/ls-data-service.interface';
 import { LsGridColumnDef } from '@core/models/ls-grid-column-def.model';
 
-export class LsGridConfig {
+export class LsGridConfig<T, K> {
   columnDef: LsGridColumnDef[];
-  dataService: ILsDataService;
-  fetchKey?: any;
+  dataService: ILsDataService<T, K>;
+  fetchKey?: K;
   useHeading?: boolean;
   heading?: string;
   pageSize?: number;

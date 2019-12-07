@@ -1,115 +1,40 @@
-import { KeyValue } from '@angular/common';
 import { FeedType } from '@core/models/feed-type.model';
-import { PayloadAction } from '@core/store';
+import { crudReducer } from '@core/store/crud.reducer';
 import { FeedTypeState } from '@core/store/feed-type-state.interface';
 import { ActionTypes, SelectFeedType } from '@feed/store/feed-type.actions';
-import { createEntityAdapter, Update } from '@ngrx/entity';
+import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
+
+import { FeedTypeKey } from './constants';
 
 export const feedTypeAdapter = createEntityAdapter<FeedType>({
   selectId: (feedType: FeedType) => feedType.id,
   sortComparer: (feedType: FeedType) => feedType.description
 });
 
-export const initialState = feedTypeAdapter.getInitialState({
-  selectedFeedTypeId: null,
+const entityState = feedTypeAdapter.getInitialState();
+const initialState: FeedTypeState = {
+  ...entityState,
+  isFetching: false,
   isPending: false,
-  error: null
-});
+  error: null,
+  selectedId: null
+};
 
 export function feedTypeReducer(
   state: FeedTypeState = initialState,
   action: Action
 ) {
+  const newState = crudReducer(FeedTypeKey, feedTypeAdapter, state, action);
+  if (newState !== state) return newState;
+
   switch (action.type) {
-    case 'ADD_FEED_TYPE':
-    case 'UPDATE_FEED_TYPE':
-    case 'DELETE_FEED_TYPE':
-    case 'FETCH_FEED_TYPE':
-      return {
-        isPending: true,
-        error: null,
-        ...state
-      };
-    case 'API_ADD_FEED_TYPE':
-      return {
-        ...addOne(state, <PayloadAction<FeedType>>action)
-      };
-    case 'API_UPDATE_FEED_TYPE':
-      return {
-        ...updateOne(
-          state,
-          <PayloadAction<KeyValue<number, Update<FeedType>>>>action
-        )
-      };
-    case 'API_DELETE_FEED_TYPE':
-      return {
-        ...removeOne(state, <PayloadAction<number>>action)
-      };
-    case 'API_FETCH_FEED_TYPE':
-      return {
-        ...setAll(state, <PayloadAction<FeedType[]>>action)
-      };
     case ActionTypes.SELECT_FEED_TYPE:
       return {
-        selectedFeedTypeId: (<SelectFeedType>action).id,
-        ...state
-      };
-    case 'API_ERROR_FEED_TYPE':
-      return {
-        error: (<PayloadAction<Error>>action).payload,
-        isPending: false,
+        selectedId: (<SelectFeedType>action).id,
         ...state
       };
     default:
       return state;
   }
-}
-
-function addOne(
-  state: FeedTypeState,
-  action: PayloadAction<FeedType>
-): FeedTypeState {
-  const newState = feedTypeAdapter.addOne(action.payload, state);
-  return {
-    isPending: false,
-    error: null,
-    ...newState
-  };
-}
-
-function updateOne(
-  state: FeedTypeState,
-  action: PayloadAction<KeyValue<number, Update<FeedType>>>
-): FeedTypeState {
-  const newState = feedTypeAdapter.updateOne(action.payload.value, state);
-  return {
-    isPending: false,
-    error: null,
-    ...newState
-  };
-}
-
-function removeOne(
-  state: FeedTypeState,
-  action: PayloadAction<number>
-): FeedTypeState {
-  const newState = feedTypeAdapter.removeOne(action.payload, state);
-  return {
-    isPending: false,
-    error: null,
-    ...newState
-  };
-}
-
-function setAll(
-  state: FeedTypeState,
-  action: PayloadAction<FeedType[]>
-): FeedTypeState {
-  const newState = feedTypeAdapter.addAll(action.payload, state);
-  return {
-    isPending: false,
-    error: null,
-    ...newState
-  };
 }

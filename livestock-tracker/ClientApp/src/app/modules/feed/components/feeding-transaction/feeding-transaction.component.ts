@@ -51,17 +51,19 @@ export class FeedingTransactionComponent implements OnDestroy {
     this.feedingTransactions = [];
   }
 
-  public getConfig(): LsGridConfig {
-    const config = new LsGridConfig();
+  public getConfig(): LsGridConfig<FeedingTransaction, number> {
+    const config = new LsGridConfig<FeedingTransaction, number>();
     config.dataService = this.feedingTransactionService;
     config.columnDef = this.getGridColumnDefs();
     config.useHeading = false;
     config.fetchKey = this.currentAnimal ? this.currentAnimal.id : 0;
     config.routerLink = ['edit'];
     config.queryParameters = (item: FeedingTransaction) => ({ id: item.id });
-    this.showDetailTriggered = config.showDetail.subscribe((item: any) => {
-      this.showDetail.emit(<FeedingTransaction>item);
-    });
+    this.showDetailTriggered = config.showDetail.subscribe(
+      (item: FeedingTransaction) => {
+        this.showDetail.emit(item);
+      }
+    );
     return config;
   }
 

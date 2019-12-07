@@ -8,9 +8,11 @@ import { FeedTypeService } from '@feed/services/feed-type.service';
 import { actions as feedTypeActions } from '@feed/store/feed-type.actions';
 import { Actions } from '@ngrx/effects';
 
+import { FeedTypeKey } from './constants';
+
 @Injectable()
 export class FeedTypeEffects extends CrudEffects<FeedType, number> {
   constructor(actions$: Actions, feedTypeService: FeedTypeService) {
-    super(actions$, feedTypeService, feedTypeActions, 'FEED_TYPE');
+    super(actions$, feedTypeService, feedTypeActions, FeedTypeKey);
   }
 }

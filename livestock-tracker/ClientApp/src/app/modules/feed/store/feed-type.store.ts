@@ -23,7 +23,7 @@ const getFeedTypes = createSelector(
 
 const getSelectedFeedTypeId = createSelector(
   getFeedTypeState,
-  state => state.selectedFeedTypeId
+  state => state.selectedId
 );
 
 const getSelectedFeedType = createSelector(

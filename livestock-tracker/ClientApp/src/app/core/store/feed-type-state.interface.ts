@@ -1,8 +1,5 @@
 import { FeedType } from '@core/models';
-import { EntityState } from '@ngrx/entity';
 
-export interface FeedTypeState extends EntityState<FeedType> {
-  selectedFeedTypeId: number;
-  isPending: boolean;
-  error?: Error;
-}
+import { CrudState } from './crud-state.interface';
+
+export interface FeedTypeState extends CrudState<FeedType, number> {}

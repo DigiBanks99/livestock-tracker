@@ -25,7 +25,9 @@ const getAnimalIds = createSelector(
 );
 export const getSelectedAnimalId = createSelector(
   animalState,
-  (state: AnimalState): number => state.selectedAnimal
+  (state: AnimalState): number => {
+    return state.selectedAnimal;
+  }
 );
 export const getAnimals = createSelector(
   getAnimalEntities,

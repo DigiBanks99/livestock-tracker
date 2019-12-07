@@ -10,7 +10,7 @@ import { AppState } from '@core/store';
 import { getSelectedAnimal, getUnits } from '@core/store/selectors';
 import { feedingTransactionStore, feedTypeStore } from '@feed-store';
 import {
-  RemoveFeedTransaction,
+  actions,
   SelectFeedTransaction
 } from '@feed/store/feeding-transaction.actions';
 import { select, Store } from '@ngrx/store';
@@ -63,6 +63,6 @@ export class FeedingTransactionContainerComponent implements OnInit {
   }
 
   public onDelete(id: number) {
-    this.store.dispatch(new RemoveFeedTransaction(id));
+    this.store.dispatch(actions.deleteItem(id));
   }
 }

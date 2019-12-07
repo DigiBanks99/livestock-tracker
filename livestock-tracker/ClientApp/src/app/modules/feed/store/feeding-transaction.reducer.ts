@@ -1,16 +1,14 @@
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { FeedingTransactionState } from '@core/store';
+import { crudReducer } from '@core/store/crud.reducer';
 import {
   ActionTypes,
-  AddFeedTransactionSucceeded,
-  FeedTransactionError,
-  RemoveFeedTransactionSucceeded,
-  SelectFeedTransaction,
-  SetFeedTransactions,
-  UpdateFeedTransactionSucceeded
+  SelectFeedTransaction
 } from '@feed/store/feeding-transaction.actions';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
+
+import { FeedingTransactionKey } from './constants';
 
 export const feedingTransactionAdapter = createEntityAdapter<
   FeedingTransaction
@@ -21,8 +19,9 @@ export const feedingTransactionAdapter = createEntityAdapter<
 
 export const initialState: FeedingTransactionState = feedingTransactionAdapter.getInitialState(
   {
-    selectedTransactionId: null,
+    selectedId: null,
     isPending: false,
+    isFetching: false,
     error: null
   }
 );
@@ -30,67 +29,19 @@ export const initialState: FeedingTransactionState = feedingTransactionAdapter.g
 export function feedingTransactionReducer(
   state: FeedingTransactionState = initialState,
   action: Action
-) {
+): FeedingTransactionState {
   switch (action.type) {
-    case ActionTypes.FETCH_FEED_TRANSACTIONS:
-    case ActionTypes.ADD_FEED_TRANSACTION:
-    case ActionTypes.UPDATE_FEED_TRANSACTION:
-    case ActionTypes.REMOVE_FEED_TRANSACTION:
-      return {
-        ...state,
-        isPending: true,
-        error: null
-      };
-    case ActionTypes.ADD_FEED_TRANSACTION_SUCCESS:
-      return {
-        ...feedingTransactionAdapter.addOne(
-          (<AddFeedTransactionSucceeded>action).transaction,
-          { ...state }
-        ),
-        isPending: false,
-        error: null
-      };
-    case ActionTypes.REMOVE_FEED_TRANSACTION_SUCCESS:
-      return {
-        ...feedingTransactionAdapter.removeOne(
-          (<RemoveFeedTransactionSucceeded>action).id,
-          { ...state }
-        ),
-        isPending: false,
-        error: null
-      };
-    case ActionTypes.UPDATE_FEED_TRANSACTION_SUCCESS:
-      return {
-        ...feedingTransactionAdapter.updateOne(
-          (<UpdateFeedTransactionSucceeded>action).transaction,
-          { ...state }
-        ),
-        isPending: false,
-        error: null
-      };
-    case ActionTypes.SET_FEED_TRANSACTIONS:
-      const setFeedTransactionsAction = <SetFeedTransactions>action;
-      const newState = feedingTransactionAdapter.addAll(
-        setFeedTransactionsAction.transactions,
-        { ...state }
-      );
-      return {
-        ...newState,
-        isPending: false,
-        error: null
-      };
     case ActionTypes.SELECT_FEED_TRANSACTION:
       return {
         ...state,
-        selectedTransactionId: (<SelectFeedTransaction>action).transactionId
-      };
-    case ActionTypes.FEED_TRANSACTION_ERROR:
-      return {
-        ...state,
-        isPending: false,
-        error: (<FeedTransactionError>action).error
+        selectedId: (<SelectFeedTransaction>action).transactionId
       };
     default:
-      return state;
+      return crudReducer(
+        FeedingTransactionKey,
+        feedingTransactionAdapter,
+        state,
+        action
+      );
   }
 }

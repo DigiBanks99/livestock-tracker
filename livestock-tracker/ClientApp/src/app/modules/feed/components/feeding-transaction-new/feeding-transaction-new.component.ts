@@ -8,7 +8,7 @@ import { Unit } from '@core/models/unit.model';
 import { AppState } from '@core/store';
 import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
 import { feedingTransactionStore, feedTypeStore } from '@feed-store';
-import { AddFeedTransaction } from '@feed/store/feeding-transaction.actions';
+import { actions } from '@feed/store/feeding-transaction.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -41,7 +41,7 @@ export class FeedingTransactionNewComponent implements OnInit {
   }
 
   public onSave(transaction: FeedingTransaction) {
-    this.store.dispatch(new AddFeedTransaction(transaction));
+    this.store.dispatch(actions.addItem(transaction));
   }
 
   public onNavigateBack() {
