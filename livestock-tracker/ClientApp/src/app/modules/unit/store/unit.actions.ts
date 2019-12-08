@@ -1,85 +1,11 @@
 import { Unit } from '@core/models/unit.model';
-import { Update } from '@ngrx/entity';
+import { crudActionsFactory } from '@core/store';
 import { Action } from '@ngrx/store';
 
+import { UnitKey } from './constants';
+
 export enum ActionTypes {
-  ADD_UNIT = 'ADD_UNIT',
-  ADD_UNIT_SUCCESS = 'ADD_UNIT_SUCCESS',
-  UPDATE_UNIT = 'UPDATE_UNIT',
-  UPDATE_UNIT_SUCCESS = 'UPDATE_UNIT_SUCCESS',
-  REMOVE_UNIT = 'REMOVE_UNIT',
-  REMOVE_UNIT_SUCCESS = 'REMOVE_UNIT_SUCCESS',
-  FETCH_UNITS = 'FETCH_UNITS',
-  SET_UNITS = 'SET_UNITS',
-  SELECT_UNIT = 'SELECT_UNIT',
-  UNIT_ERROR = 'UNIT_ERROR'
-}
-
-export class AddUnit implements Action {
-  readonly type = ActionTypes.ADD_UNIT;
-  unit: Unit;
-
-  constructor(unit: Unit) {
-    this.unit = unit;
-  }
-}
-
-export class AddUnitSuccess implements Action {
-  readonly type = ActionTypes.ADD_UNIT_SUCCESS;
-  unit: Unit;
-
-  constructor(unit: Unit) {
-    this.unit = unit;
-  }
-}
-
-export class UpdateUnit implements Action {
-  readonly type = ActionTypes.UPDATE_UNIT;
-  unit: Unit;
-
-  constructor(unit: Unit) {
-    this.unit = unit;
-  }
-}
-
-export class UpdateUnitSuccess implements Action {
-  readonly type = ActionTypes.UPDATE_UNIT_SUCCESS;
-  unit: Update<Unit>;
-
-  constructor(unit: Update<Unit>) {
-    this.unit = unit;
-  }
-}
-
-export class RemoveUnit implements Action {
-  readonly type = ActionTypes.REMOVE_UNIT;
-  typeCode: number;
-
-  constructor(typeCode: number) {
-    this.typeCode = typeCode;
-  }
-}
-
-export class RemoveUnitSuccess implements Action {
-  readonly type = ActionTypes.REMOVE_UNIT_SUCCESS;
-  typeCode: number;
-
-  constructor(typeCode: number) {
-    this.typeCode = typeCode;
-  }
-}
-
-export class FetchUnits implements Action {
-  readonly type = ActionTypes.FETCH_UNITS;
-}
-
-export class SetUnits implements Action {
-  readonly type = ActionTypes.SET_UNITS;
-  units: Unit[];
-
-  constructor(units: Unit[]) {
-    this.units = units;
-  }
+  SELECT_UNIT = 'SELECT_UNIT'
 }
 
 export class SelectUnit implements Action {
@@ -91,11 +17,4 @@ export class SelectUnit implements Action {
   }
 }
 
-export class UnitError implements Action {
-  readonly type = ActionTypes.UNIT_ERROR;
-  error?: Error;
-
-  constructor(error: Error) {
-    this.error = error;
-  }
-}
+export const actions = crudActionsFactory<Unit, number>(UnitKey);

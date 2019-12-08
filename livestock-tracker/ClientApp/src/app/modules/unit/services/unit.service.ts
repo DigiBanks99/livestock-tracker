@@ -1,70 +1,57 @@
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { CrudService } from '@core/models/crud-service.interface';
 import { Unit } from '@core/models/unit.model';
-
-export interface IUnitService {
-  getUnits(): Observable<Unit[]>;
-  getUnit(typeCode: number): Observable<Unit>;
-  addUnit(unit: Unit): Observable<Unit>;
-  updateUnit(unit: Unit): Observable<Unit>;
-  deleteUnit(typeCode: number): Observable<number>;
-}
 
 @Injectable({
   providedIn: 'root'
 })
-export class UnitService implements IUnitService {
+export class UnitService implements CrudService<Unit, number> {
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.apiUrl = baseUrl + 'unit/';
   }
 
-  public getUnits(): Observable<Unit[]> {
+  public getAll(): Observable<Unit[]> {
     return this.http.get<Unit[]>(this.apiUrl);
   }
 
-  public getUnit(typeCode: number): Observable<Unit> {
-    return this.http.get<Unit>(this.apiUrl + typeCode);
+  public get(key: number): Observable<Unit> {
+    return this.http.get<Unit>(this.apiUrl + key);
   }
 
-  public addUnit(unit: Unit): Observable<Unit> {
+  public add(unit: Unit): Observable<Unit> {
     return this.http.post<Unit>(this.apiUrl, unit);
   }
 
-  public updateUnit(unit: Unit): Observable<Unit> {
-    return this.http.patch<Unit>(this.apiUrl + unit.typeCode, unit);
+  public update(unit: Unit): Observable<Unit> {
+    return this.http.patch<Unit>(this.apiUrl + unit.id, unit);
   }
 
-  public deleteUnit(typeCode: number): Observable<number> {
-    return this.http.delete<number>(this.apiUrl + typeCode);
+  public delete(key: number): Observable<number> {
+    return this.http.delete<number>(this.apiUrl + key);
   }
 }
 
-export class MockUnitService implements IUnitService {
-  unitsChanged: Subject<Unit[]>;
-
-  constructor() {
-    this.unitsChanged = new Subject<Unit[]>();
-  }
-
-  getUnits(): Observable<Unit[]> {
+export class MockUnitService implements CrudService<Unit, number> {
+  getAll(): Observable<Unit[]> {
     return of([]);
   }
-  getUnit(typeCode: number): Observable<Unit> {
+  get(key: number): Observable<Unit> {
     const unit = new Unit();
-    unit.typeCode = typeCode;
+    unit.id = key;
     return of(unit);
   }
-  addUnit(unit: Unit): Observable<Unit> {
+  add(unit: Unit): Observable<Unit> {
     throw new Error('Method not implemented.');
   }
-  updateUnit(unit: Unit): Observable<Unit> {
+  update(unit: Unit): Observable<Unit> {
     throw new Error('Method not implemented.');
   }
-  deleteUnit(typeCode: number): Observable<number> {
+  delete(key: number): Observable<number> {
     throw new Error('Method not implemented.');
   }
 }

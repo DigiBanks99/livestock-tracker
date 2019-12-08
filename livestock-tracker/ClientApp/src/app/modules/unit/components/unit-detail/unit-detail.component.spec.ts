@@ -31,7 +31,7 @@ describe('UnitDetailComponent', () => {
     component = fixture.componentInstance;
     component.unit = new Unit();
     component.unit.description = 'Some stuff';
-    component.unit.typeCode = 1;
+    component.unit.id = 1;
     fixture.detectChanges();
   }));
 

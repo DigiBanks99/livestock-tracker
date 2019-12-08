@@ -18,10 +18,7 @@ const getUnits = createSelector(
   (entities: Dictionary<Unit>, ids: (number | string)[]) =>
     ids.map(id => entities[id]).filter((unit): unit is Unit => unit !== null)
 );
-const getSelectedUnitId = createSelector(
-  unitState,
-  state => state.selectedUnitId
-);
+const getSelectedUnitId = createSelector(unitState, state => state.selectedId);
 const getSelectedUnit = createSelector(
   getUnitEntities,
   getSelectedUnitId,

@@ -6,7 +6,7 @@ import { AppState } from '@core/store';
 import { getUnits } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';
 import { unitStore } from '@unit/store';
-import { AddUnit, RemoveUnit, UpdateUnit } from '@unit/store/unit.actions';
+import { actions } from '@unit/store/unit.actions';
 
 @Component({
   selector: 'app-unit-container',
@@ -35,14 +35,14 @@ export class UnitContainerComponent {
   }
 
   public onAdd(unit: Unit) {
-    this.store.dispatch(new AddUnit(unit));
+    this.store.dispatch(actions.addItem(unit));
   }
 
   public onSave(unit: Unit) {
-    this.store.dispatch(new UpdateUnit(unit));
+    this.store.dispatch(actions.updateItem(unit, unit.id));
   }
 
   public onRemove(id: number) {
-    this.store.dispatch(new RemoveUnit(id));
+    this.store.dispatch(actions.deleteItem(id));
   }
 }

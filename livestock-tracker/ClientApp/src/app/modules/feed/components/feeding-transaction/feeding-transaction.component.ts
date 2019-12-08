@@ -151,7 +151,7 @@ export class FeedingTransactionComponent implements OnDestroy {
       this.unitTypes = [];
     }
 
-    const foundType = this.unitTypes.find(unit => unit.typeCode === id);
+    const foundType = this.unitTypes.find(unit => unit.id === id);
     if (foundType === undefined || foundType === null) {
       return '';
     }

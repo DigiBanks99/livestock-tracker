@@ -25,9 +25,6 @@ export function feedTypeReducer(
   state: FeedTypeState = initialState,
   action: Action
 ) {
-  const newState = crudReducer(FeedTypeKey, feedTypeAdapter, state, action);
-  if (newState !== state) return newState;
-
   switch (action.type) {
     case ActionTypes.SELECT_FEED_TYPE:
       return {
@@ -35,6 +32,6 @@ export function feedTypeReducer(
         ...state
       };
     default:
-      return state;
+      return crudReducer(FeedTypeKey, feedTypeAdapter, state, action);
   }
 }

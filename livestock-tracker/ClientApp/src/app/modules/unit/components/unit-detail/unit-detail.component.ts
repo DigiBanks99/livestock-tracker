@@ -22,13 +22,13 @@ export class UnitDetailComponent implements OnInit {
     this.initForm();
   }
 
-  public deleteUnit(typeCode: number) {
-    this.remove.emit(typeCode);
+  public deleteUnit(id: number) {
+    this.remove.emit(id);
   }
 
   private initForm() {
     this.unitForm = new FormGroup({
-      typeCode: new FormControl(this.unit.typeCode),
+      id: new FormControl(this.unit.id),
       description: new FormControl(this.unit.description, {
         validators: [Validators.required],
         updateOn: 'blur'
