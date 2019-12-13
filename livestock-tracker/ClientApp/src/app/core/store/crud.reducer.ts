@@ -1,11 +1,12 @@
 import { KeyValue } from '@angular/common';
+import { KeyEntity } from '@core/models/key-entity.interface';
 import { EntityAdapter, Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { PayloadAction } from './';
 import { CrudState } from './crud-state.interface';
 
-export function crudReducer<T, K>(
+export function crudReducer<T extends KeyEntity<K>, K>(
   typeName: string,
   adapter: EntityAdapter<T>,
   state: CrudState<T, K>,
@@ -53,52 +54,61 @@ export function crudReducer<T, K>(
   }
 }
 
-function addApiReducer<T, K>(
+function addApiReducer<T extends KeyEntity<K>, K>(
   adapter: EntityAdapter<T>,
   state: CrudState<T, K>,
   action: PayloadAction<T>
 ): CrudState<T, K> {
   const newState = adapter.addOne(action.payload, state);
   return {
+    selectedId: action.payload.id,
     isPending: false,
     error: null,
     ...newState
   };
 }
 
-function updateApiReducer<T, K>(
+function updateApiReducer<T extends KeyEntity<K>, K>(
   adapter: EntityAdapter<T>,
   state: CrudState<T, K>,
   action: PayloadAction<KeyValue<K, Update<T>>>
 ): CrudState<T, K> {
   const newState = adapter.updateOne(action.payload.value, state);
   return {
+    selectedId: action.payload.key,
     isPending: false,
     error: null,
     ...newState
   };
 }
 
-function deleteApiReducer<T, K>(
+function deleteApiReducer<T extends KeyEntity<K>, K>(
   adapter: EntityAdapter<T>,
   state: CrudState<T, K>,
   action: PayloadAction<K>
 ): CrudState<T, K> {
+  const idx = state.ids.findIndex(id => id === action.payload);
   const newState = adapter.removeOne(String(action.payload), state);
+  const ids = newState.ids || [];
   return {
+    selectedId: ids.length >= idx - 1 ? idx - 1 : 0,
     isPending: false,
     error: null,
     ...newState
   };
 }
 
-function fetchApiReducer<T, K>(
+function fetchApiReducer<T extends KeyEntity<K>, K>(
   adapter: EntityAdapter<T>,
   state: CrudState<T, K>,
   action: PayloadAction<T[]>
 ): CrudState<T, K> {
   const newState = adapter.addAll(action.payload, state);
+  const idAsString = String(newState.selectedId);
+  const ids = <string[]>newState.ids || [];
+  const selectedIndex = ids.findIndex((id: string) => id === idAsString);
   return {
+    selectedId: selectedIndex > -1 ? newState.selectedId : 0,
     isPending: false,
     error: null,
     ...newState

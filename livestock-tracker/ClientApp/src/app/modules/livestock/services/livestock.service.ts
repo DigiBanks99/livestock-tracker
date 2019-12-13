@@ -23,7 +23,7 @@ interface ILivestockService {
 }
 
 @Injectable()
-export class LivestockService implements ILivestockService, OnInit, OnDestroy {
+export class LivestockService implements ILivestockService, OnDestroy {
   private livestock: Livestock[];
   private readonly apiUrl: string;
   private httpGetSubscription: Subscription;
@@ -41,8 +41,6 @@ export class LivestockService implements ILivestockService, OnInit, OnDestroy {
     this.livestockChanged = new Subject<Livestock[]>();
     this.editingStarted = new Subject<number>();
   }
-
-  ngOnInit() {}
 
   public getLivestock() {
     this.livestock = [];

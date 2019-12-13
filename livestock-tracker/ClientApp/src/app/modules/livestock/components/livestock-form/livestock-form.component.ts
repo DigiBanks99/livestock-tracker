@@ -20,7 +20,7 @@ import {
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LiveStockType } from '@core/models/livestock-type.model';
-import { Livestock } from '@core/models/livestock.model';
+import { Animal } from '@core/models/livestock.model';
 import { environment } from '@env/environment';
 import { LivestockService } from '@livestock/services/livestock.service';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
@@ -54,7 +54,7 @@ const Constants = {
   ]
 })
 export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() public currentAnimal: Livestock = {
+  @Input() public currentAnimal: Animal = {
     id: 0,
     number: null,
     birthDate: new Date(),
@@ -75,7 +75,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public isPending = false;
   @Input() public error: Error = null;
   @Output() public navigateBack = new EventEmitter();
-  @Output() public save = new EventEmitter<Livestock>();
+  @Output() public save = new EventEmitter<Animal>();
 
   public livestockForm: FormGroup;
   public livestockTypes = LiveStockType;
@@ -95,11 +95,11 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     private ageCalculatorService: AgeCalculatorService
   ) {}
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.initForm();
   }
 
-  public ngOnChanges(changes: SimpleChanges) {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes.currentAnimal) this.initForm();
 
     if (!this.livestockForm) this.initForm();
@@ -117,7 +117,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     if (this.soldChanged) this.soldChanged.unsubscribe();
     if (this.deceasedChanged) this.deceasedChanged.unsubscribe();
     if (this.birthDateChanged) this.birthDateChanged.unsubscribe();
@@ -127,7 +127,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     this.navigateBack.emit();
   }
 
-  public submit() {
+  public submit(): void {
     if (this.livestockForm.valid) {
       this.save.emit(this.livestockForm.value);
     }
@@ -162,7 +162,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
-  public reset() {
+  public reset(): void {
     let id: number;
     let type = LiveStockType.Cattle;
     let subspecies: string = null;
@@ -179,7 +179,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     let deceased = false;
     let dateOfDeath: Date = null;
 
-    const animal: Livestock = this.currentAnimal;
+    const animal: Animal = this.currentAnimal;
     if (animal != null) {
       id = animal.id;
       type = animal.type;
@@ -233,7 +233,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     this.livestockForm.markAsPristine();
   }
 
-  private initForm() {
+  private initForm(): void {
     let id: number;
     let type = LiveStockType.Cattle;
     let subspecies: string = null;
@@ -250,7 +250,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     let deceased = false;
     let dateOfDeath: Date = null;
 
-    const animal: Livestock = this.currentAnimal;
+    const animal: Animal = this.currentAnimal;
     if (animal != null) {
       id = animal.id;
       type = animal.type;
@@ -325,7 +325,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       });
   }
 
-  private updateSold(value: boolean) {
+  private updateSold(value: boolean): void {
     const validators = [];
     const sellPriceCtrl = this.livestockForm.get(Constants.Controls.SELL_PRICE);
     const sellDateCtrl = this.livestockForm.get(Constants.Controls.SELL_DATE);
@@ -350,7 +350,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     sellDateCtrl.markAsTouched();
   }
 
-  private updateDateOfDeathCtrl(value: boolean) {
+  private updateDateOfDeathCtrl(value: boolean): void {
     const validators = [];
     const dateOfDeathCtrl = this.livestockForm.get(
       Constants.Controls.DATE_OF_DEATH
@@ -369,7 +369,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     dateOfDeathCtrl.markAsTouched();
   }
 
-  private updateAgeCtrl(birthDate: Date, deceasedDate: Date) {
+  private updateAgeCtrl(birthDate: Date, deceasedDate: Date): void {
     const ageCtrl = this.livestockForm.get(Constants.Controls.AGE);
     ageCtrl.setValue(
       this.ageCalculatorService.calculateAge(birthDate, deceasedDate)

@@ -1,12 +1,7 @@
 import { LiveStockType } from '@core/models/livestock-type.model';
 import { Livestock } from '@core/models/livestock.model';
 import { AnimalState } from '@core/store';
-import {
-  AddAnimalSucceeded,
-  RemoveAnimalSucceeded,
-  SelectAnimal,
-  SetAnimals
-} from '@livestock/store/animal.actions';
+import { actions, SelectAnimal } from '@livestock/store/animal.actions';
 
 import {
   animalsReducer,
@@ -38,7 +33,7 @@ describe('animals reducer', () => {
       120,
       1
     );
-    const addAnimalTask1 = new AddAnimalSucceeded(animal1);
+    const addAnimalTask1 = actions.apiAddItem(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
     expect(state1).not.toBe(null);
     expect(state1.entities[1]).toBeDefined();
@@ -59,7 +54,7 @@ describe('animals reducer', () => {
       1,
       2
     );
-    const addAnimalTask2 = new AddAnimalSucceeded(animal2);
+    const addAnimalTask2 = actions.apiAddItem(animal2);
 
     const state2 = animalsReducer(state1, addAnimalTask2);
     expect(state2).not.toBe(null);
@@ -87,7 +82,7 @@ describe('animals reducer', () => {
       200,
       3
     );
-    const addAnimalTask3 = new AddAnimalSucceeded(animal3);
+    const addAnimalTask3 = actions.apiAddItem(animal3);
 
     const state3 = animalsReducer(state2, addAnimalTask3);
     expect(state3).not.toBe(null);
@@ -123,7 +118,7 @@ describe('animals reducer', () => {
       120,
       1
     );
-    const addAnimalTask1 = new AddAnimalSucceeded(animal1);
+    const addAnimalTask1 = actions.apiAddItem(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
 
     const animal2 = new Livestock(
@@ -138,7 +133,7 @@ describe('animals reducer', () => {
       1,
       2
     );
-    const addAnimalTask2 = new AddAnimalSucceeded(animal2);
+    const addAnimalTask2 = actions.apiAddItem(animal2);
     const state2 = animalsReducer(state1, addAnimalTask2);
 
     const animal3 = new Livestock(
@@ -153,23 +148,23 @@ describe('animals reducer', () => {
       200,
       3
     );
-    const addAnimalTask3 = new AddAnimalSucceeded(animal3);
+    const addAnimalTask3 = actions.apiAddItem(animal3);
     const state3 = animalsReducer(state2, addAnimalTask3);
 
-    const removeAnimal2 = new RemoveAnimalSucceeded(2);
+    const removeAnimal2 = actions.apiDeleteItem(2);
     const state4 = animalsReducer(state3, removeAnimal2);
     expect(state4.entities[2]).toBeUndefined();
     expect(state4.entities[1]).toBeDefined();
     expect(state4.entities[3]).toBeDefined();
 
-    const removeAnimal1 = new RemoveAnimalSucceeded(1);
-    removeAnimal1.key = 1;
+    const removeAnimal1 = actions.apiDeleteItem(1);
+    removeAnimal1.payload = 1;
     const state5 = animalsReducer(state4, removeAnimal1);
     expect(state5.entities[2]).toBeUndefined();
     expect(state5.entities[1]).toBeUndefined();
     expect(state5.entities[3]).toBeDefined();
 
-    const removeAnimal3 = new RemoveAnimalSucceeded(3);
+    const removeAnimal3 = actions.apiDeleteItem(3);
     const state6 = animalsReducer(state5, removeAnimal3);
     expect(state6.entities[2]).toBeUndefined();
     expect(state6.entities[1]).toBeUndefined();
@@ -177,7 +172,7 @@ describe('animals reducer', () => {
   });
 
   it('should set selectedAnimal equal to the key of the action object when the type is of SELECT_ANIMAL', () => {
-    expect(initialState.selectedAnimal).toEqual(null);
+    expect(initialState.selectedId).toEqual(null);
 
     const animal1 = new Livestock(
       1,
@@ -191,7 +186,7 @@ describe('animals reducer', () => {
       120,
       1
     );
-    const addAnimalTask1 = new AddAnimalSucceeded(animal1);
+    const addAnimalTask1 = actions.apiAddItem(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
 
     const animal2 = new Livestock(
@@ -206,7 +201,7 @@ describe('animals reducer', () => {
       1,
       2
     );
-    const addAnimalTask2 = new AddAnimalSucceeded(animal2);
+    const addAnimalTask2 = actions.apiAddItem(animal2);
     const state2 = animalsReducer(state1, addAnimalTask2);
 
     const animal3 = new Livestock(
@@ -221,16 +216,16 @@ describe('animals reducer', () => {
       200,
       3
     );
-    const addAnimalTask3 = new AddAnimalSucceeded(animal3);
+    const addAnimalTask3 = actions.apiAddItem(animal3);
     const state3 = animalsReducer(state2, addAnimalTask3);
 
     const selectAnimal2 = new SelectAnimal(2);
     const state4 = animalsReducer(state3, selectAnimal2);
-    expect(state4.selectedAnimal).toEqual(2);
+    expect(state4.selectedId).toEqual(2);
 
     const selectAnimal3 = new SelectAnimal(3);
     const state5 = animalsReducer(state4, selectAnimal3);
-    expect(state5.selectedAnimal).toEqual(3);
+    expect(state5.selectedId).toEqual(3);
   });
 
   it('should clear animals and set them to the key value object matching array passed in if the action type is SET_ANIMALS', () => {
@@ -270,7 +265,7 @@ describe('animals reducer', () => {
       200,
       3
     );
-    const setAnimals1 = new SetAnimals([animal1, animal2, animal3]);
+    const setAnimals1 = actions.apiFetchItems([animal1, animal2, animal3]);
     const state1 = animalsReducer(initialState, setAnimals1);
     expect(state1.entities).toBeDefined();
     expect(state1.entities).not.toBeNull();

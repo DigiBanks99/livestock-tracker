@@ -79,17 +79,27 @@ export class FeedingTransactionService
 
 export class MockFeedingTransactionService
   implements IFeedingTransactionService {
-  public get = (): Observable<FeedingTransaction> => of(null);
+  public get(): Observable<FeedingTransaction> {
+    return of(null);
+  }
 
-  public getAll = (): Observable<FeedingTransaction[]> => of([]);
+  public getAll(): Observable<FeedingTransaction[]> {
+    return of([]);
+  }
 
-  public add = (
+  public add(
     feedingTransaction: FeedingTransaction
-  ): Observable<FeedingTransaction> => of(feedingTransaction);
+  ): Observable<FeedingTransaction> {
+    return of(feedingTransaction);
+  }
 
-  public update = (
+  public update(
     feedingTransaction: FeedingTransaction
-  ): Observable<FeedingTransaction> => of(feedingTransaction);
+  ): Observable<FeedingTransaction> {
+    return of(feedingTransaction);
+  }
 
-  public delete = (key: number): Observable<number> => of(key);
+  public delete(key: number): Observable<number> {
+    return of(key);
+  }
 }

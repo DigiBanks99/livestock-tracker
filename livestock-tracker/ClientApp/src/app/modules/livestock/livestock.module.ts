@@ -28,6 +28,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 
+import { AnimalService } from './services';
+
 @NgModule({
   declarations: [
     LivestockComponent,
@@ -61,7 +63,7 @@ import { SharedModule } from '@shared/shared.module';
     StoreModule.forFeature('animals', animalReducers.animalsReducer),
     EffectsModule.forFeature([animalEffects.AnimalEffects])
   ],
-  providers: [LivestockService],
+  providers: [LivestockService, AnimalService],
   exports: [LivestockComponent]
 })
 export class LivestockModule {}

@@ -1,25 +1,19 @@
-import { Livestock } from '@app/core/models/livestock.model';
+import { Animal } from '@app/core/models/livestock.model';
 import { AnimalState } from '@core/store/animal-state.interface';
-import {
-  ActionTypes,
-  AddAnimalSucceeded,
-  HandleError,
-  HandleFetchAnimalsError,
-  RemoveAnimal,
-  SelectAnimal,
-  SetAnimals,
-  UpdateAnimalSucceeded
-} from '@livestock/store/animal.actions';
-import { createEntityAdapter, Update } from '@ngrx/entity';
+import { crudReducer } from '@core/store/crud.reducer';
+import { ActionTypes, SelectAnimal } from '@livestock/store/animal.actions';
+import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
-export const animalsAdapter = createEntityAdapter<Livestock>({
-  selectId: (animal: Livestock) => animal.id,
-  sortComparer: false
+import { AnimalKey } from './constants';
+
+export const animalsAdapter = createEntityAdapter<Animal>({
+  selectId: (animal: Animal) => animal.id,
+  sortComparer: (animal: Animal) => animal.number
 });
 
 export const initialState: AnimalState = animalsAdapter.getInitialState({
-  selectedAnimal: null,
+  selectedId: null,
   error: null,
   isFetching: false,
   isPending: false
@@ -30,93 +24,17 @@ export function animalsReducer(
   action: Action
 ): AnimalState {
   switch (action.type) {
-    case ActionTypes.ADD_ANIMAL:
-    case ActionTypes.UPDATE_ANIMAL:
-    case ActionTypes.REMOVE_ANIMAL:
-      return {
-        ...state,
-        isPending: true
-      };
-    case ActionTypes.ADD_ANIMAL_SUCCESS:
-      const addedAnimal: Livestock = (<AddAnimalSucceeded>action).animal;
-      return {
-        ...animalsAdapter.addOne(addedAnimal, {
-          ...state,
-          selectedAnimal: addedAnimal.id,
-          isPending: false,
-          error: null
-        })
-      };
-    case ActionTypes.REMOVE_ANIMAL_SUCCESS:
-      return {
-        ...animalsAdapter.removeOne((<RemoveAnimal>action).key, {
-          ...state,
-          isPending: false,
-          error: null
-        })
-      };
-    case ActionTypes.UPDATE_ANIMAL_SUCCESS:
-      const updatedAnimal: Update<Livestock> = (<UpdateAnimalSucceeded>action)
-        .animal;
-      return {
-        ...animalsAdapter.updateOne(updatedAnimal, {
-          ...state,
-          selectedAnimal: +updatedAnimal.id,
-          isPending: false,
-          error: null
-        })
-      };
     case ActionTypes.SELECT_ANIMAL:
       return {
         ...state,
-        selectedAnimal: selectAnimal(state.selectedAnimal, <SelectAnimal>action)
-      };
-    case ActionTypes.FETCH_ANIMALS:
-      return {
-        ...state,
-        isFetching: true
-      };
-    case ActionTypes.SET_ANIMALS:
-      const newState = animalsAdapter.addMany((<SetAnimals>action).animals, {
-        ...state
-      });
-      let selectedAnimalId: number = newState.selectedAnimal;
-      if (!selectedAnimalId)
-        selectedAnimalId = newState.ids.length > 0 ? +newState.ids[0] : null;
-      return {
-        ...newState,
-        selectedAnimal: selectedAnimalId,
-        isFetching: false,
-        error: null
-      };
-    case ActionTypes.HANDLE_FETCH_ANIMALS_ERROR:
-      return {
-        ...state,
-        isFetching: false,
-        error: handleError(state.error, <HandleFetchAnimalsError>action)
-      };
-    case ActionTypes.HANDLE_ERROR:
-      return {
-        ...state,
-        isPending: false,
-        error: handleError(state.error, <HandleError>action)
+        selectedId: selectAnimal(state.selectedId, <SelectAnimal>action)
       };
     default:
-      return state;
+      return crudReducer(AnimalKey, animalsAdapter, state, action);
   }
 }
 
 function selectAnimal(key: number, action: SelectAnimal): number {
   if (action.key === undefined) return key;
-  return 0 + action.key;
-}
-
-function handleError(
-  error: Error,
-  action: HandleFetchAnimalsError | HandleError
-): Error {
-  const newError = new Error(action.error.message);
-  newError.name = action.error.name;
-  newError.stack = action.error.stack;
-  return newError;
+  return action.key || 0;
 }

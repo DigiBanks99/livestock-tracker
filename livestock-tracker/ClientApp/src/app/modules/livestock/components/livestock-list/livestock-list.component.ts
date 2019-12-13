@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
-import { Livestock } from '@app/core/models/livestock.model';
+import { Animal } from '@app/core/models/livestock.model';
 import { environment } from '@env/environment';
 import { LivestockService } from '@livestock/services/livestock.service';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
@@ -12,8 +12,8 @@ import { AgeCalculatorService } from '@shared/services/age-calculator.service';
   styleUrls: ['./livestock-list.component.scss']
 })
 export class LivestockListComponent implements OnInit {
-  @Input() public livestockList: Livestock[];
-  @Output() public remove = new EventEmitter<Livestock>();
+  @Input() public livestockList: Animal[];
+  @Output() public remove = new EventEmitter<Animal>();
   @Output() public showDetail = new EventEmitter<number>();
   @Output() public addAnimal = new EventEmitter();
 
@@ -28,7 +28,7 @@ export class LivestockListComponent implements OnInit {
     this.pageSize = environment.pageSize;
   }
 
-  public getSvgIcon(animal: Livestock): string {
+  public getSvgIcon(animal: Animal): string {
     return this.livestockService.getSvgIcon(animal);
   }
 
@@ -48,7 +48,7 @@ export class LivestockListComponent implements OnInit {
 
   public onPage(pageEvent: PageEvent): void {}
 
-  public getAge(animal: Livestock): string {
+  public getAge(animal: Animal): string {
     return this.ageCalculatorService.calculateAge(
       animal.birthDate,
       animal.dateOfDeath
