@@ -93,7 +93,7 @@ function apiFetchItems<T>(items: T[], typeName: string): PayloadAction<T[]> {
 
 function apiError(error: Error, typeName: string): PayloadAction<Error> {
   return {
-    type: `ERROR_${typeName}`,
+    type: `API_ERROR_${typeName}`,
     payload: error
   };
 }
