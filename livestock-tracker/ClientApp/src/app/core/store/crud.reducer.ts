@@ -18,9 +18,9 @@ export function crudReducer<T extends KeyEntity<K>, K>(
     case `DELETE_${typeName}`:
     case `FETCH_${typeName}`:
       return {
+        ...state,
         isPending: true,
-        error: null,
-        ...state
+        error: null
       };
     case `API_ADD_${typeName}`:
       const addAction = <PayloadAction<T>>action;
@@ -45,9 +45,9 @@ export function crudReducer<T extends KeyEntity<K>, K>(
     case `API_ERROR_${typeName}`:
       const errorAction = <PayloadAction<Error>>action;
       return {
+        ...state,
         error: errorAction.payload,
-        isPending: false,
-        ...state
+        isPending: false
       };
     default:
       return state;
@@ -61,10 +61,10 @@ function addApiReducer<T extends KeyEntity<K>, K>(
 ): CrudState<T, K> {
   const newState = adapter.addOne(action.payload, state);
   return {
+    ...newState,
     selectedId: action.payload.id,
     isPending: false,
-    error: null,
-    ...newState
+    error: null
   };
 }
 
@@ -75,10 +75,10 @@ function updateApiReducer<T extends KeyEntity<K>, K>(
 ): CrudState<T, K> {
   const newState = adapter.updateOne(action.payload.value, state);
   return {
+    ...newState,
     selectedId: action.payload.key,
     isPending: false,
-    error: null,
-    ...newState
+    error: null
   };
 }
 
@@ -90,11 +90,13 @@ function deleteApiReducer<T extends KeyEntity<K>, K>(
   const idx = state.ids.findIndex(id => id === action.payload);
   const newState = adapter.removeOne(String(action.payload), state);
   const ids = newState.ids || [];
+  const newIdx = ids.length >= idx - 1 ? idx - 1 : 0;
+  const newId = ids[newIdx];
   return {
-    selectedId: ids.length >= idx - 1 ? idx - 1 : 0,
+    ...newState,
+    selectedId: newState.entities[newId] ? newState.entities[newId].id : null,
     isPending: false,
-    error: null,
-    ...newState
+    error: null
   };
 }
 
@@ -107,10 +109,16 @@ function fetchApiReducer<T extends KeyEntity<K>, K>(
   const idAsString = String(newState.selectedId);
   const ids = <string[]>newState.ids || [];
   const selectedIndex = ids.findIndex((id: string) => id === idAsString);
+  const selectedId =
+    selectedIndex > -1
+      ? newState.selectedId
+      : ids.length > 0
+      ? newState.entities[ids[0]].id
+      : null;
   return {
-    selectedId: selectedIndex > -1 ? newState.selectedId : 0,
+    ...newState,
+    selectedId,
     isPending: false,
-    error: null,
-    ...newState
+    error: null
   };
 }
