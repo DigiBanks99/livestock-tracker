@@ -8,9 +8,10 @@ import { CrudService } from '@core/models/crud-service.interface';
 import { KeyEntity } from '@core/models/key-entity.interface';
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
+import { Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
-import { crudActionsFactory, PayloadAction } from './crud.actions';
+import { crudActionsFactory } from './crud.actions';
 import { CrudEffects } from './crud.effects';
 
 const testActions = crudActionsFactory<TestEntity, number>('TEST');
@@ -54,13 +55,11 @@ describe('Crud Effects', () => {
   let service: TestService;
   let effects: TestEffects;
   let actions$: Observable<Action>;
-  let testScheduler = new TestScheduler((actual, expected) => {
-    expect(actual).toBe(expected);
-  });
+  let testScheduler: TestScheduler;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [TestService, TestEffects, provideMockActions(actions$)]
+      providers: [TestService, TestEffects, provideMockActions(() => actions$)]
     });
 
     service = TestBed.get(TestService);
@@ -72,6 +71,10 @@ describe('Crud Effects', () => {
 
     effects = TestBed.get(TestEffects);
     actions$ = TestBed.get(Actions);
+
+    testScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
   }));
 
   it('should create', () => {
@@ -79,32 +82,178 @@ describe('Crud Effects', () => {
   });
 
   describe('getAll$', () => {
-    it('should call getAll on service', () => {
-      effects.getAll$.subscribe();
-      getAllSpy.and.callThrough();
-      expect(getAllSpy).toHaveBeenCalledTimes(1);
+    it('should return an apiFetchItems action when successful', () => {
+      testScheduler.run(({ expectObservable, flush }: RunHelpers) => {
+        const items: TestEntity[] = [
+          { id: 1 },
+          { id: 2 },
+          { id: 3 },
+          { id: 4 },
+          { id: 5 }
+        ];
+        const completion = testActions.apiFetchItems(items);
+
+        getAllSpy.and.returnValue(of(items));
+
+        expectObservable(effects.getAll$).toBe('a', { a: completion });
+
+        flush();
+
+        expect(getAllSpy).toHaveBeenCalledTimes(1);
+      });
     });
 
-    it('should return an apiFetchItems action when successful', () => {
-      const items: TestEntity[] = [
-        { id: 1 },
-        { id: 2 },
-        { id: 3 },
-        { id: 4 },
-        { id: 5 }
-      ];
-      const action = testActions.fetchItems();
-      const completion = testActions.apiFetchItems(items);
+    it('should return an apiError action when the http service fails', () => {
+      testScheduler.run(({ expectObservable, flush }: RunHelpers) => {
+        const error = new Error('Network connection error');
+        const completion = testActions.apiError(error);
+        const switchMapMarble = '(a|)';
 
-      testScheduler.run((helpers: RunHelpers) => {
-        const {hot, cold, expectObservable} = helpers;
-      actions$ = hot('-a', { a: action });
-      const response = cold('-a|', { a: items });
-      const expected = '--c';
+        getAllSpy.and.throwError(error.message);
 
-      getAllSpy.and.returnValue(response);
+        expectObservable(effects.getAll$).toBe(switchMapMarble, {
+          a: completion
+        });
 
-      expectObservable(effects.getAll$).toBe(expected);
+        flush();
+
+        expect(getAllSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('add$', () => {
+    let item: TestEntity;
+
+    beforeEach(() => {
+      item = { id: 99 };
+    });
+
+    it('should return an apiAddItem action when successful', () => {
+      testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
+        const completion = testActions.apiAddItem(item);
+
+        actions$ = cold('a', { a: testActions.addItem(item) });
+
+        addSpy.and.returnValue(of({ ...item }));
+
+        expectObservable(effects.add$).toBe('a', {
+          a: completion
+        });
+
+        flush();
+
+        expect(addSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it('should return an apiError action when the http service fails', () => {
+      testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
+        const error = new Error('Network connection error');
+        const completion = testActions.apiError(error);
+        const switchMapMarble = '(a|)';
+
+        actions$ = cold('a', { a: testActions.addItem(item) });
+
+        addSpy.and.throwError(error.message);
+
+        expectObservable(effects.add$).toBe(switchMapMarble, {
+          a: completion
+        });
+
+        flush();
+
+        expect(addSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('update$', () => {
+    const item = { id: 99 };
+    const marbleValue = { a: testActions.updateItem(item, item.id) };
+
+    it('should return an apiUpdateItem action when successful', () => {
+      testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
+        const updateItem: Update<TestEntity> = {
+          changes: item,
+          id: item.id.toString()
+        };
+        const completion = testActions.apiUpdateItem(updateItem, item.id);
+
+        actions$ = cold('a', marbleValue);
+
+        updateSpy.and.returnValue(of(item));
+
+        expectObservable(effects.update$).toBe('a', {
+          a: completion
+        });
+
+        flush();
+
+        expect(updateSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it('should return an apiError action when the http service fails', () => {
+      testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
+        const error = new Error('Network connection error');
+        const completion = testActions.apiError(error);
+        const switchMapMarble = '(a|)';
+
+        actions$ = cold('a', marbleValue);
+
+        updateSpy.and.throwError(error.message);
+
+        expectObservable(effects.update$).toBe(switchMapMarble, {
+          a: completion
+        });
+
+        flush();
+
+        expect(updateSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+  });
+
+  describe('remove$', () => {
+    const key = 99;
+    const marbleValue = { a: testActions.deleteItem(key) };
+
+    it('should return an apiDeleteItem action when successful', () => {
+      testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
+        const completion = testActions.apiDeleteItem(key);
+
+        actions$ = cold('a', marbleValue);
+
+        deleteSpy.and.returnValue(of(key));
+
+        expectObservable(effects.remove$).toBe('a', {
+          a: completion
+        });
+
+        flush();
+
+        expect(deleteSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    it('should return an apiError action when the http service fails', () => {
+      testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
+        const error = new Error('Network connection error');
+        const completion = testActions.apiError(error);
+        const switchMapMarble = '(a|)';
+
+        actions$ = cold('a', marbleValue);
+
+        deleteSpy.and.throwError(error.message);
+
+        expectObservable(effects.remove$).toBe(switchMapMarble, {
+          a: completion
+        });
+
+        flush();
+
+        expect(deleteSpy).toHaveBeenCalledTimes(1);
       });
     });
   });

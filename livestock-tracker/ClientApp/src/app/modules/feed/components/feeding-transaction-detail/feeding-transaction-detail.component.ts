@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -31,7 +31,6 @@ export class FeedingTransactionDetailComponent implements OnInit, OnDestroy {
   public ngOnInit() {
     this.selectedAnimalId$ = this.store.pipe(
       select(getSelectedAnimalId),
-      tap(value => console.log(`selectedAnimalId: ${value}`)),
       takeUntil(this.destroyed$)
     );
     this.isPending$ = this.store.pipe(

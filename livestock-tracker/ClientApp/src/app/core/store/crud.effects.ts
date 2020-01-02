@@ -5,7 +5,7 @@ import { KeyValue } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CrudService } from '@core/models/crud-service.interface';
 import { KeyEntity } from '@core/models/key-entity.interface';
-import { Actions, createEffect, Effect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { CrudActions, PayloadAction } from './crud.actions';
@@ -24,7 +24,7 @@ export class CrudEffects<T extends KeyEntity<K>, K> {
       startWith(() => this.typeActions.fetchItems()),
       switchMap(_ => this.service.getAll()),
       map((items: T[]) => this.typeActions.apiFetchItems(items)),
-      catchError(this.handleError)
+      catchError(error => this.handleError(error, this.typeActions))
     )
   );
 
@@ -34,7 +34,7 @@ export class CrudEffects<T extends KeyEntity<K>, K> {
       map((action: PayloadAction<T>) => action.payload),
       switchMap((item: T) => this.service.add(item)),
       map((item: T) => this.typeActions.apiAddItem(item)),
-      catchError(this.handleError)
+      catchError(error => this.handleError(error, this.typeActions))
     )
   );
 
@@ -51,7 +51,7 @@ export class CrudEffects<T extends KeyEntity<K>, K> {
           item.id
         )
       ),
-      catchError(this.handleError)
+      catchError(error => this.handleError(error, this.typeActions))
     )
   );
 
@@ -61,11 +61,14 @@ export class CrudEffects<T extends KeyEntity<K>, K> {
       map((action: PayloadAction<K>) => action.payload),
       switchMap((id: K) => this.service.delete(id)),
       map((id: K) => this.typeActions.apiDeleteItem(id)),
-      catchError(this.handleError)
+      catchError(error => this.handleError(error, this.typeActions))
     )
   );
 
-  protected handleError(err: any): Observable<PayloadAction<Error>> {
+  protected handleError(
+    err: any,
+    actions: CrudActions<T, K>
+  ): Observable<PayloadAction<Error>> {
     let error: Error;
     if (err instanceof Error) error = err;
     else if (err instanceof HttpErrorResponse) {
@@ -75,6 +78,6 @@ export class CrudEffects<T extends KeyEntity<K>, K> {
       error.stack = httpError.url;
     } else error = new Error(err);
 
-    return of(this.typeActions.apiError(error));
+    return of(actions.apiError(error));
   }
 }
