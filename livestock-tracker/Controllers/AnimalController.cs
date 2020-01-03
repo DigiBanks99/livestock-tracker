@@ -36,11 +36,14 @@ namespace LivestockTracker.Controllers
       return CreatedAtAction("Get", new { id = savedAnimal.ID }, savedAnimal);
     }
 
-    [HttpPatch]
-    public IActionResult UpdateAnimal([FromBody]Animal animal)
+    [HttpPatch("{id}")]
+    public IActionResult UpdateAnimal([FromRoute] int id, [FromBody]Animal animal)
     {
       try
       {
+        if (id != animal.ID)
+          return BadRequest();
+
         _animalService.Update(animal);
         _animalService.Save();
         var savedAnimal = _animalService.Get(animal.ID);
@@ -57,7 +60,7 @@ namespace LivestockTracker.Controllers
     {
       _animalService.Remove(id);
       _animalService.Save();
-      return Ok();
+      return Ok(id);
     }
   }
 }

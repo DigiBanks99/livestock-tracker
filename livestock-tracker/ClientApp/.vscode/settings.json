@@ -18,7 +18,10 @@
     "paginator",
     "toolbar",
     "unsubscribe",
-    "checkbox"
+    "checkbox",
+    "elem",
+    "ctrl",
+    "ctl"
   ],
   "cSpell.ignorePaths": [
     "**/package-lock.json",
@@ -26,6 +29,13 @@
     "**/vscode-extension/**",
     "**/.git/objects/**",
     ".vscode",
-    "**/tslint.json"
-  ]
+    "**/tslint.json",
+    "**/angular.json"
+  ],
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 80,
+  "importSorter.importStringConfiguration.trailingComma": "none",
+  "importSorter.importStringConfiguration.tabSize": 2,
+  "importSorter.sortConfiguration.customOrderingRules.defaultNumberOfEmptyLinesAfterGroup": 1
 }

@@ -1,29 +1,34 @@
-import { NgModule } from '@angular/core';
-import { SharedModule } from '@shared/shared.module';
-import { LivestockComponent } from './livestock.component';
-import { LivestockNewComponent } from './livestock-new/livestock-new.component';
-import { LivestockListComponent } from './livestock-list/livestock-list.component';
-import { LivestockDetailComponent } from './livestock-detail/livestock-detail.component';
-import { LivestockFormComponent } from './livestock-form/livestock-form.component';
-import { LivestockService } from './livestock.service';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatListModule } from '@angular/material/list';
-import { MatOptionModule, MatCommonModule } from '@angular/material/core';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCommonModule, MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
+import { animalEffects, animalReducers } from '@animal-store';
+import { LivestockDetailComponent } from '@livestock/components/livestock-detail/livestock-detail.component';
+import { LivestockFormComponent } from '@livestock/components/livestock-form/livestock-form.component';
+import { LivestockListComponent } from '@livestock/components/livestock-list/livestock-list.component';
+import { LivestockNewComponent } from '@livestock/components/livestock-new/livestock-new.component';
+import { LivestockComponent } from '@livestock/components/livestock/livestock.component';
+import { LivestockService } from '@livestock/services/livestock.service';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { SharedModule } from '@shared/shared.module';
+
+import { AnimalService } from './services';
 
 @NgModule({
   declarations: [
@@ -54,9 +59,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSnackBarModule,
     ReactiveFormsModule,
     RouterModule,
-    SharedModule
+    SharedModule,
+    StoreModule.forFeature('animals', animalReducers.animalsReducer),
+    EffectsModule.forFeature([animalEffects.AnimalEffects])
   ],
-  providers: [LivestockService],
+  providers: [LivestockService, AnimalService],
   exports: [LivestockComponent]
 })
 export class LivestockModule {}

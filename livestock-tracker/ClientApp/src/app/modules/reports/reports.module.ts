@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { ReportsComponent } from './reports.component';
+import { ReportsComponent } from '@reports/components/reports.component';
 
 @NgModule({
   declarations: [ReportsComponent],

@@ -1,20 +1,19 @@
-import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-
-import { HomeComponent } from '@home/home.component';
-import { LivestockComponent } from '@livestock/livestock.component';
-import { LivestockNewComponent } from '@livestock/livestock-new/livestock-new.component';
-import { LivestockDetailComponent } from '@livestock/livestock-detail/livestock-detail.component';
-import { ReportsComponent } from '@reports/reports.component';
-import { MedicineTypeComponent } from '@medical/medicine-type/medicine-type.component';
-import { MedicalContainerComponent } from '@medical/medical-container.component';
-import { FeedingTransactionDetailComponent } from '@feeding-transaction/feeding-transaction-detail/feeding-transaction-detail.component';
-import { FeedingTransactionContainerComponent } from '@feeding-transaction/feeding-transaction-container.component';
-import { FeedingTransactionNewComponent } from '@feeding-transaction/feeding-transaction-new/feeding-transaction-new.component';
-import { FeedTypeContainerComponent } from '@feed-type/feed-type-container.component';
-import { UnitContainerComponent } from '@unit/unit-container.component';
-import { MedicalModule } from '@medical/medical.module';
+import { RouterModule, Routes } from '@angular/router';
+import { FeedingTransactionContainerComponent } from '@feed/components';
+import { FeedTypeContainerComponent } from '@feed/components/feed-type/feed-type.container';
+import { FeedingTransactionDetailComponent } from '@feed/components/feeding-transaction-detail/feeding-transaction-detail.component';
+import { FeedingTransactionNewComponent } from '@feed/components/feeding-transaction-new/feeding-transaction-new.component';
+import { HomeComponent } from '@home/components/home.component';
+import { LivestockDetailComponent } from '@livestock/components/livestock-detail/livestock-detail.component';
+import { LivestockNewComponent } from '@livestock/components/livestock-new/livestock-new.component';
+import { LivestockComponent } from '@livestock/components/livestock/livestock.component';
 import { LivestockModule } from '@livestock/livestock.module';
+import { MedicalContainerComponent } from '@medical/components/medical/medical.container';
+import { MedicineTypeComponent } from '@medical/components/medicine-type/medicine-type.component';
+import { MedicalModule } from '@medical/medical.module';
+import { ReportsComponent } from '@reports/components/reports.component';
+import { UnitContainerComponent } from '@unit/components/unit/unit.container';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
