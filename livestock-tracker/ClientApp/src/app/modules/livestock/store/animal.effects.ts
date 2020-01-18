@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Animal } from '@app/core/models/livestock.model';
 import { CrudEffects } from '@core/store/crud.effects';
-import { AnimalService } from '@livestock/services/animal.service';
-import { actions } from '@livestock/store/animal.actions';
+import { AnimalService } from '@animal/services/animal.service';
+import { actions } from '@animal/store/animal.actions';
 import { Actions } from '@ngrx/effects';
 
 import { AnimalKey } from './constants';

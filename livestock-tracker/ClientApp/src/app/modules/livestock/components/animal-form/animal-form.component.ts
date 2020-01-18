@@ -19,10 +19,9 @@ import {
 } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LiveStockType } from '@core/models/livestock-type.model';
-import { Animal } from '@core/models/livestock.model';
+import { LivestockService } from '@animal/services';
+import { Animal, AnimalType } from '@core/models';
 import { environment } from '@env/environment';
-import { LivestockService } from '@livestock/services/livestock.service';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
 const Constants = {
@@ -46,19 +45,19 @@ const Constants = {
 };
 
 @Component({
-  selector: 'app-livestock-form',
-  templateUrl: './livestock-form.component.html',
-  styleUrls: ['./livestock-form.component.scss'],
+  selector: 'app-animal-form',
+  templateUrl: './animal-form.component.html',
+  styleUrls: ['./animal-form.component.scss'],
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.short }
   ]
 })
-export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
+export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public currentAnimal: Animal = {
     id: 0,
     number: null,
     birthDate: new Date(),
-    type: LiveStockType.Cattle,
+    type: AnimalType.Cattle,
     arrivalWeight: null,
     batchNumber: null,
     dateOfDeath: null,
@@ -77,9 +76,9 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   @Output() public navigateBack = new EventEmitter();
   @Output() public save = new EventEmitter<Animal>();
 
-  public livestockForm: FormGroup;
-  public livestockTypes = LiveStockType;
-  public keys: number[] = Object.keys(LiveStockType)
+  public animalForm: FormGroup;
+  public animalTypes = AnimalType;
+  public keys: number[] = Object.keys(AnimalType)
     .filter(Number)
     .map(type => +type)
     .concat(0);
@@ -102,9 +101,9 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   public ngOnChanges(changes: SimpleChanges): void {
     if (changes.currentAnimal) this.initForm();
 
-    if (!this.livestockForm) this.initForm();
+    if (!this.animalForm) this.initForm();
 
-    if (!this.isPending && !this.livestockForm.pristine) {
+    if (!this.isPending && !this.animalForm.pristine) {
       const snackBarOptions = { duration: 4000 };
       let message = '';
       if (this.error != null) message = `ERROR: ${this.error.message}`;
@@ -128,13 +127,13 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public submit(): void {
-    if (this.livestockForm.valid) {
-      this.save.emit(this.livestockForm.value);
+    if (this.animalForm.valid) {
+      this.save.emit(this.animalForm.value);
     }
   }
 
   public getSvgIcon(): string {
-    const type = this.livestockForm.get(Constants.Controls.TYPE).value;
+    const type = this.animalForm.get(Constants.Controls.TYPE).value;
     return this.getSvgIconByType(type);
   }
 
@@ -154,7 +153,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       return true;
     }
 
-    const value = this.livestockForm.get(elementID).value;
+    const value = this.animalForm.get(elementID).value;
     if (value === undefined || elementID === null) {
       return false;
     }
@@ -164,7 +163,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
   public reset(): void {
     let id: number;
-    let type = LiveStockType.Cattle;
+    let type = AnimalType.Cattle;
     let subspecies: string = null;
     let number: number = null;
     let birthDate = new Date();
@@ -203,39 +202,35 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       id = 0;
     }
 
-    this.livestockForm.get(Constants.Controls.ID).setValue(id);
-    this.livestockForm.get(Constants.Controls.TYPE).setValue(type);
-    this.livestockForm.get(Constants.Controls.SUBSPECIES).setValue(subspecies);
-    this.livestockForm.get(Constants.Controls.NUMBER).setValue(number);
-    this.livestockForm
+    this.animalForm.get(Constants.Controls.ID).setValue(id);
+    this.animalForm.get(Constants.Controls.TYPE).setValue(type);
+    this.animalForm.get(Constants.Controls.SUBSPECIES).setValue(subspecies);
+    this.animalForm.get(Constants.Controls.NUMBER).setValue(number);
+    this.animalForm
       .get(Constants.Controls.BIRTH_DATE)
       .setValue(moment(birthDate));
-    this.livestockForm
+    this.animalForm
       .get(Constants.Controls.PURCHASE_DATE)
       .setValue(moment(purchaseDate));
-    this.livestockForm
+    this.animalForm
       .get(Constants.Controls.PURCHASE_PRICE)
       .setValue(purchasePrice);
-    this.livestockForm
+    this.animalForm
       .get(Constants.Controls.ARRIVAL_WEIGHT)
       .setValue(arrivalWeight);
-    this.livestockForm
-      .get(Constants.Controls.BATCH_NUMBER)
-      .setValue(batchNumber);
-    this.livestockForm.get(Constants.Controls.SELL_PRICE).setValue(sellPrice);
-    this.livestockForm.get(Constants.Controls.SOLD).setValue(sold);
-    this.livestockForm.get(Constants.Controls.AGE).setValue(age);
-    this.livestockForm.get(Constants.Controls.SELL_DATE).setValue(sellDate);
-    this.livestockForm.get(Constants.Controls.DECEASED).setValue(deceased);
-    this.livestockForm
-      .get(Constants.Controls.DATE_OF_DEATH)
-      .setValue(dateOfDeath);
-    this.livestockForm.markAsPristine();
+    this.animalForm.get(Constants.Controls.BATCH_NUMBER).setValue(batchNumber);
+    this.animalForm.get(Constants.Controls.SELL_PRICE).setValue(sellPrice);
+    this.animalForm.get(Constants.Controls.SOLD).setValue(sold);
+    this.animalForm.get(Constants.Controls.AGE).setValue(age);
+    this.animalForm.get(Constants.Controls.SELL_DATE).setValue(sellDate);
+    this.animalForm.get(Constants.Controls.DECEASED).setValue(deceased);
+    this.animalForm.get(Constants.Controls.DATE_OF_DEATH).setValue(dateOfDeath);
+    this.animalForm.markAsPristine();
   }
 
   private initForm(): void {
     let id: number;
-    let type = LiveStockType.Cattle;
+    let type = AnimalType.Cattle;
     let subspecies: string = null;
     let number: number = null;
     let birthDate = new Date();
@@ -278,7 +273,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
       id = 0;
     }
 
-    this.livestockForm = this.formBuilder.group({
+    this.animalForm = this.formBuilder.group({
       id: new FormControl(id),
       type: new FormControl(type, [Validators.required]),
       subspecies: new FormControl(subspecies, []),
@@ -301,34 +296,34 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
     this.updateSold(sold);
     this.updateDateOfDeathCtrl(deceased);
 
-    this.soldChanged = this.livestockForm
+    this.soldChanged = this.animalForm
       .get(Constants.Controls.SOLD)
       .valueChanges.subscribe((value: boolean) => this.updateSold(value));
 
-    this.birthDateChanged = this.livestockForm
+    this.birthDateChanged = this.animalForm
       .get(Constants.Controls.BIRTH_DATE)
       .valueChanges.subscribe((newBirthDate: Date) => {
         this.updateAgeCtrl(
           newBirthDate,
-          this.livestockForm.get(Constants.Controls.DECEASED).value
+          this.animalForm.get(Constants.Controls.DECEASED).value
         );
       });
 
-    this.deceasedChanged = this.livestockForm
+    this.deceasedChanged = this.animalForm
       .get(Constants.Controls.DECEASED)
       .valueChanges.subscribe((value: boolean) => {
         this.updateDateOfDeathCtrl(value);
         this.updateAgeCtrl(
-          this.livestockForm.get(Constants.Controls.BIRTH_DATE).value,
-          this.livestockForm.get(Constants.Controls.DATE_OF_DEATH).value
+          this.animalForm.get(Constants.Controls.BIRTH_DATE).value,
+          this.animalForm.get(Constants.Controls.DATE_OF_DEATH).value
         );
       });
   }
 
   private updateSold(value: boolean): void {
     const validators = [];
-    const sellPriceCtrl = this.livestockForm.get(Constants.Controls.SELL_PRICE);
-    const sellDateCtrl = this.livestockForm.get(Constants.Controls.SELL_DATE);
+    const sellPriceCtrl = this.animalForm.get(Constants.Controls.SELL_PRICE);
+    const sellDateCtrl = this.animalForm.get(Constants.Controls.SELL_DATE);
 
     if (value) {
       validators.push(Validators.required);
@@ -352,7 +347,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
 
   private updateDateOfDeathCtrl(value: boolean): void {
     const validators = [];
-    const dateOfDeathCtrl = this.livestockForm.get(
+    const dateOfDeathCtrl = this.animalForm.get(
       Constants.Controls.DATE_OF_DEATH
     );
 
@@ -370,7 +365,7 @@ export class LivestockFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateAgeCtrl(birthDate: Date, deceasedDate: Date): void {
-    const ageCtrl = this.livestockForm.get(Constants.Controls.AGE);
+    const ageCtrl = this.animalForm.get(Constants.Controls.AGE);
     ageCtrl.setValue(
       this.ageCalculatorService.calculateAge(birthDate, deceasedDate)
     );

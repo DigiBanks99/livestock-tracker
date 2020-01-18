@@ -13,7 +13,7 @@ import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import {
   LivestockService,
   MockLivestockService
-} from '@livestock/services/livestock.service';
+} from '@animal/services/livestock.service';
 import { MedicalComponent } from '@medical/components/medical/medical.component';
 import {
   MedicalService,

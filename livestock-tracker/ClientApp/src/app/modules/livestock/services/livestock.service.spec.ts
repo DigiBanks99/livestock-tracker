@@ -3,8 +3,7 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { getTestBed, TestBed } from '@angular/core/testing';
-import { LiveStockType } from '@core/models/livestock-type.model';
-import { Livestock } from '@core/models/livestock.model';
+import { AnimalType, Livestock } from '@core/models';
 
 import { LivestockService } from './livestock.service';
 
@@ -29,7 +28,7 @@ describe('livestockService', () => {
 
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       new Date(),
@@ -43,11 +42,11 @@ describe('livestockService', () => {
 
   it('#getSvgIcon should return correct value', () => {
     expect(service.getSvgIcon(model)).toBe('cow');
-    model.type = LiveStockType.Pig;
+    model.type = AnimalType.Pig;
     expect(service.getSvgIcon(model)).toBe('pig');
-    model.type = LiveStockType.Chicken;
+    model.type = AnimalType.Chicken;
     expect(service.getSvgIcon(model)).toBe('chicken');
-    model.type = LiveStockType.Sheep;
+    model.type = AnimalType.Sheep;
     expect(service.getSvgIcon(model)).toBe('sheep');
     model.type = 4;
     expect(function() {
@@ -56,10 +55,10 @@ describe('livestockService', () => {
   });
 
   it('#getSvgIconByType should return correct value', () => {
-    expect(service.getSvgIconByType(LiveStockType.Cattle)).toBe('cow');
-    expect(service.getSvgIconByType(LiveStockType.Pig)).toBe('pig');
-    expect(service.getSvgIconByType(LiveStockType.Chicken)).toBe('chicken');
-    expect(service.getSvgIconByType(LiveStockType.Sheep)).toBe('sheep');
+    expect(service.getSvgIconByType(AnimalType.Cattle)).toBe('cow');
+    expect(service.getSvgIconByType(AnimalType.Pig)).toBe('pig');
+    expect(service.getSvgIconByType(AnimalType.Chicken)).toBe('chicken');
+    expect(service.getSvgIconByType(AnimalType.Sheep)).toBe('sheep');
     expect(function() {
       service.getSvgIconByType(4);
     }).toThrowError('4 not implemented');
@@ -114,7 +113,7 @@ describe('livestockService', () => {
 
   it('#addAnimal should add animal if it does not exist and throw and error if it does exist', () => {
     model.id = 12;
-    model.type = LiveStockType.Cattle;
+    model.type = AnimalType.Cattle;
     let list: Livestock[];
     service.livestockChanged.subscribe((animals: Livestock[]) => {
       list = animals;
@@ -125,15 +124,15 @@ describe('livestockService', () => {
         let lastItem = list[list.length - 1];
         expect(list.length).toBe(11);
         expect(lastItem.id).toBe(-1);
-        expect(lastItem.type).toBe(LiveStockType.Cattle);
-        model.type = LiveStockType.Pig;
+        expect(lastItem.type).toBe(AnimalType.Cattle);
+        model.type = AnimalType.Pig;
         expect(function() {
           service.addAnimal(model);
         }).toThrowError('Animal already exists. Use updateAnimal instead.');
 
         const newAnimal = new Livestock(
           0,
-          LiveStockType.Chicken,
+          AnimalType.Chicken,
           'Roberto',
           55,
           new Date(),
@@ -149,7 +148,7 @@ describe('livestockService', () => {
           expect(list.length).toBe(12);
           lastItem = list[list.length - 1];
           expect(lastItem.id).toBe(-2);
-          expect(lastItem.type).toBe(LiveStockType.Chicken);
+          expect(lastItem.type).toBe(AnimalType.Chicken);
           expect(lastItem.subspecies).toBe('Roberto');
         });
         service.getLivestock();

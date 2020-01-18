@@ -1,7 +1,7 @@
 import { Animal } from '@app/core/models/livestock.model';
 import { AnimalState } from '@core/store/animal-state.interface';
 import { crudReducer } from '@core/store/crud.reducer';
-import { ActionTypes, SelectAnimal } from '@livestock/store/animal.actions';
+import { ActionTypes, SelectAnimal } from '@animal/store/animal.actions';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 

@@ -13,23 +13,23 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LivestockListComponent } from '@livestock/components/livestock-list/livestock-list.component';
+import { AnimalListComponent } from '@animal/components';
 import {
   LivestockService,
   MockLivestockService
-} from '@livestock/services/livestock.service';
+} from '@animal/services/livestock.service';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
-describe('LivestockListComponent', () => {
-  let component: LivestockListComponent;
-  let fixture: ComponentFixture<LivestockListComponent>;
+describe('Animal List Component', () => {
+  let component: AnimalListComponent;
+  let fixture: ComponentFixture<AnimalListComponent>;
   let spy: jasmine.SpyObj<AgeCalculatorService>;
 
   beforeEach(async(() => {
     spy = jasmine.createSpyObj('AgeCalculatorService', ['calculateAge']);
 
     TestBed.configureTestingModule({
-      declarations: [LivestockListComponent],
+      declarations: [AnimalListComponent],
       providers: [
         { provide: AgeCalculatorService, useValue: spy },
         { provide: LivestockService, useClass: MockLivestockService }
@@ -58,9 +58,9 @@ describe('LivestockListComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LivestockListComponent);
+    fixture = TestBed.createComponent(AnimalListComponent);
     component = fixture.componentInstance;
-    component.livestockList = [];
+    component.animals = [];
     fixture.detectChanges();
   });
 

@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { MatSelectChange } from '@angular/material/select';
 import { Livestock } from '@app/core/models/livestock.model';
-import { LivestockService } from '@livestock/services/livestock.service';
+import { LivestockService } from '@animal/services/livestock.service';
 
 @Component({
   selector: 'app-animal-select',

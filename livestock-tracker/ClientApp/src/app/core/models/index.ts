@@ -1,6 +1,6 @@
 export * from './feed-type.model';
 export * from './feeding-transaction.model';
-export * from './livestock-type.model';
+export * from './animal-type.enum';
 export * from './livestock.model';
 export * from './ls-data-service.interface';
 export * from './ls-grid-column-def.model';

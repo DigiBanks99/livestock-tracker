@@ -26,7 +26,7 @@ import {
 import {
   LivestockService,
   MockLivestockService
-} from '@livestock/services/livestock.service';
+} from '@animal/services/livestock.service';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { FeedingTransactionDetailComponent } from './feeding-transaction-detail.component';

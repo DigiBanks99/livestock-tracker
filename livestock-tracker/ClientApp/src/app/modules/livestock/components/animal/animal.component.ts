@@ -3,20 +3,19 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { animalStore } from '@animal-store';
+import { animalStore } from '@animal/store';
+import { actions, SelectAnimal } from '@animal/store/animal.actions';
 import { Animal } from '@core/models/livestock.model';
 import { AppState } from '@core/store';
 import { getAnimals, getSelectedAnimalId } from '@core/store/selectors';
-import { actions, SelectAnimal } from '@livestock/store/animal.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-livestock',
-  templateUrl: './livestock.component.html',
-  styleUrls: ['./livestock.component.scss']
+  selector: 'app-animal',
+  templateUrl: './animal.component.html',
+  styleUrls: ['./animal.component.scss']
 })
-export class LivestockComponent implements OnInit, OnDestroy {
-  public toggle = false;
+export class AnimalComponent implements OnInit, OnDestroy {
   public animals$: Observable<Animal[]>;
   public selectedAnimal$: Observable<number>;
   public isFetching$: Observable<boolean>;

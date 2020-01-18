@@ -1,18 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
-import { Animal } from '@app/core/models/livestock.model';
+import { LivestockService } from '@animal/services/livestock.service';
+import { Animal } from '@core/models';
 import { environment } from '@env/environment';
-import { LivestockService } from '@livestock/services/livestock.service';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
 @Component({
-  selector: 'app-livestock-list',
-  templateUrl: './livestock-list.component.html',
-  styleUrls: ['./livestock-list.component.scss']
+  selector: 'app-animal-list',
+  templateUrl: './animal-list.component.html',
+  styleUrls: ['./animal-list.component.scss']
 })
-export class LivestockListComponent implements OnInit {
-  @Input() public livestockList: Animal[];
+export class AnimalListComponent implements OnInit {
+  @Input() public animals: Animal[];
   @Output() public remove = new EventEmitter<Animal>();
   @Output() public showDetail = new EventEmitter<number>();
   @Output() public addAnimal = new EventEmitter();
@@ -32,7 +32,7 @@ export class LivestockListComponent implements OnInit {
     return this.livestockService.getSvgIcon(animal);
   }
 
-  public removeLivestock(selectedItems: MatListOption[]): void {
+  public removeAnimal(selectedItems: MatListOption[]): void {
     for (const item of selectedItems) {
       this.remove.emit(item.value);
     }

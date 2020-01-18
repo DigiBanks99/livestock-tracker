@@ -1,14 +1,14 @@
 @import '~@angular/material/theming';
 @import 'app-theme';
 
-.livestock-detail-container {
+.animal-detail-container {
   position: absolute;
   top: 0;
   width: 100vw;
   height: 100vh;
   overflow-y: auto;
 
-  .livestock-detail-toolbar__header-top {
+  .animal-detail-toolbar__header-top {
     height: 30vh;
   }
 
@@ -17,24 +17,24 @@
     font-size: unset;
   }
 
-  .livestock-detail-toolbar__nav__desc {
+  .animal-detail-toolbar__nav__desc {
     .mat-icon {
       padding-right: 4px;
       background-color: $light-primary-text;
     }
 
-    .livestock-detail-toolbar__nav__desc-text {
+    .animal-detail-toolbar__nav__desc-text {
       padding-left: 8px;
     }
   }
 
-  .livestock-detail-content {
+  .animal-detail-content {
     display: flex;
     flex: 1;
     flex-direction: column;
     position: relative;
 
-    .livestock-detail-content__card {
+    .animal-detail-content__card {
       margin-left: auto;
       margin-right: auto;
       position: relative;
@@ -43,7 +43,7 @@
       background-color: mat-color($candy-app-primary, 200);
     }
 
-    .livestock-detail-content__card-content {
+    .animal-detail-content__card-content {
       margin-bottom: 0;
     }
 

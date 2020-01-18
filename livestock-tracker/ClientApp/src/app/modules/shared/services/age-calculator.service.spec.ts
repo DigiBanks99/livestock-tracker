@@ -1,5 +1,4 @@
-import { LiveStockType } from '@core/models/livestock-type.model';
-import { Livestock } from '@core/models/livestock.model';
+import { AnimalType, Livestock } from '@core/models';
 
 import { AgeCalculatorService } from './age-calculator.service';
 
@@ -11,7 +10,7 @@ describe('AgeCalculatorService', () => {
     const now = new Date();
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       now,
@@ -40,7 +39,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -69,7 +68,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -95,7 +94,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -121,7 +120,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -152,7 +151,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -183,7 +182,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -214,7 +213,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,

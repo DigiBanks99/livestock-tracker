@@ -1,7 +1,6 @@
-import { LiveStockType } from '@core/models/livestock-type.model';
-import { Livestock } from '@core/models/livestock.model';
+import { actions, SelectAnimal } from '@animal/store/animal.actions';
+import { AnimalType, Livestock } from '@core/models';
 import { AnimalState } from '@core/store';
-import { actions, SelectAnimal } from '@livestock/store/animal.actions';
 
 import {
   animalsReducer,
@@ -23,7 +22,7 @@ describe('animals reducer', () => {
   it('should add another animal to the list when action is of type ADD_ANIMAL', () => {
     const animal1 = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       'fries',
       1,
       new Date(),
@@ -40,11 +39,11 @@ describe('animals reducer', () => {
     expect(state1.entities[1].id).toBe(animal1.id);
     expect(state1.entities[1].number).toBe(animal1.number);
     expect(state1.entities[1].arrivalWeight).toBe(animal1.arrivalWeight);
-    expect(state1.entities[1].type).toBe(LiveStockType.Cattle);
+    expect(state1.entities[1].type).toBe(AnimalType.Cattle);
 
     const animal2 = new Livestock(
       2,
-      LiveStockType.Chicken,
+      AnimalType.Chicken,
       'black',
       2,
       new Date(),
@@ -62,17 +61,17 @@ describe('animals reducer', () => {
     expect(state2.entities[1].id).toBe(animal1.id);
     expect(state2.entities[1].number).toBe(animal1.number);
     expect(state2.entities[1].arrivalWeight).toBe(animal1.arrivalWeight);
-    expect(state2.entities[1].type).toBe(LiveStockType.Cattle);
+    expect(state2.entities[1].type).toBe(AnimalType.Cattle);
 
     expect(state2.entities[2]).toBeDefined();
     expect(state2.entities[2].id).toBe(animal2.id);
     expect(state2.entities[2].number).toBe(animal2.number);
     expect(state2.entities[2].arrivalWeight).toBe(animal2.arrivalWeight);
-    expect(state2.entities[2].type).toBe(LiveStockType.Chicken);
+    expect(state2.entities[2].type).toBe(AnimalType.Chicken);
 
     const animal3 = new Livestock(
       3,
-      LiveStockType.Pig,
+      AnimalType.Pig,
       'fat',
       3,
       new Date(),
@@ -90,25 +89,25 @@ describe('animals reducer', () => {
     expect(state3.entities[1].id).toBe(animal1.id);
     expect(state3.entities[1].number).toBe(animal1.number);
     expect(state3.entities[1].arrivalWeight).toBe(animal1.arrivalWeight);
-    expect(state3.entities[1].type).toBe(LiveStockType.Cattle);
+    expect(state3.entities[1].type).toBe(AnimalType.Cattle);
 
     expect(state3.entities[2]).toBeDefined();
     expect(state3.entities[2].id).toBe(animal2.id);
     expect(state3.entities[2].number).toBe(animal2.number);
     expect(state3.entities[2].arrivalWeight).toBe(animal2.arrivalWeight);
-    expect(state3.entities[2].type).toBe(LiveStockType.Chicken);
+    expect(state3.entities[2].type).toBe(AnimalType.Chicken);
 
     expect(state3.entities[3]).toBeDefined();
     expect(state3.entities[3].id).toBe(animal3.id);
     expect(state3.entities[3].number).toBe(animal3.number);
     expect(state3.entities[3].arrivalWeight).toBe(animal3.arrivalWeight);
-    expect(state3.entities[3].type).toBe(LiveStockType.Pig);
+    expect(state3.entities[3].type).toBe(AnimalType.Pig);
   });
 
   it('should remove the animal with the provided key if the action is of type REMOVE_ANIMAL_SUCCESS', () => {
     const animal1 = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       'fries',
       1,
       new Date(),
@@ -123,7 +122,7 @@ describe('animals reducer', () => {
 
     const animal2 = new Livestock(
       2,
-      LiveStockType.Chicken,
+      AnimalType.Chicken,
       'black',
       2,
       new Date(),
@@ -138,7 +137,7 @@ describe('animals reducer', () => {
 
     const animal3 = new Livestock(
       3,
-      LiveStockType.Pig,
+      AnimalType.Pig,
       'fat',
       3,
       new Date(),
@@ -176,7 +175,7 @@ describe('animals reducer', () => {
 
     const animal1 = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       'fries',
       1,
       new Date(),
@@ -191,7 +190,7 @@ describe('animals reducer', () => {
 
     const animal2 = new Livestock(
       2,
-      LiveStockType.Chicken,
+      AnimalType.Chicken,
       'black',
       2,
       new Date(),
@@ -206,7 +205,7 @@ describe('animals reducer', () => {
 
     const animal3 = new Livestock(
       3,
-      LiveStockType.Pig,
+      AnimalType.Pig,
       'fat',
       3,
       new Date(),
@@ -231,7 +230,7 @@ describe('animals reducer', () => {
   it('should clear animals and set them to the key value object matching array passed in if the action type is SET_ANIMALS', () => {
     const animal1 = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       'fries',
       1,
       new Date(),
@@ -243,7 +242,7 @@ describe('animals reducer', () => {
     );
     const animal2 = new Livestock(
       2,
-      LiveStockType.Chicken,
+      AnimalType.Chicken,
       'black',
       2,
       new Date(),
@@ -255,7 +254,7 @@ describe('animals reducer', () => {
     );
     const animal3 = new Livestock(
       3,
-      LiveStockType.Pig,
+      AnimalType.Pig,
       'fat',
       3,
       new Date(),
@@ -272,8 +271,8 @@ describe('animals reducer', () => {
     expect(state1.entities[1]).toBeDefined();
     expect(state1.entities[2]).toBeDefined();
     expect(state1.entities[3]).toBeDefined();
-    expect(state1.entities[1].type).toBe(LiveStockType.Cattle);
-    expect(state1.entities[2].type).toBe(LiveStockType.Chicken);
-    expect(state1.entities[3].type).toBe(LiveStockType.Pig);
+    expect(state1.entities[1].type).toBe(AnimalType.Cattle);
+    expect(state1.entities[2].type).toBe(AnimalType.Chicken);
+    expect(state1.entities[3].type).toBe(AnimalType.Pig);
   });
 });

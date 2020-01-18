@@ -17,26 +17,26 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { animalEffects, animalReducers } from '@animal-store';
-import { LivestockDetailComponent } from '@livestock/components/livestock-detail/livestock-detail.component';
-import { LivestockFormComponent } from '@livestock/components/livestock-form/livestock-form.component';
-import { LivestockListComponent } from '@livestock/components/livestock-list/livestock-list.component';
-import { LivestockNewComponent } from '@livestock/components/livestock-new/livestock-new.component';
-import { LivestockComponent } from '@livestock/components/livestock/livestock.component';
-import { LivestockService } from '@livestock/services/livestock.service';
+import {
+  AnimalComponent,
+  AnimalDetailComponent,
+  AnimalFormComponent,
+  AnimalListComponent,
+  AnimalNewComponent
+} from '@animal/components';
+import { AnimalService, LivestockService } from '@animal/services';
+import { animalEffects, animalReducers } from '@animal/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 
-import { AnimalService } from './services';
-
 @NgModule({
   declarations: [
-    LivestockComponent,
-    LivestockNewComponent,
-    LivestockListComponent,
-    LivestockDetailComponent,
-    LivestockFormComponent
+    AnimalComponent,
+    AnimalNewComponent,
+    AnimalListComponent,
+    AnimalDetailComponent,
+    AnimalFormComponent
   ],
   imports: [
     CommonModule,
@@ -64,6 +64,6 @@ import { AnimalService } from './services';
     EffectsModule.forFeature([animalEffects.AnimalEffects])
   ],
   providers: [LivestockService, AnimalService],
-  exports: [LivestockComponent]
+  exports: [AnimalComponent]
 })
-export class LivestockModule {}
+export class AnimalModule {}

@@ -3,8 +3,7 @@ import { Observable, of, Subject, Subscription, throwError } from 'rxjs';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable, OnDestroy, OnInit } from '@angular/core';
-import { LiveStockType } from '@app/core/models/livestock-type.model';
-import { Animal, Livestock } from '@app/core/models/livestock.model';
+import { Animal, AnimalType, Livestock } from '@core/models';
 import { environment } from '@env/environment';
 
 interface ILivestockService {
@@ -18,7 +17,7 @@ interface ILivestockService {
   addAnimal(animal: Livestock): Observable<Livestock>;
   updateAnimal(animal: Livestock): Observable<Livestock>;
   getSvgIcon(animal: Livestock): string;
-  getSvgIconByType(type: LiveStockType): string;
+  getSvgIconByType(type: AnimalType): string;
   getSvgIconByString(type: string): string;
 }
 
@@ -59,16 +58,16 @@ export class LivestockService implements ILivestockService, OnDestroy {
     return this.http.get<Livestock[]>(this.apiUrl + 'animal');
   }
 
-  public getLivestockType(typeNumber: number): LiveStockType {
+  public getLivestockType(typeNumber: number): AnimalType {
     switch (typeNumber) {
       case 0:
-        return LiveStockType.Cattle;
+        return AnimalType.Cattle;
       case 1:
-        return LiveStockType.Sheep;
+        return AnimalType.Sheep;
       case 2:
-        return LiveStockType.Pig;
+        return AnimalType.Pig;
       case 3:
-        return LiveStockType.Chicken;
+        return AnimalType.Chicken;
       default:
         throw new Error('Not implemented LivestockType: ' + typeNumber);
     }
@@ -121,15 +120,15 @@ export class LivestockService implements ILivestockService, OnDestroy {
     return this.getSvgIconByType(animal.type);
   }
 
-  public getSvgIconByType(type: LiveStockType): string {
+  public getSvgIconByType(type: AnimalType): string {
     switch (type) {
-      case LiveStockType.Cattle:
+      case AnimalType.Cattle:
         return 'cow';
-      case LiveStockType.Chicken:
+      case AnimalType.Chicken:
         return 'chicken';
-      case LiveStockType.Pig:
+      case AnimalType.Pig:
         return 'pig';
-      case LiveStockType.Sheep:
+      case AnimalType.Sheep:
         return 'sheep';
       default:
         throw Error(type + ' not implemented');
@@ -224,7 +223,7 @@ export class MockLivestockService implements ILivestockService {
 
     return new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       0,
       new Date(),
@@ -248,7 +247,7 @@ export class MockLivestockService implements ILivestockService {
   public getSvgIcon(animal: Livestock): string {
     return null;
   }
-  public getSvgIconByType(type: LiveStockType): string {
+  public getSvgIconByType(type: AnimalType): string {
     return null;
   }
   public getSvgIconByString(type: string): string {

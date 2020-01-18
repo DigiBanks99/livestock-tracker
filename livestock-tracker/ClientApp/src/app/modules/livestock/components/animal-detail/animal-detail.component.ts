@@ -3,22 +3,24 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { animalStore } from '@animal-store';
-import { Animal } from '@core/models/livestock.model';
-import { AnimalState } from '@core/store';
-import { actions } from '@livestock/store/animal.actions';
+import { animalActions, animalStore } from '@animal/store/index';
+import { Animal } from '@app/core/models';
+import { AppState } from '@core/store';
+import { getSelectedAnimal } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-livestock-new',
-  templateUrl: './livestock-new.component.html'
+  selector: 'app-animal-detail',
+  templateUrl: './animal-detail.component.html',
+  styleUrls: ['./animal-detail.component.scss']
 })
-export class LivestockNewComponent implements OnInit, OnDestroy {
+export class AnimalDetailComponent implements OnInit, OnDestroy {
+  public animal$: Observable<Animal>;
   public isPending$: Observable<boolean>;
   public error$: Observable<Error>;
-  private destroyed$ = new Subject();
+  public destroyed$ = new Subject();
 
-  constructor(private store: Store<AnimalState>, private location: Location) {}
+  constructor(private store: Store<AppState>, private location: Location) {}
 
   public ngOnInit(): void {
     this.isPending$ = this.store.pipe(
@@ -29,10 +31,14 @@ export class LivestockNewComponent implements OnInit, OnDestroy {
       select(animalStore.selectors.getAnimalsError),
       takeUntil(this.destroyed$)
     );
+    this.animal$ = this.store.pipe(
+      select(getSelectedAnimal),
+      takeUntil(this.destroyed$)
+    );
   }
 
   public onSave(animal: Animal): void {
-    this.store.dispatch(actions.addItem(animal));
+    this.store.dispatch(animalActions.actions.updateItem(animal, animal.id));
   }
 
   public onNavigateBack(): void {

@@ -1,4 +1,4 @@
-export enum LiveStockType {
+export enum AnimalType {
   Cattle = 0,
   Sheep = 1,
   Pig = 2,

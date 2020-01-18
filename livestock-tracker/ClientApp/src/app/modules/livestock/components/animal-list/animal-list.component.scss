@@ -1,7 +1,7 @@
 @import '~@angular/material/theming';
 @import 'app-theme';
 
-.livestock-list-container {
+.animal-list-container {
   position: relative;
   display: block;
   min-height: calc(100vh - 64px);
@@ -24,8 +24,8 @@
   color: mat-color($candy-app-accent, '600-contrast', 0.6);
 }
 
-.livestock-list-container .livestock-toolbar,
-.livestock-list-container .livestock-item-list {
+.animal-list-container .animal-toolbar,
+.animal-list-container .animal-item-list {
   margin: auto;
   width: 695px;
   min-width: 695px;
@@ -33,7 +33,7 @@
   position: relative;
 }
 
-.livestock-list-container .livestock-toolbar {
+.animal-list-container .animal-toolbar {
   background-color: mat-color($candy-app-primary, 100);
   color: mat-color($candy-app-primary, '100-contrast');
   font-size: 14px;
@@ -46,62 +46,62 @@
   }
 }
 
-.livestock-list-container .livestock-item-list {
+.animal-list-container .animal-item-list {
   flex-direction: column;
   padding: 0;
   height: auto;
 }
 
 @media only screen and (min-width: 1100px) {
-  .livestock-list-container .livestock-toolbar,
-  .livestock-list-container .livestock-item-list {
+  .animal-list-container .animal-toolbar,
+  .animal-list-container .animal-item-list {
     margin: auto;
     width: 920px;
   }
 }
 
 @media only screen and (min-width: 1400px) {
-  .livestock-list-container .livestock-toolbar,
-  .livestock-list-container .livestock-item-list {
+  .animal-list-container .animal-toolbar,
+  .animal-list-container .animal-item-list {
     margin: auto;
     width: 1150px;
   }
 }
 
-.livestock-card__type,
-.livestock-card__number,
-.livestock-card__age,
-.livestock-card__sold,
-.livestock-toolbar__type,
-.livestock-toolbar__number,
-.livestock-toolbar__age,
-.livestock-toolbar__sold {
+.animal-card__type,
+.animal-card__number,
+.animal-card__age,
+.animal-card__sold,
+.animal-toolbar__type,
+.animal-toolbar__number,
+.animal-toolbar__age,
+.animal-toolbar__sold {
   position: relative;
   display: flex;
 }
 
-.livestock-card__type,
-.livestock-toolbar__type {
+.animal-card__type,
+.animal-toolbar__type {
   width: 50%;
   min-width: 300px;
 }
 
-.livestock-card__age,
-.livestock-toolbar__age {
+.animal-card__age,
+.animal-toolbar__age {
   width: 30%;
   min-width: 195px;
 }
 
-.livestock-card__number,
-.livestock-card__sold,
-.livestock-toolbar__number,
-.livestock-toolbar__sold {
+.animal-card__number,
+.animal-card__sold,
+.animal-toolbar__number,
+.animal-toolbar__sold {
   float: left;
   width: 10%;
   min-width: 50px;
 }
 
-.livestock-item-list__item {
+.animal-item-list__item {
   cursor: pointer;
   display: flex;
   position: relative;
@@ -125,18 +125,18 @@
   }
 }
 
-.livestock-item-list__item-active {
+.animal-item-list__item-active {
   background-color: mat-color($candy-app-primary, 300, 0.8);
 }
 
-.livestock-item-list__card {
+.animal-item-list__card {
   width: 100%;
   border-radius: 0;
   padding-top: 15px;
   padding-bottom: 15px;
 }
 
-.livestock-card__type-desc {
+.animal-card__type-desc {
   padding-left: 8px;
   margin-top: auto;
   margin-bottom: auto;

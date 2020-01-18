@@ -24,34 +24,34 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
-import { animalStore } from '@animal-store';
-import { Livestock } from '@core/models';
-import { getAnimals, getSelectedAnimalId } from '@core/store/selectors';
-import { LivestockDetailComponent } from '@livestock/components/livestock-detail/livestock-detail.component';
-import { LivestockComponent } from '@livestock/components/livestock/livestock.component';
+import { AnimalDetailComponent } from '@animal/components';
+import { AnimalComponent } from '@animal/components/animal/animal.component';
 import {
   LivestockService,
   MockLivestockService
-} from '@livestock/services/livestock.service';
+} from '@animal/services/livestock.service';
+import { animalStore } from '@animal/store';
+import { Animal } from '@core/models';
+import { getAnimals, getSelectedAnimalId } from '@core/store/selectors';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
 @Component({
-  selector: 'app-livestock-list',
+  selector: 'app-animal-list',
   template: `
     <div></div>
   `
 })
-class MockLivestockListComponent {
-  @Input() public livestockList: Livestock[];
-  @Output() public remove = new EventEmitter<Livestock>();
+class MockAnimalListComponent {
+  @Input() public animals: Animal[];
+  @Output() public remove = new EventEmitter<Animal>();
   @Output() public showDetail = new EventEmitter<number>();
   @Output() public addAnimal = new EventEmitter();
 }
 
-describe('LivestockComponent', () => {
-  let component: LivestockComponent;
-  let fixture: ComponentFixture<LivestockComponent>;
+describe('Animal Component', () => {
+  let component: AnimalComponent;
+  let fixture: ComponentFixture<AnimalComponent>;
   let spy: jasmine.SpyObj<AgeCalculatorService>;
 
   beforeEach(async(() => {
@@ -59,9 +59,9 @@ describe('LivestockComponent', () => {
 
     TestBed.configureTestingModule({
       declarations: [
-        LivestockComponent,
-        MockLivestockListComponent,
-        LivestockDetailComponent
+        AnimalComponent,
+        MockAnimalListComponent,
+        AnimalDetailComponent
       ],
       providers: [
         { provide: LivestockService, useClass: MockLivestockService },
@@ -102,7 +102,7 @@ describe('LivestockComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LivestockComponent);
+    fixture = TestBed.createComponent(AnimalComponent);
     component = fixture.componentInstance;
     component.animals$ = from([]);
     fixture.detectChanges();

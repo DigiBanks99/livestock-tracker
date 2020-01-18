@@ -11,24 +11,19 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AnimalDetailComponent } from '@animal/components';
+import { selectors } from '@animal/store/animal.store';
 import { getSelectedAnimal } from '@core/store/selectors';
-import { LivestockDetailComponent } from '@livestock/components/livestock-detail/livestock-detail.component';
-import {
-  LivestockService,
-  MockLivestockService
-} from '@livestock/services/livestock.service';
-import { selectors } from '@livestock/store/animal.store';
 import { provideMockStore } from '@ngrx/store/testing';
 
 describe('LivestockDetailComponent', () => {
-  let component: LivestockDetailComponent;
-  let fixture: ComponentFixture<LivestockDetailComponent>;
+  let component: AnimalDetailComponent;
+  let fixture: ComponentFixture<AnimalDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LivestockDetailComponent],
+      declarations: [AnimalDetailComponent],
       providers: [
-        { provide: LivestockService, useClass: MockLivestockService },
         provideMockStore({
           selectors: [
             { selector: selectors.getAnimalsPendingState, value: false },
@@ -57,7 +52,7 @@ describe('LivestockDetailComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(LivestockDetailComponent);
+    fixture = TestBed.createComponent(AnimalDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

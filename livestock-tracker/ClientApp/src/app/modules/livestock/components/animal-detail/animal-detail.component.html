@@ -1,4 +1,4 @@
-<app-livestock-form
+<app-animal-form
   [currentAnimal]="animal$ | async"
   [isPending]="isPending$ | async"
   [error]="error$ | async"
@@ -6,4 +6,4 @@
   successMessage="Animal saved."
   (navigateBack)="onNavigateBack()"
   (save)="onSave($event)"
-></app-livestock-form>
+></app-animal-form>

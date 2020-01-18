@@ -9,7 +9,7 @@ import { actions as feedingTransactionActions } from '@feed/store/feeding-transa
 import {
   ActionTypes as AnimalActionTypes,
   SelectAnimal
-} from '@livestock/store/animal.actions';
+} from '@animal/store/animal.actions';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 

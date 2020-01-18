@@ -1,18 +1,18 @@
 <form
-  [formGroup]="livestockForm"
-  class="container livestock-detail-container app-background"
+  [formGroup]="animalForm"
+  class="container animal-detail-container app-background"
   (ngSubmit)="submit()"
 >
   <mat-toolbar
     color="primary"
-    class="livestock-detail-toolbar app-toolbar"
+    class="animal-detail-toolbar app-toolbar"
     role="header"
   >
     <mat-toolbar-row>
-      <mat-nav-list class="livestock-detail-toolbar__nav">
+      <mat-nav-list class="animal-detail-toolbar__nav">
         <a
           mat-list-item
-          class="livestock-detail-toolbar__nav__icon-container"
+          class="animal-detail-toolbar__nav__icon-container"
           (click)="onNavigateBack()"
         >
           <mat-icon>arrow_back</mat-icon>
@@ -20,7 +20,7 @@
         <a
           mat-list-item
           matRippleDisabled
-          class="livestock-detail-toolbar__nav__desc"
+          class="animal-detail-toolbar__nav__desc"
         >
           {{ header }}
         </a>
@@ -30,7 +30,7 @@
         mat-icon-button
         type="button"
         title="Reset changes"
-        [disabled]="!livestockForm.dirty"
+        [disabled]="!animalForm.dirty"
         (click)="reset()"
       >
         <mat-icon>cancel</mat-icon>
@@ -39,23 +39,23 @@
         mat-icon-button
         type="submit"
         title="Submit changes"
-        [disabled]="livestockForm.invalid || !livestockForm.dirty"
+        [disabled]="animalForm.invalid || !animalForm.dirty"
       >
         <mat-icon>save</mat-icon>
       </button>
     </mat-toolbar-row>
-    <mat-toolbar-row class="livestock-detail-toolbar__header-top">
-      <div class="livestock-detail-toolbar__header-top"></div>
+    <mat-toolbar-row class="animal-detail-toolbar__header-top">
+      <div class="animal-detail-toolbar__header-top"></div>
     </mat-toolbar-row>
   </mat-toolbar>
-  <div class="livestock-detail-content">
-    <mat-card class="form-container livestock-detail-content__card">
+  <div class="animal-detail-content">
+    <mat-card class="form-container animal-detail-content__card">
       <mat-card-header>
         <mat-card-title>
           <mat-icon svgIcon="{{ getSvgIcon() }}"></mat-icon>
         </mat-card-title>
       </mat-card-header>
-      <mat-card-content class="livestock-detail-content__card-content">
+      <mat-card-content class="animal-detail-content__card-content">
         <div class="form form-container-inline">
           <mat-form-field appearance="fill">
             <mat-label for="type">Type</mat-label>
@@ -67,7 +67,7 @@
             >
               <mat-option *ngFor="let key of keys" [value]="key">
                 <mat-icon svgIcon="{{ getSvgIconByType(key) }}"></mat-icon>
-                <span>{{ livestockTypes[key] }}</span>
+                <span>{{ animalTypes[key] }}</span>
               </mat-option>
             </mat-select>
           </mat-form-field>
@@ -166,10 +166,7 @@
             >Sold</mat-checkbox
           >
         </div>
-        <div
-          class="form-container-inline"
-          *ngIf="livestockForm.get('sold').value"
-        >
+        <div class="form-container-inline" *ngIf="animalForm.get('sold').value">
           <mat-form-field appearance="fill">
             <mat-label for="sellPrice">Sell Price</mat-label>
             <input
@@ -179,7 +176,7 @@
               matInput
               placeholder="Sell Price"
               class="currency-input"
-              [required]="livestockForm.get('sold').value"
+              [required]="animalForm.get('sold').value"
             />
             <span matPrefix *ngIf="showPrefix('sellPrice')">R&nbsp;</span>
           </mat-form-field>
@@ -202,7 +199,7 @@
         </div>
         <div
           class="form-container-inline"
-          *ngIf="livestockForm.get('deceased').value"
+          *ngIf="animalForm.get('deceased').value"
         >
           <mat-form-field appearance="fill">
             <mat-label for="dateOfDeath">Date of Death</mat-label>
@@ -225,7 +222,7 @@
           type="button"
           mat-button
           title="Reset changes"
-          [disabled]="!livestockForm.dirty"
+          [disabled]="!animalForm.dirty"
           (click)="reset()"
         >
           Cancel
@@ -235,7 +232,7 @@
           mat-button
           color="primary"
           title="Submit changes"
-          [disabled]="livestockForm.invalid || !livestockForm.dirty"
+          [disabled]="animalForm.invalid || !animalForm.dirty"
         >
           Save
         </button>

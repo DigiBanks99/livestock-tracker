@@ -4,7 +4,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Livestock } from '@app/core/models/livestock.model';
 import { AppState } from '@core/store';
 import { getAnimals, getSelectedAnimal } from '@core/store/selectors';
-import { SelectAnimal } from '@livestock/store/animal.actions';
+import { SelectAnimal } from '@animal/store/animal.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
