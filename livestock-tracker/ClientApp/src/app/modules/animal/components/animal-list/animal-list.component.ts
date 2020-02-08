@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { LivestockService } from '@animal/services/livestock.service';
@@ -9,7 +16,8 @@ import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 @Component({
   selector: 'app-animal-list',
   templateUrl: './animal-list.component.html',
-  styleUrls: ['./animal-list.component.scss']
+  styleUrls: ['./animal-list.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AnimalListComponent implements OnInit {
   @Input() public animals: Animal[];

@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 
 namespace LivestockTracker
 {
@@ -12,6 +14,11 @@ namespace LivestockTracker
 
     public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
         WebHost.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((context, config) =>
+            {
+              var environmentSwitch = context.HostingEnvironment.IsProduction() ? string.Empty : $".{context.HostingEnvironment.EnvironmentName}";
+              config.AddJsonFile($"appsettings{environmentSwitch}.json", optional: false, reloadOnChange: true);
+            })
             .UseStartup<Startup>();
   }
 }
