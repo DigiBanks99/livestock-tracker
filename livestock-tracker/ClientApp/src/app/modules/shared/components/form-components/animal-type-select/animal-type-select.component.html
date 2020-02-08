@@ -1,0 +1,17 @@
+<div [formGroup]="form">
+  <label class="mat-form-field-label" for="type" aria-owns="type">
+    <mat-label for="type">Animal Type</mat-label>
+  </label>
+  <mat-select
+    [id]="id"
+    formControlName="type"
+    [placeholder]="placeholder"
+    [required]="required"
+    [disabled]="disabled"
+  >
+    <mat-option *ngFor="let key of keys" [value]="key">
+      <mat-icon svgIcon="{{ getSvgIconByType(key) }}"></mat-icon>
+      <span>{{ getAnimalTypeDescription(key) }}</span>
+    </mat-option>
+  </mat-select>
+</div>

@@ -58,18 +58,7 @@
       <mat-card-content class="animal-detail-content__card-content">
         <div class="form form-container-inline">
           <mat-form-field appearance="fill">
-            <mat-label for="type">Type</mat-label>
-            <mat-select
-              id="type"
-              formControlName="type"
-              placeholder="Select"
-              required
-            >
-              <mat-option *ngFor="let key of keys" [value]="key">
-                <mat-icon svgIcon="{{ getSvgIconByType(key) }}"></mat-icon>
-                <span>{{ animalTypes[key] }}</span>
-              </mat-option>
-            </mat-select>
+            <app-animal-type-select></app-animal-type-select>
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label for="subspecies">Subspecies</mat-label>

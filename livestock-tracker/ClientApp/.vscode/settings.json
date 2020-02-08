@@ -21,7 +21,9 @@
     "checkbox",
     "elem",
     "ctrl",
-    "ctl"
+    "ctl",
+    "placeholder",
+    "describedby"
   ],
   "cSpell.ignorePaths": [
     "**/package-lock.json",
