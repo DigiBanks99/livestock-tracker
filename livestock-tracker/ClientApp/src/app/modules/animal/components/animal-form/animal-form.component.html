@@ -58,7 +58,9 @@
       <mat-card-content class="animal-detail-content__card-content">
         <div class="form form-container-inline">
           <mat-form-field appearance="fill">
-            <app-animal-type-select></app-animal-type-select>
+            <app-animal-type-select
+              formControlName="type"
+            ></app-animal-type-select>
           </mat-form-field>
           <mat-form-field appearance="fill">
             <mat-label for="subspecies">Subspecies</mat-label>

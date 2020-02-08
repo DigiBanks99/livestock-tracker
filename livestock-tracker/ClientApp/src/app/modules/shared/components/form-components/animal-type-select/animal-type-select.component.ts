@@ -12,7 +12,12 @@ import {
   Output,
   Self
 } from '@angular/core';
-import { FormBuilder, FormGroup, NgControl } from '@angular/forms';
+import {
+  ControlValueAccessor,
+  FormBuilder,
+  FormGroup,
+  NgControl
+} from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 import { AnimalType } from '@core/models';
 
@@ -27,7 +32,7 @@ const Selector = 'app-animal-type-select';
   ]
 })
 export class AnimalTypeSelectComponent
-  implements MatFormFieldControl<AnimalType>, OnDestroy {
+  implements MatFormFieldControl<AnimalType>, ControlValueAccessor, OnDestroy {
   public static nextId = 0;
 
   private readonly _keys: number[];
@@ -104,6 +109,8 @@ export class AnimalTypeSelectComponent
   public get keys(): number[] {
     return this._keys;
   }
+  public onChange = (_: any) => {};
+  public onTouched = () => {};
 
   constructor(
     fb: FormBuilder,
@@ -162,6 +169,18 @@ export class AnimalTypeSelectComponent
 
   public getAnimalTypeDescription(type: number | AnimalType): string {
     return AnimalType[type];
+  }
+
+  public writeValue(v: AnimalType): void {
+    this.value = v;
+  }
+
+  public registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  public registerOnTouched(fn: any): void {
+    this.onTouched = fn;
   }
 
   public ngOnDestroy(): void {
