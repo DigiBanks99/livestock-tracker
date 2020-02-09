@@ -42,15 +42,10 @@ export class AnimalTypeSelectComponent
 
   @Input()
   public get value(): AnimalType {
-    const v = this.form.value.type;
-    const index = this._keys.indexOf(v);
-    if (index < 0) {
-      return -1;
-    }
-    return this._keys[v];
+    return this.form.value.type;
   }
   public set value(v: AnimalType) {
-    const type = this._keys[v];
+    const type = v;
     this.form.setValue({ type });
     this.stateChanges.next();
     this.onChange(v);
@@ -126,7 +121,8 @@ export class AnimalTypeSelectComponent
     this._keys = Object.keys(AnimalType)
       .filter(Number)
       .map(type => +type)
-      .concat(0);
+      .concat(0)
+      .sort();
 
     this._placeholder = '';
     this._required = false;
