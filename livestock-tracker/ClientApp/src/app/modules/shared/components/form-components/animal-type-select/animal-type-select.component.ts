@@ -53,6 +53,7 @@ export class AnimalTypeSelectComponent
     const type = this._keys[v];
     this.form.setValue({ type });
     this.stateChanges.next();
+    this.onChange(v);
   }
 
   @Input()
@@ -109,7 +110,7 @@ export class AnimalTypeSelectComponent
   public get keys(): number[] {
     return this._keys;
   }
-  public onChange = (_: any) => {};
+  public onChange = (value: AnimalType) => {};
   public onTouched = () => {};
 
   constructor(
@@ -139,6 +140,10 @@ export class AnimalTypeSelectComponent
       this.focused = origin !== null;
       this.stateChanges.next();
     });
+
+    if (this.ngControl != null) {
+      this.ngControl.valueAccessor = this;
+    }
   }
 
   public setDescribedByIds(ids: string[]): void {

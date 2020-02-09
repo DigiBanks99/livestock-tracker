@@ -8,6 +8,7 @@
     [placeholder]="placeholder"
     [required]="required"
     [disabled]="disabled"
+    (valueChange)="onChange($event)"
   >
     <mat-option *ngFor="let key of keys" [value]="key">
       <mat-icon svgIcon="{{ getSvgIconByType(key) }}"></mat-icon>
