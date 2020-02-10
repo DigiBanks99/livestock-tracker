@@ -1,10 +1,11 @@
-import { Observable, Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { initialState } from '@animal/store/animal.reducers';
 import { animalActions, animalStore } from '@animal/store/index';
-import { Animal } from '@core/models';
+import { Animal, AnimalType } from '@core/models';
 import { AnimalState } from '@core/store';
 import { select, Store } from '@ngrx/store';
 
@@ -36,6 +37,25 @@ export class AnimalNewComponent implements OnInit, OnDestroy {
 
   public onNavigateBack(): void {
     this.location.back();
+  }
+
+  public createAnimal(): Observable<Animal> {
+    return of({
+      id: 0,
+      arrivalWeight: null,
+      batchNumber: null,
+      birthDate: new Date(),
+      dateOfDeath: null,
+      deceased: false,
+      number: null,
+      purchaseDate: new Date(),
+      purchasePrice: null,
+      sellDate: null,
+      sellPrice: null,
+      sold: false,
+      subspecies: null,
+      type: AnimalType.Cattle
+    });
   }
 
   public ngOnDestroy(): void {

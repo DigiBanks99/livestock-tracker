@@ -1,5 +1,6 @@
 import * as moment from 'moment';
-import { Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import {
   Component,
@@ -53,22 +54,15 @@ const Constants = {
   ]
 })
 export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
-  @Input() public currentAnimal: Animal = {
-    id: 0,
-    number: null,
-    birthDate: new Date(),
-    type: AnimalType.Cattle,
-    arrivalWeight: null,
-    batchNumber: null,
-    dateOfDeath: null,
-    deceased: false,
-    purchaseDate: new Date(),
-    purchasePrice: null,
-    sellDate: null,
-    sellPrice: null,
-    sold: false,
-    subspecies: null
-  };
+  private _currentAnimal$: Observable<Animal>;
+
+  @Input()
+  public get currentAnimal$(): Observable<Animal> {
+    return this._currentAnimal$;
+  }
+  public set currentAnimal$(value$: Observable<Animal>) {
+    this._currentAnimal$ = value$;
+  }
   @Input() public header: string;
   @Input() public successMessage: string;
   @Input() public isPending = false;
@@ -76,6 +70,7 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
   @Output() public navigateBack = new EventEmitter();
   @Output() public save = new EventEmitter<Animal>();
 
+  public currentAnimal: Animal;
   public animalForm: FormGroup;
   public animalTypes = AnimalType;
   public keys: number[] = Object.keys(AnimalType)
@@ -83,9 +78,7 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
     .map(type => +type)
     .concat(0);
 
-  private soldChanged: Subscription;
-  private deceasedChanged: Subscription;
-  private birthDateChanged: Subscription;
+  private destroyed$ = new Subject();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -95,15 +88,16 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.initForm();
+    this.currentAnimal$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((animal: Animal) => {
+        this.currentAnimal = animal;
+        this.initForm(animal);
+      });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    if (changes.currentAnimal) this.initForm();
-
-    if (!this.animalForm) this.initForm();
-
-    if (!this.isPending && !this.animalForm.pristine) {
+    /*if (!this.isPending && this.animalForm && !this.animalForm.pristine) {
       const snackBarOptions = { duration: 4000 };
       let message = '';
       if (this.error != null) message = `ERROR: ${this.error.message}`;
@@ -113,13 +107,11 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
         this.snackBar.open(message, 'Dismiss', snackBarOptions);
         this.onNavigateBack();
       });
-    }
+    }*/
   }
 
   public ngOnDestroy(): void {
-    if (this.soldChanged) this.soldChanged.unsubscribe();
-    if (this.deceasedChanged) this.deceasedChanged.unsubscribe();
-    if (this.birthDateChanged) this.birthDateChanged.unsubscribe();
+    this.destroyed$.complete();
   }
 
   public onNavigateBack() {
@@ -161,157 +153,109 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
     return true;
   }
 
-  public reset(): void {
-    let id: number;
-    let type = AnimalType.Cattle;
-    let subspecies: string = null;
-    let number: number = null;
-    let birthDate = new Date();
-    let purchaseDate = new Date();
-    let purchasePrice: number = null;
-    let arrivalWeight: number = null;
-    let batchNumber: number = null;
-    let sellPrice: number = null;
-    let sellDate: Date = null;
-    let sold = false;
-    let age = '0 days';
-    let deceased = false;
-    let dateOfDeath: Date = null;
-
-    const animal: Animal = this.currentAnimal;
-    if (animal != null) {
-      id = animal.id;
-      type = animal.type;
-      subspecies = animal.subspecies;
-      number = animal.number;
-      birthDate = animal.birthDate;
-      purchaseDate = animal.purchaseDate;
-      purchasePrice = animal.purchasePrice;
-      arrivalWeight = animal.arrivalWeight;
-      batchNumber = animal.batchNumber;
-      sellPrice = animal.sellPrice;
-      sold = animal.sold;
-      age = this.ageCalculatorService.calculateAge(
-        animal.birthDate,
-        animal.dateOfDeath
-      );
-      sellDate = animal.sellDate;
-      deceased = animal.deceased;
-      dateOfDeath = animal.dateOfDeath;
-    } else {
-      id = 0;
-    }
-
-    this.animalForm.get(Constants.Controls.ID).setValue(id);
-    this.animalForm.get(Constants.Controls.TYPE).setValue(type);
-    this.animalForm.get(Constants.Controls.SUBSPECIES).setValue(subspecies);
-    this.animalForm.get(Constants.Controls.NUMBER).setValue(number);
+  public reset(animal: Animal): void {
+    this.animalForm.get(Constants.Controls.ID).setValue(animal.id);
+    this.animalForm.get(Constants.Controls.TYPE).setValue(animal.type);
+    this.animalForm
+      .get(Constants.Controls.SUBSPECIES)
+      .setValue(animal.subspecies);
+    this.animalForm.get(Constants.Controls.NUMBER).setValue(animal.number);
     this.animalForm
       .get(Constants.Controls.BIRTH_DATE)
-      .setValue(moment(birthDate));
+      .setValue(moment(animal.birthDate));
     this.animalForm
       .get(Constants.Controls.PURCHASE_DATE)
-      .setValue(moment(purchaseDate));
+      .setValue(moment(animal.purchaseDate));
     this.animalForm
       .get(Constants.Controls.PURCHASE_PRICE)
-      .setValue(purchasePrice);
+      .setValue(animal.purchasePrice);
     this.animalForm
       .get(Constants.Controls.ARRIVAL_WEIGHT)
-      .setValue(arrivalWeight);
-    this.animalForm.get(Constants.Controls.BATCH_NUMBER).setValue(batchNumber);
-    this.animalForm.get(Constants.Controls.SELL_PRICE).setValue(sellPrice);
-    this.animalForm.get(Constants.Controls.SOLD).setValue(sold);
-    this.animalForm.get(Constants.Controls.AGE).setValue(age);
-    this.animalForm.get(Constants.Controls.SELL_DATE).setValue(sellDate);
-    this.animalForm.get(Constants.Controls.DECEASED).setValue(deceased);
-    this.animalForm.get(Constants.Controls.DATE_OF_DEATH).setValue(dateOfDeath);
+      .setValue(animal.arrivalWeight);
+    this.animalForm
+      .get(Constants.Controls.BATCH_NUMBER)
+      .setValue(animal.batchNumber);
+    this.animalForm
+      .get(Constants.Controls.SELL_PRICE)
+      .setValue(animal.sellPrice);
+    this.animalForm.get(Constants.Controls.SOLD).setValue(animal.sold);
+    this.animalForm
+      .get(Constants.Controls.AGE)
+      .setValue(
+        this.ageCalculatorService.calculateAge(
+          animal.birthDate,
+          animal.deceased ? animal.dateOfDeath : null
+        )
+      );
+    this.animalForm.get(Constants.Controls.SELL_DATE).setValue(animal.sellDate);
+    this.animalForm.get(Constants.Controls.DECEASED).setValue(animal.deceased);
+    this.animalForm
+      .get(Constants.Controls.DATE_OF_DEATH)
+      .setValue(animal.dateOfDeath);
     this.animalForm.markAsPristine();
   }
 
-  private initForm(): void {
-    let id: number;
-    let type = AnimalType.Cattle;
-    let subspecies: string = null;
-    let number: number = null;
-    let birthDate = new Date();
-    let purchaseDate = new Date();
-    let purchasePrice: number = null;
-    let arrivalWeight: number = null;
-    let batchNumber: number = null;
-    let sellPrice: number = null;
-    let sellDate: Date = null;
-    let sold = false;
-    let age = '0 days';
-    let deceased = false;
-    let dateOfDeath: Date = null;
-
-    const animal: Animal = this.currentAnimal;
-    if (animal != null) {
-      id = animal.id;
-      type = animal.type;
-      subspecies = animal.subspecies;
-      number = animal.number;
-      birthDate = animal.birthDate;
-      purchaseDate = animal.purchaseDate;
-      purchasePrice = animal.purchasePrice;
-      arrivalWeight = animal.arrivalWeight;
-      batchNumber = animal.batchNumber;
-      sellPrice = animal.sellPrice;
-      sold = animal.sold;
-      age = this.ageCalculatorService.calculateAge(
-        animal.birthDate,
-        animal.dateOfDeath
-      );
-      sellDate = animal.sellDate;
-      deceased = animal.deceased;
-      dateOfDeath = animal.dateOfDeath;
-
-      if (!sold) {
-        sellPrice = null;
-      }
-    } else {
-      id = 0;
-    }
-
+  private initForm(animal: Animal): void {
     this.animalForm = this.formBuilder.group({
-      id: new FormControl(id),
-      type: new FormControl(type, [Validators.required]),
-      subspecies: new FormControl(subspecies, []),
-      number: new FormControl(number, [Validators.required]),
-      birthDate: new FormControl(moment(birthDate), [Validators.required]),
-      purchaseDate: new FormControl(moment(purchaseDate), [
+      id: [animal.id || 0],
+      type: [animal.type, [Validators.required]],
+      subspecies: new FormControl(animal.subspecies, []),
+      number: new FormControl(animal.number, [Validators.required]),
+      birthDate: new FormControl(moment(animal.birthDate), [
         Validators.required
       ]),
-      purchasePrice: new FormControl(purchasePrice, [Validators.required]),
-      arrivalWeight: new FormControl(arrivalWeight, [Validators.required]),
-      batchNumber: new FormControl(batchNumber, [Validators.required]),
-      sold: new FormControl(sold, [Validators.required]),
-      sellPrice: new FormControl({ value: sellPrice, disabled: true }, []),
-      sellDate: new FormControl({ value: sellDate, disabled: true }, []),
-      age: new FormControl({ value: age, disabled: true }),
-      deceased: new FormControl(deceased, [Validators.required]),
-      dateOfDeath: new FormControl({ value: dateOfDeath, disabled: true }, [])
+      purchaseDate: new FormControl(moment(animal.purchaseDate), [
+        Validators.required
+      ]),
+      purchasePrice: new FormControl(animal.purchasePrice, [
+        Validators.required
+      ]),
+      arrivalWeight: new FormControl(animal.arrivalWeight, [
+        Validators.required
+      ]),
+      batchNumber: new FormControl(animal.batchNumber, [Validators.required]),
+      sold: new FormControl(animal.sold, [Validators.required]),
+      sellPrice: new FormControl(
+        { value: animal.sold ? animal.sellPrice : null, disabled: true },
+        []
+      ),
+      sellDate: new FormControl({ value: animal.sellDate, disabled: true }, []),
+      age: new FormControl({
+        value: this.ageCalculatorService.calculateAge(
+          animal.birthDate,
+          animal.dateOfDeath
+        ),
+        disabled: true
+      }),
+      deceased: new FormControl(animal.deceased, [Validators.required]),
+      dateOfDeath: new FormControl(
+        { value: animal.dateOfDeath, disabled: true },
+        []
+      )
     });
 
-    this.updateSold(sold);
-    this.updateDateOfDeathCtrl(deceased);
+    this.updateSold(animal.sold);
+    this.updateDateOfDeathCtrl(animal.deceased);
 
-    this.soldChanged = this.animalForm
+    this.animalForm
       .get(Constants.Controls.SOLD)
-      .valueChanges.subscribe((value: boolean) => this.updateSold(value));
+      .valueChanges.pipe(takeUntil(this.destroyed$))
+      .subscribe((value: boolean) => this.updateSold(value));
 
-    this.birthDateChanged = this.animalForm
+    this.animalForm
       .get(Constants.Controls.BIRTH_DATE)
-      .valueChanges.subscribe((newBirthDate: Date) => {
+      .valueChanges.pipe(takeUntil(this.destroyed$))
+      .subscribe((newBirthDate: Date) => {
         this.updateAgeCtrl(
           newBirthDate,
           this.animalForm.get(Constants.Controls.DECEASED).value
         );
       });
 
-    this.deceasedChanged = this.animalForm
+    this.animalForm
       .get(Constants.Controls.DECEASED)
-      .valueChanges.subscribe((value: boolean) => {
+      .valueChanges.pipe(takeUntil(this.destroyed$))
+      .subscribe((value: boolean) => {
         this.updateDateOfDeathCtrl(value);
         this.updateAgeCtrl(
           this.animalForm.get(Constants.Controls.BIRTH_DATE).value,

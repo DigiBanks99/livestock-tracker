@@ -52,11 +52,11 @@ export class AnimalComponent implements OnInit, OnDestroy {
 
   public showDetail(id: number): void {
     this.store.dispatch(new SelectAnimal(id));
-    this.router.navigate(['livestock', id, 'edit']);
+    this.router.navigate(['animal', id, 'edit']);
   }
 
   public addAnimal(): void {
-    this.router.navigate(['/livestock', 'new']);
+    this.router.navigate(['/animal', 'new']);
   }
 
   public ngOnDestroy(): void {

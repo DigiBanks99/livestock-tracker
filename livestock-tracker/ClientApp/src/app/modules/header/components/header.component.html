@@ -1,16 +1,51 @@
 <mat-toolbar class="app-toolbar" color="primary">
   <mat-nav-list>
-    <a mat-list-item class="logo nav nav-home" [routerLink]="['/']" title="Home">
+    <a
+      mat-list-item
+      class="logo nav nav-home"
+      [routerLink]="['/']"
+      title="Home"
+    >
       <mat-icon svgIcon="farmer"></mat-icon>
       Livestock Tracker
     </a>
-    <a mat-list-item [routerLink]="['livestock']" title="Manage animals" class="nav nav-secondary">Livestock</a>
-    <a mat-list-item [routerLink]="['medical']" title="Manage medical transactions" class="nav nav-secondary">Medical</a>
-    <a mat-list-item [routerLink]="['feeding-transaction']" title="Manage feeding transactions" class="nav nav-secondary">Feed</a>
-    <a mat-list-item [routerLink]="['reports']" title="View reports" class="nav nav-secondary">Reports</a>
+    <a
+      mat-list-item
+      [routerLink]="['animal']"
+      title="Manage animals"
+      class="nav nav-secondary"
+    >
+      Animals
+    </a>
+    <a
+      mat-list-item
+      [routerLink]="['medical']"
+      title="Manage medical transactions"
+      class="nav nav-secondary"
+    >
+      Medical
+    </a>
+    <a
+      mat-list-item
+      [routerLink]="['feeding-transaction']"
+      title="Manage feeding transactions"
+      class="nav nav-secondary"
+    >
+      Feed
+    </a>
+    <a
+      mat-list-item
+      [routerLink]="['reports']"
+      title="View reports"
+      class="nav nav-secondary"
+    >
+      Reports
+    </a>
   </mat-nav-list>
   <span class="fill-remaining-space"></span>
-  <a mat-list-item [matMenuTriggerFor]="manageMenu" class="nav nav-secondary">Manage</a>
+  <a mat-list-item [matMenuTriggerFor]="manageMenu" class="nav nav-secondary">
+    Manage
+  </a>
   <mat-menu #manageMenu="matMenu">
     <a mat-menu-item [routerLink]="['units']">Units</a>
     <a mat-menu-item [routerLink]="['medicine-type']">Medicine Type</a>

@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
-import { Livestock } from '@app/core/models/livestock.model';
+import { Animal } from '@app/core/models';
 import { AppState } from '@core/store';
 import { getAnimalCount, getAnimals } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';
@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  public animals$: Observable<Livestock[]>;
+  public animals$: Observable<Animal[]>;
   public animalCount$: Observable<number>;
 
   constructor(private store: Store<AppState>) {}

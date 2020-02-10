@@ -2,6 +2,7 @@
   [formGroup]="animalForm"
   class="container animal-detail-container app-background"
   (ngSubmit)="submit()"
+  *ngIf="currentAnimal"
 >
   <mat-toolbar
     color="primary"
@@ -214,7 +215,7 @@
           mat-button
           title="Reset changes"
           [disabled]="!animalForm.dirty"
-          (click)="reset()"
+          (click)="reset(currentAnimal)"
         >
           Cancel
         </button>

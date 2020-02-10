@@ -20,14 +20,9 @@ import { UnitContainerComponent } from '@unit/components/unit/unit.container';
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home', component: HomeComponent },
-  {
-    path: 'livestock',
-    component: AnimalComponent,
-    children: [
-      { path: 'new', component: AnimalNewComponent },
-      { path: ':id/edit', component: AnimalDetailComponent }
-    ]
-  },
+  { path: 'animal', component: AnimalComponent },
+  { path: 'animal/new', component: AnimalNewComponent },
+  { path: 'animal/:id/edit', component: AnimalDetailComponent },
   { path: 'medical', component: MedicalContainerComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'units', component: UnitContainerComponent },
@@ -35,14 +30,15 @@ const routes: Routes = [
   { path: 'feed-type', component: FeedTypeContainerComponent },
   {
     path: 'feeding-transaction',
-    component: FeedingTransactionContainerComponent,
-    children: [
-      { path: ':animalId/new', component: FeedingTransactionNewComponent },
-      {
-        path: ':animalId/:id/edit',
-        component: FeedingTransactionDetailComponent
-      }
-    ]
+    component: FeedingTransactionContainerComponent
+  },
+  {
+    path: 'feeding-transaction/:animalId/new',
+    component: FeedingTransactionNewComponent
+  },
+  {
+    path: 'feeding-transaction/:animalId/:id/edit',
+    component: FeedingTransactionDetailComponent
   }
 ];
 
