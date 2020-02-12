@@ -105,8 +105,13 @@ export class AnimalTypeSelectComponent
   public get keys(): number[] {
     return this._keys;
   }
-  public onChange = (value: AnimalType) => {};
-  public onTouched = () => {};
+  public onChange = (value: AnimalType) => {
+    this.errorState = value < 0;
+    this.stateChanges.next();
+  };
+  public onTouched = () => {
+    this.errorState = this.value < 0;
+  };
 
   constructor(
     fb: FormBuilder,

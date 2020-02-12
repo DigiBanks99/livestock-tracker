@@ -1,16 +1,14 @@
 import * as moment from 'moment';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { combineLatest, Observable, Subject } from 'rxjs';
+import { skip, startWith, takeUntil, withLatestFrom } from 'rxjs/operators';
 
 import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
-  Output,
-  SimpleChanges
+  Output
 } from '@angular/core';
 import {
   FormBuilder,
@@ -20,7 +18,6 @@ import {
 } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { LivestockService } from '@animal/services';
 import { Animal, AnimalType } from '@core/models';
 import { environment } from '@env/environment';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
@@ -53,7 +50,7 @@ const Constants = {
     { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.short }
   ]
 })
-export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
+export class AnimalFormComponent implements OnInit, OnDestroy {
   private _currentAnimal$: Observable<Animal>;
 
   @Input()
@@ -65,7 +62,7 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
   }
   @Input() public header: string;
   @Input() public successMessage: string;
-  @Input() public isPending = false;
+  @Input() public isPending$: Observable<false>;
   @Input() public error: Error = null;
   @Output() public navigateBack = new EventEmitter();
   @Output() public save = new EventEmitter<Animal>();
@@ -82,7 +79,6 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private livestockService: LivestockService,
     private snackBar: MatSnackBar,
     private ageCalculatorService: AgeCalculatorService
   ) {}
@@ -94,20 +90,14 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
         this.currentAnimal = animal;
         this.initForm(animal);
       });
-  }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    /*if (!this.isPending && this.animalForm && !this.animalForm.pristine) {
-      const snackBarOptions = { duration: 4000 };
-      let message = '';
-      if (this.error != null) message = `ERROR: ${this.error.message}`;
-      else message = this.successMessage;
-
-      setTimeout(() => {
-        this.snackBar.open(message, 'Dismiss', snackBarOptions);
-        this.onNavigateBack();
+    this.isPending$
+      .pipe(skip(1), takeUntil(this.destroyed$))
+      .subscribe((isPending: boolean) => {
+        if (!isPending) {
+          this.handleSaved();
+        }
       });
-    }*/
   }
 
   public ngOnDestroy(): void {
@@ -122,15 +112,6 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
     if (this.animalForm.valid) {
       this.save.emit(this.animalForm.value);
     }
-  }
-
-  public getSvgIcon(): string {
-    const type = this.animalForm.get(Constants.Controls.TYPE).value;
-    return this.getSvgIconByType(type);
-  }
-
-  public getSvgIconByType(type: number): string {
-    return this.livestockService.getSvgIconByType(type);
   }
 
   public showPrefix(elementID: string): boolean {
@@ -154,44 +135,40 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public reset(animal: Animal): void {
-    this.animalForm.get(Constants.Controls.ID).setValue(animal.id);
-    this.animalForm.get(Constants.Controls.TYPE).setValue(animal.type);
-    this.animalForm
-      .get(Constants.Controls.SUBSPECIES)
-      .setValue(animal.subspecies);
-    this.animalForm.get(Constants.Controls.NUMBER).setValue(animal.number);
+    this.animalForm.get(Constants.Controls.ID).reset(animal.id);
+    this.animalForm.get(Constants.Controls.TYPE).reset(animal.type);
+    this.animalForm.get(Constants.Controls.SUBSPECIES).reset(animal.subspecies);
+    this.animalForm.get(Constants.Controls.NUMBER).reset(animal.number);
     this.animalForm
       .get(Constants.Controls.BIRTH_DATE)
-      .setValue(moment(animal.birthDate));
+      .reset(moment(animal.birthDate));
     this.animalForm
       .get(Constants.Controls.PURCHASE_DATE)
-      .setValue(moment(animal.purchaseDate));
+      .reset(moment(animal.purchaseDate));
     this.animalForm
       .get(Constants.Controls.PURCHASE_PRICE)
-      .setValue(animal.purchasePrice);
+      .reset(animal.purchasePrice);
     this.animalForm
       .get(Constants.Controls.ARRIVAL_WEIGHT)
-      .setValue(animal.arrivalWeight);
+      .reset(animal.arrivalWeight);
     this.animalForm
       .get(Constants.Controls.BATCH_NUMBER)
-      .setValue(animal.batchNumber);
-    this.animalForm
-      .get(Constants.Controls.SELL_PRICE)
-      .setValue(animal.sellPrice);
-    this.animalForm.get(Constants.Controls.SOLD).setValue(animal.sold);
+      .reset(animal.batchNumber);
+    this.animalForm.get(Constants.Controls.SELL_PRICE).reset(animal.sellPrice);
+    this.animalForm.get(Constants.Controls.SOLD).reset(animal.sold);
     this.animalForm
       .get(Constants.Controls.AGE)
-      .setValue(
+      .reset(
         this.ageCalculatorService.calculateAge(
           animal.birthDate,
           animal.deceased ? animal.dateOfDeath : null
         )
       );
-    this.animalForm.get(Constants.Controls.SELL_DATE).setValue(animal.sellDate);
-    this.animalForm.get(Constants.Controls.DECEASED).setValue(animal.deceased);
+    this.animalForm.get(Constants.Controls.SELL_DATE).reset(animal.sellDate);
+    this.animalForm.get(Constants.Controls.DECEASED).reset(animal.deceased);
     this.animalForm
       .get(Constants.Controls.DATE_OF_DEATH)
-      .setValue(animal.dateOfDeath);
+      .reset(animal.dateOfDeath);
     this.animalForm.markAsPristine();
   }
 
@@ -199,39 +176,30 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
     this.animalForm = this.formBuilder.group({
       id: [animal.id || 0],
       type: [animal.type, [Validators.required]],
-      subspecies: new FormControl(animal.subspecies, []),
-      number: new FormControl(animal.number, [Validators.required]),
-      birthDate: new FormControl(moment(animal.birthDate), [
-        Validators.required
-      ]),
-      purchaseDate: new FormControl(moment(animal.purchaseDate), [
-        Validators.required
-      ]),
-      purchasePrice: new FormControl(animal.purchasePrice, [
-        Validators.required
-      ]),
-      arrivalWeight: new FormControl(animal.arrivalWeight, [
-        Validators.required
-      ]),
-      batchNumber: new FormControl(animal.batchNumber, [Validators.required]),
-      sold: new FormControl(animal.sold, [Validators.required]),
-      sellPrice: new FormControl(
+      subspecies: [animal.subspecies, [Validators.required]],
+      number: [animal.number, [Validators.required]],
+      birthDate: [moment(animal.birthDate), [Validators.required]],
+      purchaseDate: [moment(animal.purchaseDate), [Validators.required]],
+      purchasePrice: [animal.purchasePrice, [Validators.required]],
+      arrivalWeight: [animal.arrivalWeight, [Validators.required]],
+      batchNumber: [animal.batchNumber, [Validators.required]],
+      sold: [animal.sold, [Validators.required]],
+      sellPrice: [
         { value: animal.sold ? animal.sellPrice : null, disabled: true },
         []
-      ),
-      sellDate: new FormControl({ value: animal.sellDate, disabled: true }, []),
-      age: new FormControl({
-        value: this.ageCalculatorService.calculateAge(
-          animal.birthDate,
-          animal.dateOfDeath
-        ),
-        disabled: true
-      }),
-      deceased: new FormControl(animal.deceased, [Validators.required]),
-      dateOfDeath: new FormControl(
-        { value: animal.dateOfDeath, disabled: true },
-        []
-      )
+      ],
+      sellDate: [{ value: animal.sellDate, disabled: true }, []],
+      age: [
+        {
+          value: this.ageCalculatorService.calculateAge(
+            animal.birthDate,
+            animal.dateOfDeath
+          ),
+          disabled: true
+        }
+      ],
+      deceased: [animal.deceased, [Validators.required]],
+      dateOfDeath: [{ value: animal.dateOfDeath, disabled: true }, []]
     });
 
     this.updateSold(animal.sold);
@@ -243,77 +211,83 @@ export class AnimalFormComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe((value: boolean) => this.updateSold(value));
 
     this.animalForm
-      .get(Constants.Controls.BIRTH_DATE)
-      .valueChanges.pipe(takeUntil(this.destroyed$))
-      .subscribe((newBirthDate: Date) => {
-        this.updateAgeCtrl(
-          newBirthDate,
-          this.animalForm.get(Constants.Controls.DECEASED).value
-        );
-      });
-
-    this.animalForm
       .get(Constants.Controls.DECEASED)
       .valueChanges.pipe(takeUntil(this.destroyed$))
-      .subscribe((value: boolean) => {
-        this.updateDateOfDeathCtrl(value);
-        this.updateAgeCtrl(
-          this.animalForm.get(Constants.Controls.BIRTH_DATE).value,
-          this.animalForm.get(Constants.Controls.DATE_OF_DEATH).value
+      .subscribe((deceased: boolean) => {
+        this.updateDateOfDeathCtrl(deceased);
+      });
+
+    combineLatest([
+      this.animalForm
+        .get(Constants.Controls.BIRTH_DATE)
+        .valueChanges.pipe(startWith(animal.birthDate)),
+      this.animalForm
+        .get(Constants.Controls.DATE_OF_DEATH)
+        .valueChanges.pipe(startWith(animal.dateOfDeath))
+    ])
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(([birthDate, deceasedDate]) => {
+        this.setControlValue(
+          this.ageCalculatorService.calculateAge(birthDate, deceasedDate),
+          Constants.Controls.AGE
         );
       });
   }
 
   private updateSold(value: boolean): void {
-    const validators = [];
-    const sellPriceCtrl = this.animalForm.get(Constants.Controls.SELL_PRICE);
-    const sellDateCtrl = this.animalForm.get(Constants.Controls.SELL_DATE);
-
-    if (value) {
-      validators.push(Validators.required);
-      sellPriceCtrl.enable();
-      sellDateCtrl.enable();
-    } else {
-      sellPriceCtrl.setValue(null);
-      sellPriceCtrl.disable();
-      sellDateCtrl.setValue(null);
-      sellDateCtrl.disable();
-    }
-
-    sellPriceCtrl.setValidators(validators);
-    sellPriceCtrl.updateValueAndValidity();
-    sellPriceCtrl.markAsTouched();
-
-    sellDateCtrl.setValidators(validators);
-    sellDateCtrl.updateValueAndValidity();
-    sellDateCtrl.markAsTouched();
+    this.enableControlAndMakeRequiredWhenTrue(
+      value,
+      Constants.Controls.SELL_PRICE
+    );
+    this.enableControlAndMakeRequiredWhenTrue(
+      value,
+      Constants.Controls.SELL_DATE
+    );
   }
 
   private updateDateOfDeathCtrl(value: boolean): void {
-    const validators = [];
-    const dateOfDeathCtrl = this.animalForm.get(
+    this.enableControlAndMakeRequiredWhenTrue(
+      value,
       Constants.Controls.DATE_OF_DEATH
     );
+  }
+
+  private enableControlAndMakeRequiredWhenTrue(
+    value: boolean,
+    controlName: string
+  ): void {
+    const validators = [];
+    const control = this.animalForm.get(controlName);
 
     if (value) {
       validators.push(Validators.required);
-      dateOfDeathCtrl.enable();
+      control.enable();
     } else {
-      dateOfDeathCtrl.setValue(null);
-      dateOfDeathCtrl.disable();
+      control.setValue(null);
+      control.disable();
     }
 
-    dateOfDeathCtrl.setValidators(validators);
-    dateOfDeathCtrl.updateValueAndValidity();
-    dateOfDeathCtrl.markAsTouched();
+    control.setValidators(validators);
+    control.updateValueAndValidity();
+    control.markAsTouched();
   }
 
-  private updateAgeCtrl(birthDate: Date, deceasedDate: Date): void {
-    const ageCtrl = this.animalForm.get(Constants.Controls.AGE);
-    ageCtrl.setValue(
-      this.ageCalculatorService.calculateAge(birthDate, deceasedDate)
-    );
-    ageCtrl.updateValueAndValidity();
-    ageCtrl.markAsTouched();
+  private setControlValue<T>(value: T, controlName: string): void {
+    const control = this.animalForm.get(controlName);
+    control.setValue(value);
+    control.updateValueAndValidity();
+    control.markAsTouched();
+  }
+
+  private handleSaved() {
+    const snackBarOptions = { duration: 4000 };
+    const message = this.error
+      ? `ERROR: ${this.error.message}`
+      : this.successMessage;
+
+    setTimeout(() => {
+      this.snackBar.open(message, 'Dismiss', snackBarOptions);
+      this.onNavigateBack();
+    });
   }
 }
