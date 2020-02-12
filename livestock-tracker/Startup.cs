@@ -1,4 +1,5 @@
 using LivestockTracker.Database;
+using LivestockTracker.Extensions;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -6,9 +7,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace LivestockTracker
 {
@@ -61,81 +60,33 @@ namespace LivestockTracker
         app.UseHsts();
       }
 
-      if (env.IsDevelopment())
-      {
-        SeedDevDatabase(app);
-      }
-      else
-      {
-        SeedDatabase(app);
-      }
+      app.SeedLivestockDatabase(env)
+         .UseHttpsRedirection()
+         .UseStaticFiles();
 
-      app.UseHttpsRedirection();
-      app.UseStaticFiles();
       if (!env.IsDevelopment())
       {
         app.UseSpaStaticFiles();
       }
 
-      app.UseRouting();
-
-      app.UseEndpoints(endpoints =>
-      {
-        endpoints.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
-      });
-
-      app.UseSpa(spa =>
-      {
-        // To learn more about options for serving an Angular SPA from ASP.NET Core,
-        // see https://go.microsoft.com/fwlink/?linkid=864501
-
-        spa.Options.SourcePath = "ClientApp";
-
-        if (env.IsDevelopment())
-        {
-          spa.UseAngularCliServer("start");
-        }
-
-      });
-    }
-
-    private static void SeedDevDatabase(IApplicationBuilder app)
-    {
-      using (var serviceScope = app.ApplicationServices.CreateScope())
-      {
-        using (var context = serviceScope.ServiceProvider.GetRequiredService<LivestockContext>())
-        {
-          try
+      app.UseRouting()
+         .UseEndpoints(endpoints =>
           {
-            SeedData.Initialize(serviceScope.ServiceProvider);
-            SeedData.SeedDevData(serviceScope.ServiceProvider);
-          }
-          catch (Exception ex)
+            endpoints.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
+          })
+         .UseSpa(spa =>
           {
-            var logger = app.ApplicationServices.GetRequiredService<ILogger>();
-            logger.LogError(ex, "An error occurred seeding the DB.");
-          }
-        }
-      }
-    }
+            // To learn more about options for serving an Angular SPA from ASP.NET Core,
+            // see https://go.microsoft.com/fwlink/?linkid=864501
 
-    private static void SeedDatabase(IApplicationBuilder app)
-    {
-      using (var serviceScope = app.ApplicationServices.CreateScope())
-      {
-        using (var context = serviceScope.ServiceProvider.GetRequiredService<LivestockContext>())
-        {
-          try
-          {
-            SeedData.Initialize(serviceScope.ServiceProvider);
-          }
-          catch (Exception ex)
-          {
-            var logger = app.ApplicationServices.GetRequiredService<ILogger>();
-            logger.LogError(ex, "An error occurred seeding the DB.");
-          }
-        }
-      }
+            spa.Options.SourcePath = "ClientApp";
+
+            if (env.IsDevelopment())
+            {
+              spa.UseAngularCliServer("start");
+            }
+
+          });
     }
   }
 }

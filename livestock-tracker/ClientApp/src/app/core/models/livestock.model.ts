@@ -1,8 +1,8 @@
-import { LiveStockType } from '@core/models/livestock-type.model';
+import { AnimalType } from '@core/models/animal-type.enum';
 
 export interface Animal {
   id: number;
-  type: LiveStockType;
+  type: AnimalType;
   subspecies: string;
   number: number;
   birthDate: Date;
@@ -25,7 +25,7 @@ export class Livestock implements Animal {
 
   constructor(
     public id: number,
-    public type: LiveStockType,
+    public type: AnimalType,
     public subspecies: string,
     public number: number,
     public birthDate: Date,

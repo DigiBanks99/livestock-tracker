@@ -1,0 +1,46 @@
+<div class="animal-list-container">
+  <mat-toolbar class="animal-toolbar">
+    <span class="animal-toolbar__type">Type</span>
+    <span class="animal-toolbar__number">Number</span>
+    <span class="animal-toolbar__age">Age</span>
+    <span class="animal-toolbar__sold">Sold</span>
+  </mat-toolbar>
+  <mat-selection-list class="animal-item-list mat-elevation-z1">
+    <mat-list-item
+      class="animal-item-list__item"
+      *ngFor="let animal of animals; let i = index"
+      mat-ripple
+      (click)="onEditAnimal(animal.id)"
+    >
+      <span class="animal-card__type">
+        <mat-icon
+          matListIcon
+          class="mat-icon-button mat-accent"
+          svgIcon="{{ getSvgIcon(animal) }}"
+        ></mat-icon>
+        <span class="animal-card__type-desc">{{ animal.subspecies }}</span>
+      </span>
+      <span class="animal-card__number">{{ animal.number }}</span>
+      <span class="animal-card__age">{{ getAge(animal) }}</span>
+      <span class="animal-card__sold">
+        <mat-checkbox [(ngModel)]="animal.sold"></mat-checkbox>
+      </span>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+    <mat-paginator
+      [pageSize]="pageSize"
+      [length]="animals.length"
+      class="mat-accent-background"
+      (page)="onPage($event)"
+    ></mat-paginator>
+  </mat-selection-list>
+  <button
+    mat-fab
+    class="mat-fab-bottom-right"
+    type="button"
+    (click)="onAddAnimal()"
+    left
+  >
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

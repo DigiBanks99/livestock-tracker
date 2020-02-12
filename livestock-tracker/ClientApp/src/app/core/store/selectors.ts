@@ -1,4 +1,4 @@
-import { Livestock, Unit } from '@core/models';
+import { Animal, Unit } from '@core/models';
 import { Dictionary } from '@ngrx/entity';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
@@ -19,7 +19,7 @@ const unitState = createFeatureSelector<UnitState>('units');
 
 const getAnimalEntities = createSelector(
   animalState,
-  (state: AnimalState): Dictionary<Livestock> => state.entities
+  (state: AnimalState): Dictionary<Animal> => state.entities
 );
 
 const getAnimalIds = createSelector(
@@ -37,8 +37,8 @@ export const getSelectedAnimalId = createSelector(
 export const getAnimals = createSelector(
   getAnimalEntities,
   getAnimalIds,
-  (entities: Dictionary<Livestock>, ids: (string | number)[]): Livestock[] =>
-    selectItems<Livestock>(entities, ids)
+  (entities: Dictionary<Animal>, ids: (string | number)[]): Animal[] =>
+    selectItems<Animal>(entities, ids)
 );
 
 export const getAnimalCount = createSelector(
@@ -49,7 +49,7 @@ export const getAnimalCount = createSelector(
 export const getSelectedAnimal = createSelector(
   animalState,
   getSelectedAnimalId,
-  (state: AnimalState, id: number): Livestock => state.entities[id]
+  (state: AnimalState, id: number): Animal => state.entities[id]
 );
 
 const getUnitEntities = createSelector(

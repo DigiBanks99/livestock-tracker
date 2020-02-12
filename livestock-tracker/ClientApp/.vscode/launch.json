@@ -24,7 +24,7 @@
       "type": "chrome",
       "request": "launch",
       "name": "Launch in Chrome HTTPS",
-      "url": "https://localhost:5001",
+      "url": "https://localhost:44374",
       "webRoot": "${workspaceFolder}",
       "smartStep": true
     }

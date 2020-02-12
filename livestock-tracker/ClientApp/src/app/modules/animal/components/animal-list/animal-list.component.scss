@@ -1,0 +1,143 @@
+@import '~@angular/material/theming';
+@import 'app-theme';
+
+.animal-list-container {
+  position: relative;
+  display: block;
+  min-height: calc(100vh - 64px);
+  margin-left: auto;
+  margin-right: auto;
+
+  .mat-fab-bottom-right {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+  }
+}
+
+.mat-toolbar * {
+  font-size: 16px;
+}
+
+.mat-accent-background {
+  background-color: mat-color($candy-app-accent);
+  color: mat-color($candy-app-accent, '600-contrast', 0.6);
+}
+
+.animal-list-container .animal-toolbar,
+.animal-list-container .animal-item-list {
+  margin: auto;
+  width: 695px;
+  min-width: 695px;
+  display: flex;
+  position: relative;
+}
+
+.animal-list-container .animal-toolbar {
+  background-color: mat-color($candy-app-primary, 100);
+  color: mat-color($candy-app-primary, '100-contrast');
+  font-size: 14px;
+  font-weight: 500;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  * {
+    color: inherit;
+  }
+}
+
+.animal-list-container .animal-item-list {
+  flex-direction: column;
+  padding: 0;
+  height: auto;
+}
+
+@media only screen and (min-width: 1100px) {
+  .animal-list-container .animal-toolbar,
+  .animal-list-container .animal-item-list {
+    margin: auto;
+    width: 920px;
+  }
+}
+
+@media only screen and (min-width: 1400px) {
+  .animal-list-container .animal-toolbar,
+  .animal-list-container .animal-item-list {
+    margin: auto;
+    width: 1150px;
+  }
+}
+
+.animal-card__type,
+.animal-card__number,
+.animal-card__age,
+.animal-card__sold,
+.animal-toolbar__type,
+.animal-toolbar__number,
+.animal-toolbar__age,
+.animal-toolbar__sold {
+  position: relative;
+  display: flex;
+}
+
+.animal-card__type,
+.animal-toolbar__type {
+  width: 50%;
+  min-width: 300px;
+}
+
+.animal-card__age,
+.animal-toolbar__age {
+  width: 30%;
+  min-width: 195px;
+}
+
+.animal-card__number,
+.animal-card__sold,
+.animal-toolbar__number,
+.animal-toolbar__sold {
+  float: left;
+  width: 10%;
+  min-width: 50px;
+}
+
+.animal-item-list__item {
+  cursor: pointer;
+  display: flex;
+  position: relative;
+  padding: 0;
+  height: auto;
+  border-radius: 0;
+  flex-direction: column;
+  background-color: mat-color($candy-app-primary, 200);
+
+  &:focus {
+    outline: unset;
+  }
+
+  &:hover {
+    background-color: mat-color($candy-app-primary, 300);
+  }
+
+  .mat-list-icon {
+    background-color: mat-color($candy-app-accent, 400);
+    font-size: unset;
+  }
+}
+
+.animal-item-list__item-active {
+  background-color: mat-color($candy-app-primary, 300, 0.8);
+}
+
+.animal-item-list__card {
+  width: 100%;
+  border-radius: 0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
+.animal-card__type-desc {
+  padding-left: 8px;
+  margin-top: auto;
+  margin-bottom: auto;
+}

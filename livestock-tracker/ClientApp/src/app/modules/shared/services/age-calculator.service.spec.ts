@@ -1,5 +1,4 @@
-import { LiveStockType } from '@core/models/livestock-type.model';
-import { Livestock } from '@core/models/livestock.model';
+import { AnimalType, Livestock } from '@core/models';
 
 import { AgeCalculatorService } from './age-calculator.service';
 
@@ -11,7 +10,7 @@ describe('AgeCalculatorService', () => {
     const now = new Date();
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       now,
@@ -40,7 +39,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -69,7 +68,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -95,7 +94,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -121,7 +120,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -152,7 +151,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -183,7 +182,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -214,7 +213,7 @@ describe('AgeCalculatorService', () => {
     );
     model = new Livestock(
       1,
-      LiveStockType.Cattle,
+      AnimalType.Cattle,
       '',
       1,
       date,
@@ -230,20 +229,7 @@ describe('AgeCalculatorService', () => {
   });
 
   it('#calculateAge should return 2 months 2 days when date between birth and death occurs', () => {
-    const now = new Date();
-    const newYear = now.getFullYear();
-    const newMonth = now.getMonth() - 1;
-    const newDays = now.getDate() - 12;
-    const birthDate = new Date(
-      newYear,
-      newMonth,
-      newDays,
-      now.getHours(),
-      now.getMinutes(),
-      now.getSeconds(),
-      now.getMilliseconds()
-    );
-
+    const birthDate = new Date();
     const dateOfDeath = new Date(
       birthDate.getFullYear(),
       birthDate.getMonth() + 2,
@@ -253,6 +239,7 @@ describe('AgeCalculatorService', () => {
       birthDate.getSeconds(),
       birthDate.getMilliseconds()
     );
+
     expect(ageCalculatorService.calculateAge(birthDate, dateOfDeath)).toBe(
       '2 months 2 days'
     );

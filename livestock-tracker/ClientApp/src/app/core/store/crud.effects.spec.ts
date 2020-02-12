@@ -14,11 +14,9 @@ import { Action } from '@ngrx/store';
 import { crudActionsFactory } from './crud.actions';
 import { CrudEffects } from './crud.effects';
 
-const testActions = crudActionsFactory<TestEntity, number>('TEST');
+interface TestEntity extends KeyEntity<number> {}
 
-class TestEntity implements KeyEntity<number> {
-  id: number;
-}
+const testActions = crudActionsFactory<TestEntity, number>('TEST');
 
 @Injectable()
 class TestService implements CrudService<TestEntity, number> {

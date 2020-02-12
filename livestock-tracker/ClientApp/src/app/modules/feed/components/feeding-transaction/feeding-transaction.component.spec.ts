@@ -21,7 +21,7 @@ import {
 import {
   LivestockService,
   MockLivestockService
-} from '@livestock/services/livestock.service';
+} from '@animal/services/livestock.service';
 import { LsGridComponent } from '@shared/components/ls-grid/ls-grid.component';
 import { MockUnitService, UnitService } from '@unit/services/unit.service';
 

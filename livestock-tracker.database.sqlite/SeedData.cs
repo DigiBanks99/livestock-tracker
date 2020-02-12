@@ -15,23 +15,19 @@ namespace LivestockTracker.Database
 
     public static void Initialize(IServiceProvider serviceProvider)
     {
-      using (var context = new LivestockContext(serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>()))
-      {
-        context.Database.Migrate();
-        SeedFeedTypes(context);
-        SeedUnits(context);
-        SeedMedicine(context);
-      }
+      using var context = new LivestockContext(serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>());
+      context.Database.Migrate();
+      SeedFeedTypes(context);
+      SeedUnits(context);
+      SeedMedicine(context);
     }
 
     public static void SeedDevData(IServiceProvider serviceProvider)
     {
-      using (var context = new LivestockContext(serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>()))
-      {
-        SeedAnimals(context);
-        SeedMedicalTransactions(context);
-        SeedFeedingTransactions(context);
-      }
+      using var context = new LivestockContext(serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>());
+      SeedAnimals(context);
+      SeedMedicalTransactions(context);
+      SeedFeedingTransactions(context);
     }
 
     private static void SeedAnimals(LivestockContext context)

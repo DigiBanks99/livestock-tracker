@@ -1,0 +1,79 @@
+@import '~@angular/material/theming';
+@import 'app-theme';
+
+.animal-detail-container {
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+
+  .animal-detail-toolbar__header-top {
+    height: 30vh;
+  }
+
+  .mat-list-icon {
+    background-color: mat-color($candy-app-accent, 400);
+    font-size: unset;
+  }
+
+  .animal-detail-toolbar__nav__desc {
+    .mat-icon {
+      padding-right: 4px;
+      background-color: $light-primary-text;
+    }
+
+    .animal-detail-toolbar__nav__desc-text {
+      padding-left: 8px;
+    }
+  }
+
+  .animal-detail-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    position: relative;
+
+    .animal-detail-content__card {
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      top: -20vh;
+      min-width: 40vw;
+      background-color: mat-color($candy-app-primary, 200);
+    }
+
+    .animal-detail-content__card-content {
+      margin-bottom: 0;
+    }
+
+    .form-container-inline {
+      display: flex;
+
+      #sold {
+        padding-bottom: 1.34375em;
+      }
+    }
+
+    .mat-form-field,
+    .mat-checkbox {
+      flex: 1 1 auto;
+      width: 50%;
+    }
+
+    .mat-form-field {
+      margin: 0 4px;
+    }
+
+    .mat-card-actions {
+      display: flex;
+    }
+
+    .mat-card-header .mat-card-header-text .mat-card-title {
+      .mat-icon {
+        background-color: mat-color($candy-app-accent, 400);
+        font-size: unset;
+      }
+    }
+  }
+}

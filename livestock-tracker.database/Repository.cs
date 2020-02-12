@@ -49,14 +49,14 @@ namespace LivestockTracker.Database
       Remove(entity);
     }
 
-    public virtual void RemoveRange(IEnumerable<TEntity> entities)
-    {
-      DataTable.RemoveRange(entities);
-    }
-
     public virtual void Remove(TEntity entity)
     {
       DataTable.Remove(entity);
+    }
+
+    public virtual void RemoveRange(IEnumerable<TEntity> entities)
+    {
+      DataTable.RemoveRange(entities);
     }
 
     public virtual void Update(TEntity entity)
