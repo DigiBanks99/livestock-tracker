@@ -50,14 +50,14 @@ namespace LivestockTracker.Controllers
 
     // PUT: api/Unit/5
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] Unit unit)
+    public IActionResult Put(int id, [FromBody] Unit? unit)
     {
       if (!ModelState.IsValid)
       {
         return BadRequest(ModelState);
       }
 
-      if (id != unit.TypeCode)
+      if (unit == null || id != unit.TypeCode)
       {
         return BadRequest();
       }

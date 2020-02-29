@@ -1,4 +1,3 @@
-using LivestockTracker;
 using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -34,10 +33,14 @@ namespace LivestockTracker.Controllers
       }
 
       var medicalTransaction = _medicalService.Get(id);
-
       if (medicalTransaction == null)
       {
         return NotFound();
+      }
+
+      if (medicalTransaction.AnimalID != animalID)
+      {
+        return BadRequest();
       }
 
       return Ok(medicalTransaction);

@@ -1,8 +1,8 @@
-using LivestockTracker;
 using LivestockTracker.Database;
 using LivestockTracker.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Controllers
 {
@@ -19,9 +19,10 @@ namespace LivestockTracker.Controllers
 
     [HttpGet("{animalID}")]
     [Route("getAll/{animalID}")]
-    public IActionResult GetAll([FromRoute] int animalID)
+    public async Task<IActionResult> GetAll([FromRoute] int animalID)
     {
-      return Ok(_feedingTransactionRepository.Find(x => x.AnimalID == animalID));
+      var feedingTransactions = await _feedingTransactionRepository.FindAsync(x => x.AnimalID == animalID, Request.HttpContext.RequestAborted).ConfigureAwait(false);
+      return Ok(feedingTransactions);
     }
 
     [HttpGet("{id}")]

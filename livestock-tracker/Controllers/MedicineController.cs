@@ -30,11 +30,16 @@ namespace LivestockTracker.Controllers
     }
 
     [HttpPost]
-    public IActionResult Add([FromBody] MedicineType medicineType)
+    public IActionResult Add([FromBody] MedicineType? medicineType)
     {
       if (!ModelState.IsValid)
       {
         return BadRequest(ModelState);
+      }
+
+      if (medicineType == null)
+      {
+        return BadRequest();
       }
 
       _medicineService.Add(medicineType);
@@ -44,14 +49,14 @@ namespace LivestockTracker.Controllers
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] MedicineType medicineType)
+    public IActionResult Update([FromRoute] int id, [FromBody] MedicineType? medicineType)
     {
       if (!ModelState.IsValid)
       {
         return BadRequest(ModelState);
       }
 
-      if (id != medicineType.TypeCode)
+      if (medicineType == null || id != medicineType.TypeCode)
       {
         return BadRequest();
       }

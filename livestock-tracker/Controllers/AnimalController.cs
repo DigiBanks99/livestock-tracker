@@ -1,6 +1,9 @@
 using LivestockTracker.Models;
 using LivestockTracker.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Controllers
 {
@@ -13,16 +16,20 @@ namespace LivestockTracker.Controllers
       _animalService = service;
     }
 
+    public CancellationToken RequestAbortToken { get { return Request.HttpContext.RequestAborted; } }
+
     [HttpGet]
-    public IActionResult GetAnimals()
+    public async Task<IActionResult> GetAnimals()
     {
-      return Ok(_animalService.GetAll());
+      var animals = await _animalService.GetAllAsync(RequestAbortToken).ConfigureAwait(false);
+      return Ok(animals);
     }
 
     [HttpGet("{id}")]
-    public IActionResult Get([FromRoute] int id)
+    public async Task<IActionResult> Get([FromRoute] int id)
     {
-      return Ok(_animalService.Get(id));
+      var animal = await _animalService.GetAsync(id, RequestAbortToken).ConfigureAwait(false);
+      return Ok(animal);
     }
 
     [HttpPost]

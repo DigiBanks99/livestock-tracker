@@ -1,5 +1,9 @@
 using LivestockTracker.Database;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Services
 {
@@ -22,13 +26,26 @@ namespace LivestockTracker.Services
       return _repository.Get(id);
     }
 
+    public Task<TEntity> GetAsync(int id, CancellationToken cancellationToken)
+    {
+      return _repository.GetAsync(id, cancellationToken);
+    }
+
     public IEnumerable<TEntity> GetAll()
     {
       return _repository.GetAll();
     }
 
+    public async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
+    {
+      return await _repository.GetAll().ToListAsync(cancellationToken).ConfigureAwait(false);
+    }
+
     public void Remove(TEntity entity)
     {
+      if (entity == null)
+        throw new ArgumentNullException(nameof(entity));
+
       Remove(entity.GetKey());
     }
 
