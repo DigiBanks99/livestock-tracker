@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Database
 {
-  public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+  public class Repository<TEntity> : IRepository<TEntity>, IDisposable where TEntity : class, IEntity
   {
     private readonly DbContext _dbContext;
+
     public Repository(DbContext context)
     {
       _dbContext = context;
@@ -154,6 +155,25 @@ namespace LivestockTracker.Database
     }
 
     public virtual void ChangesSaved() { }
+
+    public void Dispose()
+    {
+      Dispose(true);
+      GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+      if (disposing)
+        return;
+
+      _dbContext.Dispose();
+    }
+
+    ~Repository()
+    {
+      Dispose(false);
+    }
 
     private bool ValidateAddRange(IEnumerable<TEntity> entities)
     {
