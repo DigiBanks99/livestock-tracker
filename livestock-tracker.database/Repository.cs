@@ -63,7 +63,11 @@ namespace LivestockTracker.Database
 
     public virtual TEntity Get(int id)
     {
-      return DataTable.Find(id);
+      var entity = DataTable.Find(id);
+      if (entity == null)
+        throw new ArgumentOutOfRangeException(nameof(id));
+
+      return entity;
     }
 
     public virtual Task<TEntity> GetAsync(int id, CancellationToken cancellationToken)
