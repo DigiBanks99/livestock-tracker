@@ -1,6 +1,6 @@
 namespace LivestockTracker.Database.Test.Models
 {
-  public class Invocation
+  public class DbContextInvocation
   {
     public string? MethodName { get; set; }
     public object[]? Arguments { get; set; }

@@ -8,22 +8,22 @@ namespace LivestockTracker.Database.Test.Mocks
   {
     public TestDbContext()
     {
-      Invocations = new Dictionary<string, Invocation>();
+      Invocations = new Dictionary<string, DbContextInvocation>();
     }
 
     public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
     {
-      Invocations = new Dictionary<string, Invocation>();
+      Invocations = new Dictionary<string, DbContextInvocation>();
     }
 
-    public Dictionary<string, Invocation> Invocations { get; }
+    public Dictionary<string, DbContextInvocation> Invocations { get; }
     public DbSet<TestEntity> TestEntities
     {
       get
       {
         if (!Invocations.TryGetValue(nameof(TestEntities), out var invocation))
         {
-          Invocations.Add(nameof(TestEntities), new Invocation
+          Invocations.Add(nameof(TestEntities), new DbContextInvocation
           {
             MethodName = nameof(TestEntities),
             Arguments = new object[0],

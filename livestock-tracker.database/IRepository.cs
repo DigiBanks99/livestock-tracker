@@ -9,6 +9,8 @@ namespace LivestockTracker.Database
 {
   public interface IRepository<TEntity> where TEntity : IEntity
   {
+    long Count();
+    Task<long> CountAsync();
     IQueryable<TEntity> GetAll();
     IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
     Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken);

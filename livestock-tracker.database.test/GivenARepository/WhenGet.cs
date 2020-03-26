@@ -1,3 +1,4 @@
+using LivestockTracker;
 using LivestockTracker.Database;
 using LivestockTracker.Database.Test.Mocks;
 using LivestockTracker.Database.Test.Models;
@@ -33,17 +34,20 @@ namespace GivenARepository
     [InlineData(32)]
     [InlineData(33)]
     [InlineData(99)]
-    public void AndTheIdIsOutOfRangeItShouldThrowAnArgumentOutOfRangeException(int id)
+    public void AndTheEntityIsNotFoundItShouldThrowAnEntityNotFoundException(int id)
     {
       // Arrange
       using var mockContext = TestDbContextFactory.Create();
       using var repository = new Repository<TestEntity>(mockContext);
 
-      // Act and Assert
-      Assert.Throws<ArgumentOutOfRangeException>(() =>
+      // Act
+      var exception = Assert.Throws<EntityNotFoundException<TestEntity>>(() =>
       {
         repository.Get(id);
       });
+
+      // Assert
+      Assert.Equal($"{typeof(TestEntity).Name} with id {id} not found.", exception.Message);
     }
 
     [Fact]

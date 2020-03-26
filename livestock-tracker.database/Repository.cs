@@ -18,17 +18,27 @@ namespace LivestockTracker.Database
       DataTable = context.Set<TEntity>();
     }
 
+    public long Count()
+    {
+      return DataTable.LongCount();
+    }
+
+    public Task<long> CountAsync()
+    {
+      return DataTable.LongCountAsync();
+    }
+
     protected DbSet<TEntity> DataTable { get; }
 
     public virtual TEntity Add(TEntity entity)
     {
-      var entityEntry = DataTable.Add(entity);
+      Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> entityEntry = DataTable.Add(entity);
       return entityEntry.Entity;
     }
 
     public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
-      var entityEntry = await Task.Factory.StartNew(() => DataTable.Add(entity), cancellationToken).ConfigureAwait(false);
+      Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> entityEntry = await Task.Factory.StartNew(() => DataTable.Add(entity), cancellationToken).ConfigureAwait(false);
       return entityEntry.Entity;
     }
 
@@ -41,12 +51,16 @@ namespace LivestockTracker.Database
     public virtual async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
       if (!ValidateAddRange(entities))
+      {
         return Enumerable.Empty<TEntity>();
+      }
 
       await DataTable.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
-      var keys = entities.Select(entity => entity.GetKey());
+      IEnumerable<int> keys = entities.Select(entity => entity.GetKey());
       if (!keys.Any())
+      {
         return Enumerable.Empty<TEntity>();
+      }
 
       return await FindAsync(entity => keys.Contains(entity.GetKey()), cancellationToken).ConfigureAwait(false);
     }
@@ -63,9 +77,14 @@ namespace LivestockTracker.Database
 
     public virtual TEntity Get(int id)
     {
-      var entity = DataTable.Find(id);
-      if (entity == null)
+      if (id < 0)
         throw new ArgumentOutOfRangeException(nameof(id));
+
+      TEntity entity = DataTable.Find(id);
+      if (entity == null)
+      {
+        throw new EntityNotFoundException<TEntity>(id);
+      }
 
       return entity;
     }
@@ -82,9 +101,11 @@ namespace LivestockTracker.Database
 
     public virtual void Remove(int id)
     {
-      var entity = Get(id);
+      TEntity entity = Get(id);
       if (entity == null)
+      {
         throw new EntityNotFoundException<TEntity>(id);
+      }
 
       Remove(entity);
     }
@@ -92,16 +113,20 @@ namespace LivestockTracker.Database
     public virtual void Remove(TEntity entity)
     {
       if (entity == null)
+      {
         throw new ArgumentNullException(nameof(entity));
+      }
 
       DataTable.Remove(entity);
     }
 
     public virtual async Task RemoveAsync(int id, CancellationToken cancellationToken)
     {
-      var entity = await GetAsync(id, cancellationToken).ConfigureAwait(false);
+      TEntity entity = await GetAsync(id, cancellationToken).ConfigureAwait(false);
       if (entity == null)
+      {
         throw new EntityNotFoundException<TEntity>(id);
+      }
 
       await RemoveAsync(entity, cancellationToken);
     }
@@ -109,7 +134,9 @@ namespace LivestockTracker.Database
     public virtual Task RemoveAsync(TEntity entity, CancellationToken cancellationToken)
     {
       if (entity == null)
+      {
         throw new ArgumentNullException(nameof(entity));
+      }
 
       return Task.Factory.StartNew(() => DataTable.Remove(entity), cancellationToken);
     }
@@ -117,7 +144,9 @@ namespace LivestockTracker.Database
     public virtual void RemoveRange(IEnumerable<TEntity> entities)
     {
       if (entities == null)
+      {
         throw new ArgumentNullException(nameof(entities));
+      }
 
       DataTable.RemoveRange(entities);
     }
@@ -125,7 +154,9 @@ namespace LivestockTracker.Database
     public virtual Task RemoveRangeAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken)
     {
       if (entities == null)
+      {
         throw new ArgumentNullException(nameof(entities));
+      }
 
       return Task.Factory.StartNew(() => DataTable.RemoveRange(entities), cancellationToken);
     }
@@ -135,16 +166,21 @@ namespace LivestockTracker.Database
       int key = entity.GetKey();
       TEntity savedEntity = Get(key);
       if (savedEntity == null)
+      {
         throw new EntityNotFoundException<TEntity>(key);
+      }
+
       _dbContext.Entry(savedEntity).CurrentValues.SetValues(entity);
     }
 
     public virtual async Task UpdateAsync(TEntity entity, CancellationToken cancellationToken)
     {
       int key = entity.GetKey();
-      var savedEntity = await GetAsync(key, cancellationToken);
+      TEntity savedEntity = await GetAsync(key, cancellationToken);
       if (savedEntity == null)
+      {
         throw new EntityNotFoundException<TEntity>(key);
+      }
 
       await Task.Factory.StartNew(() => _dbContext.Entry(savedEntity).CurrentValues.SetValues(entity), cancellationToken);
     }
@@ -153,9 +189,9 @@ namespace LivestockTracker.Database
 
     public void SaveChanges()
     {
-      this.BeforeSavingChanges();
+      BeforeSavingChanges();
       _dbContext.SaveChanges();
-      this.ChangesSaved();
+      ChangesSaved();
     }
 
     public virtual void ChangesSaved() { }
@@ -169,7 +205,9 @@ namespace LivestockTracker.Database
     protected virtual void Dispose(bool disposing)
     {
       if (disposing)
+      {
         return;
+      }
 
       _dbContext.Dispose();
     }
@@ -182,10 +220,14 @@ namespace LivestockTracker.Database
     private bool ValidateAddRange(IEnumerable<TEntity> entities)
     {
       if (entities == null)
+      {
         throw new ArgumentNullException(nameof(entities));
+      }
 
       if (!entities.Any())
+      {
         throw new ArgumentException("The collection to be added cannot be empty.");
+      }
 
       return true;
     }
