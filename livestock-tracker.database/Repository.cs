@@ -38,7 +38,9 @@ namespace LivestockTracker.Database
 
     public virtual async Task<TEntity> AddAsync(TEntity entity, CancellationToken cancellationToken)
     {
-      Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> entityEntry = await Task.Factory.StartNew(() => DataTable.Add(entity), cancellationToken).ConfigureAwait(false);
+      ValidateAddAsyncParameters(entity);
+
+      var entityEntry = await DataTable.AddAsync(entity, cancellationToken).ConfigureAwait(false);
       return entityEntry.Entity;
     }
 
@@ -70,9 +72,12 @@ namespace LivestockTracker.Database
       return DataTable.Where(predicate);
     }
 
-    public virtual Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
+
+    public virtual async Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken)
     {
-      return Task.Factory.StartNew(() => Find(predicate), cancellationToken);
+      ValidateFindAsyncParameters(predicate);
+
+      return await DataTable.Where(predicate).ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
     public virtual TEntity Get(int id)
@@ -230,6 +235,18 @@ namespace LivestockTracker.Database
       }
 
       return true;
+    }
+
+    private void ValidateAddAsyncParameters(TEntity entity)
+    {
+      if (entity == null)
+        throw new ArgumentNullException(nameof(entity));
+    }
+
+    private static void ValidateFindAsyncParameters(Expression<Func<TEntity, bool>> predicate)
+    {
+      if (predicate == null)
+        throw new ArgumentNullException(nameof(predicate));
     }
   }
 }
