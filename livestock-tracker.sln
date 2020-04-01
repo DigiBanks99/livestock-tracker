@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker", "livest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.database.sqlite", "livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj", "{42CC84FA-30B9-4F18-A081-314B30934764}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "livestock-tracker.database.test", "livestock-tracker.database.test\livestock-tracker.database.test.csproj", "{E99FACE8-D907-4584-B81A-295EAD67DB68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.database.test", "livestock-tracker.database.test\livestock-tracker.database.test.csproj", "{E99FACE8-D907-4584-B81A-295EAD67DB68}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

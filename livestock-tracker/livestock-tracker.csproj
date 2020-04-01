@@ -56,6 +56,9 @@
     <None Remove="livestock-tracker.models\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include=".vs\launch.json" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
     <ProjectReference Include="..\livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj" />
     <ProjectReference Include="..\livestock-tracker.database\livestock-tracker.database.csproj" />
