@@ -1,18 +1,18 @@
-using LivestockTracker.Database;
+using LivestockTracker.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LivestockTracker.Models
 {
-    public class Animal : IEntity
+    public class Animal : IEntity<int>
     {
         [Key]
         public int ID { get; set; }
         [Required]
-        public int Type { get; set; }
+        public AnimalType Type { get; set; }
         [MaxLength(50)]
-        public string Subspecies { get; set; }
+        public string? Subspecies { get; set; }
         [Required]
         public int Number { get; set; }
         [Required]
@@ -33,7 +33,9 @@ namespace LivestockTracker.Models
         public bool Deceased { get; set; } = false;
         public DateTimeOffset? DateOfDeath { get; set; }
 
-        public List<MedicalTransaction> MedicalTransactions { get; set; }
+        public List<MedicalTransaction> MedicalTransactions { get; set; } = new List<MedicalTransaction>();
+        public List<FeedingTransaction> FeedingTransactions { get; set; } = new List<FeedingTransaction>();
+
         public int GetKey()
         {
             return ID;

@@ -1,51 +1,81 @@
+using LivestockTracker.Abstractions;
 using LivestockTracker.Database;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Services
 {
-  public class Service<TEntity> : IService<TEntity> where TEntity : class, IEntity
-  {
-    private readonly IRepository<TEntity> _repository;
-
-    public Service(IRepository<TEntity> repository)
+    public class Service<TEntity, TKeyType> : IService<TEntity, TKeyType> where TEntity : class, IEntity<TKeyType>
+                                                                          where TKeyType : struct
     {
-      _repository = repository;
-    }
+        public Service(LivestockContext context)
+        {
+            Context = context;
+        }
 
-    public TEntity Add(TEntity entity)
-    {
-      return _repository.Add(entity);
-    }
+        public LivestockContext Context { get; }
 
-    public TEntity Get(int id)
-    {
-      return _repository.Get(id);
-    }
+        public virtual TEntity Add(TEntity entity)
+        {
+            var changes = Context.Set<TEntity>()
+                                 .Add(entity);
+            Context.SaveChanges();
+            return changes.Entity;
+        }
 
-    public IEnumerable<TEntity> GetAll()
-    {
-      return _repository.GetAll();
-    }
+        public virtual TEntity Find(TKeyType id)
+        {
+            return Context.Set<TEntity>()
+                          .Find(id);
+        }
 
-    public void Remove(TEntity entity)
-    {
-      Remove(entity.GetKey());
-    }
+        public virtual async Task<TEntity> FindAsync(TKeyType id, CancellationToken cancellationToken)
+        {
+            return await Context.Set<TEntity>()
+                                .FindAsync(new object[] { id }, cancellationToken)
+                                .ConfigureAwait(false);
+        }
 
-    public void Remove(int id)
-    {
-      _repository.Remove(id);
-    }
+        public virtual IEnumerable<TEntity> GetAll()
+        {
+            return Context.Set<TEntity>()
+                          .ToList();
+        }
 
-    public void Save()
-    {
-      _repository.SaveChanges();
-    }
+        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
+        {
+            return await Context.Set<TEntity>()
+                                .ToListAsync(cancellationToken)
+                                .ConfigureAwait(false);
+        }
 
-    public TEntity Update(TEntity entity)
-    {
-      _repository.Update(entity);
-      return _repository.Get(entity.GetKey());
+        public virtual void Remove(TEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            Context.Set<TEntity>()
+                   .Remove(entity);
+            Context.SaveChanges();
+        }
+
+        public virtual void Remove(TKeyType id)
+        {
+            var item = Find(id);
+            Remove(item);
+        }
+
+        public virtual TEntity Update(TEntity entity)
+        {
+            var changes = Context.Set<TEntity>()
+                                 .Update(entity);
+            return changes.Entity;
+        }
     }
-  }
 }

@@ -1,159 +1,124 @@
-using LivestockTracker;
 using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Controllers
 {
-  [Produces("application/json")]
-  [Route("api/[controller]")]
-  public class MedicalTransactionsController : Controller
-  {
-    private readonly IMedicalService _medicalService;
-
-    public MedicalTransactionsController(IMedicalService medicalService)
+    [Produces("application/json")]
+    [Route("api/[controller]")]
+    public class MedicalTransactionsController : Controller
     {
-      _medicalService = medicalService;
-    }
+        private readonly IMedicalService _medicalService;
 
-    // GET: api/MedicalTransactions
-    [HttpGet("{animalID}")]
-    public IActionResult GetMedicalTransactions([FromRoute] int animalID)
-    {
-      return Ok(_medicalService.GetByAnimalID(animalID));
-    }
-
-    // GET: api/MedicalTransactions/5
-    [HttpGet("{animalID}/{id}")]
-    public IActionResult GetMedicalTransaction([FromRoute] int animalID, [FromRoute] int id)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      var medicalTransaction = _medicalService.Get(id);
-
-      if (medicalTransaction == null)
-      {
-        return NotFound();
-      }
-
-      return Ok(medicalTransaction);
-    }
-
-    // PUT: api/MedicalTransactions/5
-    [HttpPut("{id}")]
-    public IActionResult PutMedicalTransaction([FromRoute] int id, [FromBody] MedicalTransaction medicalTransaction)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      if (id != medicalTransaction.ID)
-      {
-        return BadRequest();
-      }
-
-      _medicalService.Update(medicalTransaction);
-
-      try
-      {
-        _medicalService.Save();
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (!MedicalTransactionExists(id))
+        public MedicalTransactionsController(IMedicalService medicalService)
         {
-          return NotFound();
+            _medicalService = medicalService;
         }
-        else
+
+        // GET: api/MedicalTransactions
+        [HttpGet("{animalID}")]
+        public async ValueTask<IActionResult> GetMedicalTransactions([FromRoute] int animalID)
         {
-          throw;
+            var items = await _medicalService.GetByAnimalIdAsync(animalID, Request.HttpContext.RequestAborted)
+                                             .ConfigureAwait(false);
+            return Ok(items);
         }
-      }
 
-      return NoContent();
-    }
-    [HttpPatch("{id}")]
-    public IActionResult PatchMedicalTransaction([FromRoute] int id, [FromBody] MedicalTransaction medicalTransaction)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      if (id != medicalTransaction.ID)
-      {
-        return BadRequest();
-      }
-
-      MedicalTransaction updatedMedicalTransaction = null;
-      try
-      {
-        updatedMedicalTransaction = _medicalService.Update(medicalTransaction);
-        _medicalService.Save();
-      }
-      catch (EntityNotFoundException<MedicalTransaction> ex)
-      {
-        return NotFound(ex.Message);
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (updatedMedicalTransaction == null)
+        // GET: api/MedicalTransactions/5
+        [HttpGet("{animalID}/{id}")]
+        public async ValueTask<IActionResult> GetMedicalTransaction([FromRoute] int animalID, [FromRoute] int id)
         {
-          return NotFound();
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            MedicalTransaction medicalTransaction = await _medicalService.FindAsync(id, Request.HttpContext.RequestAborted)
+                                                    .ConfigureAwait(false);
+            if (medicalTransaction == null)
+            {
+                return NotFound();
+            }
+
+            if (medicalTransaction.AnimalID != animalID)
+            {
+                return BadRequest();
+            }
+
+            return Ok(medicalTransaction);
         }
-        else
+
+        // PUT: api/MedicalTransactions/5
+        [HttpPut("{id}")]
+        public IActionResult PutMedicalTransaction([FromRoute] int id, [Required][FromBody] MedicalTransaction medicalTransaction)
         {
-          throw;
+            if (!ModelState.IsValid || medicalTransaction == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != medicalTransaction.ID)
+            {
+                return BadRequest();
+            }
+
+            _medicalService.Update(medicalTransaction);
+
+            return NoContent();
         }
-      }
+        [HttpPatch("{id}")]
+        public IActionResult PatchMedicalTransaction([FromRoute] int id, [Required][FromBody] MedicalTransaction medicalTransaction)
+        {
+            if (!ModelState.IsValid || medicalTransaction == null)
+            {
+                return BadRequest(ModelState);
+            }
 
-      return Ok(updatedMedicalTransaction);
+            if (id != medicalTransaction.ID)
+            {
+                return BadRequest();
+            }
+
+            MedicalTransaction updatedMedicalTransaction = _medicalService.Update(medicalTransaction);
+
+            return Ok(updatedMedicalTransaction);
+        }
+
+        // POST: api/MedicalTransactions
+        [HttpPost]
+        public IActionResult PostMedicalTransaction([FromBody] MedicalTransaction medicalTransaction)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            MedicalTransaction addedTransaction = _medicalService.Add(medicalTransaction);
+
+            return CreatedAtAction(nameof(GetMedicalTransaction), new { id = addedTransaction.ID, animalID = addedTransaction.AnimalID }, medicalTransaction);
+        }
+
+        // DELETE: api/MedicalTransactions/5
+        [HttpDelete("{id}")]
+        public async ValueTask<IActionResult> DeleteMedicalTransaction([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            MedicalTransaction medicalTransaction = await _medicalService.FindAsync(id, Request.HttpContext.RequestAborted)
+                                                    .ConfigureAwait(false);
+            if (medicalTransaction == null)
+            {
+                return NotFound();
+            }
+
+            _medicalService.Remove(medicalTransaction);
+
+            return Ok(medicalTransaction.ID);
+        }
     }
-
-    // POST: api/MedicalTransactions
-    [HttpPost]
-    public IActionResult PostMedicalTransaction([FromBody] MedicalTransaction medicalTransaction)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      _medicalService.Add(medicalTransaction);
-      _medicalService.Save();
-
-      return CreatedAtAction("GetMedicalTransaction", new { id = medicalTransaction.ID, animalID = medicalTransaction.AnimalID }, medicalTransaction);
-    }
-
-    // DELETE: api/MedicalTransactions/5
-    [HttpDelete("{id}")]
-    public IActionResult DeleteMedicalTransaction([FromRoute] int id)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      var medicalTransaction = _medicalService.Get(id);
-      if (medicalTransaction == null)
-      {
-        return NotFound();
-      }
-
-      _medicalService.Remove(medicalTransaction);
-      _medicalService.Save();
-
-      return Ok(medicalTransaction.ID);
-    }
-
-    private bool MedicalTransactionExists(int id)
-    {
-      return _medicalService.Get(id) != null;
-    }
-  }
 }

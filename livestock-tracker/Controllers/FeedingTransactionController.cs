@@ -1,128 +1,107 @@
-using LivestockTracker;
-using LivestockTracker.Database;
 using LivestockTracker.Models;
+using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Controllers
 {
-  [Produces("application/json")]
-  [Route("api/FeedingTransaction")]
-  public class FeedingTransactionController : Controller
-  {
-    private readonly IFeedingTransactionRepository _feedingTransactionRepository;
-
-    public FeedingTransactionController(IFeedingTransactionRepository feedingTransactionRepository)
+    [Produces("application/json")]
+    [Route("api/FeedingTransaction")]
+    public class FeedingTransactionController : Controller
     {
-      _feedingTransactionRepository = feedingTransactionRepository;
-    }
+        private readonly IFeedingTransactionService _feedingTransactionService;
 
-    [HttpGet("{animalID}")]
-    [Route("getAll/{animalID}")]
-    public IActionResult GetAll([FromRoute] int animalID)
-    {
-      return Ok(_feedingTransactionRepository.Find(x => x.AnimalID == animalID));
-    }
-
-    [HttpGet("{id}")]
-    [Route("get/{id}")]
-    public IActionResult Get(int id)
-    {
-      return Ok(_feedingTransactionRepository.Get(id));
-    }
-
-    [HttpPost]
-    public IActionResult Save([FromBody] FeedingTransaction feedingTransaction)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      var addedTransaction = _feedingTransactionRepository.Add(feedingTransaction);
-      _feedingTransactionRepository.SaveChanges();
-
-      return CreatedAtAction("Get", new { id = feedingTransaction.ID }, addedTransaction);
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] FeedingTransaction feedingTransaction)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      if (id != feedingTransaction.ID)
-      {
-        return BadRequest();
-      }
-
-      _feedingTransactionRepository.Update(feedingTransaction);
-
-      try
-      {
-        _feedingTransactionRepository.SaveChanges();
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (Get(id) == null)
+        public FeedingTransactionController(IFeedingTransactionService feedingTransactionService)
         {
-          return NotFound();
-        }
-        else
-        {
-          throw;
-        }
-      }
-
-      return NoContent();
-    }
-
-    [HttpPatch]
-    public IActionResult Patch([FromBody] FeedingTransaction feedingTransaction)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      try
-      {
-        _feedingTransactionRepository.Update(feedingTransaction);
-        _feedingTransactionRepository.SaveChanges();
-        var updatedTransaction = _feedingTransactionRepository.Get(feedingTransaction.ID);
-        if (updatedTransaction == null)
-        {
-          return NotFound();
+            _feedingTransactionService = feedingTransactionService;
         }
 
-        return Ok(updatedTransaction);
-      }
-      catch (EntityNotFoundException<FeedingTransaction> ex)
-      {
-        return NotFound(ex.Message);
-      }
+        [HttpGet("{animalID}")]
+        public async Task<IActionResult> GetAll(int animalID)
+        {
+            System.Collections.Generic.IEnumerable<FeedingTransaction> feedingTransactions = await _feedingTransactionService.GetByAnimalIdAsync(animalID, Request.HttpContext.RequestAborted).ConfigureAwait(false);
+            return Ok(feedingTransactions);
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            return Ok(_feedingTransactionService.Find(id));
+        }
+
+        [HttpPost]
+        public IActionResult Save([FromBody] FeedingTransaction feedingTransaction)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            FeedingTransaction addedTransaction = _feedingTransactionService.Add(feedingTransaction);
+
+            return CreatedAtAction("Get", new { id = addedTransaction.ID }, addedTransaction);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [Required][FromBody] FeedingTransaction feedingTransaction)
+        {
+            if (!ModelState.IsValid || feedingTransaction == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != feedingTransaction.ID)
+            {
+                return BadRequest();
+            }
+
+            _feedingTransactionService.Update(feedingTransaction);
+
+            return NoContent();
+        }
+
+        [HttpPatch]
+        public IActionResult Patch([FromBody] FeedingTransaction feedingTransaction)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            try
+            {
+                FeedingTransaction updatedTransaction = _feedingTransactionService.Update(feedingTransaction);
+                if (updatedTransaction == null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(updatedTransaction);
+            }
+            catch (EntityNotFoundException<FeedingTransaction> ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            FeedingTransaction transaction = _feedingTransactionService.Find(id);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+
+            _feedingTransactionService.Remove(transaction);
+
+            return Ok(transaction.ID);
+        }
     }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      var transaction = _feedingTransactionRepository.Get(id);
-      if (transaction == null)
-      {
-        return NotFound();
-      }
-
-      _feedingTransactionRepository.Remove(transaction);
-      _feedingTransactionRepository.SaveChanges();
-
-      return Ok(transaction.ID);
-    }
-  }
 }

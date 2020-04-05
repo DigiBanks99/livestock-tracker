@@ -1,35 +1,45 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker.Database;
 using LivestockTracker.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Services
 {
-    public class MedicalService : Service<MedicalTransaction>, IMedicalService
+    public class MedicalService : Service<MedicalTransaction, int>, IMedicalService
     {
-        private readonly IMedicalRepository _medicalRepository;
-        public MedicalService(IMedicalRepository medicalRepository) : base(medicalRepository)
+        public MedicalService(LivestockContext livestockContext) : base(livestockContext) { }
+
+        public IEnumerable<MedicalTransaction> GetByAnimalId(int animalID)
         {
-            _medicalRepository = medicalRepository;
+            return Context.MedicalTransactions
+                          .Where(medical => medical.AnimalID == animalID)
+                          .ToList();
         }
 
-        public IEnumerable<MedicalTransaction> GetByAnimalID(int animalID)
+        public async ValueTask<IEnumerable<MedicalTransaction>> GetByAnimalIdAsync(int animalID, CancellationToken cancellationToken)
         {
-            return _medicalRepository.Find(medical => medical.AnimalID == animalID);
-        }
+            return await Context.MedicalTransactions
+                                .Where(medical => medical.AnimalID == animalID)
+                                .ToListAsync(cancellationToken)
+                                .ConfigureAwait(false);
 
-        public IEnumerable<MedicalTransaction> GetMedicalTransactions()
-        {
-            return GetAll();
         }
 
         public void AddRange(IEnumerable<MedicalTransaction> medicalTransactions)
         {
-            _medicalRepository.AddRange(medicalTransactions);
+            Context.MedicalTransactions
+                   .AddRange(medicalTransactions);
+            Context.SaveChanges();
         }
 
         public void RemoveRange(IEnumerable<MedicalTransaction> medicalTransactions)
         {
-            _medicalRepository.RemoveRange(medicalTransactions);
+            Context.MedicalTransactions
+                   .RemoveRange(medicalTransactions);
+            Context.SaveChanges();
         }
     }
 }

@@ -1,146 +1,105 @@
-using LivestockTracker;
 using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace LivestockTracker.Controllers
 {
-  [Produces("application/json")]
-  [Route("api/Unit")]
-  public class UnitController : Controller
-  {
-    private readonly IUnitService _unitService;
-
-    public UnitController(IUnitService unitService)
+    [Produces("application/json")]
+    [Route("api/Unit")]
+    public class UnitController : Controller
     {
-      _unitService = unitService;
-    }
+        private readonly IUnitService _unitService;
 
-    // GET: api/Unit
-    [HttpGet]
-    public IActionResult Get()
-    {
-      var units = _unitService.GetAll().OrderBy(u => u.Description);
-      return Ok(units);
-    }
-
-    // GET: api/Unit/5
-    [HttpGet("{id}")]
-    public IActionResult Get(int id)
-    {
-      return Ok(_unitService.Get(id));
-    }
-
-    // POST: api/Unit
-    [HttpPost]
-    public IActionResult Post([FromBody] Unit unit)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      var savedUnit = _unitService.Add(unit);
-      _unitService.Save();
-
-      return CreatedAtAction("Get", new { id = savedUnit.TypeCode }, savedUnit);
-    }
-
-    // PUT: api/Unit/5
-    [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] Unit unit)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      if (id != unit.TypeCode)
-      {
-        return BadRequest();
-      }
-
-      _unitService.Update(unit);
-
-      try
-      {
-        _unitService.Save();
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (Get(id) == null)
+        public UnitController(IUnitService unitService)
         {
-          return NotFound();
+            _unitService = unitService;
         }
-        else
+
+        // GET: api/Unit
+        [HttpGet]
+        public IActionResult Get()
         {
-          throw;
+            IOrderedEnumerable<Unit> units = _unitService.GetAll().OrderBy(u => u.Description);
+            return Ok(units);
         }
-      }
 
-      return NoContent();
-    }
-
-    [HttpPatch("{id}")]
-    public IActionResult Patch(int id, [FromBody] Unit unit)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      if (id != unit.TypeCode)
-      {
-        return BadRequest();
-      }
-
-      Unit updatedUnit = null;
-
-      try
-      {
-        updatedUnit = _unitService.Update(unit);
-        _unitService.Save();
-      }
-      catch (EntityNotFoundException<Unit> ex)
-      {
-        return NotFound(ex.Message);
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (updatedUnit == null)
+        // GET: api/Unit/5
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
         {
-          return NotFound();
+            return Ok(_unitService.Find(id));
         }
-        else
+
+        // POST: api/Unit
+        [HttpPost]
+        public IActionResult Post([FromBody] Unit unit)
         {
-          throw;
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Unit savedUnit = _unitService.Add(unit);
+
+            return CreatedAtAction(nameof(Get), new { id = savedUnit.TypeCode }, savedUnit);
         }
-      }
 
-      return Ok(updatedUnit);
+        // PUT: api/Unit/5
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, [FromBody] Unit? unit)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (unit == null || id != unit.TypeCode)
+            {
+                return BadRequest();
+            }
+
+            _unitService.Update(unit);
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult Patch(int id, [FromBody] Unit unit)
+        {
+            if (!ModelState.IsValid || unit == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != unit.TypeCode)
+            {
+                return BadRequest();
+            }
+
+            Unit updatedUnit = _unitService.Update(unit);
+
+            return Ok(updatedUnit);
+        }
+
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Unit unit = _unitService.Find(id);
+            if (unit == null)
+            {
+                return NotFound();
+            }
+
+            _unitService.Remove(unit);
+
+            return Ok(unit.TypeCode);
+        }
     }
-
-    // DELETE: api/ApiWithActions/5
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      var unit = _unitService.Get(id);
-      if (unit == null)
-      {
-        return NotFound();
-      }
-
-      _unitService.Remove(unit);
-      _unitService.Save();
-
-      return Ok(unit.TypeCode);
-    }
-  }
 }

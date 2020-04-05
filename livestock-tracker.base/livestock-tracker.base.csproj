@@ -4,6 +4,7 @@
     <TargetFramework>netStandard2.1</TargetFramework>
     <RootNamespace>LivestockTracker.Base</RootNamespace>
     <Configurations>Debug;Release;Debug Updater</Configurations>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

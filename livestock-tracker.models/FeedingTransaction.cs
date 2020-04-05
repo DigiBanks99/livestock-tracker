@@ -1,10 +1,10 @@
-using LivestockTracker.Database;
+using LivestockTracker.Abstractions;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LivestockTracker.Models
 {
-    public class FeedingTransaction : IEntity
+    public class FeedingTransaction : IEntity<int>
     {
         [Key]
         public int ID { get; set; }
@@ -18,6 +18,8 @@ namespace LivestockTracker.Models
         public decimal Quantity { get; set; }
         [Required]
         public int UnitTypeCode { get; set; }
+
+        public Animal AnimalObject { get; set; } = new Animal();
 
         public int GetKey()
         {
