@@ -1,6 +1,6 @@
-namespace LivestockTracker
+namespace LivestockTracker.Models
 {
-    public enum LivestockType
+    public enum AnimalType
     {
         Cattle = 0,
         Sheep = 1,

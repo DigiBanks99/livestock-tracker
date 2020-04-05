@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
-namespace LivestockTracker.Database
+namespace LivestockTracker.Database.Sqlite
 {
     public class LivestockContextFactory : IDesignTimeDbContextFactory<LivestockContext>
     {

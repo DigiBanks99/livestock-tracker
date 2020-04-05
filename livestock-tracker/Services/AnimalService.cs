@@ -1,16 +1,10 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker.Database;
 using LivestockTracker.Models;
 
 namespace LivestockTracker.Services
 {
-    public class AnimalService : Service<Animal>, IAnimalService
+    public class AnimalService : Service<Animal, int>, IAnimalService
     {
-
-        public AnimalService(IAnimalRepository animalRepository) : base(animalRepository) { }
-
-        public void Delete(int id)
-        {
-            Remove(id);
-        }
+        public AnimalService(LivestockContext context) : base(context) { }
     }
 }

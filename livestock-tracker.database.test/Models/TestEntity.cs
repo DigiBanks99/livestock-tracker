@@ -1,6 +1,8 @@
+using LivestockTracker.Abstractions;
+
 namespace LivestockTracker.Database.Test.Models
 {
-  public class TestEntity : IEntity
+  public class TestEntity : IEntity<int>
   {
     public int Id { get; set; }
     public string? Description { get; set; }

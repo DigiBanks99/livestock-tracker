@@ -1,14 +1,14 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker.Abstractions;
 using System.ComponentModel.DataAnnotations;
 
 namespace LivestockTracker.Models
 {
-    public class FeedType : IEntity
+    public class FeedType : IEntity<int>
     {
         [Key]
         public int ID { get; set; }
         [Required]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public int GetKey()
         {

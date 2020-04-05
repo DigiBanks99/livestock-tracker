@@ -1,10 +1,10 @@
-﻿using LivestockTracker.Database;
+using LivestockTracker.Database;
 using LivestockTracker.Models;
 
 namespace LivestockTracker.Services
 {
-    public class MedicineService : Service<MedicineType>, IMedicineService
+    public class MedicineService : Service<MedicineType, int>, IMedicineService
     {
-        public MedicineService(IMedicineTypeRepository medicineTypeRepository) : base(medicineTypeRepository) { }
+        public MedicineService(LivestockContext livestockContext) : base(livestockContext) { }
     }
 }

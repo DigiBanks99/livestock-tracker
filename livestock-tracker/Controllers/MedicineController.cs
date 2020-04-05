@@ -1,146 +1,101 @@
-using LivestockTracker;
 using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace LivestockTracker.Controllers
 {
-  [Produces("application/json")]
-  [Route("api/[controller]")]
-  public class MedicineController : Controller
-  {
-    private readonly IMedicineService _medicineService;
-
-    public MedicineController(IMedicineService medicineService)
+    [Produces("application/json")]
+    [Route("api/[controller]")]
+    public class MedicineController : Controller
     {
-      _medicineService = medicineService;
-    }
+        private readonly IMedicineService _medicineService;
 
-    [HttpGet]
-    public IActionResult Get()
-    {
-      return Ok(_medicineService.GetAll());
-    }
-
-    [HttpGet("{id}")]
-    public IActionResult Get(int id)
-    {
-      return Ok(_medicineService.Get(id));
-    }
-
-    [HttpPost]
-    public IActionResult Add([FromBody] MedicineType? medicineType)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      if (medicineType == null)
-      {
-        return BadRequest();
-      }
-
-      _medicineService.Add(medicineType);
-      _medicineService.Save();
-
-      return CreatedAtAction("Get", new { id = medicineType.TypeCode }, medicineType);
-    }
-
-    [HttpPut("{id}")]
-    public IActionResult Update([FromRoute] int id, [FromBody] MedicineType? medicineType)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      if (medicineType == null || id != medicineType.TypeCode)
-      {
-        return BadRequest();
-      }
-
-      _medicineService.Update(medicineType);
-
-      try
-      {
-        _medicineService.Save();
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (Get(id) == null)
+        public MedicineController(IMedicineService medicineService)
         {
-          return NotFound();
+            _medicineService = medicineService;
         }
-        else
+
+        [HttpGet]
+        public IActionResult Get()
         {
-          throw;
+            return Ok(_medicineService.GetAll());
         }
-      }
 
-      return NoContent();
-    }
-
-
-    [HttpPatch("{id}")]
-    public IActionResult Patch([FromRoute] int id, [FromBody] MedicineType medicineType)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      if (id != medicineType.TypeCode)
-      {
-        return BadRequest();
-      }
-
-
-      MedicineType updatedMedicineType = null;
-      try
-      {
-        _medicineService.Update(medicineType);
-        _medicineService.Save();
-        updatedMedicineType = _medicineService.Get(medicineType.TypeCode);
-      }
-      catch (EntityNotFoundException<MedicineType> ex)
-      {
-        return NotFound(ex.Message);
-      }
-      catch (DbUpdateConcurrencyException)
-      {
-        if (updatedMedicineType == null)
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
         {
-          return NotFound();
+            return Ok(_medicineService.Find(id));
         }
-        else
+
+        [HttpPost]
+        public IActionResult Add([Required][FromBody] MedicineType medicineType)
         {
-          throw;
+            if (!ModelState.IsValid || medicineType == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var addedItem = _medicineService.Add(medicineType);
+
+            return CreatedAtAction(nameof(Get), new { id = addedItem.TypeCode }, medicineType);
         }
-      }
 
-      return Ok(updatedMedicineType);
+        [HttpPut("{id}")]
+        public IActionResult Update([FromRoute] int id, [FromBody] MedicineType? medicineType)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (medicineType == null || id != medicineType.TypeCode)
+            {
+                return BadRequest();
+            }
+
+            _medicineService.Update(medicineType);
+
+            return NoContent();
+        }
+
+
+        [HttpPatch("{id}")]
+        public IActionResult Patch([FromRoute] int id, [Required][FromBody] MedicineType medicineType)
+        {
+            if (!ModelState.IsValid || medicineType == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != medicineType.TypeCode)
+            {
+                return BadRequest();
+            }
+
+
+            var updatedMedicineType = _medicineService.Update(medicineType);
+
+            return Ok(updatedMedicineType);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var medicineType = _medicineService.Find(id);
+            if (medicineType == null)
+            {
+                return NotFound();
+            }
+
+            _medicineService.Remove(medicineType);
+
+            return Ok(medicineType.TypeCode);
+        }
     }
-
-    [HttpDelete("{id}")]
-    public IActionResult Delete(int id)
-    {
-      if (!ModelState.IsValid)
-      {
-        return BadRequest(ModelState);
-      }
-
-      var medicineType = _medicineService.Get(id);
-      if (medicineType == null)
-      {
-        return NotFound();
-      }
-
-      _medicineService.Remove(medicineType);
-      _medicineService.Save();
-
-      return Ok(medicineType.TypeCode);
-    }
-  }
 }
