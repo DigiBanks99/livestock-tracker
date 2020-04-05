@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
@@ -11,6 +11,7 @@
     <BuildServerSideRenderer>false</BuildServerSideRenderer>
     <RootNamespace>LivestockTracker</RootNamespace>
     <Configurations>Debug;Release</Configurations>
+    <NeutralLanguage>en-Gb</NeutralLanguage>
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>

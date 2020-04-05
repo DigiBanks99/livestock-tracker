@@ -1,5 +1,5 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Models;
+using LivestockTracker.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,9 +13,12 @@ namespace LivestockTracker.Database.Sqlite
         {
             using var context = new LivestockContext(serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>());
             context.Database.Migrate();
+
             SeedFeedTypes(context);
             SeedUnits(context);
             SeedMedicine(context);
+
+            context.SaveChanges();
         }
 
         private static void SeedUnits(LivestockContext context)
@@ -26,18 +29,16 @@ namespace LivestockTracker.Database.Sqlite
             }
 
             context.Unit.AddRange(
-            new Unit()
+            new UnitModel()
             {
                 TypeCode = 1,
                 Description = "ℓ"
             },
-            new Unit()
+            new UnitModel()
             {
                 TypeCode = 2,
                 Description = "kg"
             });
-
-            context.SaveChanges();
         }
 
         private static void SeedMedicine(LivestockContext context)
@@ -48,18 +49,16 @@ namespace LivestockTracker.Database.Sqlite
             }
 
             context.Medicine.AddRange(
-            new MedicineType()
+            new MedicineTypeModel()
             {
                 TypeCode = 1,
                 Description = "Antibiotics"
             },
-            new MedicineType()
+            new MedicineTypeModel()
             {
                 TypeCode = 2,
                 Description = "Painkillers"
             });
-
-            context.SaveChanges();
         }
 
         private static void SeedFeedTypes(LivestockContext livestockContext)
@@ -70,18 +69,16 @@ namespace LivestockTracker.Database.Sqlite
             }
 
             livestockContext.FeedTypes.AddRange(
-            new FeedType()
+            new FeedTypeModel()
             {
                 ID = 1,
                 Description = "Wheat"
             },
-            new FeedType()
+            new FeedTypeModel()
             {
                 ID = 2,
                 Description = "Maze"
             });
-
-            livestockContext.SaveChanges();
         }
     }
 }

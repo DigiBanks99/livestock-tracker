@@ -9,57 +9,77 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Services
 {
-    public class Service<TEntity, TKeyType> : IService<TEntity, TKeyType> where TEntity : class, IEntity<TKeyType>
-                                                                          where TKeyType : struct
+    public class Service<TEntity, TDto, TKeyType>
+        : IService<TEntity, TDto, TKeyType>
+        where TEntity : class, IEntity<TKeyType>
+        where TDto : class
+        where TKeyType : struct
     {
-        public Service(LivestockContext context)
+        public Service(LivestockContext context, IMapper<TEntity, TDto> mapper)
         {
             Context = context;
+            Mapper = mapper;
         }
 
-        public LivestockContext Context { get; }
+        protected LivestockContext Context { get; }
+        protected IMapper<TEntity, TDto> Mapper { get; }
 
-        public virtual TEntity Add(TEntity entity)
+        public virtual TDto Add(TDto dto)
         {
+            if (dto == null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
+
+            var entity = Mapper.Map(dto);
             var changes = Context.Set<TEntity>()
                                  .Add(entity);
             Context.SaveChanges();
-            return changes.Entity;
+
+            return Mapper.Map(changes.Entity);
         }
 
-        public virtual TEntity Find(TKeyType id)
+        public virtual TDto? Find(TKeyType id)
         {
-            return Context.Set<TEntity>()
-                          .Find(id);
+            var item = Context.Set<TEntity>()
+                              .Find(id);
+
+            return Mapper.Map(item);
         }
 
-        public virtual async Task<TEntity> FindAsync(TKeyType id, CancellationToken cancellationToken)
+        public virtual async Task<TDto?> FindAsync(TKeyType id, CancellationToken cancellationToken)
+        {
+            var item = await Context.Set<TEntity>()
+                                    .FindAsync(new object[] { id }, cancellationToken)
+                                    .ConfigureAwait(false);
+
+            return Mapper.Map(item);
+        }
+
+        public virtual IEnumerable<TDto> GetAll()
+        {
+            var entities = Context.Set<TEntity>()
+                               .ToList();
+
+            return entities.Select(entity => Mapper.Map(entity));
+        }
+
+        public virtual async Task<IEnumerable<TDto>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await Context.Set<TEntity>()
-                                .FindAsync(new object[] { id }, cancellationToken)
-                                .ConfigureAwait(false);
-        }
-
-        public virtual IEnumerable<TEntity> GetAll()
-        {
-            return Context.Set<TEntity>()
-                          .ToList();
-        }
-
-        public virtual async Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken)
-        {
-            return await Context.Set<TEntity>()
+                                .Select(entity => Mapper.Map(entity))
                                 .ToListAsync(cancellationToken)
                                 .ConfigureAwait(false);
         }
 
-        public virtual void Remove(TEntity entity)
+        public virtual void Remove(TDto dto)
         {
-            if (entity == null)
+            if (dto == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                throw new ArgumentNullException(nameof(dto));
             }
 
+            TEntity entity = Mapper.Map(dto);
             Context.Set<TEntity>()
                    .Remove(entity);
             Context.SaveChanges();
@@ -67,15 +87,26 @@ namespace LivestockTracker.Services
 
         public virtual void Remove(TKeyType id)
         {
-            var item = Find(id);
-            Remove(item);
+            var item = Context.Set<TEntity>()
+                              .Find(id);
+            if (item != null)
+            {
+                Context.Set<TEntity>()
+                       .Remove(item);
+            }
         }
 
-        public virtual TEntity Update(TEntity entity)
+        public virtual TDto Update(TDto dto)
         {
+            if (dto == null)
+            {
+                throw new ArgumentNullException(nameof(dto));
+            }
+
+            var entity = Mapper.Map(dto);
             var changes = Context.Set<TEntity>()
                                  .Update(entity);
-            return changes.Entity;
+            return Mapper.Map(changes.Entity);
         }
     }
 }

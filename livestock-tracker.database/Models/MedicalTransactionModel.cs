@@ -1,9 +1,10 @@
+using LivestockTracker.Abstractions;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LivestockTracker.Models
+namespace LivestockTracker.Database.Models
 {
-    public class MedicalTransaction
+    public class MedicalTransactionModel : IEntity<int>
     {
         [Key]
         public int ID { get; set; }
@@ -16,5 +17,12 @@ namespace LivestockTracker.Models
         public decimal Dose { get; set; }
         [Required]
         public int Unit { get; set; }
+
+        public AnimalModel AnimalObject { get; set; } = new AnimalModel();
+
+        public int GetKey()
+        {
+            return ID;
+        }
     }
 }

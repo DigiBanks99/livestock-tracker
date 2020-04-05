@@ -1,4 +1,5 @@
 using LivestockTracker.Abstractions;
+using LivestockTracker.Database.Models;
 using LivestockTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,7 +26,7 @@ namespace LivestockTracker.Database.Sqlite
             }
 
             context.Animal.AddRange(
-            new Animal()
+            new AnimalModel()
             {
                 ID = 1,
                 Type = AnimalType.Cattle,
@@ -51,7 +52,7 @@ namespace LivestockTracker.Database.Sqlite
                 return;
             }
 
-            Animal animal = context.Animal.OrderBy(a => a.Number).First();
+            var animal = context.Animal.OrderBy(a => a.Number).First();
             if (animal == null)
             {
                 SeedAnimals(context);
@@ -59,7 +60,7 @@ namespace LivestockTracker.Database.Sqlite
             }
 
             context.MedicalTransactions.AddRange(
-            new MedicalTransaction()
+            new MedicalTransactionModel()
             {
                 AnimalID = animal.ID,
                 MedicineTypeCode = 1,
@@ -78,7 +79,7 @@ namespace LivestockTracker.Database.Sqlite
                 return;
             }
 
-            Animal animal = livestockContext.Animal.OrderBy(a => a.Number).First();
+            var animal = livestockContext.Animal.OrderBy(a => a.Number).First();
             if (animal == null)
             {
                 SeedAnimals(livestockContext);
@@ -86,7 +87,7 @@ namespace LivestockTracker.Database.Sqlite
             }
 
             livestockContext.FeedingTransactions.AddRange(
-            new FeedingTransaction()
+            new FeedingTransactionModel()
             {
                 ID = 1,
                 AnimalID = animal.ID,
@@ -95,7 +96,7 @@ namespace LivestockTracker.Database.Sqlite
                 TransactionDate = DateTimeOffset.UtcNow,
                 UnitTypeCode = 2
             },
-            new FeedingTransaction()
+            new FeedingTransactionModel()
             {
                 ID = 2,
                 AnimalID = animal.ID,
