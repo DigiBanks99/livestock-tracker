@@ -13,12 +13,15 @@ trim_trailing_whitespace = true
 [*.{xml,csproj}]
 indent_size = 2
 
+[*.sln]
+end_of_line = crlf
+
 # JSON files
 [*.json]
 indent_size = 2
 
 # C# Preferences
-csharp_style_var_elsewhere = true:suggestion
+csharp_style_var_elsewhere = false:error
 csharp_style_var_for_built_in_types = true:suggestion
 csharp_style_var_when_type_is_apparent = true:suggestion
 csharp_style_inlined_variable_declaration = true:suggestion

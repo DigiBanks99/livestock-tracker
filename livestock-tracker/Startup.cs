@@ -1,5 +1,9 @@
+using LivestockTracker.Abstractions;
 using LivestockTracker.Database;
+using LivestockTracker.Database.Models;
 using LivestockTracker.Extensions;
+using LivestockTracker.Mappers;
+using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,14 +30,19 @@ namespace LivestockTracker
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddScoped<IAnimalService, AnimalService>();
-            services.AddScoped<IFeedTypeService, FeedTypeService>();
-            services.AddScoped<IFeedingTransactionService, FeedingTransactionService>();
-            services.AddScoped<IMedicalService, MedicalService>();
-            services.AddScoped<IMedicineService, MedicineService>();
-            services.AddScoped<IUnitService, UnitService>();
+            services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")))
+                    .AddScoped<IAnimalService, AnimalService>()
+                    .AddScoped<IFeedTypeService, FeedTypeService>()
+                    .AddScoped<IFeedingTransactionService, FeedingTransactionService>()
+                    .AddScoped<IMedicalService, MedicalService>()
+                    .AddScoped<IMedicineService, MedicineService>()
+                    .AddScoped<IUnitService, UnitService>()
+                    .AddSingleton<IMapper<AnimalModel, Animal>, AnimalMapper>()
+                    .AddSingleton<IMapper<FeedingTransactionModel, FeedingTransaction>, FeedingTransactionMapper>()
+                    .AddSingleton<IMapper<FeedTypeModel, FeedType>, FeedTypeMapper>()
+                    .AddSingleton<IMapper<MedicalTransactionModel, MedicalTransaction>, MedicalTransactionMapper>()
+                    .AddSingleton<IMapper<MedicineTypeModel, MedicineType>, MedicineTypeMapper>()
+                    .AddSingleton<IMapper<UnitModel, Unit>, UnitMapper>();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

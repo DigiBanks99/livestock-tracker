@@ -1,4 +1,6 @@
+using LivestockTracker.Abstractions;
 using LivestockTracker.Database;
+using LivestockTracker.Database.Models;
 using LivestockTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -8,14 +10,16 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Services
 {
-    public class MedicalService : Service<MedicalTransaction, int>, IMedicalService
+    public class MedicalService : Service<MedicalTransactionModel, MedicalTransaction, int>, IMedicalService
     {
-        public MedicalService(LivestockContext livestockContext) : base(livestockContext) { }
+        public MedicalService(LivestockContext livestockContext, IMapper<MedicalTransactionModel, MedicalTransaction> mapper)
+            : base(livestockContext, mapper) { }
 
         public IEnumerable<MedicalTransaction> GetByAnimalId(int animalID)
         {
             return Context.MedicalTransactions
                           .Where(medical => medical.AnimalID == animalID)
+                          .Select(medical => Mapper.Map(medical))
                           .ToList();
         }
 
@@ -23,6 +27,7 @@ namespace LivestockTracker.Services
         {
             return await Context.MedicalTransactions
                                 .Where(medical => medical.AnimalID == animalID)
+                                .Select(medical => Mapper.Map(medical))
                                 .ToListAsync(cancellationToken)
                                 .ConfigureAwait(false);
 
@@ -30,15 +35,17 @@ namespace LivestockTracker.Services
 
         public void AddRange(IEnumerable<MedicalTransaction> medicalTransactions)
         {
+            var entityMedicalTransactions = medicalTransactions.Select(medical => Mapper.Map(medical));
             Context.MedicalTransactions
-                   .AddRange(medicalTransactions);
+                   .AddRange(entityMedicalTransactions);
             Context.SaveChanges();
         }
 
         public void RemoveRange(IEnumerable<MedicalTransaction> medicalTransactions)
         {
+            var entityMedicalTransactions = medicalTransactions.Select(medical => Mapper.Map(medical));
             Context.MedicalTransactions
-                   .RemoveRange(medicalTransactions);
+                   .RemoveRange(entityMedicalTransactions);
             Context.SaveChanges();
         }
     }

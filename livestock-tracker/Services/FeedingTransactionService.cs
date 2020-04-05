@@ -1,4 +1,6 @@
+using LivestockTracker.Abstractions;
 using LivestockTracker.Database;
+using LivestockTracker.Database.Models;
 using LivestockTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -8,14 +10,16 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Services
 {
-    public class FeedingTransactionService : Service<FeedingTransaction, int>, IFeedingTransactionService
+    public class FeedingTransactionService : Service<FeedingTransactionModel, FeedingTransaction, int>, IFeedingTransactionService
     {
-        public FeedingTransactionService(LivestockContext context) : base(context) { }
+        public FeedingTransactionService(LivestockContext context, IMapper<FeedingTransactionModel, FeedingTransaction> mapper)
+            : base(context, mapper) { }
 
         public IEnumerable<FeedingTransaction> GetByAnimalId(int animalID)
         {
             return Context.FeedingTransactions
-                          .Where(medical => medical.AnimalID == animalID)
+                          .Where(transaction => transaction.AnimalID == animalID)
+                          .Select(transaction => Mapper.Map(transaction))
                           .ToList();
         }
 
@@ -24,7 +28,8 @@ namespace LivestockTracker.Services
             cancellationToken.ThrowIfCancellationRequested();
 
             return await Context.FeedingTransactions
-                                .Where(medical => medical.AnimalID == animalID)
+                                .Where(transaction => transaction.AnimalID == animalID)
+                                .Select(transaction => Mapper.Map(transaction))
                                 .ToListAsync(cancellationToken)
                                 .ConfigureAwait(false);
         }

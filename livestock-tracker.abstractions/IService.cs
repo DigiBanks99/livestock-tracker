@@ -4,16 +4,30 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Abstractions
 {
-    public interface IService<TEntity, TKeyType> where TEntity : IEntity<TKeyType>
-                                                 where TKeyType : struct
+    /// <summary>
+    /// An interface for interacting with data entities via DTO objects.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of entity that is being interacted with.</typeparam>
+    /// <typeparam name="TDto">The DTO representation of the entity.</typeparam>
+    /// <typeparam name="TKeyType">The type of the key of the entity.</typeparam>
+    public interface IService<TEntity, TDto, TKeyType>
+        where TEntity : IEntity<TKeyType>
+        where TDto : class
+        where TKeyType : struct
     {
-        TEntity Find(TKeyType id);
-        Task<TEntity> FindAsync(TKeyType id, CancellationToken cancellationToken);
-        IEnumerable<TEntity> GetAll();
-        Task<IEnumerable<TEntity>> GetAllAsync(CancellationToken cancellationToken);
-        TEntity Add(TEntity entity);
-        TEntity Update(TEntity entity);
-        void Remove(TEntity entity);
+        /// <summary>
+        /// Find the item via the key.
+        /// </summary>
+        /// <param name="id">The key that is being searched for.</param>
+        /// <returns>A DTO representation of the entity if it was found.</returns>
+        TDto? Find(TKeyType id);
+
+        Task<TDto?> FindAsync(TKeyType id, CancellationToken cancellationToken);
+        IEnumerable<TDto> GetAll();
+        Task<IEnumerable<TDto>> GetAllAsync(CancellationToken cancellationToken);
+        TDto Add(TDto dto);
+        TDto Update(TDto dto);
+        void Remove(TDto dto);
         void Remove(TKeyType id);
     }
 }
