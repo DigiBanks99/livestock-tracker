@@ -1,3 +1,13 @@
+using LivestockTracker.Database;
+using LivestockTracker.Extensions;
+using LivestockTracker.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 
 namespace LivestockTracker
@@ -36,7 +46,9 @@ namespace LivestockTracker
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
+            }
 
             if (env.IsDevelopment())
             {
@@ -49,14 +61,10 @@ namespace LivestockTracker
                 app.UseHsts();
             }
 
-            SeedDatabase(app, new SqliteSeedData());
-            if (env.IsDevelopment())
-            {
-                SeedDatabase(app, new DevSqliteSeedData());
-            }
+            app.SeedLivestockDatabase(env)
+               .UseHttpsRedirection()
+               .UseStaticFiles();
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
             if (!env.IsDevelopment())
             {
                 app.UseSpaStaticFiles();
@@ -80,45 +88,6 @@ namespace LivestockTracker
                     }
 
                 });
-        }
-
-        private static void SeedDevDatabase(IApplicationBuilder app)
-        {
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                using (var context = serviceScope.ServiceProvider.GetRequiredService<LivestockContext>())
-                {
-                    try
-                    {
-                        SeedData.Initialize(serviceScope.ServiceProvider);
-                        SeedData.SeedDevData(serviceScope.ServiceProvider);
-                    }
-                    catch (Exception ex)
-                    {
-                        var logger = app.ApplicationServices.GetRequiredService<ILogger>();
-                        logger.LogError(ex, "An error occurred seeding the DB.");
-                    }
-                }
-            }
-        }
-
-        private static void SeedDatabase(IApplicationBuilder app)
-        {
-            using (var serviceScope = app.ApplicationServices.CreateScope())
-            {
-                using (var context = serviceScope.ServiceProvider.GetRequiredService<LivestockContext>())
-                {
-                    try
-                    {
-                        SeedData.Initialize(serviceScope.ServiceProvider);
-                    }
-                    catch (Exception ex)
-                    {
-                        var logger = app.ApplicationServices.GetRequiredService<ILogger>();
-                        logger.LogError(ex, "An error occurred seeding the DB.");
-                    }
-                }
-            }
         }
     }
 }

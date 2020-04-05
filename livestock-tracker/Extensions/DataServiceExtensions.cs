@@ -1,4 +1,6 @@
-using LivestockTracker.Database;
+using LivestockTracker.Abstractions;
+using LivestockTracker.Database.Sqlite;
+using LivestockTracker.Properties;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,28 +10,34 @@ using System;
 
 namespace LivestockTracker.Extensions
 {
-  public static class DataServiceExtensions
-  {
-    public static IApplicationBuilder SeedLivestockDatabase(this IApplicationBuilder app, IWebHostEnvironment env)
+    public static class DataServiceExtensions
     {
-      using (var serviceScope = app.ApplicationServices.CreateScope())
-      {
-        try
+        public static IApplicationBuilder SeedLivestockDatabase(this IApplicationBuilder app, IWebHostEnvironment env)
         {
-          SeedData.Initialize(serviceScope.ServiceProvider);
-          if (env.IsDevelopment())
-          {
-            SeedData.SeedDevData(serviceScope.ServiceProvider);
-          }
-        }
-        catch (Exception ex)
-        {
-          var logger = app.ApplicationServices.GetRequiredService<ILogger>();
-          logger.LogError(ex, "An error occurred seeding the DB.");
-        }
-      }
+            if (app == null)
+                throw new ArgumentNullException(nameof(app));
 
-      return app;
+            SeedDatabase(app, new SqliteSeedData());
+            if (env.IsDevelopment())
+            {
+                SeedDatabase(app, new DevSqliteSeedData());
+            }
+
+            return app;
+        }
+
+        private static void SeedDatabase(IApplicationBuilder app, ISeedData seedData)
+        {
+            using IServiceScope serviceScope = app.ApplicationServices.CreateScope();
+            try
+            {
+                seedData.Seed(serviceScope.ServiceProvider);
+            }
+            catch (Exception ex)
+            {
+                ILogger logger = app.ApplicationServices.GetRequiredService<ILogger>();
+                logger.LogError(ex, Resources.SeedDatabaseFailed);
+            }
+        }
     }
-  }
 }

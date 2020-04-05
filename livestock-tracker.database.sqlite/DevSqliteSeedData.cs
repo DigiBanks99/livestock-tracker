@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace LivestockTracker.Database
+namespace LivestockTracker.Database.Sqlite
 {
     public class DevSqliteSeedData : ISeedData
     {
