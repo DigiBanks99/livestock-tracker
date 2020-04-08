@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System;
 
 namespace LivestockTracker
@@ -43,6 +44,13 @@ namespace LivestockTracker
                     .AddSingleton<IMapper<MedicalTransactionModel, MedicalTransaction>, MedicalTransactionMapper>()
                     .AddSingleton<IMapper<MedicineTypeModel, MedicineType>, MedicineTypeMapper>()
                     .AddSingleton<IMapper<UnitModel, Unit>, UnitMapper>();
+
+            services.AddSwaggerGen(options => options.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Description = "Provides services for managing your livestock.",
+                Title = "Livestock Tracker API",
+                Version = "v1"
+            }));
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -84,19 +92,25 @@ namespace LivestockTracker
                 {
                     endpoints.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
                 })
-                .UseSpa(spa =>
-                {
-                    // To learn more about options for serving an Angular SPA from ASP.NET Core,
-                    // see https://go.microsoft.com/fwlink/?linkid=864501
+               .UseSwagger()
+               .UseSwaggerUI(options =>
+               {
+                   options.DocumentTitle = "Livestock Tracker API";
+                   options.SwaggerEndpoint("/swagger/v1/swagger.json", "Livestock Tracker API V1");
+               })
+               .UseSpa(spa =>
+               {
+                   // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                   // see https://go.microsoft.com/fwlink/?linkid=864501
 
-                    spa.Options.SourcePath = "ClientApp";
+                   spa.Options.SourcePath = "ClientApp";
 
-                    if (env.IsDevelopment())
-                    {
-                        spa.UseAngularCliServer("start");
-                    }
+                   if (env.IsDevelopment())
+                   {
+                       spa.UseAngularCliServer("start");
+                   }
 
-                });
+               });
         }
     }
 }

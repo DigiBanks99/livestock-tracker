@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class AnimalController : Controller
     {
