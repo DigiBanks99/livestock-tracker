@@ -35,8 +35,8 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            MedicalTransaction medicalTransaction = await _medicalService.FindAsync(id, Request.HttpContext.RequestAborted)
-                                                    .ConfigureAwait(false);
+            var medicalTransaction = await _medicalService.FindAsync(id, Request.HttpContext.RequestAborted)
+                                                          .ConfigureAwait(false);
             if (medicalTransaction == null)
             {
                 return NotFound();

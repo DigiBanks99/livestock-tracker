@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LivestockTracker.Controllers
 {
     [Produces("application/json")]
-    [Route("api/FeedingTransaction")]
+    [Route("api/[controller]")]
     public class FeedingTransactionController : Controller
     {
         private readonly IFeedingTransactionService _feedingTransactionService;
@@ -17,17 +17,27 @@ namespace LivestockTracker.Controllers
             _feedingTransactionService = feedingTransactionService;
         }
 
-        [HttpGet("{animalID}")]
+        [HttpGet("{animalId}")]
         public async Task<IActionResult> GetAll(int animalID)
         {
-            System.Collections.Generic.IEnumerable<FeedingTransaction> feedingTransactions = await _feedingTransactionService.GetByAnimalIdAsync(animalID, Request.HttpContext.RequestAborted).ConfigureAwait(false);
+            var feedingTransactions = await _feedingTransactionService.GetByAnimalIdAsync(animalID, HttpContext.RequestAborted)
+                                                                      .ConfigureAwait(false);
             return Ok(feedingTransactions);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        [HttpGet("{animalId}/{id}")]
+        public async Task<IActionResult> Get(int animalId, int id)
         {
-            return Ok(_feedingTransactionService.Find(id));
+            var transaction = await _feedingTransactionService.FindAsync(id, HttpContext.RequestAborted)
+                                                              .ConfigureAwait(false);
+
+            if (transaction == null)
+                return NoContent();
+
+            if (transaction.AnimalID != animalId)
+                return BadRequest();
+
+            return Ok(transaction);
         }
 
         [HttpPost]
@@ -38,7 +48,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            FeedingTransaction addedTransaction = _feedingTransactionService.Add(feedingTransaction);
+            var addedTransaction = _feedingTransactionService.Add(feedingTransaction);
 
             return CreatedAtAction("Get", new { id = addedTransaction.ID }, addedTransaction);
         }
@@ -71,7 +81,7 @@ namespace LivestockTracker.Controllers
 
             try
             {
-                FeedingTransaction updatedTransaction = _feedingTransactionService.Update(feedingTransaction);
+                var updatedTransaction = _feedingTransactionService.Update(feedingTransaction);
                 if (updatedTransaction == null)
                 {
                     return NotFound();
@@ -86,14 +96,15 @@ namespace LivestockTracker.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            FeedingTransaction transaction = _feedingTransactionService.Find(id);
+            var transaction = await _feedingTransactionService.FindAsync(id, HttpContext.RequestAborted)
+                                                              .ConfigureAwait(false);
             if (transaction == null)
             {
                 return NotFound();
