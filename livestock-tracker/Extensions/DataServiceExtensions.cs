@@ -15,7 +15,9 @@ namespace LivestockTracker.Extensions
         public static IApplicationBuilder SeedLivestockDatabase(this IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (app == null)
+            {
                 throw new ArgumentNullException(nameof(app));
+            }
 
             SeedDatabase(app, new SqliteSeedData());
             if (env.IsDevelopment())
@@ -28,14 +30,14 @@ namespace LivestockTracker.Extensions
 
         private static void SeedDatabase(IApplicationBuilder app, ISeedData seedData)
         {
-            using IServiceScope serviceScope = app.ApplicationServices.CreateScope();
+            using var serviceScope = app.ApplicationServices.CreateScope();
             try
             {
                 seedData.Seed(serviceScope.ServiceProvider);
             }
             catch (Exception ex)
             {
-                ILogger logger = app.ApplicationServices.GetRequiredService<ILogger>();
+                var logger = app.ApplicationServices.GetRequiredService<ILogger>();
                 logger.LogError(ex, Resources.SeedDatabaseFailed);
             }
         }

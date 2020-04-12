@@ -20,7 +20,7 @@ namespace LivestockTracker.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            IOrderedEnumerable<Unit> units = _unitService.GetAll().OrderBy(u => u.Description);
+            var units = _unitService.GetAll().OrderBy(u => u.Description);
             return Ok(units);
         }
 
@@ -40,7 +40,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            Unit savedUnit = _unitService.Add(unit);
+            var savedUnit = _unitService.Add(unit);
 
             return CreatedAtAction(nameof(Get), new { id = savedUnit.TypeCode }, savedUnit);
         }
@@ -77,7 +77,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest();
             }
 
-            Unit updatedUnit = _unitService.Update(unit);
+            var updatedUnit = _unitService.Update(unit);
 
             return Ok(updatedUnit);
         }
@@ -91,7 +91,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            Unit unit = _unitService.Find(id);
+            var unit = _unitService.Find(id);
             if (unit == null)
             {
                 return NotFound();

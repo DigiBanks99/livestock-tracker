@@ -18,9 +18,9 @@ namespace LivestockTracker.Controllers
         }
 
         [HttpGet("{animalId}")]
-        public async Task<IActionResult> GetAll(int animalID)
+        public async Task<IActionResult> GetAll(int animalId)
         {
-            var feedingTransactions = await _feedingTransactionService.GetByAnimalIdAsync(animalID, HttpContext.RequestAborted)
+            var feedingTransactions = await _feedingTransactionService.GetByAnimalIdAsync(animalId, HttpContext.RequestAborted)
                                                                       .ConfigureAwait(false);
             return Ok(feedingTransactions);
         }

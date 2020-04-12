@@ -1,35 +1,46 @@
 using LivestockTracker.Models;
+using LivestockTracker.Properties;
 using LivestockTracker.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
 namespace LivestockTracker.Controllers
 {
-    [Produces("application/json")]
     [Route("api/[controller]")]
-    public class MedicalTransactionsController : Controller
+    public class MedicalTransactionsController : LivestockApiController
     {
         private readonly IMedicalService _medicalService;
 
-        public MedicalTransactionsController(IMedicalService medicalService)
+        public MedicalTransactionsController(ILogger<MedicalTransactionsController> logger, IMedicalService medicalService)
+            : base(logger)
         {
             _medicalService = medicalService;
         }
 
-        // GET: api/MedicalTransactions
-        [HttpGet("{animalID}")]
-        public async ValueTask<IActionResult> GetMedicalTransactions([FromRoute] int animalID)
+        /// <summary>
+        /// Gets the medical transactions for an animal.
+        /// </summary>
+        /// <param name="animalId">The unique identifier that links the medical transactions.</param>
+        /// <returns>The list of transactions for the animal.</returns>
+        [HttpGet("{animalId}")]
+        [ProducesResponseType(typeof(IEnumerable<MedicalTransaction>), StatusCodes.Status200OK)]
+        public async ValueTask<IActionResult> GetMedicalTransactions([FromRoute] int animalId)
         {
-            var items = await _medicalService.GetByAnimalIdAsync(animalID, Request.HttpContext.RequestAborted)
+            Logger.LogInformation(Resources.RequestAnimalMedicalTransactions, animalId);
+            var items = await _medicalService.GetByAnimalIdAsync(animalId, Request.HttpContext.RequestAborted)
                                              .ConfigureAwait(false);
             return Ok(items);
         }
 
         // GET: api/MedicalTransactions/5
-        [HttpGet("{animalID}/{id}")]
-        public async ValueTask<IActionResult> GetMedicalTransaction([FromRoute] int animalID, [FromRoute] int id)
+        [HttpGet("{animalId}/{id}")]
+        public async ValueTask<IActionResult> GetMedicalTransaction([FromRoute] int animalId, [FromRoute] int id)
         {
+            Logger.LogInformation(Resources.RequestMedicalTransactionDetail, animalId, id);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -42,7 +53,7 @@ namespace LivestockTracker.Controllers
                 return NotFound();
             }
 
-            if (medicalTransaction.AnimalID != animalID)
+            if (medicalTransaction.AnimalID != animalId)
             {
                 return BadRequest();
             }
@@ -81,7 +92,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest();
             }
 
-            MedicalTransaction updatedMedicalTransaction = _medicalService.Update(medicalTransaction);
+            var updatedMedicalTransaction = _medicalService.Update(medicalTransaction);
 
             return Ok(updatedMedicalTransaction);
         }
@@ -95,7 +106,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            MedicalTransaction addedTransaction = _medicalService.Add(medicalTransaction);
+            var addedTransaction = _medicalService.Add(medicalTransaction);
 
             return CreatedAtAction(nameof(GetMedicalTransaction), new { id = addedTransaction.ID, animalID = addedTransaction.AnimalID }, medicalTransaction);
         }
@@ -109,7 +120,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            MedicalTransaction medicalTransaction = await _medicalService.FindAsync(id, Request.HttpContext.RequestAborted)
+            var medicalTransaction = await _medicalService.FindAsync(id, Request.HttpContext.RequestAborted)
                                                     .ConfigureAwait(false);
             if (medicalTransaction == null)
             {

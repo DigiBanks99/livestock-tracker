@@ -13,10 +13,13 @@
     <Configurations>Debug;Release</Configurations>
     <NeutralLanguage>en-Gb</NeutralLanguage>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
+  
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
+  
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="3.1.3" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
@@ -34,6 +37,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.3.1" />
   </ItemGroup>
+  
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Compile Remove="ClientApp\dist\**" />
@@ -45,6 +49,7 @@
     <Content Remove="livestock-tracker.models\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
+  
   <ItemGroup>
     <EmbeddedResource Remove="ClientApp\dist\**" />
     <EmbeddedResource Remove="livestock-tracker.base\**" />
@@ -53,15 +58,18 @@
     <None Remove="livestock-tracker.base\**" />
     <None Remove="livestock-tracker.models\**" />
   </ItemGroup>
+  
   <ItemGroup>
     <Content Include=".vs\launch.json" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
     <ProjectReference Include="..\livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj" />
     <ProjectReference Include="..\livestock-tracker.database\livestock-tracker.database.csproj" />
     <ProjectReference Include="..\livestock-tracker.models\livestock-tracker.models.csproj" />
   </ItemGroup>
+  
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
       <DesignTime>True</DesignTime>
@@ -69,12 +77,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
+  
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
     <!-- Ensure Node.js is installed -->
     <Exec Command="node --version" ContinueOnError="true">
@@ -84,6 +94,7 @@
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
   </Target>
+  
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
