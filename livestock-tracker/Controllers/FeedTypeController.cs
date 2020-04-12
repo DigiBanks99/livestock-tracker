@@ -20,14 +20,14 @@ namespace LivestockTracker.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            System.Collections.Generic.IEnumerable<FeedType> items = await _feedTypeService.GetAllAsync(Request.HttpContext.RequestAborted).ConfigureAwait(false);
+            var items = await _feedTypeService.GetAllAsync(Request.HttpContext.RequestAborted).ConfigureAwait(false);
             return Ok(items);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
-            FeedType item = await _feedTypeService.FindAsync(id, Request.HttpContext.RequestAborted).ConfigureAwait(false);
+            var item = await _feedTypeService.FindAsync(id, Request.HttpContext.RequestAborted).ConfigureAwait(false);
             return Ok(item);
         }
 
@@ -39,7 +39,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            FeedType addedItem = _feedTypeService.Add(feedType);
+            var addedItem = _feedTypeService.Add(feedType);
 
             return CreatedAtAction(nameof(Get), new { id = addedItem.ID }, feedType);
         }
@@ -76,7 +76,7 @@ namespace LivestockTracker.Controllers
             }
 
 
-            FeedType updatedFeedType = _feedTypeService.Update(feedType);
+            var updatedFeedType = _feedTypeService.Update(feedType);
             return Ok(updatedFeedType);
         }
 
@@ -88,7 +88,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            FeedType unit = await _feedTypeService.FindAsync(id, Request.HttpContext.RequestAborted)
+            var unit = await _feedTypeService.FindAsync(id, Request.HttpContext.RequestAborted)
                                              .ConfigureAwait(false);
             if (unit == null)
             {
