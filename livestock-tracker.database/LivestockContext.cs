@@ -20,14 +20,30 @@ namespace LivestockTracker.Database
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MedicalTransactionModel>()
-              .HasOne(m => m.AnimalObject)
-              .WithMany(a => a.MedicalTransactions)
-              .HasForeignKey(m => m.AnimalID);
+                .HasOne(m => m.Animal)
+                .WithMany(a => a.MedicalTransactions)
+                .HasForeignKey(m => m.AnimalID);
+            modelBuilder.Entity<MedicalTransactionModel>()
+                .HasOne(m => m.UnitOfMeasurement)
+                .WithMany(u => u.MedicalTransactions)
+                .HasForeignKey(m => m.Unit);
+            modelBuilder.Entity<MedicalTransactionModel>()
+                .HasOne(m => m.Medicine)
+                .WithMany(t => t.MedicalTransactions)
+                .HasForeignKey(m => m.MedicineTypeCode);
 
             modelBuilder.Entity<FeedingTransactionModel>()
-              .HasOne(f => f.AnimalObject)
-              .WithMany(a => a.FeedingTransactions)
-              .HasForeignKey(f => f.AnimalID);
+                .HasOne(f => f.Animal)
+                .WithMany(a => a.FeedingTransactions)
+                .HasForeignKey(f => f.AnimalID);
+            modelBuilder.Entity<FeedingTransactionModel>()
+                .HasOne(m => m.UnitOfMeasurement)
+                .WithMany(u => u.FeedingTransactions)
+                .HasForeignKey(m => m.UnitTypeCode);
+            modelBuilder.Entity<FeedingTransactionModel>()
+                .HasOne(m => m.Feed)
+                .WithMany(t => t.FeedingTransactions)
+                .HasForeignKey(m => m.FeedID);
 
             base.OnModelCreating(modelBuilder);
         }

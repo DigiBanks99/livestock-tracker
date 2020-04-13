@@ -1,4 +1,4 @@
-using LivestockTracker.Abstractions;
+using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Database.Sqlite;
 using LivestockTracker.Properties;
 using Microsoft.AspNetCore.Builder;

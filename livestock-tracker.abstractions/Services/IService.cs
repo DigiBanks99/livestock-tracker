@@ -1,8 +1,10 @@
+using LivestockTracker.Abstractions.Data;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LivestockTracker.Abstractions
+namespace LivestockTracker.Abstractions.Services
 {
     /// <summary>
     /// An interface for interacting with data entities via DTO objects.
@@ -10,6 +12,7 @@ namespace LivestockTracker.Abstractions
     /// <typeparam name="TEntity">The type of entity that is being interacted with.</typeparam>
     /// <typeparam name="TDto">The DTO representation of the entity.</typeparam>
     /// <typeparam name="TKeyType">The type of the key of the entity.</typeparam>
+    [Obsolete("Building a new set of interfaces that will be better for this.")]
     public interface IService<TEntity, TDto, TKeyType>
         where TEntity : IEntity<TKeyType>
         where TDto : class

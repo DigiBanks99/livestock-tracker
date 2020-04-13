@@ -1,4 +1,6 @@
 using LivestockTracker.Abstractions;
+using LivestockTracker.Abstractions.Data;
+using LivestockTracker.Abstractions.Services;
 using LivestockTracker.Database;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,5 +1,6 @@
-using LivestockTracker.Abstractions;
-using LivestockTracker.Models;
+using LivestockTracker.Abstractions.Data;
+using LivestockTracker.Abstractions.Enums;
+using LivestockTracker.Abstractions.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LivestockTracker.Database.Models
 {
     [Table("Animal")]
-    public class AnimalModel : IEntity<int>
+    public class AnimalModel : IEntity<int>, IAnimal
     {
         [Key]
         public int ID { get; set; }

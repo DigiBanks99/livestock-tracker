@@ -1,9 +1,11 @@
+using LivestockTracker.Abstractions.Enums;
+using LivestockTracker.Abstractions.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LivestockTracker.Models
 {
-    public class Animal
+    public class Animal : IAnimal
     {
         [Key]
         public int ID { get; set; }

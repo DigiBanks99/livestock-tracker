@@ -1,4 +1,4 @@
-using LivestockTracker.Abstractions;
+using LivestockTracker.Abstractions.Services;
 using LivestockTracker.Database.Models;
 using LivestockTracker.Models;
 

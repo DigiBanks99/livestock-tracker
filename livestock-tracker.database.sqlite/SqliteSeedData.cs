@@ -1,4 +1,4 @@
-using LivestockTracker.Abstractions;
+using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Database.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,9 +1,10 @@
+using LivestockTracker.Abstractions.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace LivestockTracker.Models
 {
-    public class FeedingTransaction
+    public class FeedingTransaction : IFeedingTransaction
     {
         [Key]
         public int ID { get; set; }
