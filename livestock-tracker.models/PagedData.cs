@@ -1,0 +1,48 @@
+using LivestockTracker.Abstractions.Models;
+using System.Collections.Generic;
+
+namespace LivestockTracker.Models
+{
+    /// <summary>
+    /// Wraps data in a pagination model.
+    /// </summary>
+    /// <typeparam name="TData">The type of the data.</typeparam>
+    public class PagedData<TData> : IPagedData<TData>
+        where TData : class
+    {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <param name="pageSize">The maximum number of records in a page.</param>
+        /// <param name="currentPage">The current page number.</param>
+        /// <param name="totalRecordCount">The total number of records.</param>
+        public PagedData(IEnumerable<TData> data, int pageSize, int currentPage, long totalRecordCount)
+        {
+            Data = data;
+            PageSize = pageSize;
+            CurrentPage = currentPage;
+            TotalRecordCount = totalRecordCount;
+        }
+
+        /// <summary>
+        /// The data.
+        /// </summary>
+        public IEnumerable<TData> Data { get; }
+
+        /// <summary>
+        /// The maximum number of records in a page.
+        /// </summary>
+        public int PageSize { get; }
+
+        /// <summary>
+        /// The current page number.
+        /// </summary>
+        public int CurrentPage { get; }
+
+        /// <summary>
+        /// The total number of records.
+        /// </summary>
+        public long TotalRecordCount { get; }
+    }
+}

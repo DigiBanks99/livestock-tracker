@@ -1,6 +1,6 @@
 using System;
 
-namespace LivestockTracker.Abstractions
+namespace LivestockTracker.Abstractions.Data
 {
     /// <summary>
     /// An interface for providing seeding functionality for master data.

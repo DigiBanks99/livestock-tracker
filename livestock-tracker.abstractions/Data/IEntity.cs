@@ -1,4 +1,4 @@
-namespace LivestockTracker.Abstractions
+namespace LivestockTracker.Abstractions.Data
 {
     /// <summary>
     /// The base interface for all other database models.

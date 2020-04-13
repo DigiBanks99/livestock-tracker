@@ -1,7 +1,7 @@
 namespace LivestockTracker.Abstractions
 {
     /// <summary>
-    /// An interface for providing mapping capabilities between two objects.
+    /// Defines operations for mapping one object to another and vice-versa.
     /// </summary>
     /// <typeparam name="TLeft">One type of object.</typeparam>
     /// <typeparam name="TRight">Another type of object.</typeparam>

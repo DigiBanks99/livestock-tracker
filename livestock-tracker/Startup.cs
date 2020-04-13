@@ -31,6 +31,7 @@ namespace LivestockTracker
             services.AddControllersWithViews();
 
             services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")))
+                    .AddLivestockTrackerLogic()
                     .AddScoped<IAnimalService, AnimalService>()
                     .AddScoped<IFeedTypeService, FeedTypeService>()
                     .AddScoped<IFeedingTransactionService, FeedingTransactionService>()

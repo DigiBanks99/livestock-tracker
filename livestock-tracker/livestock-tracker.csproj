@@ -67,6 +67,7 @@
     <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
     <ProjectReference Include="..\livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj" />
     <ProjectReference Include="..\livestock-tracker.database\livestock-tracker.database.csproj" />
+    <ProjectReference Include="..\livestock-tracker.logic\livestock-tracker.logic.csproj" />
     <ProjectReference Include="..\livestock-tracker.models\livestock-tracker.models.csproj" />
   </ItemGroup>
   

@@ -1,4 +1,5 @@
-using LivestockTracker.Abstractions;
+using LivestockTracker.Abstractions.Data;
+using LivestockTracker.Abstractions.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LivestockTracker.Database.Models
 {
     [Table("FeedingTransactions")]
-    public class FeedingTransactionModel : IEntity<int>
+    public class FeedingTransactionModel : IEntity<int>, IFeedingTransaction
     {
         [Key]
         public int ID { get; set; }
@@ -21,7 +22,9 @@ namespace LivestockTracker.Database.Models
         [Required]
         public int UnitTypeCode { get; set; }
 
-        public AnimalModel AnimalObject { get; internal set; } = new AnimalModel();
+        public AnimalModel Animal { get; internal set; } = null!;
+        public UnitModel UnitOfMeasurement { get; internal set; } = null!;
+        public FeedTypeModel Feed { get; internal set; } = null!;
 
         public int GetKey()
         {

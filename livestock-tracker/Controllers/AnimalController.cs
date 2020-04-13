@@ -1,28 +1,55 @@
+using LivestockTracker.Abstractions;
+using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Models;
 using LivestockTracker.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace LivestockTracker.Controllers
 {
-    [Produces("application/json")]
-    [Route("api/[controller]")]
-    public class AnimalController : Controller
+    /// <summary>
+    /// Provides a set of endpoints for interacting with animal information.
+    /// </summary>
+    public class AnimalController : LivestockApiController
     {
         private readonly IAnimalService _animalService;
-        public AnimalController(IAnimalService service)
+        private readonly IFetchAsyncService<IAnimalSummary, int> _animalSummaryService;
+
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="logger">The logger.</param>
+        /// <param name="service">The service for animal operations.</param>
+        /// <param name="animalSummaryService">A service for animal summary operations.</param>
+        public AnimalController(ILogger<AnimalController> logger,
+                                IAnimalService service,
+                                IFetchAsyncService<IAnimalSummary, int> animalSummaryService)
+            : base(logger)
         {
+
             _animalService = service;
+            _animalSummaryService = animalSummaryService;
         }
 
-        public CancellationToken RequestAbortToken => Request.HttpContext.RequestAborted;
-
+        /// <summary>
+        /// Requests a list of all animals sorted by number.
+        /// </summary>
+        /// <returns>A list of animals.</returns>
         [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<AnimalSummary>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAnimals()
         {
-            var animals = await _animalService.GetAllAsync(RequestAbortToken).ConfigureAwait(false);
+            Logger.LogInformation($"Requesting all animals...");
+            var animals = await _animalSummaryService.FindAsync(animal => true,
+                                                                animal => animal.Number,
+                                                                ListSortDirection.Ascending,
+                                                                RequestAbortToken)
+                                                     .ConfigureAwait(false);
             return Ok(animals);
         }
 
@@ -49,7 +76,9 @@ namespace LivestockTracker.Controllers
         public IActionResult UpdateAnimal([FromRoute] int id, [Required][FromBody]Animal animal)
         {
             if (!ModelState.IsValid || animal == null)
+            {
                 return BadRequest();
+            }
 
             try
             {
