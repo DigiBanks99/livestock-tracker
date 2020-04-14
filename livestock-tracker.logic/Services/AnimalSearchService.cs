@@ -1,6 +1,5 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Abstractions.Services;
 using LivestockTracker.Database;
 using LivestockTracker.Models;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Logic.Services
 {
-    public class AnimalSearchService : IFetchAsyncService<IAnimalSummary, int>, IPagedFetchAsyncService<IAnimalSummary>
+    public class AnimalSearchService : IAnimalSearchService
     {
         private readonly ILogger _logger;
         private readonly IMapper<IAnimalSummary, AnimalSummary> _mapper;
@@ -87,9 +86,9 @@ namespace LivestockTracker.Logic.Services
                 query.OrderBy(sort) :
                 query.OrderByDescending(sort);
 
-            var data = await orderedQuery.Select(animal => _mapper.Map(animal))
+            var data = await orderedQuery.Skip(pagingOptions.Offset)
                                          .Take(pagingOptions.PageSize)
-                                         .Skip(pagingOptions.PageNumber)
+                                         .Select(animal => _mapper.Map(animal))
                                          .ToListAsync(cancellationToken)
                                          .ConfigureAwait(false);
 
