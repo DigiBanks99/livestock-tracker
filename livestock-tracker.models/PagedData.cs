@@ -44,5 +44,22 @@ namespace LivestockTracker.Models
         /// The total number of records.
         /// </summary>
         public long TotalRecordCount { get; }
+
+        /// <summary>
+        /// The number of pages based on the page size and the total number of records.
+        /// </summary>
+        public long PageCount
+        {
+            get
+            {
+                var count = TotalRecordCount / PageSize;
+                if (TotalRecordCount % PageSize > 0)
+                {
+                    count += 1;
+                }
+
+                return count;
+            }
+        }
     }
 }

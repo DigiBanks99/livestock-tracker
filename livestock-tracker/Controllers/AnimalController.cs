@@ -1,5 +1,6 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Logic.Services;
 using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +19,7 @@ namespace LivestockTracker.Controllers
     public class AnimalController : LivestockApiController
     {
         private readonly IAnimalService _animalService;
-        private readonly IFetchAsyncService<IAnimalSummary, int> _animalSummaryService;
+        private readonly IAnimalSearchService _animalSummaryService;
 
         /// <summary>
         /// Constructor.
@@ -28,10 +29,9 @@ namespace LivestockTracker.Controllers
         /// <param name="animalSummaryService">A service for animal summary operations.</param>
         public AnimalController(ILogger<AnimalController> logger,
                                 IAnimalService service,
-                                IFetchAsyncService<IAnimalSummary, int> animalSummaryService)
+                                IAnimalSearchService animalSummaryService)
             : base(logger)
         {
-
             _animalService = service;
             _animalSummaryService = animalSummaryService;
         }
@@ -40,14 +40,26 @@ namespace LivestockTracker.Controllers
         /// Requests a list of all animals sorted by number.
         /// </summary>
         /// <returns>A list of animals.</returns>
-        [HttpGet]
+        [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<AnimalSummary>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetAnimals()
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAnimals([Required] int pageNumber, [Required] int pageSize)
         {
             Logger.LogInformation($"Requesting all animals...");
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var animals = await _animalSummaryService.FindAsync(animal => true,
                                                                 animal => animal.Number,
                                                                 ListSortDirection.Ascending,
+                                                                new PagingOptions
+                                                                {
+                                                                    PageNumber = pageNumber,
+                                                                    PageSize = pageSize
+                                                                },
                                                                 RequestAbortToken)
                                                      .ConfigureAwait(false);
             return Ok(animals);

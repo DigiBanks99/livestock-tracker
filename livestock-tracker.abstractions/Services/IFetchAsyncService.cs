@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LivestockTracker.Abstractions
+namespace LivestockTracker.Abstractions.Services
 {
     /// <summary>
     /// An interface that defines functionality for a service that provides fetching functionality in an

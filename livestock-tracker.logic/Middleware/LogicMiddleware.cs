@@ -20,7 +20,7 @@ namespace LivestockTracker
         public static IServiceCollection AddLivestockTrackerLogic(this IServiceCollection services)
         {
             services.AddSingleton<IMapper<IAnimalSummary, AnimalSummary>, AnimalSummaryMapper>()
-                    .AddScoped<IFetchAsyncService<IAnimalSummary, int>, AnimalSearchService>();
+                    .AddScoped<IAnimalSearchService, AnimalSearchService>();
 
             return services;
         }
