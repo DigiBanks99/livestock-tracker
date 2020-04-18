@@ -19,6 +19,9 @@ export const initialState: AnimalState = animalsAdapter.getInitialState({
   error: null,
   isFetching: false,
   isPending: false,
+  pageNumber: 0,
+  pageSize: 10,
+  recordCount: 0,
 });
 
 export function animalsReducer(
@@ -32,13 +35,22 @@ export function animalsReducer(
         selectedId: selectAnimal(state.selectedId, <SelectAnimal>action),
       };
     case ActionTypes.API_FETCH_ANIMAL:
+      const apiAction = <PayloadAction<PagedData<Animal>>>action;
       const payloadAction: PayloadAction<Animal[]> = {
         type: ActionTypes.API_FETCH_ANIMAL,
-        payload: (<PayloadAction<PagedData<Animal>>>action).payload.data,
+        payload: apiAction.payload.data,
       };
-      return crudReducer(AnimalKey, animalsAdapter, state, payloadAction);
+      return {
+        ...crudReducer(AnimalKey, animalsAdapter, state, payloadAction),
+        pageNumber: apiAction.payload.currentPage - 1,
+        pageSize: apiAction.payload.pageSize,
+        recordCount: apiAction.payload.totalRecordCount,
+      };
     default:
-      return crudReducer(AnimalKey, animalsAdapter, state, action);
+      return {
+        ...state,
+        ...crudReducer(AnimalKey, animalsAdapter, state, action),
+      };
   }
 }
 

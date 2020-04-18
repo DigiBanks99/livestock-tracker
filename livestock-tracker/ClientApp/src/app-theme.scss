@@ -4,19 +4,47 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://www.google.com/design/spec/style/color.html
 $candy-app-primary: mat-palette($mat-lime, 700);
-$candy-app-accent: mat-palette($mat-green);
+$candy-app-accent: mat-palette($mat-green, 600);
 
 // The warn palette is optional (defaults to red).
 $candy-app-warn: mat-palette($mat-red);
 
+$background-color: map-get($mat-lime, 100);
+
 // Create the theme object (a Sass map containing all of the palettes).
-$candy-app-theme: mat-light-theme(
-  $candy-app-primary,
-  $candy-app-accent,
-  $candy-app-warn
+$theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
+
+$background: map-get(
+  $map: $theme,
+  $key: background,
+);
+$background: map-merge(
+  $map1: $background,
+  $map2: (
+    background: $background-color,
+  ),
+);
+$theme: map-merge(
+  $map1: $theme,
+  $map2: (
+    background: $background,
+  ),
 );
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
-@include angular-material-theme($candy-app-theme);
+@include angular-material-theme($theme);
+
+// Define an alternate dark theme.
+$dark-primary: mat-palette($mat-blue-grey);
+$dark-accent: mat-palette($mat-amber, A200, A100, A400);
+$dark-warn: mat-palette($mat-deep-orange);
+$dark-theme: mat-dark-theme($dark-primary, $dark-accent, $dark-warn);
+
+// Include the alternative theme styles inside of a block with a CSS class. You can make this
+// CSS class whatever you want. In this example, any component inside of an element with
+// `.unicorn-dark-theme` will be affected by this alternate dark theme instead of the default theme.
+.dark-theme {
+  @include angular-material-theme($dark-theme);
+}

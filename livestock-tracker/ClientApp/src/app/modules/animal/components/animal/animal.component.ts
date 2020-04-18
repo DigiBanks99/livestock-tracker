@@ -13,7 +13,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'app-animal',
   templateUrl: './animal.component.html',
-  styleUrls: ['./animal.component.scss']
+  styleUrls: ['./animal.component.scss'],
 })
 export class AnimalComponent implements OnInit, OnDestroy {
   public animals$: Observable<Animal[]>;
