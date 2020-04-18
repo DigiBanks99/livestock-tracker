@@ -49,7 +49,11 @@
   font-feature-settings: 'liga';
 }
 
-/*
+html,
+body {
+  height: 100%;
+}
+
 html {
   overflow: hidden;
 }
@@ -60,6 +64,7 @@ body {
   font-family: Roboto, Arial, sans-serif;
 }
 
+/*
 .content {
   max-height: calc(100vh - 64px);
   overflow-y: auto;

@@ -1,54 +1,78 @@
-<mat-toolbar class="app-toolbar" color="primary">
-  <mat-nav-list>
-    <a
-      mat-list-item
-      class="logo nav nav-home"
-      [routerLink]="['/']"
-      title="Home"
-    >
-      <mat-icon svgIcon="farmer"></mat-icon>
-      Livestock Tracker
-    </a>
-    <a
-      mat-list-item
-      [routerLink]="['animal']"
-      title="Manage animals"
-      class="nav nav-secondary"
-    >
-      Animals
-    </a>
-    <a
-      mat-list-item
-      [routerLink]="['medical']"
-      title="Manage medical transactions"
-      class="nav nav-secondary"
-    >
-      Medical
-    </a>
-    <a
-      mat-list-item
-      [routerLink]="['feeding-transaction']"
-      title="Manage feeding transactions"
-      class="nav nav-secondary"
-    >
-      Feed
-    </a>
-    <a
-      mat-list-item
-      [routerLink]="['reports']"
-      title="View reports"
-      class="nav nav-secondary"
-    >
-      Reports
-    </a>
-  </mat-nav-list>
-  <span class="fill-remaining-space"></span>
-  <a mat-list-item [matMenuTriggerFor]="manageMenu" class="nav nav-secondary">
-    Manage
-  </a>
-  <mat-menu #manageMenu="matMenu">
-    <a mat-menu-item [routerLink]="['units']">Units</a>
-    <a mat-menu-item [routerLink]="['medicine-type']">Medicine Type</a>
-    <a mat-menu-item [routerLink]="['feed-type']">Feed Type</a>
-  </mat-menu>
-</mat-toolbar>
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #sidenav
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar>Menu</mat-toolbar>
+    <mat-nav-list>
+      <a
+        mat-list-item
+        class="logo nav nav-home"
+        [routerLink]="['/']"
+        title="Home"
+        >Home
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['animal']"
+        title="Manage animals"
+        class="nav nav-secondary"
+      >
+        Animals
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['medical']"
+        title="Manage medical transactions"
+        class="nav nav-secondary"
+      >
+        Medical
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['feeding-transaction']"
+        title="Manage feeding transactions"
+        class="nav nav-secondary"
+      >
+        Feed
+      </a>
+      <a
+        mat-list-item
+        [routerLink]="['reports']"
+        title="View reports"
+        class="nav nav-secondary"
+      >
+        Reports
+      </a>
+      <a
+        mat-list-item
+        [matMenuTriggerFor]="manageMenu"
+        class="nav nav-secondary"
+      >
+        Manage
+      </a>
+      <mat-menu #manageMenu="matMenu">
+        <a mat-menu-item [routerLink]="['units']">Units</a>
+        <a mat-menu-item [routerLink]="['medicine-type']">Medicine Type</a>
+        <a mat-menu-item [routerLink]="['feed-type']">Feed Type</a>
+      </mat-menu>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="app-toolbar" color="primary">
+      <a (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </a>
+      <a class="logo nav nav-home" [routerLink]="['/']" title="Home">
+        <mat-icon svgIcon="farmer"></mat-icon>
+        Livestock Tracker</a
+      >
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
