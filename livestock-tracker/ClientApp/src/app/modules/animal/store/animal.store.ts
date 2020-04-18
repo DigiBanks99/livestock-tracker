@@ -11,19 +11,35 @@ const { selectEntities: getAnimalsEntities } = animalsAdapter.getSelectors(
 
 const getFetchAnimalsPendingState = createSelector(
   getAnimalsState,
-  state => state.isFetching
+  (state) => state.isFetching
+);
+
+const getPageSize = createSelector(getAnimalsState, (state) => state.pageSize);
+
+const getCurrentPage = createSelector(
+  getAnimalsState,
+  (state) => state.pageNumber
+);
+
+const getRecordCount = createSelector(
+  getAnimalsState,
+  (state) => state.recordCount
 );
 
 const getAnimalsPendingState = createSelector(
   getAnimalsState,
-  state => state.isPending
+  (state) => state.isPending
 );
 
-const getAnimalsError = createSelector(getAnimalsState, state => state.error);
+const getAnimalsError = createSelector(getAnimalsState, (state) => state.error);
 
 export const selectors = {
-  getAnimalsEntities: getAnimalsEntities,
-  getFetchAnimalsPendingState: getFetchAnimalsPendingState,
-  getAnimalsPendingState: getAnimalsPendingState,
-  getAnimalsError: getAnimalsError
+  getAnimalsState,
+  getAnimalsEntities,
+  getFetchAnimalsPendingState,
+  getAnimalsPendingState,
+  getAnimalsError,
+  getCurrentPage,
+  getPageSize,
+  getRecordCount,
 };

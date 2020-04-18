@@ -28,8 +28,10 @@
       <mat-divider></mat-divider>
     </mat-list-item>
     <mat-paginator
-      [pageSize]="pageSize"
-      [length]="animals.length"
+      [pageSize]="pageSize$ | async"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      [pageIndex]="currentPage$ | async"
+      [length]="recordCount$ | async"
       class="mat-accent-background"
       (page)="onPage($event)"
     ></mat-paginator>

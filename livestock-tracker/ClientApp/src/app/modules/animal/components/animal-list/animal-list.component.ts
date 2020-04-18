@@ -1,39 +1,69 @@
+import { EMPTY, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
 import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { LivestockService } from '@animal/services/livestock.service';
+import { animalStore } from '@animal/store';
+import { FetchAnimal } from '@animal/store/animal.actions';
 import { Animal } from '@core/models';
+import { AppState } from '@core/store';
 import { environment } from '@env/environment';
+import { select, Store } from '@ngrx/store';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
 @Component({
   selector: 'app-animal-list',
   templateUrl: './animal-list.component.html',
   styleUrls: ['./animal-list.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
-export class AnimalListComponent implements OnInit {
+export class AnimalListComponent implements OnInit, OnDestroy {
   @Input() public animals: Animal[];
   @Output() public remove = new EventEmitter<Animal>();
   @Output() public showDetail = new EventEmitter<number>();
   @Output() public addAnimal = new EventEmitter();
 
-  public pageSize: number;
+  public destroyed$ = new Subject<void>();
+  public currentPage$: Observable<number> = EMPTY;
+  public pageSize$: Observable<number> = EMPTY;
+  public recordCount$: Observable<number> = EMPTY;
 
   constructor(
     private livestockService: LivestockService,
-    private ageCalculatorService: AgeCalculatorService
+    private ageCalculatorService: AgeCalculatorService,
+    private store: Store<AppState>
   ) {}
 
   public ngOnInit(): void {
-    this.pageSize = environment.pageSize;
+    this.store.dispatch(new FetchAnimal());
+
+    this.pageSize$ = this.store.pipe(
+      select(animalStore.selectors.getPageSize),
+      takeUntil(this.destroyed$)
+    );
+    this.currentPage$ = this.store.pipe(
+      select(animalStore.selectors.getCurrentPage),
+      takeUntil(this.destroyed$)
+    );
+    this.recordCount$ = this.store.pipe(
+      select(animalStore.selectors.getRecordCount),
+      takeUntil(this.destroyed$)
+    );
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   public getSvgIcon(animal: Animal): string {
@@ -54,7 +84,11 @@ export class AnimalListComponent implements OnInit {
     this.addAnimal.emit();
   }
 
-  public onPage(pageEvent: PageEvent): void {}
+  public onPage(pageEvent: PageEvent): void {
+    this.store.dispatch(
+      new FetchAnimal(pageEvent.pageIndex, pageEvent.pageSize)
+    );
+  }
 
   public getAge(animal: Animal): string {
     return this.ageCalculatorService.calculateAge(
