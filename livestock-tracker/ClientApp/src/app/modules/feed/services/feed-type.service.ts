@@ -15,7 +15,7 @@ export interface IFeedTypeService {
 
 @Injectable()
 export class FeedTypeService
-  implements IFeedTypeService, CrudService<FeedType, number> {
+  implements IFeedTypeService, CrudService<FeedType, number, FeedType[]> {
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {

@@ -10,10 +10,10 @@ import { Action } from '@ngrx/store';
 
 import { CrudActions, PayloadAction } from './crud.actions';
 
-export class CrudEffects<T extends KeyEntity<K>, K> {
+export class CrudEffects<T extends KeyEntity<K>, K, TGetAll> {
   constructor(
     protected actions$: Actions,
-    private service: CrudService<T, K>,
+    private service: CrudService<T, K, TGetAll>,
     private typeActions: CrudActions<T, K>,
     private typeName: string
   ) {}
@@ -22,9 +22,9 @@ export class CrudEffects<T extends KeyEntity<K>, K> {
     this.actions$.pipe(
       ofType(`FETCH_${this.typeName}`),
       startWith(() => this.typeActions.fetchItems()),
-      switchMap(_ => this.service.getAll()),
-      map((items: T[]) => this.typeActions.apiFetchItems(items)),
-      catchError(error => this.handleError(error, this.typeActions))
+      switchMap((_) => this.service.getAll()),
+      map((data: TGetAll) => this.typeActions.apiFetchItems(data)),
+      catchError((error) => this.handleError(error, this.typeActions))
     )
   );
 
@@ -34,7 +34,7 @@ export class CrudEffects<T extends KeyEntity<K>, K> {
       map((action: PayloadAction<T>) => action.payload),
       switchMap((item: T) => this.service.add(item)),
       map((item: T) => this.typeActions.apiAddItem(item)),
-      catchError(error => this.handleError(error, this.typeActions))
+      catchError((error) => this.handleError(error, this.typeActions))
     )
   );
 
@@ -51,7 +51,7 @@ export class CrudEffects<T extends KeyEntity<K>, K> {
           item.id
         )
       ),
-      catchError(error => this.handleError(error, this.typeActions))
+      catchError((error) => this.handleError(error, this.typeActions))
     )
   );
 
@@ -61,7 +61,7 @@ export class CrudEffects<T extends KeyEntity<K>, K> {
       map((action: PayloadAction<K>) => action.payload),
       switchMap((id: K) => this.service.delete(id)),
       map((id: K) => this.typeActions.apiDeleteItem(id)),
-      catchError(error => this.handleError(error, this.typeActions))
+      catchError((error) => this.handleError(error, this.typeActions))
     )
   );
 

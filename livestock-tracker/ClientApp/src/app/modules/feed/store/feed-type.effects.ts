@@ -11,7 +11,7 @@ import { Actions } from '@ngrx/effects';
 import { FeedTypeKey } from './constants';
 
 @Injectable()
-export class FeedTypeEffects extends CrudEffects<FeedType, number> {
+export class FeedTypeEffects extends CrudEffects<FeedType, number, FeedType[]> {
   constructor(actions$: Actions, feedTypeService: FeedTypeService) {
     super(actions$, feedTypeService, feedTypeActions, FeedTypeKey);
   }
