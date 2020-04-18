@@ -11,7 +11,7 @@ import { getSelectedAnimalId } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';
 
 export interface IFeedingTransactionService
-  extends CrudService<FeedingTransaction, number> {}
+  extends CrudService<FeedingTransaction, number, FeedingTransaction[]> {}
 
 @Injectable()
 export class FeedingTransactionService
@@ -32,7 +32,7 @@ export class FeedingTransactionService
     return this.store.pipe(
       select(getSelectedAnimalId),
       switchMap((animalId: number) =>
-        this.http.get<FeedingTransaction[]>(this.apiUrl + 'getAll/' + animalId)
+        this.http.get<FeedingTransaction[]>(`${this.apiUrl}${animalId}`)
       )
     );
   }

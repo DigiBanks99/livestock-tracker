@@ -8,7 +8,7 @@ import { actions } from '@unit/store/unit.actions';
 import { UnitKey } from './constants';
 
 @Injectable()
-export class UnitEffects extends CrudEffects<Unit, number> {
+export class UnitEffects extends CrudEffects<Unit, number, Unit[]> {
   constructor(protected actions$: Actions, unitService: UnitService) {
     super(actions$, unitService, actions, UnitKey);
   }

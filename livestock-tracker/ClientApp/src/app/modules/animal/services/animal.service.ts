@@ -4,17 +4,27 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Animal } from '@core/models';
 import { CrudService } from '@core/models/crud-service.interface';
+import { PagedData } from '@core/models/paged-data.model';
 
 @Injectable()
-export class AnimalService implements CrudService<Animal, number> {
+export class AnimalService
+  implements CrudService<Animal, number, PagedData<Animal>> {
   private apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.apiUrl = baseUrl + 'animal';
   }
 
-  public getAll = (): Observable<Animal[]> =>
-    this.http.get<Animal[]>(this.apiUrl);
+  public getAll = (
+    pageSize = 10,
+    pageNumber = 1
+  ): Observable<PagedData<Animal>> =>
+    this.http.get<PagedData<Animal>>(this.apiUrl, {
+      params: {
+        pageSize: pageSize.toString(),
+        pageNumber: pageNumber.toString(),
+      },
+    });
 
   public get = (key: number): Observable<Animal> =>
     this.http.get<Animal>(`${this.apiUrl}/${key}`);

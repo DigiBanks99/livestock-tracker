@@ -3,8 +3,8 @@ import { KeyEntity } from '@core/models/key-entity.interface';
 import { Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
-export interface PayloadAction<T> extends Action {
-  payload: T;
+export interface PayloadAction<TData> extends Action {
+  payload: TData;
 }
 
 export interface CrudActions<T extends KeyEntity<K>, K> {
@@ -18,21 +18,22 @@ export interface CrudActions<T extends KeyEntity<K>, K> {
   deleteItem: (key: K) => PayloadAction<K>;
   apiDeleteItem: (key: K) => PayloadAction<K>;
   fetchItems: () => Action;
-  apiFetchItems: (items: T[]) => PayloadAction<T[]>;
   apiError: (error: Error) => PayloadAction<Error>;
+
+  apiFetchItems<TData>(data: TData): PayloadAction<TData>;
 }
 
 function addItem<T>(item: T, typeName: string): PayloadAction<T> {
   return {
     type: `ADD_${typeName}`,
-    payload: item
+    payload: item,
   };
 }
 
 function apiAddItem<T>(item: T, typeName: string): PayloadAction<T> {
   return {
     type: `API_ADD_${typeName}`,
-    payload: item
+    payload: item,
   };
 }
 
@@ -45,8 +46,8 @@ function updateItem<T, K>(
     type: `UPDATE_${typeName}`,
     payload: {
       key,
-      value: item
-    }
+      value: item,
+    },
   };
 }
 
@@ -59,42 +60,45 @@ function apiUpdateItem<T, K>(
     type: `API_UPDATE_${typeName}`,
     payload: {
       key,
-      value: item
-    }
+      value: item,
+    },
   };
 }
 
 function deleteItem<K>(key: K, typeName: string): PayloadAction<K> {
   return {
     type: `DELETE_${typeName}`,
-    payload: key
+    payload: key,
   };
 }
 
 function apiDeleteItem<K>(key: K, typeName: string): PayloadAction<K> {
   return {
     type: `API_DELETE_${typeName}`,
-    payload: key
+    payload: key,
   };
 }
 
 function fetchItems(typeName: string): Action {
   return {
-    type: `FETCH_${typeName}`
+    type: `FETCH_${typeName}`,
   };
 }
 
-function apiFetchItems<T>(items: T[], typeName: string): PayloadAction<T[]> {
+function apiFetchItems<TData>(
+  data: TData,
+  typeName: string
+): PayloadAction<TData> {
   return {
     type: `API_FETCH_${typeName}`,
-    payload: items
+    payload: data,
   };
 }
 
 function apiError(error: Error, typeName: string): PayloadAction<Error> {
   return {
     type: `API_ERROR_${typeName}`,
-    payload: error
+    payload: error,
   };
 }
 
@@ -114,8 +118,8 @@ export function crudActionsFactory<T extends KeyEntity<K>, K>(
     deleteItem: (key: K): PayloadAction<K> => deleteItem(key, typeName),
     apiDeleteItem: (key: K): PayloadAction<K> => apiDeleteItem(key, typeName),
     fetchItems: (): Action => fetchItems(typeName),
-    apiFetchItems: (items: T[]): PayloadAction<T[]> =>
-      apiFetchItems(items, typeName),
-    apiError: (error: Error): PayloadAction<Error> => apiError(error, typeName)
+    apiFetchItems: <TData>(data: TData): PayloadAction<TData> =>
+      apiFetchItems(data, typeName),
+    apiError: (error: Error): PayloadAction<Error> => apiError(error, typeName),
   };
 }
