@@ -1,5 +1,17 @@
-@import "~@angular/material/theming";
+.sidenav-container {
+  height: 100%;
+}
 
-.mat-nav-list .mat-list-item {
-  height: auto;
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }

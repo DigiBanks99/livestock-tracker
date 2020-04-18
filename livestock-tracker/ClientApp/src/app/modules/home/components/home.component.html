@@ -1,4 +1,8 @@
-<h1>Welcome!</h1>
-
-<h2>Number of animals</h2>
-<h3>{{ animalCount$ | async }}</h3>
+<mat-grid-list cols="2" rowHeight="350px">
+  <mat-card>
+    <mat-card-header>Number of animals</mat-card-header>
+    <mat-card-content>
+      <div>As of today: {{ animalCount$ | async }}</div>
+    </mat-card-content>
+  </mat-card>
+</mat-grid-list>
