@@ -1,4 +1,4 @@
-using LivestockTracker.Logic.Services;
+using LivestockTracker.Abstractions.Services.Animal;
 using LivestockTracker.Models;
 using LivestockTracker.Services;
 using Microsoft.AspNetCore.Http;
