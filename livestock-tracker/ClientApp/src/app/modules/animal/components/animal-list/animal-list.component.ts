@@ -8,7 +8,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewEncapsulation,
+  ViewEncapsulation
 } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
@@ -28,12 +28,15 @@ import { AgeCalculatorService } from '@shared/services/age-calculator.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class AnimalListComponent implements OnInit, OnDestroy {
+  private destroyed$ = new Subject<void>();
+
   @Input() public animals: Animal[];
   @Output() public remove = new EventEmitter<Animal>();
   @Output() public showDetail = new EventEmitter<number>();
   @Output() public addAnimal = new EventEmitter();
 
-  public destroyed$ = new Subject<void>();
+  public displayedColumns: string[] = ['type', 'number', 'age', 'sold'];
+
   public currentPage$: Observable<number> = EMPTY;
   public pageSize$: Observable<number> = EMPTY;
   public recordCount$: Observable<number> = EMPTY;
