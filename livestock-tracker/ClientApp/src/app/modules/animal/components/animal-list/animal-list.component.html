@@ -1,17 +1,26 @@
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="animals" class="full-width-table" matSort>
-    <ng-container matColumnDef="type" sticky>
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Type</th>
+<div class="animal-list mat-elevation-z8">
+  <table
+    mat-table
+    [dataSource]="animals"
+    class="animal-list-table full-width-table"
+    matSort
+  >
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header="subspecies">
+        Type
+      </th>
       <td mat-cell *matCellDef="let animal">
-        <mat-icon
-          matListIcon
-          class="mat-icon-button mat-accent"
-          svgIcon="{{ getSvgIcon(animal) }}"
-        >
-        </mat-icon>
-        <span class="animal-card__type-desc">
-          {{ animal.subspecies }}
-        </span>
+        <div class="animal-list-type">
+          <mat-icon
+            matListIcon
+            class="mat-icon-button mat-accent"
+            svgIcon="{{ getSvgIcon(animal) }}"
+          >
+          </mat-icon>
+          <span class="animal-list-type__desc">
+            {{ animal.subspecies }}
+          </span>
+        </div>
       </td>
     </ng-container>
 

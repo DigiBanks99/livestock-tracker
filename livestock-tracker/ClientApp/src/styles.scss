@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/theming';
-@import '~/../app-theme.scss';
-@include mat-core();
+@import 'app-theme';
 
 @font-face {
   font-family: 'Material Icons';
@@ -62,6 +61,10 @@ body {
   padding: 0;
   margin: 0;
   font-family: Roboto, Arial, sans-serif;
+}
+
+.full-width-table {
+  width: 100%;
 }
 
 /*
