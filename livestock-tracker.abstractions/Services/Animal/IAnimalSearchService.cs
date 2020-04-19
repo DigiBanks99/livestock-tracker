@@ -1,10 +1,9 @@
 using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Abstractions.Services;
 
-namespace LivestockTracker.Logic.Services
+namespace LivestockTracker.Abstractions.Services.Animal
 {
     /// <summary>
-    /// Provides fetching and pagination services.
+    /// Provides fetching and pagination services for animals.
     /// </summary>
     /// <seealso cref="IFetchAsyncService{TData, TKey}"/>
     /// <seealso cref="IPagedFetchAsyncService{TData}"/>

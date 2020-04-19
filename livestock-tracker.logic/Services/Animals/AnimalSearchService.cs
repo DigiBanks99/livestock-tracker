@@ -1,5 +1,6 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Services.Animal;
 using LivestockTracker.Database;
 using LivestockTracker.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +13,11 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LivestockTracker.Logic.Services
+namespace LivestockTracker.Logic.Services.Animals
 {
+    /// <summary>
+    /// Provides search services for animals.
+    /// </summary>
     public class AnimalSearchService : IAnimalSearchService
     {
         private readonly ILogger _logger;
