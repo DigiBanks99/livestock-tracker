@@ -13,6 +13,7 @@ import { AnimalSelectContainerComponent } from '@shared/components/animal-select
 import { LsGridComponent } from '@shared/components/ls-grid/ls-grid.component';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
+import { CommandButtonComponent } from './components/command-button/command-button.component';
 import { AnimalTypeSelectComponent } from './components/form-components';
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AnimalTypeSelectComponent } from './components/form-components';
     AnimalSelectContainerComponent,
     AnimalSelectComponent,
     AnimalTypeSelectComponent,
-    LsGridComponent
+    CommandButtonComponent,
+    LsGridComponent,
   ],
   imports: [
     CommonModule,
@@ -32,13 +34,14 @@ import { AnimalTypeSelectComponent } from './components/form-components';
     MatPaginatorModule,
     MatSelectModule,
     MatToolbarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [AgeCalculatorService],
   exports: [
     AnimalSelectContainerComponent,
     AnimalTypeSelectComponent,
-    LsGridComponent
-  ]
+    CommandButtonComponent,
+    LsGridComponent,
+  ],
 })
 export class SharedModule {}

@@ -1,16 +1,5 @@
 @import '~@angular/material/theming';
 
-// Custom styles
-.mat-paginator-container,
-.mat-paginator-container .mat-select-trigger,
-.mat-paginator-container .mat-select-value,
-.mat-paginator-container .mat-select-arrow,
-.mat-paginator-container .mat-select-panel {
-  background-color: mat-color($candy-app-accent);
-  color: mat-color($candy-app-primary, 50);
-}
-
-.mat-paginator-container .mat-form-field-underline {
-  color: mat-color($candy-app-accent);
-  background-color: mat-color($candy-app-primary, 50);
+.mat-paginator-container {
+  background-color: mat-color($component-background-color);
 }

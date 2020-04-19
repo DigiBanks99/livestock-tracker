@@ -10,6 +10,7 @@ $candy-app-accent: mat-palette($mat-light-green, 800, 900);
 $candy-app-warn: mat-palette($mat-red);
 
 $background-color: map-get($mat-lime, 100);
+$component-background-color: mat-palette($mat-lime, 200);
 
 // Create the theme object (a Sass map containing all of the palettes).
 $theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);

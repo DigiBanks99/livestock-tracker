@@ -15,6 +15,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import {
@@ -36,7 +38,7 @@ import { SharedModule } from '@shared/shared.module';
     AnimalNewComponent,
     AnimalListComponent,
     AnimalDetailComponent,
-    AnimalFormComponent
+    AnimalFormComponent,
   ],
   imports: [
     CommonModule,
@@ -54,16 +56,18 @@ import { SharedModule } from '@shared/shared.module';
     MatPaginatorModule,
     MatCommonModule,
     MatDividerModule,
+    MatTableModule,
     MatToolbarModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatSortModule,
     ReactiveFormsModule,
     RouterModule,
     SharedModule,
     StoreModule.forFeature('animals', animalReducers.animalsReducer),
-    EffectsModule.forFeature([animalEffects.AnimalEffects])
+    EffectsModule.forFeature([animalEffects.AnimalEffects]),
   ],
   providers: [LivestockService, AnimalService],
-  exports: [AnimalComponent]
+  exports: [AnimalComponent],
 })
 export class AnimalModule {}
