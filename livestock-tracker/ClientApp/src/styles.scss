@@ -63,6 +63,14 @@ body {
   font-family: Roboto, Arial, sans-serif;
 }
 
+.container {
+  margin: 2rem;
+
+  @media (max-width: 599px) {
+    margin: 0;
+  }
+}
+
 .full-width-table {
   width: 100%;
 }
