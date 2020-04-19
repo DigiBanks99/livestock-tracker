@@ -1,5 +1,3 @@
-using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Logic.Services;
 using LivestockTracker.Models;
 using LivestockTracker.Services;
@@ -42,7 +40,7 @@ namespace LivestockTracker.Controllers
         /// <returns>A list of animals.</returns>
         [HttpGet()]
         [ProducesResponseType(typeof(IEnumerable<AnimalSummary>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAnimals([Required] int pageNumber, [Required] int pageSize)
         {
             Logger.LogInformation($"Requesting all animals...");
@@ -65,16 +63,41 @@ namespace LivestockTracker.Controllers
             return Ok(animals);
         }
 
+        /// <summary>
+        /// Requests the basic information of a single animal.
+        /// </summary>
+        /// <param name="id">The unique identifier for the animal.</param>
+        /// <returns>The basic information for the requested animal.</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(Animal), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get([FromRoute] int id)
         {
-            var animal = await _animalService.FindAsync(id, RequestAbortToken).ConfigureAwait(false);
+            Logger.LogInformation($"Requesting the basic information for the animal with ID {id}...");
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var animal = await _animalService.FindAsync(id, RequestAbortToken)
+                                             .ConfigureAwait(false);
             return Ok(animal);
         }
 
+
+        /// <summary>
+        /// Requests the creation of a new animal with the supplied details.
+        /// </summary>
+        /// <param name="animal">The details of the animal to be created.</param>
+        /// <returns>The created animal with it's unique identifier.</returns>
         [HttpPost]
+        [ProducesResponseType(typeof(Animal), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public IActionResult AddAnimal([Required][FromBody]Animal animal)
         {
+            Logger.LogInformation("Requesting the creation of a new animal...");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -84,21 +107,38 @@ namespace LivestockTracker.Controllers
             return CreatedAtAction("Get", new { id = savedAnimal.ID }, savedAnimal);
         }
 
-        [HttpPatch("{id}")]
+        /// <summary>
+        /// Request updates to an animal that already exists.
+        /// </summary>
+        /// <param name="id">The id of the animal that should be updated.</param>
+        /// <param name="animal">The updates for the animal.</param>
+        /// <returns>The updated animal.</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(Animal), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(EntityNotFoundException<Animal>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public IActionResult UpdateAnimal([FromRoute] int id, [Required][FromBody]Animal animal)
         {
-            if (!ModelState.IsValid || animal == null)
+            Logger.LogInformation($"Requesting updates to the animal with ID {id}...");
+
+            if (animal == null)
             {
-                return BadRequest();
+                ModelState.AddModelError(nameof(animal), "animal is required.");
+                return BadRequest(ModelState);
+            }
+
+            if (id != animal.ID)
+            {
+                ModelState.AddModelError(nameof(animal.ID), "The id in the body and in the URL do not match.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             try
             {
-                if (id != animal.ID)
-                {
-                    return BadRequest();
-                }
-
                 var savedAnimal = _animalService.Update(animal);
                 return Ok(savedAnimal);
             }
@@ -106,13 +146,6 @@ namespace LivestockTracker.Controllers
             {
                 return NotFound(ex.Message);
             }
-        }
-
-        [HttpDelete]
-        public IActionResult DeleteAnimal(int id)
-        {
-            _animalService.Remove(id);
-            return Ok(id);
         }
     }
 }
