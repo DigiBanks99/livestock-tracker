@@ -1,6 +1,9 @@
-@import '~@angular/material/theming';
-@import 'app-theme';
+.animal-list-type {
+  display: flex;
+  flex-direction: row;
 
-.full-width-table {
-  width: 100%;
+  .animal-list-type__desc {
+    align-self: center;
+    margin-left: 1rem;
+  }
 }
