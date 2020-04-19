@@ -7,7 +7,6 @@ namespace LivestockTracker.Models
 {
     public class Animal : IAnimal
     {
-        [Key]
         public int ID { get; set; }
         [Required]
         public AnimalType Type { get; set; }
