@@ -5,11 +5,10 @@ import { FeedType } from '@core/models/feed-type.model';
 @Component({
   selector: 'app-feed-type-detail',
   templateUrl: './feed-type-detail.component.html',
-  styleUrls: ['./feed-type-detail.component.scss']
+  styleUrls: ['./feed-type-detail.component.scss'],
 })
 export class FeedTypeDetailComponent implements OnInit {
   @Input() feedType: FeedType;
-  @Output() remove = new EventEmitter<number>();
   @Output() save = new EventEmitter<FeedType>();
 
   public feedTypeForm: FormGroup;
@@ -36,13 +35,9 @@ export class FeedTypeDetailComponent implements OnInit {
       id: new FormControl(id),
       description: new FormControl(description, {
         updateOn: 'blur',
-        validators: Validators.required
-      })
+        validators: Validators.required,
+      }),
     });
-  }
-
-  public deleteFeedType(id: number) {
-    this.remove.emit(id);
   }
 
   public updateFeedType() {

@@ -42,7 +42,7 @@ export function animalsReducer(
       };
       return {
         ...crudReducer(AnimalKey, animalsAdapter, state, payloadAction),
-        pageNumber: apiAction.payload.currentPage - 1,
+        pageNumber: apiAction.payload.currentPage,
         pageSize: apiAction.payload.pageSize,
         recordCount: apiAction.payload.totalRecordCount,
       };

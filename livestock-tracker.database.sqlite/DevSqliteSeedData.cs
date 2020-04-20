@@ -21,15 +21,15 @@ namespace LivestockTracker.Database.Sqlite
 
         private static void SeedAnimals(LivestockContext context)
         {
-            if (context.Animal == null || context.Animal.Any())
+            if (context.Animals == null || context.Animals.Any())
             {
                 return;
             }
 
-            context.Animal.AddRange(
+            context.Animals.AddRange(
             new AnimalModel()
             {
-                ID = 1,
+                Id = 1,
                 Type = AnimalType.Cattle,
                 Subspecies = "Brahman",
                 Number = 1,
@@ -53,20 +53,20 @@ namespace LivestockTracker.Database.Sqlite
                 return;
             }
 
-            var animal = context.Animal.OrderBy(a => a.Number).First();
+            var animal = context.Animals.OrderBy(a => a.Number).First();
             if (animal == null)
             {
                 SeedAnimals(context);
-                animal = context.Animal.OrderBy(a => a.Number).First();
+                animal = context.Animals.OrderBy(a => a.Number).First();
             }
 
             context.MedicalTransactions.AddRange(
             new MedicalTransactionModel()
             {
-                AnimalID = animal.ID,
-                MedicineTypeCode = 1,
+                AnimalId = animal.Id,
+                MedicineId = 1,
                 TransactionDate = DateTimeOffset.UtcNow,
-                Unit = 1,
+                UnitId = 1,
                 Dose = 0.5m
             });
 
@@ -80,31 +80,31 @@ namespace LivestockTracker.Database.Sqlite
                 return;
             }
 
-            var animal = livestockContext.Animal.OrderBy(a => a.Number).First();
+            var animal = livestockContext.Animals.OrderBy(a => a.Number).First();
             if (animal == null)
             {
                 SeedAnimals(livestockContext);
-                animal = livestockContext.Animal.OrderBy(a => a.Number).First();
+                animal = livestockContext.Animals.OrderBy(a => a.Number).First();
             }
 
             livestockContext.FeedingTransactions.AddRange(
             new FeedingTransactionModel()
             {
-                ID = 1,
-                AnimalID = animal.ID,
-                FeedID = 1,
+                Id = 1,
+                AnimalId = animal.Id,
+                FeedTypeId = 1,
                 Quantity = 0.5m,
                 TransactionDate = DateTimeOffset.UtcNow,
-                UnitTypeCode = 2
+                UnitId = 2
             },
             new FeedingTransactionModel()
             {
-                ID = 2,
-                AnimalID = animal.ID,
-                FeedID = 2,
+                Id = 2,
+                AnimalId = animal.Id,
+                FeedTypeId = 2,
                 Quantity = 1,
                 TransactionDate = DateTimeOffset.UtcNow.AddDays(-1),
-                UnitTypeCode = 2
+                UnitId = 2
             });
 
             livestockContext.SaveChanges();

@@ -75,6 +75,12 @@ body {
   width: 100%;
 }
 
+td.mat-column-star {
+  width: 20px;
+  padding-right: 8px;
+  cursor: pointer;
+}
+
 /*
 .content {
   max-height: calc(100vh - 64px);

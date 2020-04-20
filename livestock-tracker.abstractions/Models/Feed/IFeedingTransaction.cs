@@ -1,6 +1,6 @@
 using System;
 
-namespace LivestockTracker.Abstractions.Models
+namespace LivestockTracker.Abstractions.Models.Feed
 {
     /// <summary>
     /// Defines all the properties of a feeding transaction.
@@ -10,17 +10,17 @@ namespace LivestockTracker.Abstractions.Models
         /// <summary>
         /// The number that uniquely identifies the feeding transaction.
         /// </summary>
-        int ID { get; }
+        int Id { get; }
 
         /// <summary>
         /// A linking ID to the animal that was fed.
         /// </summary>
-        int AnimalID { get; }
+        int AnimalId { get; }
 
         /// <summary>
         /// A linking ID to the type of feed.
         /// </summary>
-        int FeedID { get; }
+        int FeedTypeId { get; }
 
         /// <summary>
         /// The date and time the feeding happened.
@@ -28,13 +28,13 @@ namespace LivestockTracker.Abstractions.Models
         DateTimeOffset TransactionDate { get; }
 
         /// <summary>
-        /// The amount of feed given. <seealso cref="UnitTypeCode"/>.
+        /// The amount of feed given. <seealso cref="UnitId"/>.
         /// </summary>
         decimal Quantity { get; }
 
         /// <summary>
         /// The unit of measurement for the <seealso cref="Quantity"/>.
         /// </summary>
-        int UnitTypeCode { get; }
+        int UnitId { get; }
     }
 }

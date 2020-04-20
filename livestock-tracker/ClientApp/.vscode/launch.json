@@ -15,7 +15,7 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch in Chrome",
+      "name": "Debug HTTP [localhost]",
       "url": "http://localhost:5000",
       "webRoot": "${workspaceFolder}",
       "smartStep": true
@@ -23,7 +23,7 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch in Chrome HTTPS",
+      "name": "Debug HTTPS [localhost]",
       "url": "https://localhost:5001",
       "webRoot": "${workspaceFolder}",
       "smartStep": true

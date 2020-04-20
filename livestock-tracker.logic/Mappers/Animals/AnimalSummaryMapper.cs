@@ -1,8 +1,8 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Models.Animals;
 using LivestockTracker.Models;
 
-namespace LivestockTracker.Logic.Mappers.Animal
+namespace LivestockTracker.Logic.Mappers.Animals
 {
     /// <summary>
     /// Provides mapping operations for animal summary items.
@@ -34,7 +34,7 @@ namespace LivestockTracker.Logic.Mappers.Animal
 
             return new AnimalSummary
             {
-                ID = left.ID,
+                Id = left.Id,
                 BirthDate = left.BirthDate,
                 Deceased = left.Deceased,
                 Number = left.Number,

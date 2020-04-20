@@ -42,7 +42,7 @@ namespace LivestockTracker.Controllers
 
             var savedUnit = _unitService.Add(unit);
 
-            return CreatedAtAction(nameof(Get), new { id = savedUnit.TypeCode }, savedUnit);
+            return CreatedAtAction(nameof(Get), new { id = savedUnit.Id }, savedUnit);
         }
 
         // PUT: api/Unit/5
@@ -54,7 +54,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (unit == null || id != unit.TypeCode)
+            if (unit == null || id != unit.Id)
             {
                 return BadRequest();
             }
@@ -72,7 +72,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != unit.TypeCode)
+            if (id != unit.Id)
             {
                 return BadRequest();
             }
@@ -99,7 +99,7 @@ namespace LivestockTracker.Controllers
 
             _unitService.Remove(unit);
 
-            return Ok(unit.TypeCode);
+            return Ok(unit.Id);
         }
     }
 }

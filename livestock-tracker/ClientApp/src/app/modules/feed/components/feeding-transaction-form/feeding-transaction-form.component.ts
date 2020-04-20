@@ -23,22 +23,20 @@ import { environment } from '@env/environment';
   templateUrl: './feeding-transaction-form.component.html',
   styleUrls: ['./feeding-transaction-form.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
-  ]
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium },
+  ],
 })
 export class FeedingTransactionFormComponent
   implements OnInit, OnChanges, OnDestroy {
   public feedForm: FormGroup;
   @Input() public selectedAnimalId: number;
   @Input() public feedingTransaction: FeedingTransaction = {
-    animalID: this.selectedAnimalId,
-    feedID: null,
+    animalId: this.selectedAnimalId,
+    feedTypeId: null,
     id: undefined,
     quantity: 0,
-    transactionDate: moment()
-      .utc()
-      .toDate(),
-    unitTypeCode: 0
+    transactionDate: moment().utc().toDate(),
+    unitId: 0,
   };
   @Input() isPending: boolean;
   @Input() error: Error;
@@ -75,23 +73,23 @@ export class FeedingTransactionFormComponent
   public resetForm(): void {
     if (!this.feedForm) return;
 
-    let animalID = this.selectedAnimalId;
+    let animalId = this.selectedAnimalId;
     if (this.feedingTransaction !== null) {
-      animalID = this.feedingTransaction.animalID
-        ? this.feedingTransaction.animalID
-        : animalID;
+      animalId = this.feedingTransaction.animalId
+        ? this.feedingTransaction.animalId
+        : animalId;
     }
 
     this.feedForm.get('id').setValue(this.feedingTransaction.id);
-    this.feedForm.get('animalID').setValue(animalID);
+    this.feedForm.get('animalId').setValue(this.feedingTransaction.animalId);
     this.feedForm
       .get('transactionDate')
       .setValue(moment(this.feedingTransaction.transactionDate));
-    this.feedForm.get('feedID').setValue(this.feedingTransaction.feedID);
-    this.feedForm.get('quantity').setValue(this.feedingTransaction.quantity);
     this.feedForm
-      .get('unitTypeCode')
-      .setValue(this.feedingTransaction.unitTypeCode);
+      .get('feedTypeId')
+      .setValue(this.feedingTransaction.feedTypeId);
+    this.feedForm.get('quantity').setValue(this.feedingTransaction.quantity);
+    this.feedForm.get('unitId').setValue(this.feedingTransaction.unitId);
     this.feedForm.markAsPristine();
   }
 
@@ -107,29 +105,27 @@ export class FeedingTransactionFormComponent
 
   private initForm(): void {
     this.feedForm = new FormGroup({
-      id: new FormControl(null),
-      animalID: new FormControl(this.selectedAnimalId),
+      id: new FormControl(this.feedingTransaction.id),
+      animalId: new FormControl(this.feedingTransaction.animalId),
       transactionDate: new FormControl(
         {
-          value: moment()
-            .utc()
-            .toDate(),
-          disabled: this.isPending
+          value: this.feedingTransaction.transactionDate,
+          disabled: this.isPending,
         },
         Validators.required
       ),
-      feedID: new FormControl(
-        { value: null, disabled: this.isPending },
+      feedTypeId: new FormControl(
+        { value: this.feedingTransaction.feedTypeId, disabled: this.isPending },
         Validators.required
       ),
-      quantity: new FormControl({ value: null, disabled: this.isPending }, [
-        Validators.required,
-        Validators.min(0)
-      ]),
-      unitTypeCode: new FormControl(
-        { value: null, disabled: this.isPending },
+      quantity: new FormControl(
+        { value: this.feedingTransaction.quantity, disabled: this.isPending },
+        [Validators.required, Validators.min(0)]
+      ),
+      unitId: new FormControl(
+        { value: this.feedingTransaction.unitId, disabled: this.isPending },
         Validators.required
-      )
+      ),
     });
 
     this.resetForm();

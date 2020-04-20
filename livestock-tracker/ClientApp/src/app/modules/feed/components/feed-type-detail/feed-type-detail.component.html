@@ -1,21 +1,11 @@
 <form [formGroup]="feedTypeForm">
-  <div class="card-list-item-content">
-    <mat-form-field class="description">
-      <input
-        matInput
-        type="text"
-        id="description"
-        formControlName="description"
-        (ngModelChange)="updateFeedType()"
-      />
-    </mat-form-field>
-  </div>
-  <button
-    mat-icon-button
-    class="card-list-item-actions"
-    (click)="deleteFeedType(feedType.id)"
-    title="Delete this feed type"
-  >
-    <mat-icon>delete</mat-icon>
-  </button>
+  <mat-form-field class="description">
+    <input
+      matInput
+      type="text"
+      id="description"
+      formControlName="description"
+      (ngModelChange)="updateFeedType()"
+    />
+  </mat-form-field>
 </form>

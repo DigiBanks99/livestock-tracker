@@ -1,18 +1,21 @@
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Enums;
-using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Models.Animals;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics;
 
 namespace LivestockTracker.Database.Models
 {
-    [Table("Animal")]
+    [DebuggerDisplay("[{ID} - {Number}]: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
+    [Table("Animals", Schema = "animal")]
     public class AnimalModel : IEntity<int>, IAnimal
     {
+        [Column("ID")]
         [Key]
-        public int ID { get; set; }
+        public int Id { get; set; }
         [Required]
         public AnimalType Type { get; set; }
         [MaxLength(50)]
@@ -42,7 +45,7 @@ namespace LivestockTracker.Database.Models
 
         public int GetKey()
         {
-            return ID;
+            return Id;
         }
     }
 }

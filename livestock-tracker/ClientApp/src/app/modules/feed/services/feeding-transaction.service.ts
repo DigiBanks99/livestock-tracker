@@ -5,19 +5,21 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { CrudService } from '@core/models/crud-service.interface';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { ILsDataService } from '@core/models/ls-data-service.interface';
 import { AppState } from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
+import { FetchSingleFeedTransactionParams } from '@feed/store/feeding-transaction.actions';
 import { select, Store } from '@ngrx/store';
 
 export interface IFeedingTransactionService
-  extends CrudService<FeedingTransaction, number, FeedingTransaction[]> {}
+  extends CrudService<
+    FeedingTransaction,
+    number,
+    FeedingTransaction[],
+    FetchSingleFeedTransactionParams
+  > {}
 
 @Injectable()
-export class FeedingTransactionService
-  implements
-    IFeedingTransactionService,
-    ILsDataService<FeedingTransaction, number> {
+export class FeedingTransactionService implements IFeedingTransactionService {
   private readonly apiUrl: string;
 
   constructor(
@@ -37,12 +39,18 @@ export class FeedingTransactionService
     );
   }
 
-  public get(key: any): Observable<FeedingTransaction> {
-    return this.getSingle(key);
+  public get(
+    params: FetchSingleFeedTransactionParams
+  ): Observable<FeedingTransaction> {
+    return this.getSingle(params);
   }
 
-  public getSingle(fetchKey?: any): Observable<FeedingTransaction> {
-    return this.http.get<FeedingTransaction>(this.apiUrl + 'get/' + fetchKey);
+  public getSingle(
+    params: FetchSingleFeedTransactionParams
+  ): Observable<FeedingTransaction> {
+    return this.http.get<FeedingTransaction>(
+      `${this.apiUrl}${params.animalId}/${params.id}`
+    );
   }
 
   public add(

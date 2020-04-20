@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Abstractions.Services.Animal;
+using LivestockTracker.Abstractions.Models.Animals;
+using LivestockTracker.Abstractions.Services.Animals;
 using LivestockTracker.Database;
 using LivestockTracker.Database.Models;
 using Microsoft.EntityFrameworkCore;
@@ -70,7 +70,7 @@ namespace LivestockTracker.Logic.Services.Animals
         /// <summary>
         /// Finds the animal in the persisted store based on the provided predicate and sorting options.
         /// </summary>
-        /// <typeparam name="TSortProperty"></typeparam>
+        /// <typeparam name="TSortProperty">The type of the property on the object that is the sort key.</typeparam>
         /// <param name="filter">The filter predicate which specifies the conditions to include an animal.</param>
         /// <param name="sort">The function that returns the sort property on the animal.</param>
         /// <param name="sortDirection">Either ascending or descending.</param>
@@ -82,7 +82,7 @@ namespace LivestockTracker.Logic.Services.Animals
                                                                                  CancellationToken cancellationToken) where TSortProperty : IConvertible
         {
             Logger.LogInformation("Finding animals...");
-            var query = LivestockContext.Animal
+            var query = LivestockContext.Animals
                                         .Where(filter);
 
             var orderedQuery = sortDirection == ListSortDirection.Ascending ?
@@ -105,7 +105,7 @@ namespace LivestockTracker.Logic.Services.Animals
         {
             Logger.LogInformation($"Retrieving the animal with ID {key}...");
 
-            var entity = await LivestockContext.Animal.FindAsync(new object[] { key }, cancellationToken)
+            var entity = await LivestockContext.Animals.FindAsync(new object[] { key }, cancellationToken)
                                                       .ConfigureAwait(false);
             return AnimalMapper.Map(entity);
         }
@@ -116,21 +116,21 @@ namespace LivestockTracker.Logic.Services.Animals
         /// <param name="key">The identifying value of the animal.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The ID of the animal that was removed.</returns>
-        /// <exception cref="EntityNotFoundException{AnimalModel}"></exception>
+        /// <exception cref="EntityNotFoundException{AnimalModel}">When the animal with the given key is not found.</exception>
         public virtual async Task<int> RemoveAsync(int key, CancellationToken cancellationToken)
         {
             Logger.LogInformation($"Removing the animal with ID {key}...");
 
-            var entity = await LivestockContext.Animal.FindAsync(new object[] { key }, cancellationToken)
+            var entity = await LivestockContext.Animals.FindAsync(new object[] { key }, cancellationToken)
                                                       .ConfigureAwait(false);
             if (entity == null)
                 throw new EntityNotFoundException<AnimalModel>(key);
 
-            var changes = LivestockContext.Animal.Remove(entity);
+            var changes = LivestockContext.Animals.Remove(entity);
             await LivestockContext.SaveChangesAsync(cancellationToken)
                                   .ConfigureAwait(false);
 
-            return changes.Entity.ID;
+            return changes.Entity.Id;
         }
 
         /// <summary>
@@ -139,19 +139,19 @@ namespace LivestockTracker.Logic.Services.Animals
         /// <param name="item">The animal with its desired values.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The updated animal.</returns>
-        /// <exception cref="EntityNotFoundException{AnimalModel}"></exception>
+        /// <exception cref="EntityNotFoundException{AnimalModel}">When the animal with the given key is not found.</exception>
         public virtual async Task<IAnimal> UpdateAsync(IAnimal item, CancellationToken cancellationToken)
         {
-            Logger.LogInformation($"Updating the animal with ID {item.ID}...");
+            Logger.LogInformation($"Updating the animal with ID {item.Id}...");
 
-            var entity = await LivestockContext.Animal.FindAsync(new object[] { item.ID }, cancellationToken)
+            var entity = await LivestockContext.Animals.FindAsync(new object[] { item.Id }, cancellationToken)
                                                       .ConfigureAwait(false);
             if (entity == null)
-                throw new EntityNotFoundException<AnimalModel>(item.ID);
+                throw new EntityNotFoundException<AnimalModel>(item.Id);
 
             UpdateEntityValues(entity, item);
 
-            var changes = LivestockContext.Animal.Update(entity);
+            var changes = LivestockContext.Animals.Update(entity);
             await LivestockContext.SaveChangesAsync(cancellationToken)
                                   .ConfigureAwait(false);
 

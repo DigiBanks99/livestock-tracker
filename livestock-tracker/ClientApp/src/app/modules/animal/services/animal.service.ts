@@ -8,7 +8,7 @@ import { PagedData } from '@core/models/paged-data.model';
 
 @Injectable()
 export class AnimalService
-  implements CrudService<Animal, number, PagedData<Animal>> {
+  implements CrudService<Animal, number, PagedData<Animal>, number> {
   private apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {

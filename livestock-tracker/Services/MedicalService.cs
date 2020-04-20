@@ -18,7 +18,7 @@ namespace LivestockTracker.Services
         public IEnumerable<MedicalTransaction> GetByAnimalId(int animalID)
         {
             return Context.MedicalTransactions
-                          .Where(medical => medical.AnimalID == animalID)
+                          .Where(medical => medical.AnimalId == animalID)
                           .Select(medical => Mapper.Map(medical))
                           .ToList();
         }
@@ -26,7 +26,7 @@ namespace LivestockTracker.Services
         public async ValueTask<IEnumerable<MedicalTransaction>> GetByAnimalIdAsync(int animalID, CancellationToken cancellationToken)
         {
             return await Context.MedicalTransactions
-                                .Where(medical => medical.AnimalID == animalID)
+                                .Where(medical => medical.AnimalId == animalID)
                                 .Select(medical => Mapper.Map(medical))
                                 .ToListAsync(cancellationToken)
                                 .ConfigureAwait(false);

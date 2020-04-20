@@ -1,6 +1,6 @@
-using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Models.Animals;
 
-namespace LivestockTracker.Abstractions.Services.Animal
+namespace LivestockTracker.Abstractions.Services.Animals
 {
     /// <summary>
     /// Provides fetching and pagination services for animals.

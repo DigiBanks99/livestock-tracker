@@ -1,13 +1,17 @@
-using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Models.Feed;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace LivestockTracker.Models
 {
+    [DebuggerDisplay("{ID} - {Description} [Deleted: {Deleted]")]
     public class FeedType : IFeedType
     {
-        [Key]
-        public int ID { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Description { get; set; } = string.Empty;
+        [JsonIgnore]
+        public bool Deleted { get; set; } = false;
     }
 }

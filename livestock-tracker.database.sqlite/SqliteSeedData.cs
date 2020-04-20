@@ -23,20 +23,20 @@ namespace LivestockTracker.Database.Sqlite
 
         private static void SeedUnits(LivestockContext context)
         {
-            if (context.Unit == null || context.Unit.Any())
+            if (context.Units == null || context.Units.Any())
             {
                 return;
             }
 
-            context.Unit.AddRange(
+            context.Units.AddRange(
             new UnitModel()
             {
-                TypeCode = 1,
+                Id = 1,
                 Description = "ℓ"
             },
             new UnitModel()
             {
-                TypeCode = 2,
+                Id = 2,
                 Description = "kg"
             });
         }
@@ -51,12 +51,12 @@ namespace LivestockTracker.Database.Sqlite
             context.Medicine.AddRange(
             new MedicineTypeModel()
             {
-                TypeCode = 1,
+                Id = 1,
                 Description = "Antibiotics"
             },
             new MedicineTypeModel()
             {
-                TypeCode = 2,
+                Id = 2,
                 Description = "Painkillers"
             });
         }
@@ -71,12 +71,12 @@ namespace LivestockTracker.Database.Sqlite
             livestockContext.FeedTypes.AddRange(
             new FeedTypeModel()
             {
-                ID = 1,
+                Id = 1,
                 Description = "Wheat"
             },
             new FeedTypeModel()
             {
-                ID = 2,
+                Id = 2,
                 Description = "Maze"
             });
         }

@@ -16,7 +16,7 @@ namespace LivestockTracker.Mappers
             return new UnitModel
             {
                 Description = right.Description,
-                TypeCode = right.TypeCode
+                Id = right.Id
             };
         }
 
@@ -30,7 +30,7 @@ namespace LivestockTracker.Mappers
             return new Unit
             {
                 Description = left.Description,
-                TypeCode = left.TypeCode
+                Id = left.Id
             };
         }
     }

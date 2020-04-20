@@ -1,9 +1,13 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Abstractions.Services.Animal;
+using LivestockTracker.Abstractions.Models.Animals;
+using LivestockTracker.Abstractions.Models.Feed;
+using LivestockTracker.Abstractions.Services.Animals;
+using LivestockTracker.Abstractions.Services.Feed;
 using LivestockTracker.Database.Models;
-using LivestockTracker.Logic.Mappers.Animal;
+using LivestockTracker.Logic.Mappers.Animals;
+using LivestockTracker.Logic.Mappers.Feed;
 using LivestockTracker.Logic.Services.Animals;
+using LivestockTracker.Logic.Services.Feed;
 using LivestockTracker.Models;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,16 +19,20 @@ namespace LivestockTracker
     public static class LogicMiddleware
     {
         /// <summary>
-        /// Adds the Livestock Tracker Logic to the provided service collection.
+        /// Adds the Livestock Tracker Logic  to the specified <see cref="IServiceCollection"/>.
         /// </summary>
         /// <param name="services">The service collection for dependency injection.</param>
-        /// <returns></returns>
+        /// <returns>The <see cref="IServiceCollection"/> that contains the logic services.</returns>
         public static IServiceCollection AddLivestockTrackerLogic(this IServiceCollection services)
         {
             services.AddSingleton<IMapper<IAnimalSummary, AnimalSummary>, AnimalSummaryMapper>()
                     .AddSingleton<IMapper<AnimalModel, IAnimal>, AnimalMapper>()
+                    .AddSingleton<IMapper<FeedTypeModel, IFeedType>, FeedTypeEntityMapper>()
+                    .AddSingleton<IMapper<IFeedType, FeedType>, FeedTypeMapper>()
                     .AddScoped<IAnimalCrudService, AnimalCrudService>()
-                    .AddScoped<IAnimalSearchService, AnimalSearchService>();
+                    .AddScoped<IAnimalSearchService, AnimalSearchService>()
+                    .AddScoped<IFeedTypeSearchService, FeedTypeSearchService>()
+                    .AddScoped<IFeedTypeCrudService, FeedTypeCrudService>();
 
             return services;
         }

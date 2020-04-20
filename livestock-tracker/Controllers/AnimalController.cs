@@ -1,5 +1,7 @@
-using LivestockTracker.Abstractions.Services.Animal;
+using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Services.Animals;
 using LivestockTracker.Models;
+using LivestockTracker.Models.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -34,15 +36,15 @@ namespace LivestockTracker.Controllers
         }
 
         /// <summary>
-        /// Requests a list of all animals sorted by number.
+        /// Requests a paged list of all animals sorted by number.
         /// </summary>
-        /// <returns>A list of animals.</returns>
+        /// <returns>A paged list of animals.</returns>
         [HttpGet()]
-        [ProducesResponseType(typeof(IEnumerable<AnimalSummary>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IPagedData<AnimalSummary>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAnimals([Required] int pageNumber, [Required] int pageSize)
+        public async Task<IActionResult> GetAnimals([Required] int pageNumber = 0, [Required] int pageSize = 100)
         {
-            Logger.LogInformation($"Requesting all animals...");
+            Logger.LogInformation($"Requesting {pageSize} animals from page {pageNumber}...");
 
             if (!ModelState.IsValid)
             {
@@ -104,7 +106,7 @@ namespace LivestockTracker.Controllers
 
             var savedAnimal = await _animalCrudService.AddAsync(animal, RequestAbortToken)
                                                       .ConfigureAwait(false);
-            return CreatedAtAction("Get", new { id = savedAnimal.ID }, savedAnimal);
+            return CreatedAtAction("Get", new { id = savedAnimal.Id }, savedAnimal);
         }
 
         /// <summary>
@@ -127,9 +129,9 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != animal.ID)
+            if (id != animal.Id)
             {
-                ModelState.AddModelError(nameof(animal.ID), "The id in the body and in the URL do not match.");
+                ModelState.AddModelError(nameof(animal.Id), "The id in the body and in the URL do not match.");
             }
 
             if (!ModelState.IsValid)

@@ -1,6 +1,6 @@
 using System;
 
-namespace LivestockTracker.Abstractions.Models
+namespace LivestockTracker.Abstractions.Models.Animals
 {
     /// <summary>
     /// Defines all the properties about an animal.

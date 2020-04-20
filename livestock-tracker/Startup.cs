@@ -1,5 +1,4 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Database;
 using LivestockTracker.Database.Models;
 using LivestockTracker.Extensions;
 using LivestockTracker.Mappers;
@@ -8,7 +7,6 @@ using LivestockTracker.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -16,28 +14,37 @@ using System;
 
 namespace LivestockTracker
 {
+    /// <summary>
+    /// Defines and manages the application start-up process.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="configuration">The application configuration information.</param>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// The application configuration information.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        ///<summary>This method gets called by the runtime. Use this method to add services to the container.</summary>
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
 
-            services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")))
+            services.AddLivestockTrackerSqliteDatabase(Configuration)
                     .AddLivestockTrackerLogic()
                     .AddScoped<IFeedTypeService, FeedTypeService>()
                     .AddScoped<IFeedingTransactionService, FeedingTransactionService>()
                     .AddScoped<IMedicalService, MedicalService>()
                     .AddScoped<IMedicineService, MedicineService>()
                     .AddScoped<IUnitService, UnitService>()
-                    .AddSingleton<IMapper<AnimalModel, Animal>, AnimalMapper>()
                     .AddSingleton<IMapper<FeedingTransactionModel, FeedingTransaction>, FeedingTransactionMapper>()
                     .AddSingleton<IMapper<FeedTypeModel, FeedType>, FeedTypeMapper>()
                     .AddSingleton<IMapper<MedicalTransactionModel, MedicalTransaction>, MedicalTransactionMapper>()
@@ -52,7 +59,9 @@ namespace LivestockTracker
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
         public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (app == null)

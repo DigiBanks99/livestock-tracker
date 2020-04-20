@@ -9,7 +9,7 @@ const getFeedTypeState = createFeatureSelector<FeedTypeState>('feedTypes');
 const {
   selectEntities: getFeedTypeEntities,
   selectIds: getFeedTypeIds,
-  selectTotal: getFeedTypeCount
+  selectTotal: getFeedTypeCount,
 } = feedTypeAdapter.getSelectors(getFeedTypeState);
 
 const getFeedTypes = createSelector(
@@ -17,13 +17,13 @@ const getFeedTypes = createSelector(
   getFeedTypeIds,
   (entities: Dictionary<FeedType>, ids: (string | number)[]) =>
     ids
-      .map(id => entities[id])
+      .map((id) => entities[id])
       .filter((feedType): feedType is FeedType => feedType !== null)
 );
 
 const getSelectedFeedTypeId = createSelector(
   getFeedTypeState,
-  state => state.selectedId
+  (state) => state.selectedId
 );
 
 const getSelectedFeedType = createSelector(
@@ -34,12 +34,28 @@ const getSelectedFeedType = createSelector(
 
 const getFeedTypePending = createSelector(
   getFeedTypeState,
-  state => state.isPending
+  (state) => state.isPending
 );
 
-const getFeedTypeError = createSelector(getFeedTypeState, state => state.error);
+const getPageSize = createSelector(getFeedTypeState, (state) => state.pageSize);
+
+const getCurrentPage = createSelector(
+  getFeedTypeState,
+  (state) => state.pageNumber
+);
+
+const getRecordCount = createSelector(
+  getFeedTypeState,
+  (state) => state.recordCount
+);
+
+const getFeedTypeError = createSelector(
+  getFeedTypeState,
+  (state) => state.error
+);
 
 export const selectors = {
+  getFeedTypeState,
   getFeedTypes,
   getFeedTypeEntities,
   getFeedTypeIds,
@@ -47,5 +63,8 @@ export const selectors = {
   getSelectedFeedTypeId,
   getSelectedFeedType,
   getFeedTypePending,
-  getFeedTypeError
+  getFeedTypeError,
+  getCurrentPage,
+  getPageSize,
+  getRecordCount,
 };

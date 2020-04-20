@@ -14,7 +14,7 @@ import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { LivestockService } from '@animal/services/livestock.service';
 import { animalStore } from '@animal/store';
-import { FetchAnimal } from '@animal/store/animal.actions';
+import { FetchAnimals } from '@animal/store/animal.actions';
 import { Animal } from '@core/models';
 import { AppState } from '@core/store';
 import { environment } from '@env/environment';
@@ -48,7 +48,7 @@ export class AnimalListComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.store.dispatch(new FetchAnimal());
+    this.store.dispatch(new FetchAnimals());
 
     this.pageSize$ = this.store.pipe(
       select(animalStore.selectors.getPageSize),
@@ -89,7 +89,7 @@ export class AnimalListComponent implements OnInit, OnDestroy {
 
   public onPage(pageEvent: PageEvent): void {
     this.store.dispatch(
-      new FetchAnimal(pageEvent.pageIndex, pageEvent.pageSize)
+      new FetchAnimals(pageEvent.pageIndex, pageEvent.pageSize)
     );
   }
 

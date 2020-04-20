@@ -10,17 +10,17 @@ namespace LivestockTracker.Abstractions.Models
         /// <summary>
         /// A key that uniquely identifies the medical transaction.
         /// </summary>
-        int ID { get; }
+        int Id { get; }
 
         /// <summary>
         /// A linking key to the animal to whom the medication was administered.
         /// </summary>
-        int AnimalID { get; }
+        int AnimalId { get; }
 
         /// <summary>
         /// A linking key to the type of medicine that was administered.
         /// </summary>
-        int MedicineTypeCode { get; }
+        int MedicineId { get; }
 
         /// <summary>
         /// The date and time the medication was administered.
@@ -28,13 +28,13 @@ namespace LivestockTracker.Abstractions.Models
         DateTimeOffset TransactionDate { get; }
 
         /// <summary>
-        /// The amount of medicine that was administered. <seealso cref="Unit"/>.
+        /// The amount of medicine that was administered. <seealso cref="UnitId"/>.
         /// </summary>
         decimal Dose { get; }
 
         /// <summary>
         /// A linking key to the unit of measurement for the <seealso cref="Dose"/>.
         /// </summary>
-        int Unit { get; }
+        int UnitId { get; }
     }
 }

@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions.Models;
 
-namespace LivestockTracker.Models
+namespace LivestockTracker.Models.Paging
 {
     /// <summary>
     /// Provides fields that can be used to managing paging requests.
@@ -22,7 +22,7 @@ namespace LivestockTracker.Models
         {
             get
             {
-                return (PageNumber - 1) * PageSize;
+                return PageNumber * PageSize;
             }
         }
     }

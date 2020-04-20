@@ -16,7 +16,7 @@ namespace LivestockTracker.Mappers
             return new MedicineTypeModel
             {
                 Description = right.Description,
-                TypeCode = right.TypeCode
+                Id = right.Id
             };
         }
 
@@ -30,7 +30,7 @@ namespace LivestockTracker.Mappers
             return new MedicineType
             {
                 Description = left.Description,
-                TypeCode = left.TypeCode
+                Id = left.Id
             };
         }
     }

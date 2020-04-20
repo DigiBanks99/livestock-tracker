@@ -9,7 +9,10 @@ import {
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { CrudEffects } from '@core/store/crud.effects';
 import { FeedingTransactionService } from '@feed/services';
-import { actions as feedingTransactionActions } from '@feed/store/feeding-transaction.actions';
+import {
+  actions as feedingTransactionActions,
+  FetchSingleFeedTransactionParams
+} from '@feed/store/feeding-transaction.actions';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
@@ -19,7 +22,8 @@ import { FeedingTransactionKey } from './constants';
 export class FeedingTransactionEffects extends CrudEffects<
   FeedingTransaction,
   number,
-  FeedingTransaction[]
+  FeedingTransaction[],
+  FetchSingleFeedTransactionParams
 > {
   constructor(
     protected actions$: Actions,

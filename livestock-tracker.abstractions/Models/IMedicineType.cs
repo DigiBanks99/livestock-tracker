@@ -8,7 +8,7 @@ namespace LivestockTracker.Abstractions.Models
         /// <summary>
         /// A key that uniquely identifies the type of medication.
         /// </summary>
-        int TypeCode { get; }
+        int Id { get; }
 
         /// <summary>
         /// The human readable description of the type of medication.

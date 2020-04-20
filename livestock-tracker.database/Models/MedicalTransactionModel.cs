@@ -6,20 +6,25 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LivestockTracker.Database.Models
 {
-    [Table("MedicalTransactions")]
+    [Table("MedicalTransactions", Schema = "medical")]
     public class MedicalTransactionModel : IEntity<int>, IMedicalTransaction
     {
+        [Column("ID")]
         [Key]
-        public int ID { get; set; }
-        public int AnimalID { get; set; }
+        public int Id { get; set; }
+        [Column("AnimalID")]
         [Required]
-        public int MedicineTypeCode { get; set; }
+        public int AnimalId { get; set; }
+        [Column("MedicineID")]
+        [Required]
+        public int MedicineId { get; set; }
         [Required]
         public DateTimeOffset TransactionDate { get; set; }
         [Required]
         public decimal Dose { get; set; }
+        [Column("UnitID")]
         [Required]
-        public int Unit { get; set; }
+        public int UnitId { get; set; }
 
         public AnimalModel Animal { get; internal set; } = null!;
         public UnitModel UnitOfMeasurement { get; internal set; } = null!;
@@ -27,7 +32,7 @@ namespace LivestockTracker.Database.Models
 
         public int GetKey()
         {
-            return ID;
+            return Id;
         }
     }
 }

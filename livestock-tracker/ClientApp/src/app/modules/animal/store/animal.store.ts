@@ -14,6 +14,11 @@ const getFetchAnimalsPendingState = createSelector(
   (state) => state.isFetching
 );
 
+const getAnimalsPendingState = createSelector(
+  getAnimalsState,
+  (state) => state.isPending
+);
+
 const getPageSize = createSelector(getAnimalsState, (state) => state.pageSize);
 
 const getCurrentPage = createSelector(
@@ -24,11 +29,6 @@ const getCurrentPage = createSelector(
 const getRecordCount = createSelector(
   getAnimalsState,
   (state) => state.recordCount
-);
-
-const getAnimalsPendingState = createSelector(
-  getAnimalsState,
-  (state) => state.isPending
 );
 
 const getAnimalsError = createSelector(getAnimalsState, (state) => state.error);
