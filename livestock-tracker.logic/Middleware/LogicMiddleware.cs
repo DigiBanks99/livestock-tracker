@@ -1,7 +1,8 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Abstractions.Services.Animal;
-using LivestockTracker.Logic.Mappers;
+using LivestockTracker.Database.Models;
+using LivestockTracker.Logic.Mappers.Animal;
 using LivestockTracker.Logic.Services.Animals;
 using LivestockTracker.Models;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,7 @@ namespace LivestockTracker
         public static IServiceCollection AddLivestockTrackerLogic(this IServiceCollection services)
         {
             services.AddSingleton<IMapper<IAnimalSummary, AnimalSummary>, AnimalSummaryMapper>()
+                    .AddSingleton<IMapper<AnimalModel, IAnimal>, AnimalMapper>()
                     .AddScoped<IAnimalCrudService, AnimalCrudService>()
                     .AddScoped<IAnimalSearchService, AnimalSearchService>();
 

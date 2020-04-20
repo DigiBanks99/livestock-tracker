@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.database.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.abstractions", "livestock-tracker.abstractions\livestock-tracker.abstractions.csproj", "{4589A780-8BB8-48CB-BF8B-E9CF21894CF7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "livestock-tracker.logic", "livestock-tracker.logic\livestock-tracker.logic.csproj", "{A2E5FFA9-AC57-4B38-A25B-C172581BC23F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.logic", "livestock-tracker.logic\livestock-tracker.logic.csproj", "{A2E5FFA9-AC57-4B38-A25B-C172581BC23F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C03D32C-973F-463E-926E-F562ABA1BF32}"
 EndProject
@@ -52,8 +52,8 @@ Global
 		{DEC65809-06E0-4F1B-ACFC-2908E603DF85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEC65809-06E0-4F1B-ACFC-2908E603DF85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DEC65809-06E0-4F1B-ACFC-2908E603DF85}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Debug Updater|Any CPU.ActiveCfg = Debug Updater|Any CPU
-		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Debug Updater|Any CPU.Build.0 = Debug Updater|Any CPU
+		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Debug Updater|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Debug Updater|Any CPU.Build.0 = Debug|Any CPU
 		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9F804C7-88B3-415F-B006-8EDD981A2C76}.Release|Any CPU.ActiveCfg = Release|Any CPU

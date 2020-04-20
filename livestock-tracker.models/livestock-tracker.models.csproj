@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>LivestockTracker.Models</RootNamespace>
-    <Configurations>Debug;Release;Debug Updater</Configurations>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 

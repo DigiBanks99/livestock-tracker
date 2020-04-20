@@ -11,13 +11,31 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Services
 {
-    public class Service<TEntity, TDto, TKeyType>
+    /// <summary>
+    /// <strong>DEPRECATED</strong>: General service for entity interactions.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of entity.</typeparam>
+    /// <typeparam name="TDto">The DTO model for the entity.</typeparam>
+    /// <typeparam name="TKeyType">The primary key type for the entity.</typeparam>
+    /// <seealso cref="IFetchService{TDto, TKey}"/>
+    /// <seealso cref="IFetchAsyncService{TData, TKey}"/>
+    /// <seealso cref="IPagedFetchAsyncService{TData}"/>
+    /// <seealso cref="IPagedFetchService{TData}"/>
+    /// <seealso cref="ICrudService{TDto, TKey}"/>
+    /// <seealso cref="ICrudAsyncService{TDto, TKey}"/>
+    [Obsolete("This has been replaced by a number of smaller services.")]
+    public abstract class Service<TEntity, TDto, TKeyType>
         : IService<TEntity, TDto, TKeyType>
         where TEntity : class, IEntity<TKeyType>
         where TDto : class
         where TKeyType : struct
     {
-        public Service(LivestockContext context, IMapper<TEntity, TDto> mapper)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="context">The database context that contains the entity.</param>
+        /// <param name="mapper">A mapper between the entity and the DTO model.</param>
+        protected Service(LivestockContext context, IMapper<TEntity, TDto> mapper)
         {
             Context = context;
             Mapper = mapper;
@@ -81,7 +99,7 @@ namespace LivestockTracker.Services
                 throw new ArgumentNullException(nameof(dto));
             }
 
-            TEntity entity = Mapper.Map(dto);
+            var entity = Mapper.Map(dto);
             Context.Set<TEntity>()
                    .Remove(entity);
             Context.SaveChanges();

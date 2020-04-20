@@ -1,6 +1,5 @@
 using LivestockTracker.Abstractions.Services.Animal;
 using LivestockTracker.Models;
-using LivestockTracker.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -16,21 +15,21 @@ namespace LivestockTracker.Controllers
     /// </summary>
     public class AnimalController : LivestockApiController
     {
-        private readonly IAnimalService _animalService;
+        private readonly IAnimalCrudService _animalCrudService;
         private readonly IAnimalSearchService _animalSummaryService;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="service">The service for animal operations.</param>
+        /// <param name="animalCrudService">The service for animal CRUD operations.</param>
         /// <param name="animalSummaryService">A service for animal summary operations.</param>
         public AnimalController(ILogger<AnimalController> logger,
-                                IAnimalService service,
+                                IAnimalCrudService animalCrudService,
                                 IAnimalSearchService animalSummaryService)
             : base(logger)
         {
-            _animalService = service;
+            _animalCrudService = animalCrudService;
             _animalSummaryService = animalSummaryService;
         }
 
@@ -80,8 +79,8 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            var animal = await _animalService.FindAsync(id, RequestAbortToken)
-                                             .ConfigureAwait(false);
+            var animal = await _animalCrudService.GetOneAsync(id, RequestAbortToken)
+                                                 .ConfigureAwait(false);
             return Ok(animal);
         }
 
@@ -94,7 +93,7 @@ namespace LivestockTracker.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Animal), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public IActionResult AddAnimal([Required][FromBody]Animal animal)
+        public async Task<IActionResult> AddAnimal([Required][FromBody]Animal animal)
         {
             Logger.LogInformation("Requesting the creation of a new animal...");
 
@@ -103,7 +102,8 @@ namespace LivestockTracker.Controllers
                 return BadRequest();
             }
 
-            var savedAnimal = _animalService.Add(animal);
+            var savedAnimal = await _animalCrudService.AddAsync(animal, RequestAbortToken)
+                                                      .ConfigureAwait(false);
             return CreatedAtAction("Get", new { id = savedAnimal.ID }, savedAnimal);
         }
 
@@ -115,9 +115,9 @@ namespace LivestockTracker.Controllers
         /// <returns>The updated animal.</returns>
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(Animal), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(EntityNotFoundException<Animal>), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public IActionResult UpdateAnimal([FromRoute] int id, [Required][FromBody]Animal animal)
+        public async Task<IActionResult> UpdateAnimal([FromRoute] int id, [Required][FromBody]Animal animal)
         {
             Logger.LogInformation($"Requesting updates to the animal with ID {id}...");
 
@@ -139,7 +139,8 @@ namespace LivestockTracker.Controllers
 
             try
             {
-                var savedAnimal = _animalService.Update(animal);
+                var savedAnimal = await _animalCrudService.UpdateAsync(animal, RequestAbortToken)
+                                                          .ConfigureAwait(false);
                 return Ok(savedAnimal);
             }
             catch (EntityNotFoundException<Animal> ex)

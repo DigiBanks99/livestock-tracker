@@ -2,7 +2,7 @@ using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Models;
 
-namespace LivestockTracker.Logic.Mappers
+namespace LivestockTracker.Logic.Mappers.Animal
 {
     /// <summary>
     /// Provides mapping operations for animal summary items.

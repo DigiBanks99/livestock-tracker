@@ -32,7 +32,6 @@ namespace LivestockTracker
 
             services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")))
                     .AddLivestockTrackerLogic()
-                    .AddScoped<IAnimalService, AnimalService>()
                     .AddScoped<IFeedTypeService, FeedTypeService>()
                     .AddScoped<IFeedingTransactionService, FeedingTransactionService>()
                     .AddScoped<IMedicalService, MedicalService>()
