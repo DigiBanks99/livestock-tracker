@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace LivestockTracker.Abstractions.Services
 {
@@ -18,7 +19,7 @@ namespace LivestockTracker.Abstractions.Services
         /// <param name="item">The object to be added.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>An instance of the added record.</returns>
-        TDto AddAsync(TDto item, CancellationToken cancellationToken);
+        Task<TDto> AddAsync(TDto item, CancellationToken cancellationToken);
 
         /// <summary>
         /// Update the values of an item in the data store.
@@ -28,7 +29,7 @@ namespace LivestockTracker.Abstractions.Services
         /// </param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>An instance of updated record.</returns>
-        TDto UpdateAsync(TDto item, CancellationToken cancellationToken);
+        Task<TDto> UpdateAsync(TDto item, CancellationToken cancellationToken);
 
         /// <summary>
         /// Remove a record from the data store.
@@ -36,6 +37,6 @@ namespace LivestockTracker.Abstractions.Services
         /// <param name="key">The key that uniquely identifies the record.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The key of the record that was removed.</returns>
-        TKey RemoveAsync(TKey key, CancellationToken cancellationToken);
+        Task<TKey> RemoveAsync(TKey key, CancellationToken cancellationToken);
     }
 }

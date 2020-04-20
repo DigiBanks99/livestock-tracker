@@ -12,6 +12,12 @@ namespace LivestockTracker.Abstractions.Services
     /// <typeparam name="TEntity">The type of entity that is being interacted with.</typeparam>
     /// <typeparam name="TDto">The DTO representation of the entity.</typeparam>
     /// <typeparam name="TKeyType">The type of the key of the entity.</typeparam>
+    /// <seealso cref="IFetchService{TDto, TKey}"/>
+    /// <seealso cref="IFetchAsyncService{TData, TKey}"/>
+    /// <seealso cref="IPagedFetchAsyncService{TData}"/>
+    /// <seealso cref="IPagedFetchService{TData}"/>
+    /// <seealso cref="ICrudService{TDto, TKey}"/>
+    /// <seealso cref="ICrudAsyncService{TDto, TKey}"/>
     [Obsolete("Building a new set of interfaces that will be better for this.")]
     public interface IService<TEntity, TDto, TKeyType>
         where TEntity : IEntity<TKeyType>
