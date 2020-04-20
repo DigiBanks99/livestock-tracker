@@ -1,8 +1,8 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Models.Animals;
 using LivestockTracker.Database.Models;
 
-namespace LivestockTracker.Logic.Mappers.Animal
+namespace LivestockTracker.Logic.Mappers.Animals
 {
     /// <summary>
     /// Provides mapping operations between an animal entity and an animal DTO.
@@ -28,7 +28,7 @@ namespace LivestockTracker.Logic.Mappers.Animal
                 BirthDate = right.BirthDate,
                 DateOfDeath = right.DateOfDeath,
                 Deceased = right.Deceased,
-                ID = right.ID,
+                Id = right.Id,
                 Number = right.Number,
                 PurchaseDate = right.PurchaseDate,
                 PurchasePrice = right.PurchasePrice,
@@ -59,7 +59,7 @@ namespace LivestockTracker.Logic.Mappers.Animal
                 BirthDate = left.BirthDate,
                 DateOfDeath = left.DateOfDeath,
                 Deceased = left.Deceased,
-                ID = left.ID,
+                Id = left.Id,
                 Number = left.Number,
                 PurchaseDate = left.PurchaseDate,
                 PurchasePrice = left.PurchasePrice,

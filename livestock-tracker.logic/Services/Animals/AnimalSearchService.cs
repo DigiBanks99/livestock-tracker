@@ -1,8 +1,10 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Abstractions.Services.Animal;
+using LivestockTracker.Abstractions.Models.Animals;
+using LivestockTracker.Abstractions.Services.Animals;
 using LivestockTracker.Database;
 using LivestockTracker.Models;
+using LivestockTracker.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -20,22 +22,34 @@ namespace LivestockTracker.Logic.Services.Animals
     /// </summary>
     public class AnimalSearchService : IAnimalSearchService
     {
-        private readonly ILogger _logger;
-        private readonly IMapper<IAnimalSummary, AnimalSummary> _mapper;
-        private readonly LivestockContext _livestockContext;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="mapper">The mapper.</param>
-        /// <param name="livestockContext">The database context.</param>
+        /// <param name="livestockContext">The database context that contains the animals.</param>
         public AnimalSearchService(ILogger<AnimalSearchService> logger, IMapper<IAnimalSummary, AnimalSummary> mapper, LivestockContext livestockContext)
         {
-            _logger = logger;
-            _mapper = mapper;
-            _livestockContext = livestockContext;
+            Logger = logger;
+            Mapper = mapper;
+            LivestockContext = livestockContext;
         }
+
+        /// <summary>
+        /// The Logger.
+        /// </summary>
+        protected ILogger Logger { get; }
+
+        /// <summary>
+        /// The mapper.
+        /// </summary>
+        protected IMapper<IAnimalSummary, AnimalSummary> Mapper { get; }
+
+        /// <summary>
+        /// The database context that contains the animals.
+        /// </summary>
+        protected LivestockContext LivestockContext { get; }
 
         /// <summary>
         /// Finds the animals that match the filter condition sorted as specified.
@@ -52,17 +66,11 @@ namespace LivestockTracker.Logic.Services.Animals
                                                                                 CancellationToken cancellationToken)
             where TSortProperty : IConvertible
         {
-            _logger.LogInformation($"Finding summarized animals...");
-            var query = _livestockContext.Animal
-                                         .Where(filter);
-
-            var orderedQuery = sortDirection == ListSortDirection.Ascending ?
-                query.OrderBy(sort) :
-                query.OrderByDescending(sort);
-
-            return await orderedQuery.Select(animal => _mapper.Map(animal))
-                                     .ToListAsync(cancellationToken)
-                                     .ConfigureAwait(false);
+            Logger.LogInformation($"Finding summarized animals...");
+            return await LivestockContext.ConstrainedFind(filter, sort, sortDirection)
+                                          .Select(animal => Mapper.Map(animal))
+                                          .ToListAsync(cancellationToken)
+                                          .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -75,32 +83,27 @@ namespace LivestockTracker.Logic.Services.Animals
         /// <param name="pagingOptions">The options for pagination.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The sorted list of animals that match the filter.</returns>
-        public async Task<IPagedData<IAnimalSummary>> FindAsync<TSortProperty>(Expression<Func<IAnimalSummary, bool>> filter,
-                                                                               Expression<Func<IAnimalSummary, TSortProperty>> sort,
-                                                                               ListSortDirection sortDirection,
-                                                                               IPagingOptions pagingOptions,
-                                                                               CancellationToken cancellationToken)
+        public virtual async Task<IPagedData<IAnimalSummary>> FindAsync<TSortProperty>(Expression<Func<IAnimalSummary, bool>> filter,
+                                                                                       Expression<Func<IAnimalSummary, TSortProperty>> sort,
+                                                                                       ListSortDirection sortDirection,
+                                                                                       IPagingOptions pagingOptions,
+                                                                                       CancellationToken cancellationToken)
             where TSortProperty : IConvertible
         {
-            _logger.LogInformation($"Finding {pagingOptions.PageSize} summarized animals page {pagingOptions.PageNumber}...");
-            var query = _livestockContext.Animal
-                                         .Where(filter);
+            Logger.LogInformation($"Finding {pagingOptions.PageSize} summarized animals for page {pagingOptions.PageNumber}...");
+            var data = await LivestockContext.Animals
+                                             .ConstrainedFind(filter, sort, sortDirection, pagingOptions)
+                                             .Select(animal => Mapper.Map(animal))
+                                             .ToListAsync(cancellationToken)
+                                             .ConfigureAwait(false);
 
-            var orderedQuery = sortDirection == ListSortDirection.Ascending ?
-                query.OrderBy(sort) :
-                query.OrderByDescending(sort);
-
-            var data = await orderedQuery.Skip(pagingOptions.Offset)
-                                         .Take(pagingOptions.PageSize)
-                                         .Select(animal => _mapper.Map(animal))
-                                         .ToListAsync(cancellationToken)
-                                         .ConfigureAwait(false);
-
-            var totalRecordCount = await _livestockContext.Animal
+            var totalRecordCount = await LivestockContext.Animals
                                                           .CountAsync(cancellationToken)
                                                           .ConfigureAwait(false);
 
-            return new PagedData<AnimalSummary>(data, pagingOptions.PageSize, pagingOptions.PageNumber, totalRecordCount);
+            var paginatedResults = new PagedData<AnimalSummary>(data, pagingOptions.PageSize, pagingOptions.PageNumber, totalRecordCount);
+            Logger.LogDebug($"Found paged feed types: {paginatedResults}");
+            return paginatedResults;
         }
 
         /// <summary>
@@ -112,10 +115,10 @@ namespace LivestockTracker.Logic.Services.Animals
         /// <param name="pagingOptions">The options for pagination.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The sorted list of animals that match the filter.</returns>
-        public Task<IPagedData<IAnimalSummary>> FindAsync<TSortProperty>(Expression<Func<IAnimalSummary, TSortProperty>> sort,
-                                                                         ListSortDirection sortDirection,
-                                                                         IPagingOptions pagingOptions,
-                                                                         CancellationToken cancellationToken)
+        public virtual Task<IPagedData<IAnimalSummary>> FindAsync<TSortProperty>(Expression<Func<IAnimalSummary, TSortProperty>> sort,
+                                                                                 ListSortDirection sortDirection,
+                                                                                 IPagingOptions pagingOptions,
+                                                                                 CancellationToken cancellationToken)
             where TSortProperty : IConvertible
         {
             return FindAsync(animal => true, sort, sortDirection, pagingOptions, cancellationToken);
@@ -132,14 +135,15 @@ namespace LivestockTracker.Logic.Services.Animals
         ///         <item>Null if not found.</item>
         ///     </list>
         /// </returns>
-        public async Task<IAnimalSummary?> GetOneAsync(int key, CancellationToken cancellationToken)
+        public virtual async Task<IAnimalSummary?> GetOneAsync(int key, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Finding a summarized animal that matches ID {key}...");
-            var animal = await _livestockContext.Animal
+            Logger.LogInformation($"Finding a summarized animal that matches ID {key}...");
+            var animal = await LivestockContext.Animals
                                                 .FindAsync(new object[] { key }, cancellationToken)
                                                 .ConfigureAwait(false);
 
-            return _mapper.Map(animal);
+            Logger.LogDebug($"Find animal of ID {key} result: {animal}");
+            return Mapper.Map(animal);
         }
     }
 }

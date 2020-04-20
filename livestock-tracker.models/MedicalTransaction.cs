@@ -7,15 +7,15 @@ namespace LivestockTracker.Models
     public class MedicalTransaction : IMedicalTransaction
     {
         [Key]
-        public int ID { get; set; }
-        public int AnimalID { get; set; }
+        public int Id { get; set; }
+        public int AnimalId { get; set; }
         [Required]
-        public int MedicineTypeCode { get; set; }
+        public int MedicineId { get; set; }
         [Required]
         public DateTimeOffset TransactionDate { get; set; }
         [Required]
         public decimal Dose { get; set; }
         [Required]
-        public int Unit { get; set; }
+        public int UnitId { get; set; }
     }
 }

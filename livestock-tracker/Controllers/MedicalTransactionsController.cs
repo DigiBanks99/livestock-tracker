@@ -53,7 +53,7 @@ namespace LivestockTracker.Controllers
                 return NotFound();
             }
 
-            if (medicalTransaction.AnimalID != animalId)
+            if (medicalTransaction.AnimalId != animalId)
             {
                 return BadRequest();
             }
@@ -70,7 +70,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != medicalTransaction.ID)
+            if (id != medicalTransaction.Id)
             {
                 return BadRequest();
             }
@@ -87,7 +87,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != medicalTransaction.ID)
+            if (id != medicalTransaction.Id)
             {
                 return BadRequest();
             }
@@ -108,7 +108,7 @@ namespace LivestockTracker.Controllers
 
             var addedTransaction = _medicalService.Add(medicalTransaction);
 
-            return CreatedAtAction(nameof(GetMedicalTransaction), new { id = addedTransaction.ID, animalID = addedTransaction.AnimalID }, medicalTransaction);
+            return CreatedAtAction(nameof(GetMedicalTransaction), new { id = addedTransaction.Id, animalID = addedTransaction.AnimalId }, medicalTransaction);
         }
 
         // DELETE: api/MedicalTransactions/5
@@ -129,7 +129,7 @@ namespace LivestockTracker.Controllers
 
             _medicalService.Remove(medicalTransaction);
 
-            return Ok(medicalTransaction.ID);
+            return Ok(medicalTransaction.Id);
         }
     }
 }

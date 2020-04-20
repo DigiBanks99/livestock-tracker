@@ -6,11 +6,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LivestockTracker.Database.Models
 {
-    [Table("Medicine")]
+    [Table("MedicineTypes", Schema = "medical")]
     public class MedicineTypeModel : IEntity<int>, IMedicineType
     {
+        [Column("ID")]
         [Key]
-        public int TypeCode { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Description { get; set; } = string.Empty;
 
@@ -18,7 +19,7 @@ namespace LivestockTracker.Database.Models
 
         public int GetKey()
         {
-            return TypeCode;
+            return Id;
         }
     }
 }

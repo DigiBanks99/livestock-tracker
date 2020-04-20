@@ -16,7 +16,8 @@ namespace LivestockTracker.Mappers
             return new FeedTypeModel
             {
                 Description = right.Description,
-                ID = right.ID
+                Id = right.Id,
+                Deleted = right.Deleted
             };
         }
 
@@ -30,7 +31,7 @@ namespace LivestockTracker.Mappers
             return new FeedType
             {
                 Description = left.Description,
-                ID = left.ID
+                Id = left.Id
             };
         }
     }

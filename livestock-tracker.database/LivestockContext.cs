@@ -10,10 +10,10 @@ namespace LivestockTracker.Database
         {
         }
 
-        public DbSet<AnimalModel> Animal { get; set; } = null!;
+        public DbSet<AnimalModel> Animals { get; set; } = null!;
         public DbSet<MedicalTransactionModel> MedicalTransactions { get; set; } = null!;
         public DbSet<MedicineTypeModel> Medicine { get; set; } = null!;
-        public DbSet<UnitModel> Unit { get; set; } = null!;
+        public DbSet<UnitModel> Units { get; set; } = null!;
         public DbSet<FeedTypeModel> FeedTypes { get; set; } = null!;
         public DbSet<FeedingTransactionModel> FeedingTransactions { get; set; } = null!;
 
@@ -22,28 +22,28 @@ namespace LivestockTracker.Database
             modelBuilder.Entity<MedicalTransactionModel>()
                 .HasOne(m => m.Animal)
                 .WithMany(a => a.MedicalTransactions)
-                .HasForeignKey(m => m.AnimalID);
+                .HasForeignKey(m => m.AnimalId);
             modelBuilder.Entity<MedicalTransactionModel>()
                 .HasOne(m => m.UnitOfMeasurement)
                 .WithMany(u => u.MedicalTransactions)
-                .HasForeignKey(m => m.Unit);
+                .HasForeignKey(m => m.UnitId);
             modelBuilder.Entity<MedicalTransactionModel>()
                 .HasOne(m => m.Medicine)
                 .WithMany(t => t.MedicalTransactions)
-                .HasForeignKey(m => m.MedicineTypeCode);
+                .HasForeignKey(m => m.MedicineId);
 
             modelBuilder.Entity<FeedingTransactionModel>()
                 .HasOne(f => f.Animal)
                 .WithMany(a => a.FeedingTransactions)
-                .HasForeignKey(f => f.AnimalID);
+                .HasForeignKey(f => f.AnimalId);
             modelBuilder.Entity<FeedingTransactionModel>()
                 .HasOne(m => m.UnitOfMeasurement)
                 .WithMany(u => u.FeedingTransactions)
-                .HasForeignKey(m => m.UnitTypeCode);
+                .HasForeignKey(m => m.UnitId);
             modelBuilder.Entity<FeedingTransactionModel>()
-                .HasOne(m => m.Feed)
+                .HasOne(m => m.FeedType)
                 .WithMany(t => t.FeedingTransactions)
-                .HasForeignKey(m => m.FeedID);
+                .HasForeignKey(m => m.FeedTypeId);
 
             base.OnModelCreating(modelBuilder);
         }

@@ -9,8 +9,16 @@ using System.Reflection;
 
 namespace LivestockTracker.Extensions
 {
+    /// <summary>
+    /// Provides extension methods that pertain to Swagger.
+    /// </summary>
     internal static class SwaggerExtensions
     {
+        /// <summary>
+        /// Adds a generated Swagger Doc to the specified <see cref="IServiceCollection"/>.
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         internal static IServiceCollection AddSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(options =>

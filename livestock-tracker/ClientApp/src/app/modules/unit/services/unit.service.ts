@@ -8,7 +8,7 @@ import { Unit } from '@core/models/unit.model';
 @Injectable({
   providedIn: 'root',
 })
-export class UnitService implements CrudService<Unit, number, Unit[]> {
+export class UnitService implements CrudService<Unit, number, Unit[], number> {
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -36,7 +36,8 @@ export class UnitService implements CrudService<Unit, number, Unit[]> {
   }
 }
 
-export class MockUnitService implements CrudService<Unit, number, Unit[]> {
+export class MockUnitService
+  implements CrudService<Unit, number, Unit[], number> {
   getAll(): Observable<Unit[]> {
     return of([]);
   }

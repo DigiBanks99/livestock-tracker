@@ -15,12 +15,12 @@ namespace LivestockTracker.Mappers
 
             return new MedicalTransactionModel
             {
-                AnimalID = right.AnimalID,
-                ID = right.ID,
+                AnimalId = right.AnimalId,
+                Id = right.Id,
                 Dose = right.Dose,
-                MedicineTypeCode = right.MedicineTypeCode,
+                MedicineId = right.MedicineId,
                 TransactionDate = right.TransactionDate,
-                Unit = right.Unit
+                UnitId = right.UnitId
             };
         }
 
@@ -33,12 +33,12 @@ namespace LivestockTracker.Mappers
 
             return new MedicalTransaction
             {
-                AnimalID = left.AnimalID,
-                ID = left.ID,
+                AnimalId = left.AnimalId,
+                Id = left.Id,
                 Dose = left.Dose,
-                MedicineTypeCode = left.MedicineTypeCode,
+                MedicineId = left.MedicineId,
                 TransactionDate = left.TransactionDate,
-                Unit = left.Unit
+                UnitId = left.UnitId
             };
 
         }

@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions.Models;
 using System.Collections.Generic;
 
-namespace LivestockTracker.Models
+namespace LivestockTracker.Models.Paging
 {
     /// <summary>
     /// Wraps data in a pagination model.

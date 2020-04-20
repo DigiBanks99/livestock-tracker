@@ -18,7 +18,7 @@ namespace LivestockTracker.Services
         public IEnumerable<FeedingTransaction> GetByAnimalId(int animalID)
         {
             return Context.FeedingTransactions
-                          .Where(transaction => transaction.AnimalID == animalID)
+                          .Where(transaction => transaction.AnimalId == animalID)
                           .Select(transaction => Mapper.Map(transaction))
                           .ToList();
         }
@@ -28,7 +28,7 @@ namespace LivestockTracker.Services
             cancellationToken.ThrowIfCancellationRequested();
 
             return await Context.FeedingTransactions
-                                .Where(transaction => transaction.AnimalID == animalID)
+                                .Where(transaction => transaction.AnimalId == animalID)
                                 .Select(transaction => Mapper.Map(transaction))
                                 .ToListAsync(cancellationToken)
                                 .ConfigureAwait(false);

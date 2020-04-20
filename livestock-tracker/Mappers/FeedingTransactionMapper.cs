@@ -15,12 +15,12 @@ namespace LivestockTracker.Mappers
 
             return new FeedingTransactionModel
             {
-                AnimalID = right.AnimalID,
-                FeedID = right.FeedID,
-                ID = right.ID,
+                AnimalId = right.AnimalId,
+                FeedTypeId = right.FeedTypeId,
+                Id = right.Id,
                 Quantity = right.Quantity,
                 TransactionDate = right.TransactionDate,
-                UnitTypeCode = right.UnitTypeCode
+                UnitId = right.UnitId
             };
         }
 
@@ -33,12 +33,12 @@ namespace LivestockTracker.Mappers
 
             return new FeedingTransaction
             {
-                AnimalID = left.AnimalID,
-                FeedID = left.FeedID,
-                ID = left.ID,
+                AnimalId = left.AnimalId,
+                FeedTypeId = left.FeedTypeId,
+                Id = left.Id,
                 Quantity = left.Quantity,
                 TransactionDate = left.TransactionDate,
-                UnitTypeCode = left.UnitTypeCode
+                UnitId = left.UnitId
             };
 
         }

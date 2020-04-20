@@ -1,12 +1,13 @@
 <app-feeding-transaction-form
-  [selectedAnimalId]="selectedAnimalId$ | async"
+  [selectedAnimalId]="selectedAnimalId"
   [feedingTransaction]="selectedFeedingTransaction$ | async"
   header="Edit feed transaction"
   successMessage="Feed transaction saved"
   [feedTypes]="feedTypes$ | async"
   [unitTypes]="unitTypes$ | async"
-  [isPending]="isPending$ | async"
+  [isPending]="pending"
   [error]="error$ | async"
   (save)="onSave($event)"
   (navigateBack)="onNavigateBack()"
+  *ngIf="!pending && selectedAnimalId > 0"
 ></app-feeding-transaction-form>

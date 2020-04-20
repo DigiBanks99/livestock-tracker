@@ -18,6 +18,8 @@ export interface CrudActions<T extends KeyEntity<K>, K> {
   deleteItem: (key: K) => PayloadAction<K>;
   apiDeleteItem: (key: K) => PayloadAction<K>;
   fetchItems: () => Action;
+  fetchSingle: <TPayload>(key: TPayload) => PayloadAction<TPayload>;
+  apiFetchSingle: (item: T) => PayloadAction<T>;
   apiError: (error: Error) => PayloadAction<Error>;
 
   apiFetchItems<TData>(data: TData): PayloadAction<TData>;
@@ -95,6 +97,26 @@ function apiFetchItems<TData>(
   };
 }
 
+function fetchSingle<TPayload>(
+  payload: TPayload,
+  typeName: string
+): PayloadAction<TPayload> {
+  return {
+    type: `FETCH_SINGLE_${typeName}`,
+    payload,
+  };
+}
+
+function apiFetchSingle<EntityType>(
+  item: EntityType,
+  typeName: string
+): PayloadAction<EntityType> {
+  return {
+    type: `API_FETCH_SINGLE_${typeName}`,
+    payload: item,
+  };
+}
+
 function apiError(error: Error, typeName: string): PayloadAction<Error> {
   return {
     type: `API_ERROR_${typeName}`,
@@ -118,6 +140,10 @@ export function crudActionsFactory<T extends KeyEntity<K>, K>(
     deleteItem: (key: K): PayloadAction<K> => deleteItem(key, typeName),
     apiDeleteItem: (key: K): PayloadAction<K> => apiDeleteItem(key, typeName),
     fetchItems: (): Action => fetchItems(typeName),
+    fetchSingle: <TPayload>(key: TPayload): PayloadAction<TPayload> =>
+      fetchSingle(key, typeName),
+    apiFetchSingle: (item: T): PayloadAction<T> =>
+      apiFetchSingle(item, typeName),
     apiFetchItems: <TData>(data: TData): PayloadAction<TData> =>
       apiFetchItems(data, typeName),
     apiError: (error: Error): PayloadAction<Error> => apiError(error, typeName),

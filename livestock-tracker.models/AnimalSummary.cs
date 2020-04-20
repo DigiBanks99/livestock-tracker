@@ -1,12 +1,12 @@
 using LivestockTracker.Abstractions.Enums;
-using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Models.Animals;
 using System;
 
 namespace LivestockTracker.Models
 {
     public class AnimalSummary : IAnimalSummary
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         public int Number { get; set; }
 

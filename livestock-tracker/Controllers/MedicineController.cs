@@ -38,7 +38,7 @@ namespace LivestockTracker.Controllers
 
             var addedItem = _medicineService.Add(medicineType);
 
-            return CreatedAtAction(nameof(Get), new { id = addedItem.TypeCode }, medicineType);
+            return CreatedAtAction(nameof(Get), new { id = addedItem.Id }, medicineType);
         }
 
         [HttpPut("{id}")]
@@ -49,7 +49,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (medicineType == null || id != medicineType.TypeCode)
+            if (medicineType == null || id != medicineType.Id)
             {
                 return BadRequest();
             }
@@ -68,7 +68,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != medicineType.TypeCode)
+            if (id != medicineType.Id)
             {
                 return BadRequest();
             }
@@ -95,7 +95,7 @@ namespace LivestockTracker.Controllers
 
             _medicineService.Remove(medicineType);
 
-            return Ok(medicineType.TypeCode);
+            return Ok(medicineType.Id);
         }
     }
 }

@@ -10,10 +10,15 @@ import { Action } from '@ngrx/store';
 
 import { CrudActions, PayloadAction } from './crud.actions';
 
-export class CrudEffects<T extends KeyEntity<K>, K, TGetAll> {
+export class CrudEffects<
+  T extends KeyEntity<K>,
+  K,
+  TGetAll,
+  TFetchSinglePayload
+> {
   constructor(
     protected actions$: Actions,
-    private service: CrudService<T, K, TGetAll>,
+    private service: CrudService<T, K, TGetAll, TFetchSinglePayload>,
     private typeActions: CrudActions<T, K>,
     private typeName: string
   ) {}
@@ -24,6 +29,16 @@ export class CrudEffects<T extends KeyEntity<K>, K, TGetAll> {
       startWith(() => this.typeActions.fetchItems()),
       switchMap((_) => this.service.getAll()),
       map((data: TGetAll) => this.typeActions.apiFetchItems(data)),
+      catchError((error) => this.handleError(error, this.typeActions))
+    )
+  );
+
+  public getSingle$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(`FETCH_SINGLE_${this.typeName}`),
+      map((action: PayloadAction<TFetchSinglePayload>) => action.payload),
+      switchMap((payload: TFetchSinglePayload) => this.service.get(payload)),
+      map((item: T) => this.typeActions.apiFetchSingle(item)),
       catchError((error) => this.handleError(error, this.typeActions))
     )
   );

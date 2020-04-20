@@ -34,7 +34,7 @@ namespace LivestockTracker.Controllers
             if (transaction == null)
                 return NoContent();
 
-            if (transaction.AnimalID != animalId)
+            if (transaction.AnimalId != animalId)
                 return BadRequest();
 
             return Ok(transaction);
@@ -50,7 +50,7 @@ namespace LivestockTracker.Controllers
 
             var addedTransaction = _feedingTransactionService.Add(feedingTransaction);
 
-            return CreatedAtAction("Get", new { id = addedTransaction.ID }, addedTransaction);
+            return CreatedAtAction("Get", new { id = addedTransaction.Id }, addedTransaction);
         }
 
         [HttpPut("{id}")]
@@ -61,7 +61,7 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            if (id != feedingTransaction.ID)
+            if (id != feedingTransaction.Id)
             {
                 return BadRequest();
             }
@@ -112,7 +112,7 @@ namespace LivestockTracker.Controllers
 
             _feedingTransactionService.Remove(transaction);
 
-            return Ok(transaction.ID);
+            return Ok(transaction.Id);
         }
     }
 }

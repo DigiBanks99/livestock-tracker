@@ -7,7 +7,7 @@ import { AnimalKey } from './constants';
 
 export enum ActionTypes {
   SELECT_ANIMAL = 'SELECT_ANIMAL',
-  FETCH_ANIMAL = 'FETCH_ANIMAL',
+  FETCH_ANIMALS = 'FETCH_ANIMAL',
   API_FETCH_ANIMAL = 'API_FETCH_ANIMAL',
   SELECT_ANIMAL_PAGE = 'SELECT_ANIMAL_PAGE',
 }
@@ -21,8 +21,8 @@ export class SelectAnimal implements Action {
   }
 }
 
-export class FetchAnimal implements Action {
-  readonly type = ActionTypes.FETCH_ANIMAL;
+export class FetchAnimals implements Action {
+  readonly type = ActionTypes.FETCH_ANIMALS;
   pageNumber: number;
   pageSize: number;
 

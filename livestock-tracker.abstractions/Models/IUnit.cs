@@ -8,7 +8,7 @@ namespace LivestockTracker.Abstractions.Models
         /// <summary>
         /// A key that uniquely identifies the unit of measurement.
         /// </summary>
-        int TypeCode { get; }
+        int Id { get; }
 
         /// <summary>
         /// A human readable description of the unit of measurement.

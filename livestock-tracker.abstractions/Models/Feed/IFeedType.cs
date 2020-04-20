@@ -1,4 +1,4 @@
-namespace LivestockTracker.Abstractions.Models
+namespace LivestockTracker.Abstractions.Models.Feed
 {
     /// <summary>
     /// Defines the properties of a type of feed.
@@ -8,11 +8,16 @@ namespace LivestockTracker.Abstractions.Models
         /// <summary>
         /// A key that uniquely identifies the type of feed.
         /// </summary>
-        int ID { get; }
+        int Id { get; }
 
         /// <summary>
         /// A human readable description of the type of feed.
         /// </summary>
         string Description { get; }
+
+        /// <summary>
+        /// A flag to indicate if the record has been deleted.
+        /// </summary>
+        bool Deleted { get; }
     }
 }

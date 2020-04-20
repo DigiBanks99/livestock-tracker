@@ -4,9 +4,10 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { CrudService } from '@core/models/crud-service.interface';
 import { FeedType } from '@core/models/feed-type.model';
+import { PagedData } from '@core/models/paged-data.model';
 
 export interface IFeedTypeService {
-  getFeedTypes(): Observable<FeedType[]>;
+  getFeedTypes(): Observable<PagedData<FeedType>>;
   getFromServer(id: number): Observable<FeedType>;
   add(feedType: FeedType): Observable<FeedType>;
   update(feedType: FeedType): Observable<FeedType>;
@@ -15,17 +16,34 @@ export interface IFeedTypeService {
 
 @Injectable()
 export class FeedTypeService
-  implements IFeedTypeService, CrudService<FeedType, number, FeedType[]> {
+  implements
+    IFeedTypeService,
+    CrudService<FeedType, number, PagedData<FeedType>, number> {
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.apiUrl = baseUrl + 'feedType/';
   }
 
-  public getAll = (): Observable<FeedType[]> => this.getFeedTypes();
+  public getAll = (
+    pageNumber = 0,
+    pageSize = 10,
+    includeDeleted = false
+  ): Observable<PagedData<FeedType>> =>
+    this.getFeedTypes(pageNumber, pageSize, includeDeleted);
 
-  public getFeedTypes(): Observable<FeedType[]> {
-    return this.http.get<FeedType[]>(this.apiUrl);
+  public getFeedTypes(
+    pageNumber = 0,
+    pageSize = 10,
+    includeDeleted = false
+  ): Observable<PagedData<FeedType>> {
+    return this.http.get<PagedData<FeedType>>(this.apiUrl, {
+      params: {
+        pageNumber: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+        includeDeleted: includeDeleted.toString(),
+      },
+    });
   }
 
   public get = (key: number): Observable<FeedType> => this.getFromServer(key);
@@ -39,7 +57,7 @@ export class FeedTypeService
   }
 
   public update(feedType: FeedType): Observable<FeedType> {
-    return this.http.patch<FeedType>(this.apiUrl + feedType.id, feedType);
+    return this.http.put<FeedType>(this.apiUrl + feedType.id, feedType);
   }
 
   public delete(id: number): Observable<number> {
@@ -54,8 +72,14 @@ export class MockFeedTypeService implements IFeedTypeService {
     this.feedTypesChanged = new Subject<FeedType[]>();
   }
 
-  getFeedTypes(): Observable<FeedType[]> {
-    return of([]);
+  getFeedTypes(): Observable<PagedData<FeedType>> {
+    return of({
+      data: [],
+      currentPage: 0,
+      pageCount: 0,
+      pageSize: 0,
+      totalRecordCount: 0,
+    });
   }
 
   getFromServer(id: number): Observable<FeedType> {

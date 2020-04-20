@@ -8,12 +8,13 @@ import { Unit } from '@core/models/unit.model';
 import { AppState } from '@core/store';
 import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
 import { feedingTransactionStore, feedTypeStore } from '@feed-store';
+import { FetchFeedTypes } from '@feed/store/feed-type.actions';
 import { actions } from '@feed/store/feeding-transaction.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-feeding-transaction-new',
-  templateUrl: './feeding-transaction-new.component.html'
+  templateUrl: './feeding-transaction-new.component.html',
 })
 export class FeedingTransactionNewComponent implements OnInit {
   public selectedAnimalId$: Observable<number>;
@@ -25,6 +26,7 @@ export class FeedingTransactionNewComponent implements OnInit {
   constructor(private store: Store<AppState>, private router: Router) {}
 
   public ngOnInit() {
+    this.store.dispatch(new FetchFeedTypes(0, 100, false));
     this.selectedAnimalId$ = this.store.pipe(select(getSelectedAnimalId));
     this.isPending$ = this.store.pipe(
       select(

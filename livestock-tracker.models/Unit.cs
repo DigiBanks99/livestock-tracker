@@ -8,7 +8,7 @@ namespace LivestockTracker.Models
     {
         [Key]
         [JsonPropertyName("id")]
-        public int TypeCode { get; set; }
+        public int Id { get; set; }
         [Required]
         public string Description { get; set; } = string.Empty;
     }

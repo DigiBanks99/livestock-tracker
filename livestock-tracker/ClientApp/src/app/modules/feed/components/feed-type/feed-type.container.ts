@@ -1,11 +1,17 @@
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedTypeState } from '@core/store';
 import { feedTypeStore } from '@feed-store';
-import { actions, SelectFeedType } from '@feed/store/feed-type.actions';
+import {
+  actions,
+  FetchFeedTypes,
+  SelectFeedType
+} from '@feed/store/feed-type.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -13,31 +19,61 @@ import { select, Store } from '@ngrx/store';
   template: `
     <app-feed-type
       [feedTypes]="feedTypes$ | async"
+      [pageNumber]="currentPage$ | async"
+      [pageSize]="pageSize$ | async"
+      [recordCount]="recordCount$ | async"
       (add)="onAdd($event)"
       (remove)="onRemove($event)"
       (save)="onSave($event)"
+      (page)="onPage($event)"
     ></app-feed-type>
-  `
+  `,
 })
-export class FeedTypeContainerComponent implements OnInit {
-  public feedTypes$: Observable<FeedType[]>;
-  public isPending$: Observable<boolean>;
-  public error$: Observable<Error>;
+export class FeedTypeContainerComponent implements OnInit, OnDestroy {
+  private destroyed$ = new Subject<void>();
+
+  public feedTypes$: Observable<FeedType[]> = EMPTY;
+  public isPending$: Observable<boolean> = EMPTY;
+  public error$: Observable<Error> = EMPTY;
+  public currentPage$: Observable<number> = EMPTY;
+  public pageSize$: Observable<number> = EMPTY;
+  public recordCount$: Observable<number> = EMPTY;
 
   constructor(private store: Store<FeedTypeState>, private router: Router) {
     this.feedTypes$ = this.store.pipe(
-      select(feedTypeStore.selectors.getFeedTypes)
+      select(feedTypeStore.selectors.getFeedTypes),
+      takeUntil(this.destroyed$)
     );
     this.isPending$ = this.store.pipe(
-      select(feedTypeStore.selectors.getFeedTypePending)
+      select(feedTypeStore.selectors.getFeedTypePending),
+      takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(
-      select(feedTypeStore.selectors.getFeedTypeError)
+      select(feedTypeStore.selectors.getFeedTypeError),
+      takeUntil(this.destroyed$)
+    );
+
+    this.pageSize$ = this.store.pipe(
+      select(feedTypeStore.selectors.getPageSize),
+      takeUntil(this.destroyed$)
+    );
+    this.currentPage$ = this.store.pipe(
+      select(feedTypeStore.selectors.getCurrentPage),
+      takeUntil(this.destroyed$)
+    );
+    this.recordCount$ = this.store.pipe(
+      select(feedTypeStore.selectors.getRecordCount),
+      takeUntil(this.destroyed$)
     );
   }
 
   public ngOnInit(): void {
-    actions.fetchItems();
+    this.store.dispatch(new FetchFeedTypes());
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   public onAdd(feedType: FeedType) {
@@ -55,5 +91,11 @@ export class FeedTypeContainerComponent implements OnInit {
 
   public onSave(feedType: FeedType) {
     this.store.dispatch(actions.updateItem(feedType, feedType.id));
+  }
+
+  public onPage(pageEvent: PageEvent) {
+    this.store.dispatch(
+      new FetchFeedTypes(pageEvent.pageIndex, pageEvent.pageSize)
+    );
   }
 }

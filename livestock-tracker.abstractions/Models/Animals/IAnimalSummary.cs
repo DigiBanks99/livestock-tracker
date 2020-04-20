@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions.Enums;
 using System;
 
-namespace LivestockTracker.Abstractions.Models
+namespace LivestockTracker.Abstractions.Models.Animals
 {
     /// <summary>
     /// Defines the most basic properties that define an individual animal.
@@ -11,7 +11,7 @@ namespace LivestockTracker.Abstractions.Models
         /// <summary>
         /// Uniquely identifies the animal.
         /// </summary>
-        int ID { get; }
+        int Id { get; }
 
         /// <summary>
         /// The human readable number assigned to the animal.
