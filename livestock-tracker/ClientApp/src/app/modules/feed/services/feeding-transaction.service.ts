@@ -1,15 +1,11 @@
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { CrudService } from '@core/models/crud-service.interface';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { PagedData } from '@core/models/paged-data.model';
-import { AppState } from '@core/store';
-import { getSelectedAnimalId } from '@core/store/selectors';
 import { FetchSingleFeedTransactionParams } from '@feed/store/feeding-transaction.actions';
-import { select, Store } from '@ngrx/store';
 
 export interface IFeedingTransactionService
   extends CrudService<
@@ -23,11 +19,7 @@ export interface IFeedingTransactionService
 export class FeedingTransactionService implements IFeedingTransactionService {
   private readonly apiUrl: string;
 
-  constructor(
-    private http: HttpClient,
-    @Inject('BASE_URL') baseUrl: string,
-    private store: Store<AppState>
-  ) {
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.apiUrl = baseUrl + 'feedingTransaction/';
   }
 
@@ -76,7 +68,10 @@ export class FeedingTransactionService implements IFeedingTransactionService {
   public update(
     feedingTransaction: FeedingTransaction
   ): Observable<FeedingTransaction> {
-    return this.http.patch<FeedingTransaction>(this.apiUrl, feedingTransaction);
+    return this.http.put<FeedingTransaction>(
+      `${this.apiUrl}${feedingTransaction.id}`,
+      feedingTransaction
+    );
   }
 
   public delete(key: number): Observable<number> {

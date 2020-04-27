@@ -1,7 +1,8 @@
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import { filter, takeUntil, tap } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { FetchAnimals } from '@animal/store/animal.actions';
 import { FeedType } from '@core/models/feed-type.model';
@@ -15,7 +16,7 @@ import { feedingTransactionStore, feedTypeStore } from '@feed-store';
 import { FetchFeedTypes } from '@feed/store/feed-type.actions';
 import {
   actions,
-  FetchFeedingTransaction,
+  FetchFeedingTransaction as FetchFeedingTransactions,
   SelectFeedTransaction
 } from '@feed/store/feeding-transaction.actions';
 import { select, Store } from '@ngrx/store';
@@ -33,6 +34,7 @@ import { select, Store } from '@ngrx/store';
       [recordCount]="recordCount$ | async"
       (add)="onAddTransaction($event)"
       (delete)="onDelete($event)"
+      (page)="onPage($event)"
     ></app-feeding-transaction>
   `,
 })
@@ -47,13 +49,23 @@ export class FeedingTransactionContainerComponent implements OnInit, OnDestroy {
   public pageSize$: Observable<number> = EMPTY;
   public recordCount$: Observable<number> = EMPTY;
 
-  constructor(private store: Store<AppState>, private router: Router) {}
+  public selectedAnimal: Animal;
+
+  constructor(private store: Store<AppState>, private router: Router) {
+    this.selectedAnimal = null;
+  }
 
   public ngOnInit(): void {
-    this.store.dispatch(new FetchAnimals(0, environment.pageSize));
-    this.store.dispatch(new FetchFeedTypes(0, 50, true));
+    this.store.dispatch(new FetchFeedTypes(0, environment.pageSize, true));
     this.selectedAnimal$ = this.store.pipe(
       select(getSelectedAnimal),
+      filter((animal) => animal !== null && animal !== undefined),
+      tap((animal: Animal) => {
+        this.selectedAnimal = animal;
+        this.store.dispatch(
+          new FetchFeedingTransactions(animal.id, 0, environment.pageSize)
+        );
+      }),
       takeUntil(this.destroyed$)
     );
     this.feedingTransactions$ = this.store.pipe(
@@ -66,28 +78,17 @@ export class FeedingTransactionContainerComponent implements OnInit, OnDestroy {
     );
     this.units$ = this.store.pipe(select(getUnits), takeUntil(this.destroyed$));
     this.pageNumber$ = this.store.pipe(
-      select(feedTypeStore.selectors.getCurrentPage),
+      select(feedingTransactionStore.selectors.getCurrentPage),
       takeUntil(this.destroyed$)
     );
     this.pageSize$ = this.store.pipe(
-      select(feedTypeStore.selectors.getPageSize),
+      select(feedingTransactionStore.selectors.getPageSize),
       takeUntil(this.destroyed$)
     );
     this.recordCount$ = this.store.pipe(
-      select(feedTypeStore.selectors.getRecordCount),
+      select(feedingTransactionStore.selectors.getRecordCount),
       takeUntil(this.destroyed$)
     );
-
-    this.selectedAnimal$
-      .pipe(
-        filter((animal) => animal !== null && animal !== undefined),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe((animal: Animal) => {
-        this.store.dispatch(
-          new FetchFeedingTransaction(animal.id, 0, environment.pageSize)
-        );
-      });
   }
 
   public ngOnDestroy(): void {
@@ -111,5 +112,15 @@ export class FeedingTransactionContainerComponent implements OnInit, OnDestroy {
 
   public onDelete(id: number) {
     this.store.dispatch(actions.deleteItem(id));
+  }
+
+  public onPage(pageEvent: PageEvent): void {
+    this.store.dispatch(
+      new FetchFeedingTransactions(
+        this.selectedAnimal.id,
+        pageEvent.pageIndex,
+        pageEvent.pageSize
+      )
+    );
   }
 }

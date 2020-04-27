@@ -81,7 +81,7 @@ export class FeedingTransactionFormComponent
     }
 
     this.feedForm.get('id').setValue(this.feedingTransaction.id);
-    this.feedForm.get('animalId').setValue(this.feedingTransaction.animalId);
+    this.feedForm.get('animalId').setValue(animalId);
     this.feedForm
       .get('transactionDate')
       .setValue(moment(this.feedingTransaction.transactionDate));

@@ -42,7 +42,7 @@ namespace LivestockTracker.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(IPagedData<FeedType>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetViewable(int pageNumber = 0, int pageSize = 100, bool includeDeleted = false)
+        public async Task<IActionResult> GetAll(int pageNumber = 0, int pageSize = 100, bool includeDeleted = false)
         {
             Logger.LogInformation($"Requesting {pageSize} feed types from page {pageNumber}...");
 
@@ -103,9 +103,9 @@ namespace LivestockTracker.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(FeedType), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Save([FromBody] FeedType feedType)
+        public async Task<IActionResult> Add([FromBody] FeedType feedType)
         {
-            Logger.LogInformation("Requesting the creation of a new feed type...");
+            Logger.LogInformation($"Requesting the creation of a new feed type with details {feedType}...");
 
             if (!ModelState.IsValid)
             {
@@ -115,7 +115,7 @@ namespace LivestockTracker.Controllers
             var addedItem = await _feedTypeCrudService.AddAsync(feedType, RequestAbortToken)
                                                       .ConfigureAwait(false);
 
-            return CreatedAtAction(nameof(Get), new { id = addedItem.Id }, feedType);
+            return CreatedAtAction(nameof(Get), new { id = addedItem.Id }, addedItem);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace LivestockTracker.Controllers
         [ProducesResponseType(typeof(FeedType), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Put(int id, [Required][FromBody] FeedType feedType)
+        public async Task<IActionResult> Update(int id, [Required][FromBody] FeedType feedType)
         {
             Logger.LogInformation($"Requesting updates to the feed type with ID {id}...");
 

@@ -48,8 +48,6 @@ export class AnimalListComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    this.store.dispatch(new FetchAnimals());
-
     this.pageSize$ = this.store.pipe(
       select(animalStore.selectors.getPageSize),
       takeUntil(this.destroyed$)

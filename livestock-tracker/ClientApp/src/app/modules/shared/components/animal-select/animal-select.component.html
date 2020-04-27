@@ -1,4 +1,4 @@
-<div class="animal-select-container">
+<mat-form-field class="animal-select-container">
   <span class="animal-select-svg">
     <mat-icon svgIcon="{{ getSvgIcon(currentAnimal) }}"></mat-icon>
   </span>
@@ -13,8 +13,8 @@
       [value]="animal.id"
     >
       <mat-icon svgIcon="{{ getSvgIcon(animal) }}"></mat-icon>
-      {{ animal.number }}
-      {{ animal.subspecies ? ' - ' + animal.subspecies : '' }}
+      <span>{{ animal.number }}</span>
+      <span>{{ animal.subspecies ? ' - ' + animal.subspecies : '' }}</span>
     </mat-option>
   </mat-select>
-</div>
+</mat-form-field>
