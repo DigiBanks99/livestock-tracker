@@ -40,13 +40,6 @@ export class FeedingTransactionEffects extends CrudEffects<
     );
   }
 
-  @Effect()
-  selectedAnimalChanged$: Observable<Action> = this.actions$.pipe(
-    ofType(AnimalActionTypes.SELECT_ANIMAL),
-    map((action: SelectAnimal) => action.key),
-    map((_) => feedingTransactionActions.fetchItems())
-  );
-
   getAll$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(ActionTypes.FETCH_FEED_TRANSACTION),

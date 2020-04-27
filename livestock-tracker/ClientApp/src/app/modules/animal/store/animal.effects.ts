@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { AnimalService } from '@animal/services/animal.service';
@@ -11,6 +11,7 @@ import {
 import { Animal } from '@app/core/models/livestock.model';
 import { PagedData } from '@core/models/paged-data.model';
 import { CrudEffects } from '@core/store/crud.effects';
+import { environment } from '@env/environment';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
@@ -33,6 +34,7 @@ export class AnimalEffects extends CrudEffects<
   public getAll$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(ActionTypes.FETCH_ANIMALS),
+      startWith(new FetchAnimals(0, environment.pageSize)),
       switchMap((action: FetchAnimals) =>
         this.animalService.getAll(action.pageSize, action.pageNumber)
       ),

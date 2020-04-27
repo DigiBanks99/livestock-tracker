@@ -62,8 +62,8 @@ export class FeedingTransactionComponent implements OnDestroy {
     this.add.emit(this.currentAnimal.id);
   }
 
-  public onDelete(feedingTransaction: FeedingTransaction) {
-    this.delete.emit(feedingTransaction.id);
+  public onDelete(id: number) {
+    this.delete.emit(id);
   }
 
   public onPage(page: PageEvent) {

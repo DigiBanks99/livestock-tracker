@@ -1,5 +1,8 @@
 <h1>Feeding transactions</h1>
 <div class="feeding-transaction-list mat-elevation-z8">
+  <mat-toolbar>
+    <app-animal-select-container></app-animal-select-container>
+  </mat-toolbar>
   <table
     mat-table
     [dataSource]="feedingTransactions"
