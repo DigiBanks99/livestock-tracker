@@ -80,12 +80,13 @@ namespace LivestockTracker.Logic.Services.Feed
         public virtual async Task<IEnumerable<IFeedType>> FindAsync<TSortProperty>(Expression<Func<IFeedType, bool>> filter,
                                                                                    Expression<Func<IFeedType, TSortProperty>> sort,
                                                                                    ListSortDirection sortDirection,
-                                                                                   CancellationToken cancellationToken) where TSortProperty : IConvertible
+                                                                                   CancellationToken cancellationToken)
+            where TSortProperty : IComparable
         {
             Logger.LogInformation("Finding feed types...");
             return await LivestockContext.FeedTypes
-                                         .ConstrainedFind(filter, sort, sortDirection)
                                          .Where(feedType => !feedType.Deleted)
+                                         .ConstrainedFind(filter, sort, sortDirection)
                                          .Select(feedType => Mapper.Map(feedType))
                                          .Select(feedType => Mapper.Map(feedType))
                                          .ToListAsync(cancellationToken)

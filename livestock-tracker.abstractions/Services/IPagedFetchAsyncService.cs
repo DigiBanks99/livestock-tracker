@@ -29,7 +29,7 @@ namespace LivestockTracker.Abstractions.Services
                                                          ListSortDirection sortDirection,
                                                          IPagingOptions pagingOptions,
                                                          CancellationToken cancellationToken)
-            where TSortProperty : IConvertible;
+            where TSortProperty : IComparable;
 
         /// <summary>
         /// Retrieves a paged collection of items sorted as requested.
@@ -44,6 +44,6 @@ namespace LivestockTracker.Abstractions.Services
                                                          ListSortDirection sortDirection,
                                                          IPagingOptions pagingOptions,
                                                          CancellationToken cancellationToken)
-            where TSortProperty : IConvertible;
+            where TSortProperty : IComparable;
     }
 }

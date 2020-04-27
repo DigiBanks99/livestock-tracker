@@ -1,5 +1,6 @@
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { FeedingTransactionState } from '@core/store';
+import { PagedData } from '@core/models/paged-data.model';
+import { FeedingTransactionState, PayloadAction } from '@core/store';
 import { crudReducer } from '@core/store/crud.reducer';
 import {
   ActionTypes,
@@ -14,7 +15,7 @@ export const feedingTransactionAdapter = createEntityAdapter<
   FeedingTransaction
 >({
   selectId: (transaction: FeedingTransaction) => transaction.id,
-  sortComparer: false
+  sortComparer: false,
 });
 
 export const initialState: FeedingTransactionState = feedingTransactionAdapter.getInitialState(
@@ -22,7 +23,10 @@ export const initialState: FeedingTransactionState = feedingTransactionAdapter.g
     selectedId: null,
     isPending: false,
     isFetching: false,
-    error: null
+    error: null,
+    pageNumber: 0,
+    pageSize: 10,
+    recordCount: 0,
   }
 );
 
@@ -34,14 +38,34 @@ export function feedingTransactionReducer(
     case ActionTypes.SELECT_FEED_TRANSACTION:
       return {
         ...state,
-        selectedId: (<SelectFeedTransaction>action).transactionId
+        selectedId: (<SelectFeedTransaction>action).transactionId,
+      };
+    case ActionTypes.API_FETCH_FEED_TRANSACTION:
+      const apiAction = <PayloadAction<PagedData<FeedingTransaction>>>action;
+      const payloadAction: PayloadAction<FeedingTransaction[]> = {
+        type: ActionTypes.API_FETCH_FEED_TRANSACTION,
+        payload: apiAction.payload.data,
+      };
+      return {
+        ...crudReducer(
+          FeedingTransactionKey,
+          feedingTransactionAdapter,
+          state,
+          payloadAction
+        ),
+        pageNumber: apiAction.payload.currentPage,
+        pageSize: apiAction.payload.pageSize,
+        recordCount: apiAction.payload.totalRecordCount,
       };
     default:
-      return crudReducer(
-        FeedingTransactionKey,
-        feedingTransactionAdapter,
-        state,
-        action
-      );
+      return {
+        ...state,
+        ...crudReducer(
+          FeedingTransactionKey,
+          feedingTransactionAdapter,
+          state,
+          action
+        ),
+      };
   }
 }

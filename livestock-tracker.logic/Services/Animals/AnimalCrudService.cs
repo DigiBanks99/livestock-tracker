@@ -79,7 +79,8 @@ namespace LivestockTracker.Logic.Services.Animals
         public virtual async Task<IEnumerable<IAnimal>> FindAsync<TSortProperty>(Expression<Func<IAnimal, bool>> filter,
                                                                                  Expression<Func<IAnimal, TSortProperty>> sort,
                                                                                  ListSortDirection sortDirection,
-                                                                                 CancellationToken cancellationToken) where TSortProperty : IConvertible
+                                                                                 CancellationToken cancellationToken)
+            where TSortProperty : IComparable
         {
             Logger.LogInformation("Finding animals...");
             var query = LivestockContext.Animals

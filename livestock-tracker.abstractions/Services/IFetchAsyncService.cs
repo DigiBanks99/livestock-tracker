@@ -43,6 +43,6 @@ namespace LivestockTracker.Abstractions.Services
                                                          Expression<Func<TData, TSortProperty>> sort,
                                                          ListSortDirection sortDirection,
                                                          CancellationToken cancellationToken)
-            where TSortProperty : IConvertible;
+            where TSortProperty : IComparable;
     }
 }

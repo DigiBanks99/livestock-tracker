@@ -27,12 +27,14 @@ namespace LivestockTracker
         {
             services.AddSingleton<IMapper<IAnimalSummary, AnimalSummary>, AnimalSummaryMapper>()
                     .AddSingleton<IMapper<AnimalModel, IAnimal>, AnimalMapper>()
-                    .AddSingleton<IMapper<FeedTypeModel, IFeedType>, FeedTypeEntityMapper>()
                     .AddSingleton<IMapper<IFeedType, FeedType>, FeedTypeMapper>()
+                    .AddSingleton<IMapper<FeedTypeModel, IFeedType>, FeedTypeEntityMapper>()
+                    .AddSingleton<IMapper<FeedingTransactionModel, IFeedingTransaction>, FeedingTransactionEntityMapper>()
                     .AddScoped<IAnimalCrudService, AnimalCrudService>()
                     .AddScoped<IAnimalSearchService, AnimalSearchService>()
                     .AddScoped<IFeedTypeSearchService, FeedTypeSearchService>()
-                    .AddScoped<IFeedTypeCrudService, FeedTypeCrudService>();
+                    .AddScoped<IFeedTypeCrudService, FeedTypeCrudService>()
+                    .AddScoped<IFeedingTransactionCrudService, FeedingTransactionCrudService>();
 
             return services;
         }

@@ -5,7 +5,6 @@ using LivestockTracker.Models.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
@@ -97,7 +96,7 @@ namespace LivestockTracker.Controllers
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddAnimal([Required][FromBody]Animal animal)
         {
-            Logger.LogInformation("Requesting the creation of a new animal...");
+            Logger.LogInformation($"Requesting the creation of a new animal {animal}...");
 
             if (!ModelState.IsValid)
             {
@@ -121,7 +120,7 @@ namespace LivestockTracker.Controllers
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateAnimal([FromRoute] int id, [Required][FromBody]Animal animal)
         {
-            Logger.LogInformation($"Requesting updates to the animal with ID {id}...");
+            Logger.LogInformation($"Requesting updates to the animal with ID {id} with body {animal}...");
 
             if (animal == null)
             {

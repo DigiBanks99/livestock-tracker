@@ -9,12 +9,12 @@ const getFeedingTransactionState = createFeatureSelector<
 const {
   selectAll: getAllFeedingTransactions,
   selectEntities: getAllFeedingTransactionEntities,
-  selectTotal: getFeedingTransactionCount
+  selectTotal: getFeedingTransactionCount,
 } = feedingTransactionAdapter.getSelectors(getFeedingTransactionState);
 
 const getSelectedFeedingTransactionId = createSelector(
   getFeedingTransactionState,
-  state => {
+  (state) => {
     return state.selectedId;
   }
 );
@@ -29,20 +29,39 @@ const getSelectedFeedingTransaction = createSelector(
 
 const getFeedingTransactionPendingState = createSelector(
   getFeedingTransactionState,
-  state => state.isPending
+  (state) => state.isPending
+);
+
+const getPageSize = createSelector(
+  getFeedingTransactionState,
+  (state) => state.pageSize
+);
+
+const getCurrentPage = createSelector(
+  getFeedingTransactionState,
+  (state) => state.pageNumber
+);
+
+const getRecordCount = createSelector(
+  getFeedingTransactionState,
+  (state) => state.recordCount
 );
 
 const getFeedingTransactionErrorState = createSelector(
   getFeedingTransactionState,
-  state => state.error
+  (state) => state.error
 );
 
 export const selectors = {
+  getFeedingTransactionState,
   getAllFeedingTransactions,
   getAllFeedingTransactionEntities,
   getFeedingTransactionCount,
   getFeedingTransactionErrorState,
   getFeedingTransactionPendingState,
   getSelectedFeedingTransactionId,
-  getSelectedFeedingTransaction
+  getSelectedFeedingTransaction,
+  getPageSize,
+  getCurrentPage,
+  getRecordCount,
 };
