@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { CrudService } from '@core/models/crud-service.interface';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
+import { PagedData } from '@core/models/paged-data.model';
 import { AppState } from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
 import { FetchSingleFeedTransactionParams } from '@feed/store/feeding-transaction.actions';
@@ -14,7 +15,7 @@ export interface IFeedingTransactionService
   extends CrudService<
     FeedingTransaction,
     number,
-    FeedingTransaction[],
+    PagedData<FeedingTransaction>,
     FetchSingleFeedTransactionParams
   > {}
 
@@ -30,12 +31,19 @@ export class FeedingTransactionService implements IFeedingTransactionService {
     this.apiUrl = baseUrl + 'feedingTransaction/';
   }
 
-  public getAll(): Observable<FeedingTransaction[]> {
-    return this.store.pipe(
-      select(getSelectedAnimalId),
-      switchMap((animalId: number) =>
-        this.http.get<FeedingTransaction[]>(`${this.apiUrl}${animalId}`)
-      )
+  public getAll(
+    animalId: number = 0,
+    pageNumber: number = 0,
+    pageSize: number = 100
+  ): Observable<PagedData<FeedingTransaction>> {
+    return this.http.get<PagedData<FeedingTransaction>>(
+      `${this.apiUrl}${animalId}`,
+      {
+        params: {
+          pageSize: pageSize.toString(),
+          pageNumber: pageNumber.toString(),
+        },
+      }
     );
   }
 
@@ -91,8 +99,14 @@ export class MockFeedingTransactionService
     return of(null);
   }
 
-  public getAll(): Observable<FeedingTransaction[]> {
-    return of([]);
+  public getAll(): Observable<PagedData<FeedingTransaction>> {
+    return of({
+      data: [],
+      currentPage: 0,
+      pageCount: 0,
+      pageSize: 0,
+      totalRecordCount: 0,
+    });
   }
 
   public add(

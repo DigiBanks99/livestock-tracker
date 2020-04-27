@@ -6,7 +6,6 @@ namespace LivestockTracker.Models
 {
     public class FeedingTransaction : IFeedingTransaction
     {
-        [Key]
         public int Id { get; set; }
         [Required]
         public int AnimalId { get; set; }
@@ -18,5 +17,6 @@ namespace LivestockTracker.Models
         public decimal Quantity { get; set; }
         [Required]
         public int UnitId { get; set; }
+        public IFeedType FeedType { get; set; } = new FeedType();
     }
 }

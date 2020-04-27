@@ -56,10 +56,10 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
   <mat-paginator
-    [pageIndex]="0"
-    [pageSize]="10"
+    [pageIndex]="pageNumber"
+    [pageSize]="pageSize"
     [pageSizeOptions]="[5, 10, 25, 50]"
-    [length]="feedingTransactions.length"
+    [length]="recordCount"
     (page)="onPage($event)"
   ></mat-paginator>
 </div>

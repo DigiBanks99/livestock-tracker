@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace LivestockTracker.Models
 {
-    [DebuggerDisplay("{ID} - {Description} [Deleted: {Deleted]")]
+    [DebuggerDisplay("{Id} - {Description} [Deleted: {Deleted]")]
     public class FeedType : IFeedType
     {
         public int Id { get; set; }

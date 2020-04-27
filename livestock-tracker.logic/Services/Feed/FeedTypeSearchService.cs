@@ -65,7 +65,7 @@ namespace LivestockTracker.Logic.Services.Feed
                                                                                   ListSortDirection sortDirection,
                                                                                   IPagingOptions pagingOptions,
                                                                                   CancellationToken cancellationToken)
-            where TSortProperty : IConvertible
+            where TSortProperty : IComparable
         {
             Logger.LogInformation($"Finding {pagingOptions.PageSize} feed types for page {pagingOptions.PageNumber}...");
             var data = await LivestockContext.FeedTypes
@@ -97,7 +97,7 @@ namespace LivestockTracker.Logic.Services.Feed
                                                                             ListSortDirection sortDirection,
                                                                             IPagingOptions pagingOptions,
                                                                             CancellationToken cancellationToken)
-            where TSortProperty : IConvertible
+            where TSortProperty : IComparable
         {
             return FindAsync(_ => true, sort, sortDirection, pagingOptions, cancellationToken);
         }
@@ -114,7 +114,8 @@ namespace LivestockTracker.Logic.Services.Feed
         public virtual async Task<IEnumerable<IFeedType>> FindAsync<TSortProperty>(Expression<Func<IFeedType, bool>> filter,
                                                                                    Expression<Func<IFeedType, TSortProperty>> sort,
                                                                                    ListSortDirection sortDirection,
-                                                                                   CancellationToken cancellationToken) where TSortProperty : IConvertible
+                                                                                   CancellationToken cancellationToken)
+            where TSortProperty : IComparable
         {
             Logger.LogInformation($"Finding feed types...");
             return await LivestockContext.FeedTypes

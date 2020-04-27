@@ -36,5 +36,10 @@ namespace LivestockTracker.Abstractions.Models.Feed
         /// The unit of measurement for the <seealso cref="Quantity"/>.
         /// </summary>
         int UnitId { get; }
+
+        /// <summary>
+        /// The lookup object for the feed type.
+        /// </summary>
+        IFeedType FeedType { get; }
     }
 }

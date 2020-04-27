@@ -32,6 +32,9 @@ export class FeedingTransactionComponent implements OnDestroy {
   @Input() public feedingTransactions: FeedingTransaction[];
   @Input() public feedTypes: FeedType[];
   @Input() public unitTypes: Unit[];
+  @Input() public pageNumber = 0;
+  @Input() public pageSize = 100;
+  @Input() public recordCount: number;
   @Output() public add = new EventEmitter<number>();
   @Output() public delete = new EventEmitter<number>();
   @Output() public page = new EventEmitter<PageEvent>();

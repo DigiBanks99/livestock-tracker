@@ -16,6 +16,7 @@ namespace LivestockTracker.Database.Models
         [Required]
         public int AnimalId { get; set; }
         [Column("FeedTypeID")]
+        [ForeignKey(nameof(FeedType))]
         [Required]
         public int FeedTypeId { get; set; }
         [Required]
@@ -28,7 +29,7 @@ namespace LivestockTracker.Database.Models
 
         public AnimalModel Animal { get; internal set; } = null!;
         public UnitModel UnitOfMeasurement { get; internal set; } = null!;
-        public FeedTypeModel FeedType { get; internal set; } = null!;
+        public IFeedType FeedType { get; internal set; } = null!;
 
         public int GetKey()
         {

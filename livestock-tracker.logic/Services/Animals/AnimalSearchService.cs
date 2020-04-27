@@ -64,13 +64,13 @@ namespace LivestockTracker.Logic.Services.Animals
                                                                                 Expression<Func<IAnimalSummary, TSortProperty>> sort,
                                                                                 ListSortDirection sortDirection,
                                                                                 CancellationToken cancellationToken)
-            where TSortProperty : IConvertible
+            where TSortProperty : IComparable
         {
             Logger.LogInformation($"Finding summarized animals...");
             return await LivestockContext.ConstrainedFind(filter, sort, sortDirection)
-                                          .Select(animal => Mapper.Map(animal))
-                                          .ToListAsync(cancellationToken)
-                                          .ConfigureAwait(false);
+                                         .Select(animal => Mapper.Map(animal))
+                                         .ToListAsync(cancellationToken)
+                                         .ConfigureAwait(false);
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace LivestockTracker.Logic.Services.Animals
                                                                                        ListSortDirection sortDirection,
                                                                                        IPagingOptions pagingOptions,
                                                                                        CancellationToken cancellationToken)
-            where TSortProperty : IConvertible
+            where TSortProperty : IComparable
         {
             Logger.LogInformation($"Finding {pagingOptions.PageSize} summarized animals for page {pagingOptions.PageNumber}...");
             var data = await LivestockContext.Animals
@@ -119,7 +119,7 @@ namespace LivestockTracker.Logic.Services.Animals
                                                                                  ListSortDirection sortDirection,
                                                                                  IPagingOptions pagingOptions,
                                                                                  CancellationToken cancellationToken)
-            where TSortProperty : IConvertible
+            where TSortProperty : IComparable
         {
             return FindAsync(animal => true, sort, sortDirection, pagingOptions, cancellationToken);
         }

@@ -1,7 +1,6 @@
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Enums;
 using LivestockTracker.Database.Models;
-using LivestockTracker.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -13,7 +12,7 @@ namespace LivestockTracker.Database.Sqlite
     {
         public void Seed(IServiceProvider serviceProvider)
         {
-            using LivestockContext context = new LivestockContext(serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>());
+            using var context = new LivestockContext(serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>());
             SeedAnimals(context);
             SeedMedicalTransactions(context);
             SeedFeedingTransactions(context);
