@@ -40,16 +40,10 @@ namespace LivestockTracker
 
             services.AddLivestockTrackerSqliteDatabase(Configuration)
                     .AddLivestockTrackerLogic()
-                    .AddScoped<IFeedTypeService, FeedTypeService>()
-                    .AddScoped<IFeedingTransactionService, FeedingTransactionService>()
                     .AddScoped<IMedicalService, MedicalService>()
                     .AddScoped<IMedicineService, MedicineService>()
-                    .AddScoped<IUnitService, UnitService>()
-                    .AddSingleton<IMapper<FeedingTransactionModel, FeedingTransaction>, FeedingTransactionMapper>()
-                    .AddSingleton<IMapper<FeedTypeModel, FeedType>, FeedTypeMapper>()
                     .AddSingleton<IMapper<MedicalTransactionModel, MedicalTransaction>, MedicalTransactionMapper>()
                     .AddSingleton<IMapper<MedicineTypeModel, MedicineType>, MedicineTypeMapper>()
-                    .AddSingleton<IMapper<UnitModel, Unit>, UnitMapper>()
                     .AddSwagger();
 
             // In production, the Angular files will be served from this directory

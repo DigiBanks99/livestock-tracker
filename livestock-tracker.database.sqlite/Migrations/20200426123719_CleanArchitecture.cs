@@ -91,6 +91,20 @@ namespace LivestockTracker.Database.Migrations
                 nullable: false,
                 defaultValue: false);
 
+            migrationBuilder.AddColumn<bool>(
+                name: "Deleted",
+                schema: "feed",
+                table: "Units",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Description",
+                schema: "dbo",
+                table: "Units",
+                nullable: false,
+                defaultValue: "New");
+
             migrationBuilder.CreateIndex(
                 name: "IX_MedicalTransactions_MedicineID",
                 schema: "medical",
@@ -171,6 +185,11 @@ namespace LivestockTracker.Database.Migrations
                 name: "Deleted",
                 schema: "feed",
                 table: "FeedTypes");
+
+            migrationBuilder.DropColumn(
+                name: "Deleted",
+                schema: "feed",
+                table: "Units");
 
             migrationBuilder.RenameTable(
                 name: "MedicalTransactions",

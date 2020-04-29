@@ -1,4 +1,4 @@
-namespace LivestockTracker.Abstractions.Models
+namespace LivestockTracker.Abstractions.Models.Units
 {
     /// <summary>
     /// Defines all the properties of a unit of measurement.
@@ -14,5 +14,10 @@ namespace LivestockTracker.Abstractions.Models
         /// A human readable description of the unit of measurement.
         /// </summary>
         string Description { get; }
+
+        /// <summary>
+        /// A flag to indicate if the record has been deleted.
+        /// </summary>
+        bool Deleted { get; }
     }
 }

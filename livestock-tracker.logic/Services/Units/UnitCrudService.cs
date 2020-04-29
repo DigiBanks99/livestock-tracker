@@ -1,5 +1,6 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Models.Units;
 using LivestockTracker.Abstractions.Services.Units;
 using LivestockTracker.Database;
 using LivestockTracker.Database.Models;
@@ -19,7 +20,7 @@ namespace LivestockTracker.Logic.Services.Units
     /// <summary>
     /// Provides create, read, update, delete and paginated find services for units.
     /// </summary>
-    internal class UnitService : IUnitCrudService
+    internal class UnitCrudService : IUnitCrudService
     {
         /// <summary>
         /// Constructor.
@@ -27,7 +28,7 @@ namespace LivestockTracker.Logic.Services.Units
         /// <param name="logger">The logger.</param>
         /// <param name="mapper">The mapper.</param>
         /// <param name="livestockContext">The <see cref="DbContext"/> that contains the units.</param>
-        public UnitService(ILogger<UnitService> logger, IMapper<UnitModel, IUnit> mapper, LivestockContext livestockContext)
+        public UnitCrudService(ILogger<UnitCrudService> logger, IMapper<UnitModel, IUnit> mapper, LivestockContext livestockContext)
         {
             Logger = logger;
             Mapper = mapper;
