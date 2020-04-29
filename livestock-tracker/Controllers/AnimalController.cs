@@ -37,6 +37,8 @@ namespace LivestockTracker.Controllers
         /// <summary>
         /// Requests a paged list of all animals sorted by number.
         /// </summary>
+        /// <param name="pageNumber">The number of the page.</param>
+        /// <param name="pageSize">The size of each page.</param>
         /// <returns>A paged list of animals.</returns>
         [HttpGet()]
         [ProducesResponseType(typeof(IPagedData<AnimalSummary>), StatusCodes.Status200OK)]

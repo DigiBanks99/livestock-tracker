@@ -127,7 +127,7 @@ namespace LivestockTracker.Controllers
         [ProducesResponseType(typeof(FeedingTransaction), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Put(int id, [Required][FromBody] FeedingTransaction feedingTransaction)
+        public async Task<IActionResult> Update(int id, [Required][FromBody] FeedingTransaction feedingTransaction)
         {
             Logger.LogInformation($"Requesting the updating of feeding transaction with ID {id} with values {feedingTransaction}...");
 
@@ -165,6 +165,9 @@ namespace LivestockTracker.Controllers
         /// <param name="id">The unique identifier of the feeding transaction.</param>
         /// <returns>The ID of the removed feeding transaction.</returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(int id)
         {
             Logger.LogInformation($"Requesting the deletion of feeding transaction with ID {id}...");

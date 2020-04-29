@@ -38,13 +38,17 @@ namespace LivestockTracker.Controllers
         /// <summary>
         /// Requests a paged list of feed types that are viewable, sorted by description.
         /// </summary>
+        /// <param name="pageNumber">The number of the page.</param>
+        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="includeDeleted">Whether to include deleted items.</param>
         /// <returns>A sorted and paged list of feed types.</returns>
         [HttpGet]
         [ProducesResponseType(typeof(IPagedData<FeedType>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> GetAll(int pageNumber = 0, int pageSize = 100, bool includeDeleted = false)
         {
-            Logger.LogInformation($"Requesting {pageSize} feed types from page {pageNumber}...");
+            var includeDeletedMessage = includeDeleted ? " including deleted items" : string.Empty;
+            Logger.LogInformation($"Requesting {pageSize} feed types from page {pageNumber}{includeDeletedMessage}...");
 
             if (!ModelState.IsValid)
             {
@@ -166,7 +170,7 @@ namespace LivestockTracker.Controllers
         /// <param name="id">The id of the feed type that should be deleted.</param>
         /// <returns>The id of the feed type that was deleted.</returns>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(FeedType), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async ValueTask<IActionResult> Delete([Required] int id)

@@ -1,4 +1,4 @@
-using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Models.Units;
 
 namespace LivestockTracker.Abstractions.Services.Units
 {
