@@ -40,23 +40,6 @@ export function feedingTransactionReducer(
         ...state,
         selectedId: (<SelectFeedTransaction>action).transactionId,
       };
-    case ActionTypes.API_FETCH_FEED_TRANSACTION:
-      const apiAction = <PayloadAction<PagedData<FeedingTransaction>>>action;
-      const payloadAction: PayloadAction<FeedingTransaction[]> = {
-        type: ActionTypes.API_FETCH_FEED_TRANSACTION,
-        payload: apiAction.payload.data,
-      };
-      return {
-        ...crudReducer(
-          FeedingTransactionKey,
-          feedingTransactionAdapter,
-          state,
-          payloadAction
-        ),
-        pageNumber: apiAction.payload.currentPage,
-        pageSize: apiAction.payload.pageSize,
-        recordCount: apiAction.payload.totalRecordCount,
-      };
     default:
       return {
         ...state,

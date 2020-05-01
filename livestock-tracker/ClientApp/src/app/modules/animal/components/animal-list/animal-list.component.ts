@@ -78,6 +78,7 @@ export class AnimalListComponent implements OnInit, OnDestroy {
   }
 
   public onEditAnimal(id: number): void {
+    console.log('edit animal', id);
     this.showDetail.emit(id);
   }
 

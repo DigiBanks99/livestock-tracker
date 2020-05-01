@@ -1,10 +1,11 @@
 <h1 class="mat-h1">Animals</h1>
-<div class="animal-list mat-elevation-z8">
+<div class="animal-list mat-elevation-z1">
   <table
     mat-table
     [dataSource]="animals"
     class="animal-list-table full-width-table"
     matSort
+    stickyCssClass=""
   >
     <ng-container matColumnDef="type">
       <th mat-header-cell *matHeaderCellDef mat-sort-header="subspecies">
@@ -19,7 +20,9 @@
           >
           </mat-icon>
           <span class="animal-list-type__desc">
-            {{ animal.subspecies }}
+            <a [routerLink]="[animal.id, 'edit']">
+              {{ animal.subspecies }}
+            </a>
           </span>
         </div>
       </td>

@@ -9,23 +9,32 @@ const unitState = createFeatureSelector<UnitState>('units');
 const {
   selectEntities: getUnitEntities,
   selectIds: getUnitIds,
-  selectTotal: getUnitCount
+  selectTotal: getUnitCount,
 } = unitAdapter.getSelectors(unitState);
 
 const getUnits = createSelector(
   getUnitEntities,
   getUnitIds,
   (entities: Dictionary<Unit>, ids: (number | string)[]) =>
-    ids.map(id => entities[id]).filter((unit): unit is Unit => unit !== null)
+    ids.map((id) => entities[id]).filter((unit): unit is Unit => unit !== null)
 );
-const getSelectedUnitId = createSelector(unitState, state => state.selectedId);
+const getSelectedUnitId = createSelector(
+  unitState,
+  (state) => state.selectedId
+);
 const getSelectedUnit = createSelector(
   getUnitEntities,
   getSelectedUnitId,
   (entities, id) => entities[id]
 );
-const getUnitPending = createSelector(unitState, state => state.isPending);
-const getUnitError = createSelector(unitState, state => state.error);
+const getUnitPending = createSelector(unitState, (state) => state.isPending);
+const getUnitError = createSelector(unitState, (state) => state.error);
+
+const getPageSize = createSelector(unitState, (state) => state.pageSize);
+
+const getCurrentPage = createSelector(unitState, (state) => state.pageNumber);
+
+const getRecordCount = createSelector(unitState, (state) => state.recordCount);
 
 export const unitSelectors = {
   getUnits,
@@ -35,5 +44,8 @@ export const unitSelectors = {
   getSelectedUnitId,
   getSelectedUnit,
   getUnitPending,
-  getUnitError
+  getUnitError,
+  getPageSize,
+  getCurrentPage,
+  getRecordCount,
 };

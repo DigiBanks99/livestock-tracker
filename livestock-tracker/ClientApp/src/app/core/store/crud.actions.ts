@@ -1,5 +1,6 @@
 import { KeyValue } from '@angular/common';
 import { KeyEntity } from '@core/models/key-entity.interface';
+import { PagedData } from '@core/models/paged-data.model';
 import { Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
@@ -7,43 +8,45 @@ export interface PayloadAction<TData> extends Action {
   payload: TData;
 }
 
-export interface CrudActions<T extends KeyEntity<K>, K> {
-  addItem: (item: T) => PayloadAction<T>;
-  apiAddItem: (item: T) => PayloadAction<T>;
-  updateItem: (item: T, key: K) => PayloadAction<KeyValue<K, T>>;
+export interface CrudActions<TData extends KeyEntity<TKey>, TKey> {
+  addItem: (item: TData) => PayloadAction<TData>;
+  apiAddItem: (item: TData) => PayloadAction<TData>;
+  updateItem: (item: TData, key: TKey) => PayloadAction<KeyValue<TKey, TData>>;
   apiUpdateItem: (
-    item: Update<T>,
-    key: K
-  ) => PayloadAction<KeyValue<K, Update<T>>>;
-  deleteItem: (key: K) => PayloadAction<K>;
-  apiDeleteItem: (key: K) => PayloadAction<K>;
+    item: Update<TData>,
+    key: TKey
+  ) => PayloadAction<KeyValue<TKey, Update<TData>>>;
+  deleteItem: (key: TKey) => PayloadAction<TKey>;
+  apiDeleteItem: (key: TKey) => PayloadAction<TKey>;
   fetchItems: () => Action;
   fetchSingle: <TPayload>(key: TPayload) => PayloadAction<TPayload>;
-  apiFetchSingle: (item: T) => PayloadAction<T>;
+  apiFetchSingle: (item: TData) => PayloadAction<TData>;
   apiError: (error: Error) => PayloadAction<Error>;
-
-  apiFetchItems<TData>(data: TData): PayloadAction<TData>;
+  apiFetchItems(data: PagedData<TData>): PayloadAction<PagedData<TData>>;
 }
 
-function addItem<T>(item: T, typeName: string): PayloadAction<T> {
+function addItem<TData>(item: TData, typeName: string): PayloadAction<TData> {
   return {
     type: `ADD_${typeName}`,
     payload: item,
   };
 }
 
-function apiAddItem<T>(item: T, typeName: string): PayloadAction<T> {
+function apiAddItem<TData>(
+  item: TData,
+  typeName: string
+): PayloadAction<TData> {
   return {
     type: `API_ADD_${typeName}`,
     payload: item,
   };
 }
 
-function updateItem<T, K>(
-  item: T,
-  key: K,
+function updateItem<TData, TKey>(
+  item: TData,
+  key: TKey,
   typeName: string
-): PayloadAction<KeyValue<K, T>> {
+): PayloadAction<KeyValue<TKey, TData>> {
   return {
     type: `UPDATE_${typeName}`,
     payload: {
@@ -53,11 +56,11 @@ function updateItem<T, K>(
   };
 }
 
-function apiUpdateItem<T, K>(
-  item: Update<T>,
-  key: K,
+function apiUpdateItem<TData, TKey>(
+  item: Update<TData>,
+  key: TKey,
   typeName: string
-): PayloadAction<KeyValue<K, Update<T>>> {
+): PayloadAction<KeyValue<TKey, Update<TData>>> {
   return {
     type: `API_UPDATE_${typeName}`,
     payload: {
@@ -67,14 +70,14 @@ function apiUpdateItem<T, K>(
   };
 }
 
-function deleteItem<K>(key: K, typeName: string): PayloadAction<K> {
+function deleteItem<TKey>(key: TKey, typeName: string): PayloadAction<TKey> {
   return {
     type: `DELETE_${typeName}`,
     payload: key,
   };
 }
 
-function apiDeleteItem<K>(key: K, typeName: string): PayloadAction<K> {
+function apiDeleteItem<TKey>(key: TKey, typeName: string): PayloadAction<TKey> {
   return {
     type: `API_DELETE_${typeName}`,
     payload: key,
@@ -88,9 +91,9 @@ function fetchItems(typeName: string): Action {
 }
 
 function apiFetchItems<TData>(
-  data: TData,
+  data: PagedData<TData>,
   typeName: string
-): PayloadAction<TData> {
+): PayloadAction<PagedData<TData>> {
   return {
     type: `API_FETCH_${typeName}`,
     payload: data,
@@ -124,27 +127,31 @@ function apiError(error: Error, typeName: string): PayloadAction<Error> {
   };
 }
 
-export function crudActionsFactory<T extends KeyEntity<K>, K>(
+export function crudActionsFactory<TData extends KeyEntity<TKey>, TKey>(
   typeName: string
-): CrudActions<T, K> {
+): CrudActions<TData, TKey> {
   return {
-    addItem: (item: T): PayloadAction<T> => addItem(item, typeName),
-    apiAddItem: (item: T): PayloadAction<T> => apiAddItem(item, typeName),
-    updateItem: (item: T, key: K): PayloadAction<KeyValue<K, T>> =>
-      updateItem(item, key, typeName),
+    addItem: (item: TData): PayloadAction<TData> => addItem(item, typeName),
+    apiAddItem: (item: TData): PayloadAction<TData> =>
+      apiAddItem(item, typeName),
+    updateItem: (
+      item: TData,
+      key: TKey
+    ): PayloadAction<KeyValue<TKey, TData>> => updateItem(item, key, typeName),
     apiUpdateItem: (
-      item: Update<T>,
-      key: K
-    ): PayloadAction<KeyValue<K, Update<T>>> =>
+      item: Update<TData>,
+      key: TKey
+    ): PayloadAction<KeyValue<TKey, Update<TData>>> =>
       apiUpdateItem(item, key, typeName),
-    deleteItem: (key: K): PayloadAction<K> => deleteItem(key, typeName),
-    apiDeleteItem: (key: K): PayloadAction<K> => apiDeleteItem(key, typeName),
+    deleteItem: (key: TKey): PayloadAction<TKey> => deleteItem(key, typeName),
+    apiDeleteItem: (key: TKey): PayloadAction<TKey> =>
+      apiDeleteItem(key, typeName),
     fetchItems: (): Action => fetchItems(typeName),
     fetchSingle: <TPayload>(key: TPayload): PayloadAction<TPayload> =>
       fetchSingle(key, typeName),
-    apiFetchSingle: (item: T): PayloadAction<T> =>
+    apiFetchSingle: (item: TData): PayloadAction<TData> =>
       apiFetchSingle(item, typeName),
-    apiFetchItems: <TData>(data: TData): PayloadAction<TData> =>
+    apiFetchItems: (data: PagedData<TData>): PayloadAction<PagedData<TData>> =>
       apiFetchItems(data, typeName),
     apiError: (error: Error): PayloadAction<Error> => apiError(error, typeName),
   };

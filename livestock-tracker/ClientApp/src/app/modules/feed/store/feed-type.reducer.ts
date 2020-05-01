@@ -36,18 +36,6 @@ export function feedTypeReducer(
         selectedId: (<SelectFeedType>action).id,
         ...state,
       };
-    case ActionTypes.API_FETCH_FEED_TYPES:
-      const apiAction = <PayloadAction<PagedData<FeedType>>>action;
-      const payloadAction: PayloadAction<FeedType[]> = {
-        type: ActionTypes.API_FETCH_FEED_TYPES,
-        payload: apiAction.payload.data,
-      };
-      return {
-        ...crudReducer(FeedTypeKey, feedTypeAdapter, state, payloadAction),
-        pageNumber: apiAction.payload.currentPage,
-        pageSize: apiAction.payload.pageSize,
-        recordCount: apiAction.payload.totalRecordCount,
-      };
     default:
       return {
         ...state,

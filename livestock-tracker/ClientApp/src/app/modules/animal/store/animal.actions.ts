@@ -34,10 +34,6 @@ export class FetchAnimals implements Action {
 
 const crudActions = crudActionsFactory<Animal, number>(AnimalKey);
 
-function apiFetchItems<TData>(data: TData): PayloadAction<TData> {
-  return crudActions.apiFetchItems(data);
-}
 export const actions: CrudActions<Animal, number> = {
   ...crudActions,
-  apiFetchItems,
 };

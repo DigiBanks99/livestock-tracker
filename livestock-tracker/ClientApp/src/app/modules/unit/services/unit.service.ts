@@ -3,24 +3,35 @@ import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { CrudService } from '@core/models/crud-service.interface';
+import { PagedData } from '@core/models/paged-data.model';
 import { Unit } from '@core/models/unit.model';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UnitService implements CrudService<Unit, number, Unit[], number> {
+export class UnitService implements CrudService<Unit, number, number> {
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this.apiUrl = baseUrl + 'unit/';
+    this.apiUrl = baseUrl + 'unit';
   }
 
-  public getAll(): Observable<Unit[]> {
-    return this.http.get<Unit[]>(this.apiUrl);
+  public getAll(
+    pageNumber: number = 0,
+    pageSize: number = 10,
+    includeDeleted: boolean = false
+  ): Observable<PagedData<Unit>> {
+    return this.http.get<PagedData<Unit>>(this.apiUrl, {
+      params: {
+        pageNumber: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+        includeDeleted: includeDeleted.toString(),
+      },
+    });
   }
 
   public get(key: number): Observable<Unit> {
-    return this.http.get<Unit>(this.apiUrl + key);
+    return this.http.get<Unit>(`${this.apiUrl}/${key}`);
   }
 
   public add(unit: Unit): Observable<Unit> {
@@ -28,18 +39,23 @@ export class UnitService implements CrudService<Unit, number, Unit[], number> {
   }
 
   public update(unit: Unit): Observable<Unit> {
-    return this.http.patch<Unit>(this.apiUrl + unit.id, unit);
+    return this.http.put<Unit>(`${this.apiUrl}/${unit.id}`, unit);
   }
 
   public delete(key: number): Observable<number> {
-    return this.http.delete<number>(this.apiUrl + key);
+    return this.http.delete<number>(`${this.apiUrl}/${key}`);
   }
 }
 
-export class MockUnitService
-  implements CrudService<Unit, number, Unit[], number> {
-  getAll(): Observable<Unit[]> {
-    return of([]);
+export class MockUnitService implements CrudService<Unit, number, number> {
+  getAll(): Observable<PagedData<Unit>> {
+    return of({
+      data: [],
+      currentPage: 0,
+      pageCount: 0,
+      pageSize: 0,
+      totalRecordCount: 0,
+    });
   }
   get(key: number): Observable<Unit> {
     const unit = new Unit();

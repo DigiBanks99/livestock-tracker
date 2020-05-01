@@ -1,7 +1,7 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav
     #sidenav
-    class="sidenav"
+    class="sidenav mat-elevation-z1"
     fixedInViewport
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
@@ -63,7 +63,7 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar class="app-toolbar" color="primary">
+    <mat-toolbar class="app-toolbar mat-elevation-z1" color="primary">
       <a (click)="sidenav.toggle()">
         <mat-icon>menu</mat-icon>
       </a>

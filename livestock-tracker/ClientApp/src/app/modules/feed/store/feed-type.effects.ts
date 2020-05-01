@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { catchError, map, switchMap } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { FeedType } from '@core/models/feed-type.model';
@@ -8,37 +7,27 @@ import { CrudEffects } from '@core/store/crud.effects';
 import { FeedTypeService } from '@feed/services/feed-type.service';
 import {
   actions as feedTypeActions,
-  ActionTypes,
   FetchFeedTypes
 } from '@feed/store/feed-type.actions';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { FeedTypeKey } from './constants';
 
 @Injectable()
-export class FeedTypeEffects extends CrudEffects<
-  FeedType,
-  number,
-  PagedData<FeedType>,
-  number
-> {
+export class FeedTypeEffects extends CrudEffects<FeedType, number, number> {
   constructor(actions$: Actions, private feedTypeService: FeedTypeService) {
     super(actions$, feedTypeService, feedTypeActions, FeedTypeKey);
   }
 
-  getAll$: Observable<Action> = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ActionTypes.FETCH_FEED_TYPES),
-      switchMap((action: FetchFeedTypes) =>
-        this.feedTypeService.getAll(
-          action.pageNumber,
-          action.pageSize,
-          action.includeDeleted
-        )
-      ),
-      map((data: PagedData<FeedType>) => feedTypeActions.apiFetchItems(data)),
-      catchError((error) => this.handleError(error, feedTypeActions))
-    )
-  );
+  protected handleFetchAction$ = (
+    action: Action
+  ): Observable<PagedData<FeedType>> => {
+    const fetchAction = <FetchFeedTypes>action;
+    return this.feedTypeService.getAll(
+      fetchAction.pageNumber,
+      fetchAction.pageSize,
+      fetchAction.includeDeleted
+    );
+  };
 }

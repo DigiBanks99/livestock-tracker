@@ -11,7 +11,6 @@ export interface IFeedingTransactionService
   extends CrudService<
     FeedingTransaction,
     number,
-    PagedData<FeedingTransaction>,
     FetchSingleFeedTransactionParams
   > {}
 
@@ -20,7 +19,7 @@ export class FeedingTransactionService implements IFeedingTransactionService {
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this.apiUrl = baseUrl + 'feedingTransaction/';
+    this.apiUrl = baseUrl + 'feedingTransaction';
   }
 
   public getAll(
@@ -29,7 +28,7 @@ export class FeedingTransactionService implements IFeedingTransactionService {
     pageSize: number = 100
   ): Observable<PagedData<FeedingTransaction>> {
     return this.http.get<PagedData<FeedingTransaction>>(
-      `${this.apiUrl}${animalId}`,
+      `${this.apiUrl}/${animalId}`,
       {
         params: {
           pageSize: pageSize.toString(),
@@ -49,7 +48,7 @@ export class FeedingTransactionService implements IFeedingTransactionService {
     params: FetchSingleFeedTransactionParams
   ): Observable<FeedingTransaction> {
     return this.http.get<FeedingTransaction>(
-      `${this.apiUrl}${params.animalId}/${params.id}`
+      `${this.apiUrl}/${params.animalId}/${params.id}`
     );
   }
 
@@ -69,22 +68,13 @@ export class FeedingTransactionService implements IFeedingTransactionService {
     feedingTransaction: FeedingTransaction
   ): Observable<FeedingTransaction> {
     return this.http.put<FeedingTransaction>(
-      `${this.apiUrl}${feedingTransaction.id}`,
+      `${this.apiUrl}/${feedingTransaction.id}`,
       feedingTransaction
     );
   }
 
   public delete(key: number): Observable<number> {
     return this.http.delete<number>(this.apiUrl + key);
-  }
-
-  public page(
-    pageNumber: number,
-    pageSize: number
-  ): Observable<FeedingTransaction> {
-    return this.http.get<FeedingTransaction>(
-      this.apiUrl + 'page?pageNumber=' + pageNumber + '&pageSize=' + pageSize
-    );
   }
 }
 

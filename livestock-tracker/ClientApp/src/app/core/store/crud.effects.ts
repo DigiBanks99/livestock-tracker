@@ -1,34 +1,53 @@
-import { Observable, of } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { Observable, of, OperatorFunction } from 'rxjs';
+import {
+  catchError,
+  map,
+  mergeMap,
+  startWith,
+  switchMap
+} from 'rxjs/operators';
 
 import { KeyValue } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CrudService } from '@core/models/crud-service.interface';
 import { KeyEntity } from '@core/models/key-entity.interface';
+import { PagedData } from '@core/models/paged-data.model';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { CrudActions, PayloadAction } from './crud.actions';
 
 export class CrudEffects<
-  T extends KeyEntity<K>,
-  K,
-  TGetAll,
+  TData extends KeyEntity<TKey>,
+  TKey,
   TFetchSinglePayload
 > {
+  private shouldFetchOnStartup: boolean;
+  private noOpAction: Action = {
+    type: 'NOOP',
+  };
+
   constructor(
     protected actions$: Actions,
-    private service: CrudService<T, K, TGetAll, TFetchSinglePayload>,
-    private typeActions: CrudActions<T, K>,
-    private typeName: string
-  ) {}
+    private service: CrudService<TData, TKey, TFetchSinglePayload>,
+    private typeActions: CrudActions<TData, TKey>,
+    private typeName: string,
+    shouldFetchOnStartup: boolean = false
+  ) {
+    this.shouldFetchOnStartup = shouldFetchOnStartup;
+  }
+
+  protected get defaultFetchAction(): Action {
+    return this.noOpAction;
+  }
 
   public getAll$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(`FETCH_${this.typeName}`),
-      startWith(() => this.typeActions.fetchItems()),
-      switchMap((_) => this.service.getAll()),
-      map((data: TGetAll) => this.typeActions.apiFetchItems(data)),
+      startWith(this.defaultFetchAction),
+      ofType(`FETCH_${this.typeName}`),
+      switchMap((action: Action) => this.handleFetchAction$(action)),
+      map((data: PagedData<TData>) => this.typeActions.apiFetchItems(data)),
       catchError((error) => this.handleError(error, this.typeActions))
     )
   );
@@ -38,7 +57,7 @@ export class CrudEffects<
       ofType(`FETCH_SINGLE_${this.typeName}`),
       map((action: PayloadAction<TFetchSinglePayload>) => action.payload),
       switchMap((payload: TFetchSinglePayload) => this.service.get(payload)),
-      map((item: T) => this.typeActions.apiFetchSingle(item)),
+      map((item: TData) => this.typeActions.apiFetchSingle(item)),
       catchError((error) => this.handleError(error, this.typeActions))
     )
   );
@@ -46,9 +65,9 @@ export class CrudEffects<
   public add$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(`ADD_${this.typeName}`),
-      map((action: PayloadAction<T>) => action.payload),
-      switchMap((item: T) => this.service.add(item)),
-      map((item: T) => this.typeActions.apiAddItem(item)),
+      map((action: PayloadAction<TData>) => action.payload),
+      switchMap((item: TData) => this.service.add(item)),
+      map((item: TData) => this.typeActions.apiAddItem(item)),
       catchError((error) => this.handleError(error, this.typeActions))
     )
   );
@@ -56,11 +75,11 @@ export class CrudEffects<
   public update$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(`UPDATE_${this.typeName}`),
-      map((action: PayloadAction<KeyValue<K, T>>) => action.payload),
-      switchMap((payload: KeyValue<K, T>) =>
+      map((action: PayloadAction<KeyValue<TKey, TData>>) => action.payload),
+      switchMap((payload: KeyValue<TKey, TData>) =>
         this.service.update(payload.value, payload.key)
       ),
-      map((item: T) =>
+      map((item: TData) =>
         this.typeActions.apiUpdateItem(
           { changes: item, id: String(item.id) },
           item.id
@@ -73,16 +92,16 @@ export class CrudEffects<
   public remove$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(`DELETE_${this.typeName}`),
-      map((action: PayloadAction<K>) => action.payload),
-      switchMap((id: K) => this.service.delete(id)),
-      map((id: K) => this.typeActions.apiDeleteItem(id)),
+      map((action: PayloadAction<TKey>) => action.payload),
+      switchMap((id: TKey) => this.service.delete(id)),
+      map((id: TKey) => this.typeActions.apiDeleteItem(id)),
       catchError((error) => this.handleError(error, this.typeActions))
     )
   );
 
   protected handleError(
     err: any,
-    actions: CrudActions<T, K>
+    actions: CrudActions<TData, TKey>
   ): Observable<PayloadAction<Error>> {
     let error: Error;
     if (err instanceof Error) error = err;
@@ -95,4 +114,10 @@ export class CrudEffects<
 
     return of(actions.apiError(error));
   }
+
+  protected handleFetchAction$ = (
+    action: Action
+  ): Observable<PagedData<TData>> => {
+    return this.service.getAll();
+  };
 }
