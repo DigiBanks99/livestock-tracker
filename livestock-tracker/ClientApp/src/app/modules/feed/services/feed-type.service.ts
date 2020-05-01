@@ -16,13 +16,11 @@ export interface IFeedTypeService {
 
 @Injectable()
 export class FeedTypeService
-  implements
-    IFeedTypeService,
-    CrudService<FeedType, number, PagedData<FeedType>, number> {
+  implements IFeedTypeService, CrudService<FeedType, number, number> {
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this.apiUrl = baseUrl + 'feedType/';
+    this.apiUrl = baseUrl + 'feedType';
   }
 
   public getAll = (
@@ -49,7 +47,7 @@ export class FeedTypeService
   public get = (key: number): Observable<FeedType> => this.getFromServer(key);
 
   public getFromServer(id: number): Observable<FeedType> {
-    return this.http.get<FeedType>(this.apiUrl + id);
+    return this.http.get<FeedType>(`${this.apiUrl}/${id}`);
   }
 
   public add(feedType: FeedType): Observable<FeedType> {
@@ -57,11 +55,11 @@ export class FeedTypeService
   }
 
   public update(feedType: FeedType): Observable<FeedType> {
-    return this.http.put<FeedType>(this.apiUrl + feedType.id, feedType);
+    return this.http.put<FeedType>(`${this.apiUrl}/${feedType.id}`, feedType);
   }
 
   public delete(id: number): Observable<number> {
-    return this.http.delete<number>(this.apiUrl + id);
+    return this.http.delete<number>(`${this.apiUrl}/${id}`);
   }
 }
 

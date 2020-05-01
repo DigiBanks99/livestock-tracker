@@ -1,37 +1,38 @@
-<div class="card-list-container">
-  <div class="card-list-content">
-    <mat-toolbar class="unit-toolbar">
-      <mat-toolbar-row class="unit-toolbar__header">
-        <span class="unit-toolbar__trans-type">Description</span>
-        <span class="unit-toolbar__trans-trash"></span>
-      </mat-toolbar-row>
-    </mat-toolbar>
-    <mat-list class="unit-list mat-elevation-z1">
-      <mat-list-item class="card-list-item" *ngFor="let unit of units">
+<h1>Units</h1>
+<div class="unit-type-list mat-elevation-z1">
+  <table
+    mat-table
+    [dataSource]="units"
+    class="unit-type-list-table full-width-table"
+    matSort
+  >
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+      <td mat-cell *matCellDef="let unit">
         <app-unit-detail
-          class="unit-item"
           [unit]="unit"
-          (remove)="onRemove($event)"
           (save)="onSave($event)"
         ></app-unit-detail>
-        <mat-divider></mat-divider>
-      </mat-list-item>
-      <mat-paginator
-        [pageSize]="pageSize"
-        [length]="units?.length"
-        class="mat-accent-background"
-        color="accent"
-        (page)="onPage($event)"
-      ></mat-paginator>
-    </mat-list>
-    <button
-      mat-fab
-      class="mat-fab-bottom-right"
-      type="button"
-      (click)="onAdd()"
-      left
-    >
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="star" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let unit" (click)="onRemove(unit.id)">
+        <mat-icon>delete</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    [pageIndex]="pageNumber"
+    [length]="recordCount"
+    class="mat-accent-background"
+    (page)="onPage($event)"
+  ></mat-paginator>
 </div>
+<app-command-button (click)="onAdd()"></app-command-button>

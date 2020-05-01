@@ -1,15 +1,16 @@
 import { KeyValue } from '@angular/common';
 import { KeyEntity } from '@core/models/key-entity.interface';
+import { PagedData } from '@core/models/paged-data.model';
 import { EntityAdapter, Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { PayloadAction } from './';
 import { CrudState } from './crud-state.interface';
 
-export function crudReducer<T extends KeyEntity<K>, K>(
+export function crudReducer<TData extends KeyEntity<TKey>, TKey>(
   typeName: string,
-  adapter: EntityAdapter<T>,
-  state: CrudState<T, K>,
+  adapter: EntityAdapter<TData>,
+  state: CrudState<TData, TKey>,
   action: Action
 ) {
   switch (action.type) {
@@ -24,27 +25,27 @@ export function crudReducer<T extends KeyEntity<K>, K>(
         error: null,
       };
     case `API_ADD_${typeName}`:
-      const addAction = <PayloadAction<T>>action;
+      const addAction = <PayloadAction<TData>>action;
       return {
         ...addApiReducer(adapter, state, addAction),
       };
     case `API_UPDATE_${typeName}`:
-      const updateAction = <PayloadAction<KeyValue<K, Update<T>>>>action;
+      const updateAction = <PayloadAction<KeyValue<TKey, Update<TData>>>>action;
       return {
         ...updateApiReducer(adapter, state, updateAction),
       };
     case `API_DELETE_${typeName}`:
-      const deleteAction = <PayloadAction<K>>action;
+      const deleteAction = <PayloadAction<TKey>>action;
       return {
         ...deleteApiReducer(adapter, state, deleteAction),
       };
     case `API_FETCH_${typeName}`:
-      const fetchAction = <PayloadAction<T[]>>action;
+      const fetchAction = <PayloadAction<PagedData<TData>>>action;
       return {
         ...fetchApiReducer(adapter, state, fetchAction),
       };
     case `API_FETCH_SINGLE_${typeName}`:
-      const fetchSingleAction = <PayloadAction<T>>action;
+      const fetchSingleAction = <PayloadAction<TData>>action;
       return {
         ...fetchSingleApiReducer(adapter, state, fetchSingleAction),
       };
@@ -60,11 +61,11 @@ export function crudReducer<T extends KeyEntity<K>, K>(
   }
 }
 
-function addApiReducer<T extends KeyEntity<K>, K>(
-  adapter: EntityAdapter<T>,
-  state: CrudState<T, K>,
-  action: PayloadAction<T>
-): CrudState<T, K> {
+function addApiReducer<TData extends KeyEntity<TKey>, TKey>(
+  adapter: EntityAdapter<TData>,
+  state: CrudState<TData, TKey>,
+  action: PayloadAction<TData>
+): CrudState<TData, TKey> {
   const newState = adapter.addOne(action.payload, state);
   return {
     ...newState,
@@ -74,11 +75,11 @@ function addApiReducer<T extends KeyEntity<K>, K>(
   };
 }
 
-function updateApiReducer<T extends KeyEntity<K>, K>(
-  adapter: EntityAdapter<T>,
-  state: CrudState<T, K>,
-  action: PayloadAction<KeyValue<K, Update<T>>>
-): CrudState<T, K> {
+function updateApiReducer<TData extends KeyEntity<TKey>, TKey>(
+  adapter: EntityAdapter<TData>,
+  state: CrudState<TData, TKey>,
+  action: PayloadAction<KeyValue<TKey, Update<TData>>>
+): CrudState<TData, TKey> {
   const newState = adapter.updateOne(action.payload.value, state);
   return {
     ...newState,
@@ -88,11 +89,11 @@ function updateApiReducer<T extends KeyEntity<K>, K>(
   };
 }
 
-function deleteApiReducer<T extends KeyEntity<K>, K>(
-  adapter: EntityAdapter<T>,
-  state: CrudState<T, K>,
-  action: PayloadAction<K>
-): CrudState<T, K> {
+function deleteApiReducer<TData extends KeyEntity<TKey>, TKey>(
+  adapter: EntityAdapter<TData>,
+  state: CrudState<TData, TKey>,
+  action: PayloadAction<TKey>
+): CrudState<TData, TKey> {
   const idx = state.ids.findIndex((id) => id === action.payload);
   const newState = adapter.removeOne(String(action.payload), state);
   const ids = newState.ids || [];
@@ -106,12 +107,12 @@ function deleteApiReducer<T extends KeyEntity<K>, K>(
   };
 }
 
-function fetchApiReducer<T extends KeyEntity<K>, K>(
-  adapter: EntityAdapter<T>,
-  state: CrudState<T, K>,
-  action: PayloadAction<T[]>
-): CrudState<T, K> {
-  const newState = adapter.addAll(action.payload, state);
+function fetchApiReducer<TData extends KeyEntity<TKey>, TKey>(
+  adapter: EntityAdapter<TData>,
+  state: CrudState<TData, TKey>,
+  action: PayloadAction<PagedData<TData>>
+): CrudState<TData, TKey> {
+  const newState = adapter.addAll(action.payload.data, state);
   const idAsString = String(newState.selectedId);
   const ids = <string[]>newState.ids || [];
   const selectedIndex = ids.findIndex((id: string) => id === idAsString);
@@ -126,14 +127,17 @@ function fetchApiReducer<T extends KeyEntity<K>, K>(
     selectedId,
     isPending: false,
     error: null,
+    pageNumber: action.payload.currentPage,
+    pageSize: action.payload.pageSize,
+    recordCount: action.payload.totalRecordCount,
   };
 }
 
-function fetchSingleApiReducer<EntityType extends KeyEntity<Key>, Key>(
-  adapter: EntityAdapter<EntityType>,
-  state: CrudState<EntityType, Key>,
-  action: PayloadAction<EntityType>
-): CrudState<EntityType, Key> {
+function fetchSingleApiReducer<TData extends KeyEntity<TKey>, TKey>(
+  adapter: EntityAdapter<TData>,
+  state: CrudState<TData, TKey>,
+  action: PayloadAction<TData>
+): CrudState<TData, TKey> {
   const newState = adapter.addOne(action.payload, state);
   const selectedId = action.payload.id;
   return {

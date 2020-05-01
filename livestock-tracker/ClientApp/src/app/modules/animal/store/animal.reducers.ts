@@ -34,18 +34,6 @@ export function animalsReducer(
         ...state,
         selectedId: selectAnimal(state.selectedId, <SelectAnimal>action),
       };
-    case ActionTypes.API_FETCH_ANIMAL:
-      const apiAction = <PayloadAction<PagedData<Animal>>>action;
-      const payloadAction: PayloadAction<Animal[]> = {
-        type: ActionTypes.API_FETCH_ANIMAL,
-        payload: apiAction.payload.data,
-      };
-      return {
-        ...crudReducer(AnimalKey, animalsAdapter, state, payloadAction),
-        pageNumber: apiAction.payload.currentPage,
-        pageSize: apiAction.payload.pageSize,
-        recordCount: apiAction.payload.totalRecordCount,
-      };
     default:
       return {
         ...state,

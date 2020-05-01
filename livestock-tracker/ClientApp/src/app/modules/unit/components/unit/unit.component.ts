@@ -6,25 +6,21 @@ import { environment } from '@env/environment';
 @Component({
   selector: 'app-unit',
   templateUrl: './unit.component.html',
-  styleUrls: ['./unit.component.scss']
+  styleUrls: ['./unit.component.scss'],
 })
 export class UnitComponent {
   @Input() public units: Unit[];
   @Input() public isPending: boolean;
   @Input() public error: Error;
+  @Input() public pageNumber: number;
+  @Input() public pageSize: number;
+  @Input() public recordCount: number;
   @Output() public add = new EventEmitter<Unit>();
   @Output() public save = new EventEmitter<Unit>();
   @Output() public remove = new EventEmitter<number>();
+  @Output() public page = new EventEmitter<PageEvent>();
 
-  public filteredUnits: Unit[];
-  public pageSize: number;
-  public lastPage: number;
-
-  constructor() {
-    this.filteredUnits = [];
-    this.pageSize = environment.pageSize;
-    this.lastPage = environment.defaultLastPage;
-  }
+  public displayedColumns: string[] = ['description', 'star'];
 
   public onAdd() {
     const unit = new Unit();
@@ -41,22 +37,6 @@ export class UnitComponent {
   }
 
   public onPage(pageEvent: PageEvent) {
-    this.lastPage = pageEvent.pageIndex;
-    this.filterList(pageEvent.pageSize, pageEvent.pageIndex);
-  }
-
-  private filterList(pageSize: number, pageIndex: number) {
-    this.filteredUnits.splice(0);
-
-    if (this.units === undefined || this.units === null) return;
-
-    const startIndex = pageSize * pageIndex;
-    for (let i = startIndex; i < startIndex + pageSize; i++) {
-      // if we passed the last item, let's not continue
-      if (i >= this.units.length) {
-        return;
-      }
-      this.filteredUnits.push(this.units[i]);
-    }
+    this.page.emit(pageEvent);
   }
 }

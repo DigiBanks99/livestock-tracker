@@ -8,15 +8,18 @@ import { ActionTypes, SelectUnit } from '@unit/store/unit.actions';
 import { UnitKey } from './constants';
 
 export const unitAdapter = createEntityAdapter<Unit>({
-  selectId: unit => unit.id,
-  sortComparer: unit => unit.description
+  selectId: (unit) => unit.id,
+  sortComparer: (unit) => unit.description,
 });
 
-export const initialState = unitAdapter.getInitialState({
+export const initialState: UnitState = unitAdapter.getInitialState({
   selectedId: null,
   isPending: false,
   isFetching: false,
-  error: null
+  error: null,
+  pageSize: 0,
+  pageNumber: 0,
+  recordCount: 0,
 });
 
 export function unitReducer(
@@ -27,7 +30,7 @@ export function unitReducer(
     case ActionTypes.SELECT_UNIT:
       return {
         ...state,
-        selectedId: (<SelectUnit>action).typeCode
+        selectedId: (<SelectUnit>action).typeCode,
       };
     default:
       return crudReducer(UnitKey, unitAdapter, state, action);

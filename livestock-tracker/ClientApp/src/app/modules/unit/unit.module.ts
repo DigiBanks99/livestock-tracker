@@ -8,9 +8,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { SharedModule } from '@shared/shared.module';
 import { UnitDetailComponent } from '@unit/components/unit-detail/unit-detail.component';
 import { UnitComponent } from '@unit/components/unit/unit.component';
 import { UnitContainerComponent } from '@unit/components/unit/unit.container';
@@ -29,12 +32,15 @@ import { unitEffects, unitReducers } from '@unit/store';
     MatInputModule,
     MatListModule,
     MatPaginatorModule,
+    MatSortModule,
+    MatTableModule,
     MatToolbarModule,
     ReactiveFormsModule,
+    SharedModule,
     StoreModule.forFeature('units', unitReducers.unitReducer),
-    EffectsModule.forFeature([unitEffects.UnitEffects])
+    EffectsModule.forFeature([unitEffects.UnitEffects]),
   ],
   providers: [UnitService],
-  exports: [UnitContainerComponent, UnitComponent, UnitDetailComponent]
+  exports: [UnitContainerComponent, UnitComponent, UnitDetailComponent],
 })
 export class UnitModule {}

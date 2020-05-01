@@ -22,25 +22,16 @@ export class FeedTypeDetailComponent implements OnInit {
   }
 
   public initForm() {
-    let description: string;
-    let id: number;
-    if (this.feedType !== undefined && this.feedType !== null) {
-      description = this.feedType.description;
-      id = this.feedType.id;
-    } else {
-      description = null;
-    }
-
     this.feedTypeForm = new FormGroup({
-      id: new FormControl(id),
-      description: new FormControl(description, {
+      id: new FormControl(this.feedType.id),
+      description: new FormControl(this.feedType.description, {
         updateOn: 'blur',
         validators: Validators.required,
       }),
     });
   }
 
-  public updateFeedType() {
+  public onUpdate() {
     if (this.feedTypeForm.valid) {
       this.save.emit(this.feedTypeForm.value);
     }

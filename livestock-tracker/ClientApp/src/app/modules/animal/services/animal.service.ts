@@ -7,8 +7,7 @@ import { CrudService } from '@core/models/crud-service.interface';
 import { PagedData } from '@core/models/paged-data.model';
 
 @Injectable()
-export class AnimalService
-  implements CrudService<Animal, number, PagedData<Animal>, number> {
+export class AnimalService implements CrudService<Animal, number, number> {
   private apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -21,8 +20,8 @@ export class AnimalService
   ): Observable<PagedData<Animal>> =>
     this.http.get<PagedData<Animal>>(this.apiUrl, {
       params: {
-        pageSize: pageSize.toString(),
         pageNumber: pageNumber.toString(),
+        pageSize: pageSize.toString(),
       },
     });
 
