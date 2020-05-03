@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions.Models.Medical;
 
-namespace LivestockTracker.Abstractions.Services.Medicine
+namespace LivestockTracker.Abstractions.Services.Medical
 {
     /// <summary>
     /// / Provides fetch and pagination services for medicine types.

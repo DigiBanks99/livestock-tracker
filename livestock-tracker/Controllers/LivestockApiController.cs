@@ -9,9 +9,9 @@ namespace LivestockTracker.Controllers
     /// A base controller for Livestock Tracker controllers. It defines a logger reference
     /// and an easily accessible Cancellation Token.
     /// </summary>
-    [Produces("application/json")]
     [ApiController]
     [Route("api/[controller]")]
+    [Produces("application/json")]
     public abstract class LivestockApiController : Controller
     {
         /// <summary>

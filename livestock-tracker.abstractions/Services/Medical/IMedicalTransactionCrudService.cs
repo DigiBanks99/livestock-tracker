@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions.Models.Medical;
 
-namespace LivestockTracker.Abstractions.Services.Medicine
+namespace LivestockTracker.Abstractions.Services.Medical
 {
     /// <summary>
     /// Provides create, read and update and deletion services for medical transactions.
