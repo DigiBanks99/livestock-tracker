@@ -1,6 +1,6 @@
 using System;
 
-namespace LivestockTracker.Abstractions.Models
+namespace LivestockTracker.Abstractions.Models.Medical
 {
     /// <summary>
     /// Defines all the properties of a medical transaction.

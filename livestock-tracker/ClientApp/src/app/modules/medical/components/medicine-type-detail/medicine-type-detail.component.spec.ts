@@ -20,15 +20,15 @@ describe('MedicineTypeDetailComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MedicineTypeDetailComponent],
       providers: [
-        { provide: MedicineTypeService, useClass: MockMedicineTypeService }
+        { provide: MedicineTypeService, useClass: MockMedicineTypeService },
       ],
       imports: [
         ReactiveFormsModule,
         BrowserAnimationsModule,
         MatFormFieldModule,
         MatInputModule,
-        MatIconModule
-      ]
+        MatIconModule,
+      ],
     }).compileComponents();
   }));
 
@@ -36,7 +36,7 @@ describe('MedicineTypeDetailComponent', () => {
     fixture = TestBed.createComponent(MedicineTypeDetailComponent);
     component = fixture.componentInstance;
     component.medicineType = new MedicineType();
-    component.medicineType.typeCode = 1;
+    component.medicineType.id = 1;
     component.medicineType.description = 'Some stuff';
     fixture.detectChanges();
   });

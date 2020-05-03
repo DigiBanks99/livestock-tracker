@@ -1,8 +1,7 @@
 import { FeedType } from '@core/models/feed-type.model';
-import { PagedData } from '@core/models/paged-data.model';
-import { PayloadAction } from '@core/store';
 import { crudReducer } from '@core/store/crud.reducer';
 import { FeedTypeState } from '@core/store/feed-type-state.interface';
+import { environment } from '@env/environment';
 import { ActionTypes, SelectFeedType } from '@feed/store/feed-type.actions';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
@@ -14,15 +13,14 @@ export const feedTypeAdapter = createEntityAdapter<FeedType>({
   sortComparer: (feedType: FeedType) => feedType.description,
 });
 
-const entityState = feedTypeAdapter.getInitialState();
 const initialState: FeedTypeState = {
-  ...entityState,
+  ...feedTypeAdapter.getInitialState(),
   isFetching: false,
   isPending: false,
   error: null,
   selectedId: null,
   pageNumber: 0,
-  pageSize: 10,
+  pageSize: environment.pageSize,
   recordCount: 0,
 };
 

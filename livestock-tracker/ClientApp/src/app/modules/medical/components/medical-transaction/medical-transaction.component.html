@@ -1,12 +1,12 @@
 <form class="form" [formGroup]="medicalTransactionForm">
   <mat-form-field class="medical-toolbar__trans-type">
     <mat-select
-      [value]="medicalTransaction.medicineTypeCode"
-      formControlName="medicineTypeCode"
+      [value]="medicalTransaction.medicineId"
+      formControlName="medicineTypeId"
     >
       <mat-option
-        *ngFor="let medType of medicineTypes"
-        [value]="medType.typeCode"
+        *ngFor="let medType of medicineTypes$ | async"
+        [value]="medType.id"
         >{{ medType.description }}</mat-option
       >
     </mat-select>
@@ -33,7 +33,7 @@
     />
   </mat-form-field>
   <mat-form-field class="medical-toolbar__trans-unit">
-    <mat-select formControlName="unit" id="unit">
+    <mat-select formControlName="unitId" id="unit">
       <mat-option *ngFor="let unitType of units" [value]="unitType.id">{{
         unitType.description
       }}</mat-option>

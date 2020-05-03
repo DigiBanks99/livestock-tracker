@@ -4,8 +4,13 @@ namespace LivestockTracker.Abstractions.Data
     /// The base interface for all other database models.
     /// </summary>
     /// <typeparam name="TKey">The type of the key for this database model.</typeparam>
-    public interface IEntity<out TKey> where TKey : struct
+    public interface IEntity<TKey> where TKey : struct
     {
+        /// <summary>
+        /// The unique identifier of the entity.
+        /// </summary>
+        TKey Id { get; set; }
+
         /// <summary>
         /// Get the current key. This allows the key to be named differently over entities or be a composite key.
         /// </summary>

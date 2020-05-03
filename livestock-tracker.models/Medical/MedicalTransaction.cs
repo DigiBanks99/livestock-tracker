@@ -1,22 +1,21 @@
-using LivestockTracker.Abstractions.Models.Feed;
+using LivestockTracker.Abstractions.Models.Medical;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace LivestockTracker.Models
+namespace LivestockTracker.Models.Medical
 {
-    public class FeedingTransaction : IFeedingTransaction
+    public class MedicalTransaction : IMedicalTransaction
     {
+        [Key]
         public int Id { get; set; }
-        [Required]
         public int AnimalId { get; set; }
         [Required]
-        public int FeedTypeId { get; set; }
+        public int MedicineId { get; set; }
         [Required]
         public DateTimeOffset TransactionDate { get; set; }
         [Required]
-        public decimal Quantity { get; set; }
+        public decimal Dose { get; set; }
         [Required]
         public int UnitId { get; set; }
-        public IFeedType FeedType { get; set; } = new FeedType();
     }
 }

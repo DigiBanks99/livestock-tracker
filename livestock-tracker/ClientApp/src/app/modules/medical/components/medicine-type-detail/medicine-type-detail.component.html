@@ -1,10 +1,11 @@
 <form [formGroup]="medicineTypeForm">
-  <div class="card-list-item-content">
-    <mat-form-field class="description">
-      <input matInput type="text" id="description" formControlName="description">
-    </mat-form-field>
-  </div>
-  <button mat-icon-button class="card-list-item-actions" (click)="deleteMedicineType(medicineType.typeCode)" title="Delete this Medicine Type">
-    <mat-icon>delete</mat-icon>
-  </button>
+  <mat-form-field class="description">
+    <input
+      matInput
+      type="text"
+      id="description"
+      formControlName="description"
+      (ngModelChange)="onUpdate()"
+    />
+  </mat-form-field>
 </form>

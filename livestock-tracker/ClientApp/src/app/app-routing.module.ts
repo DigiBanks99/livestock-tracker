@@ -12,7 +12,7 @@ import { FeedingTransactionDetailComponent } from '@feed/components/feeding-tran
 import { FeedingTransactionNewComponent } from '@feed/components/feeding-transaction-new/feeding-transaction-new.component';
 import { HomeComponent } from '@home/components/home.component';
 import { MedicalContainerComponent } from '@medical/components/medical/medical.container';
-import { MedicineTypeComponent } from '@medical/components/medicine-type/medicine-type.component';
+import { MedicineTypeContainerComponent } from '@medical/components/medicine-type/medicine-type.container';
 import { MedicalModule } from '@medical/medical.module';
 import { ReportsComponent } from '@reports/components/reports.component';
 import { UnitContainerComponent } from '@unit/components/unit/unit.container';
@@ -26,24 +26,24 @@ const routes: Routes = [
   { path: 'medical', component: MedicalContainerComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'units', component: UnitContainerComponent },
-  { path: 'medicine-type', component: MedicineTypeComponent },
+  { path: 'medicine-type', component: MedicineTypeContainerComponent },
   { path: 'feed-type', component: FeedTypeContainerComponent },
   {
     path: 'feeding-transaction',
-    component: FeedingTransactionContainerComponent
+    component: FeedingTransactionContainerComponent,
   },
   {
     path: 'feeding-transaction/:animalId/new',
-    component: FeedingTransactionNewComponent
+    component: FeedingTransactionNewComponent,
   },
   {
     path: 'feeding-transaction/:animalId/:id/edit',
-    component: FeedingTransactionDetailComponent
-  }
+    component: FeedingTransactionDetailComponent,
+  },
 ];
 
 @NgModule({
   imports: [MedicalModule, AnimalModule, RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

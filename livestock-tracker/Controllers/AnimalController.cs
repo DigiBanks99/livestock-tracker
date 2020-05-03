@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Abstractions.Services.Animals;
-using LivestockTracker.Models;
+using LivestockTracker.Models.Animals;
 using LivestockTracker.Models.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

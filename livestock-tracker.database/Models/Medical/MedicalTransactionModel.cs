@@ -1,13 +1,15 @@
 using LivestockTracker.Abstractions.Data;
-using LivestockTracker.Abstractions.Models.Feed;
+using LivestockTracker.Abstractions.Models.Medical;
+using LivestockTracker.Database.Models.Animals;
+using LivestockTracker.Database.Models.Units;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LivestockTracker.Database.Models
+namespace LivestockTracker.Database.Models.Medical
 {
-    [Table("FeedingTransactions", Schema = "feed")]
-    public class FeedingTransactionModel : IEntity<int>, IFeedingTransaction
+    [Table("MedicalTransactions", Schema = "medical")]
+    public class MedicalTransactionModel : IEntity<int>, IMedicalTransaction
     {
         [Column("ID")]
         [Key]
@@ -15,21 +17,20 @@ namespace LivestockTracker.Database.Models
         [Column("AnimalID")]
         [Required]
         public int AnimalId { get; set; }
-        [Column("FeedTypeID")]
-        [ForeignKey(nameof(FeedType))]
+        [Column("MedicineID")]
         [Required]
-        public int FeedTypeId { get; set; }
+        public int MedicineId { get; set; }
         [Required]
         public DateTimeOffset TransactionDate { get; set; }
         [Required]
-        public decimal Quantity { get; set; }
+        public decimal Dose { get; set; }
         [Column("UnitID")]
         [Required]
         public int UnitId { get; set; }
 
         public AnimalModel Animal { get; internal set; } = null!;
         public UnitModel UnitOfMeasurement { get; internal set; } = null!;
-        public IFeedType FeedType { get; internal set; } = null!;
+        public MedicineTypeModel Medicine { get; internal set; } = null!;
 
         public int GetKey()
         {

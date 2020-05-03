@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Database.Models;
-using LivestockTracker.Models;
+using LivestockTracker.Database.Models.Medical;
+using LivestockTracker.Models.Medical;
 
 namespace LivestockTracker.Mappers
 {

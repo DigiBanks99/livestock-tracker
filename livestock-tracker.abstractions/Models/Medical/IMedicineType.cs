@@ -1,4 +1,4 @@
-namespace LivestockTracker.Abstractions.Models
+namespace LivestockTracker.Abstractions.Models.Medical
 {
     /// <summary>
     /// Defines the properties of a type of medication.
@@ -14,5 +14,10 @@ namespace LivestockTracker.Abstractions.Models
         /// The human readable description of the type of medication.
         /// </summary>
         string Description { get; }
+
+        /// <summary>
+        /// A flag to indicate if the record has been deleted.
+        /// </summary>
+        bool Deleted { get; }
     }
 }

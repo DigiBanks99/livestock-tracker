@@ -55,9 +55,9 @@ export class MedicalService implements IMedicalService, OnDestroy {
     let medicalTransaction = new MedicalTransaction();
     medicalTransaction.animalID = animalID;
     medicalTransaction.dose = 1;
-    medicalTransaction.medicineTypeCode = 1;
+    medicalTransaction.medicineId = 1;
     medicalTransaction.transactionDate = new Date();
-    medicalTransaction.unit = 1;
+    medicalTransaction.unitId = 1;
     this.httpPostSubscription = this.http
       .post(this.apiUrl, medicalTransaction)
       .subscribe((savedTransaction: MedicalTransaction) => {
@@ -104,7 +104,7 @@ export class MedicalService implements IMedicalService, OnDestroy {
     }
 
     const index = this.medicalTransactions
-      .map(transaction => {
+      .map((transaction) => {
         return transaction.id;
       })
       .indexOf(id);
