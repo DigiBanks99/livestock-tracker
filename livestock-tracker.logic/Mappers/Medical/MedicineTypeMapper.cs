@@ -11,10 +11,10 @@ namespace LivestockTracker.Logic.Mappers.Medical
     public class MedicineTypeMapper : IMapper<IMedicineType, MedicineType>
     {
         /// <summary>
-        /// Maps an instance of a medicine DTO to an instance of a medicine entity.
+        /// Maps an instance of a medicine type DTO to an instance of a medicine type entity.
         /// </summary>
-        /// <param name="right">The DTO instance of the medicine.</param>
-        /// <returns>The entity instance of the medicine.</returns>
+        /// <param name="right">The DTO instance of the medicine type.</param>
+        /// <returns>The entity instance of the medicine type.</returns>
         public IMedicineType Map(MedicineType? right)
         {
             if (right == null)
@@ -31,10 +31,10 @@ namespace LivestockTracker.Logic.Mappers.Medical
         }
 
         /// <summary>
-        /// Maps an instance of a medicine entity to an instance of a medicine DTO.
+        /// Maps an instance of a medicine type entity to an instance of a medicine type DTO.
         /// </summary>
-        /// <param name="left">The entity instance of the medicine.</param>
-        /// <returns>The DTO instance of the medicine.</returns>
+        /// <param name="left">The entity instance of the medicine type.</param>
+        /// <returns>The DTO instance of the medicine type.</returns>
         public MedicineType Map(IMedicineType? left)
         {
             if (left == null)

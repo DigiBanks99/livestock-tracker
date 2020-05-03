@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Abstractions.Models.Medical;
-using LivestockTracker.Abstractions.Services.Medicine;
+using LivestockTracker.Abstractions.Services.Medical;
 using LivestockTracker.Database;
 using LivestockTracker.Logic.Utilities;
 using LivestockTracker.Models.Medical;
@@ -15,7 +15,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LivestockTracker.Logic.Services.Medicine
+namespace LivestockTracker.Logic.Services.Medical
 {
     /// <summary>
     /// Provides fetch and pagination services for medicine types.

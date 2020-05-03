@@ -41,9 +41,7 @@ namespace LivestockTracker
             services.AddLivestockTrackerSqliteDatabase(Configuration)
                     .AddLivestockTrackerLogic()
                     .AddScoped<IMedicalService, MedicalService>()
-                    .AddScoped<IMedicineService, MedicineService>()
                     .AddSingleton<IMapper<MedicalTransactionModel, MedicalTransaction>, MedicalTransactionMapper>()
-                    .AddSingleton<IMapper<MedicineTypeModel, MedicineType>, MedicineTypeMapper>()
                     .AddSwagger();
 
             // In production, the Angular files will be served from this directory

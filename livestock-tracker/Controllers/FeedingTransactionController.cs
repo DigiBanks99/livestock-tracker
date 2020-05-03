@@ -36,7 +36,7 @@ namespace LivestockTracker.Controllers
         /// <param name="animalId">The identifying key for the animal.</param>
         /// <param name="pageNumber">The number of the page.</param>
         /// <param name="pageSize">The size of each page.</param>
-        /// <returns>A paged list of feeding transaction that belong to an animal.</returns>
+        /// <returns>A paged list of feeding transaction for the animal.</returns>
         [HttpGet("{animalId}")]
         [ProducesResponseType(typeof(IPagedData<FeedingTransaction>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
