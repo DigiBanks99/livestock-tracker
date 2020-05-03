@@ -79,7 +79,14 @@ namespace LivestockTracker.Controllers
             return Ok(data);
         }
 
+        /// <summary>
+        /// Request the detail of a specific medicine type.
+        /// </summary>
+        /// <param name="id">The unique identifier for the medicine type.</param>
+        /// <returns>The medicine type if found.</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(MedicineType), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -95,9 +102,18 @@ namespace LivestockTracker.Controllers
             }
         }
 
+        /// <summary>
+        /// Requests the creation of a new medicine type with the supplied details.
+        /// </summary>
+        /// <param name="medicineType">The details of the medicine type to be created.</param>
+        /// <returns>The created medicine type with it's unique identifier.</returns>
         [HttpPost]
+        [ProducesResponseType(typeof(MedicineType), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add([Required][FromBody] MedicineType medicineType)
         {
+            Logger.LogInformation($"Requesting the creation of a new medicine type with details {medicineType}...");
+
             if (!ModelState.IsValid || medicineType == null)
             {
                 return BadRequest(ModelState);
@@ -108,17 +124,33 @@ namespace LivestockTracker.Controllers
             return CreatedAtAction(nameof(Get), new { id = addedItem.Id }, medicineType);
         }
 
+        /// <summary>
+        /// Request updates to a medicine type that already exists.
+        /// </summary>
+        /// <param name="id">The id of the medicine type that should be updated.</param>
+        /// <param name="medicineType">The updates for the medicine type.</param>
+        /// <returns>The updated medicine type.</returns>
         [HttpPut("{id}")]
+        [ProducesResponseType(typeof(MedicineType), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Update([FromRoute] int id, [FromBody] MedicineType? medicineType)
         {
-            if (!ModelState.IsValid)
+            Logger.LogInformation($"Requesting updates to the medicine type with ID {id}...");
+
+            if (medicineType == null)
             {
                 return BadRequest(ModelState);
             }
 
-            if (medicineType == null || id != medicineType.Id)
+            if (id != medicineType.Id)
             {
-                return BadRequest();
+                ModelState.AddModelError(nameof(medicineType.Id), "The id in the body and in the URL do not match.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
 
             try
@@ -134,9 +166,19 @@ namespace LivestockTracker.Controllers
         }
 
 
+        /// <summary>
+        /// Request the deletion of medicine type with the provided id.
+        /// </summary>
+        /// <param name="id">The id of the medicine type that should be deleted.</param>
+        /// <returns>The id of the medicine type that was deleted.</returns>
         [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)
         {
+            Logger.LogInformation($"Requesting the deletion a medicine type with ID {id}...");
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
