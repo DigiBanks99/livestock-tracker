@@ -3,7 +3,7 @@ using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Abstractions.Models.Feed;
 using LivestockTracker.Abstractions.Services.Feed;
 using LivestockTracker.Database;
-using LivestockTracker.Models;
+using LivestockTracker.Models.Feed;
 using LivestockTracker.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 namespace LivestockTracker.Logic.Services.Feed
 {
     /// <summary>
-    /// Provides search services for animals.
+    /// Provides search and pagination services for feed types.
     /// </summary>
     public class FeedTypeSearchService : IFeedTypeSearchService
     {
@@ -110,7 +110,7 @@ namespace LivestockTracker.Logic.Services.Feed
         /// <param name="sort">The condition that defines the sorting property.</param>
         /// <param name="sortDirection">Should the list be sorted ascending or descending.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
-        /// <returns>The sorted list of animals that match the filter.</returns>
+        /// <returns>The sorted list of feed types that match the filter.</returns>
         public virtual async Task<IEnumerable<IFeedType>> FindAsync<TSortProperty>(Expression<Func<IFeedType, bool>> filter,
                                                                                    Expression<Func<IFeedType, TSortProperty>> sort,
                                                                                    ListSortDirection sortDirection,

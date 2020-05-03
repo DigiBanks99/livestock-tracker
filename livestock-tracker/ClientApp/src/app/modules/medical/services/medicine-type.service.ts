@@ -1,103 +1,83 @@
-import { Subject } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { CrudService } from '@core/models/crud-service.interface';
 import { MedicineType } from '@core/models/medicine-type.model';
+import { PagedData } from '@core/models/paged-data.model';
 
-export interface IMedicineTypeService {
-  medicineTypesChanged: Subject<MedicineType[]>;
-
-  getMedicineTypes();
-  addMedicineType(medicineType: MedicineType);
-  deleteMedicineType(typeCode: number);
-  updateMedicineType(medicineTypeToUpdate: MedicineType);
-}
+export interface IMedicineTypeService
+  extends CrudService<MedicineType, number, number> {}
 
 @Injectable()
 export class MedicineTypeService implements IMedicineTypeService {
-  public medicineTypesChanged: Subject<MedicineType[]>;
-
   private readonly apiUrl: string;
-  private medicineTypes: MedicineType[];
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
-    this.apiUrl = baseUrl + 'medicine/';
-    this.medicineTypes = [];
-    this.medicineTypesChanged = new Subject<MedicineType[]>();
+    this.apiUrl = `${baseUrl}medicineType`;
   }
 
-  public getMedicineTypes() {
-    this.http.get(this.apiUrl).subscribe((medicineTypes: MedicineType[]) => {
-      this.medicineTypes = medicineTypes;
-      this.emitMedicineTypeChanged();
+  public getAll(
+    pageNumber: number = 0,
+    pageSize: number = 100,
+    includeDeleted: boolean = false
+  ): Observable<PagedData<MedicineType>> {
+    return this.http.get<PagedData<MedicineType>>(this.apiUrl, {
+      params: {
+        pageNumber: pageNumber.toString(),
+        pageSize: pageSize.toString(),
+        includeDeleted: includeDeleted.toString(),
+      },
     });
   }
 
-  public addMedicineType(medicineType: MedicineType) {
-    this.http
-      .post(this.apiUrl, medicineType)
-      .subscribe((savedMedicineType: MedicineType) => {
-        this.medicineTypes.push(savedMedicineType);
-        this.emitMedicineTypeChanged();
-      });
+  public get(key: number): Observable<MedicineType> {
+    return this.http.get<MedicineType>(`${this.apiUrl}/${key}`);
   }
 
-  public deleteMedicineType(typeCode: number) {
-    this.http.delete(this.apiUrl + typeCode).subscribe(() => {
-      this.getMedicineTypes();
-    });
+  public add(medicineType: MedicineType): Observable<MedicineType> {
+    return this.http.post<MedicineType>(this.apiUrl, medicineType);
   }
 
-  public updateMedicineType(medicineTypeToUpdate: MedicineType) {
-    this.http
-      .patch(this.apiUrl + medicineTypeToUpdate.typeCode, medicineTypeToUpdate)
-      .subscribe(() => {
-        this.emitMedicineTypeChanged();
-      });
+  public delete(key: number): Observable<number> {
+    return this.http.delete<number>(`${this.apiUrl}/${key}`);
   }
 
-  private indexOf(typeCode: number): number {
-    if (
-      this.medicineTypes === undefined ||
-      this.medicineTypes === null ||
-      this.medicineTypes.length === 0
-    ) {
-      return null;
-    }
-
-    if (typeCode === undefined || typeCode === null) {
-      throw new Error('Invalid index');
-    }
-
-    return this.medicineTypes
-      .map((medicineType: MedicineType) => {
-        return medicineType.typeCode;
-      })
-      .indexOf(typeCode);
-  }
-
-  private emitMedicineTypeChanged() {
-    this.medicineTypesChanged.next(this.medicineTypes.slice());
+  public update(medicineTypeToUpdate: MedicineType): Observable<MedicineType> {
+    return this.http.put<MedicineType>(
+      `${this.apiUrl}/${medicineTypeToUpdate.id}`,
+      medicineTypeToUpdate
+    );
   }
 }
 
 export class MockMedicineTypeService implements IMedicineTypeService {
-  medicineTypesChanged: Subject<MedicineType[]>;
-
-  constructor() {
-    this.medicineTypesChanged = new Subject<MedicineType[]>();
+  public getAll(): Observable<PagedData<MedicineType>> {
+    return of({
+      data: [],
+      currentPage: 0,
+      pageCount: 0,
+      pageSize: 0,
+      totalRecordCount: 0,
+    });
   }
 
-  getMedicineTypes() {
-    this.medicineTypesChanged.next([]);
+  public get(key: number): Observable<MedicineType> {
+    return of({
+      id: key,
+      description: 'Existing',
+    });
   }
-  addMedicineType(medicineType: MedicineType) {
-    throw new Error('Not implemented');
+
+  public add(medicineType: MedicineType): Observable<MedicineType> {
+    return of(medicineType);
   }
-  deleteMedicineType(typeCode: number) {
-    throw new Error('Not implemented');
+
+  delete(key: number): Observable<number> {
+    return of(key);
   }
-  updateMedicineType(medicineTypeToUpdate: MedicineType) {
-    throw new Error('Not implemented');
+
+  update(medicineTypeToUpdate: MedicineType): Observable<MedicineType> {
+    return of(medicineTypeToUpdate);
   }
 }

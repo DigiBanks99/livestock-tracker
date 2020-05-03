@@ -15,6 +15,7 @@ export class UnitComponent {
   @Input() public pageNumber: number;
   @Input() public pageSize: number;
   @Input() public recordCount: number;
+
   @Output() public add = new EventEmitter<Unit>();
   @Output() public save = new EventEmitter<Unit>();
   @Output() public remove = new EventEmitter<number>();

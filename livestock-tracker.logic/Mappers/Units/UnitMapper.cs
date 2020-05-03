@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models.Units;
-using LivestockTracker.Database.Models;
-using LivestockTracker.Models;
+using LivestockTracker.Database.Models.Units;
+using LivestockTracker.Models.Units;
 
 namespace LivestockTracker.Logic.Mappers.Units
 {

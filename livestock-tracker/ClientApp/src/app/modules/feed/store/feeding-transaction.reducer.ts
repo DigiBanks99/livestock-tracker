@@ -1,6 +1,5 @@
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { PagedData } from '@core/models/paged-data.model';
-import { FeedingTransactionState, PayloadAction } from '@core/store';
+import { FeedingTransactionState } from '@core/store';
 import { crudReducer } from '@core/store/crud.reducer';
 import {
   ActionTypes,

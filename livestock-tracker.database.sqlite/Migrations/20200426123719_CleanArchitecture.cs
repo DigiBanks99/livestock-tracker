@@ -87,6 +87,13 @@ namespace LivestockTracker.Database.Migrations
             migrationBuilder.AddColumn<bool>(
                 name: "Deleted",
                 schema: "feed",
+                table: "MedicineTypes",
+                nullable: false,
+                defaultValue: false);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "Deleted",
+                schema: "feed",
                 table: "FeedTypes",
                 nullable: false,
                 defaultValue: false);
@@ -190,6 +197,11 @@ namespace LivestockTracker.Database.Migrations
                 name: "Deleted",
                 schema: "feed",
                 table: "Units");
+
+            migrationBuilder.DropColumn(
+                name: "Deleted",
+                schema: "feed",
+                table: "MedicineTypes");
 
             migrationBuilder.RenameTable(
                 name: "MedicalTransactions",

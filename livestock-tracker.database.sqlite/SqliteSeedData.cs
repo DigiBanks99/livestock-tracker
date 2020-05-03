@@ -1,5 +1,7 @@
 using LivestockTracker.Abstractions.Data;
-using LivestockTracker.Database.Models;
+using LivestockTracker.Database.Models.Feed;
+using LivestockTracker.Database.Models.Medical;
+using LivestockTracker.Database.Models.Units;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -43,12 +45,12 @@ namespace LivestockTracker.Database.Sqlite
 
         private static void SeedMedicine(LivestockContext context)
         {
-            if (context.Medicine == null || context.Medicine.Any())
+            if (context.MedicineTypes == null || context.MedicineTypes.Any())
             {
                 return;
             }
 
-            context.Medicine.AddRange(
+            context.MedicineTypes.AddRange(
             new MedicineTypeModel()
             {
                 Id = 1,

@@ -1,9 +1,11 @@
 using LivestockTracker.Abstractions.Enums;
 using LivestockTracker.Abstractions.Models.Animals;
 using System;
+using System.Diagnostics;
 
-namespace LivestockTracker.Models
+namespace LivestockTracker.Models.Animals
 {
+    [DebuggerDisplay("[{Id} - {Number}]: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
     public class AnimalSummary : IAnimalSummary
     {
         public int Id { get; set; }

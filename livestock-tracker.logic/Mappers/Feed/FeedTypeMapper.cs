@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models.Feed;
-using LivestockTracker.Database.Models;
-using LivestockTracker.Models;
+using LivestockTracker.Database.Models.Feed;
+using LivestockTracker.Models.Feed;
 
 namespace LivestockTracker.Logic.Mappers.Feed
 {

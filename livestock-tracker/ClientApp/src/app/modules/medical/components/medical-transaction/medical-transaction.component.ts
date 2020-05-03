@@ -1,4 +1,5 @@
-import { Subscription } from 'rxjs';
+import { EMPTY, Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -6,29 +7,34 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicineType } from '@core/models/medicine-type.model';
 import { Unit } from '@core/models/unit.model';
+import { AppState } from '@core/store';
 import { environment } from '@env/environment';
 import { MedicalService } from '@medical/services/medical.service';
 import { MedicineTypeService } from '@medical/services/medicine-type.service';
+import { medicineTypeStore } from '@medical/store';
+import { FetchMedicineTypes } from '@medical/store/medicine-type.actions';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-medical-transaction',
   templateUrl: './medical-transaction.component.html',
   styleUrls: ['./medical-transaction.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
-  ]
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium },
+  ],
 })
 export class MedicalTransactionComponent implements OnInit, OnDestroy {
   @Input() public medicalTransaction: MedicalTransaction;
   @Input() public units: Unit[];
 
   public medicalTransactionForm: FormGroup;
-  public medicineTypes: MedicineType[];
+  public medicineTypes$: Observable<MedicineType[]> = EMPTY;
   public medicineTypeControl: FormControl;
   public transactionDateControl: FormControl;
   public doseControl: FormControl;
   public unitControl: FormControl;
 
+  private destroyed$ = new Subject<void>();
   private medicineTypeControlChanged: Subscription;
   private transactionDateControlChanged: Subscription;
   private doseControlChanged: Subscription;
@@ -36,11 +42,10 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
   private medicineTypeChanged: Subscription;
 
   constructor(
+    private store: Store<AppState>,
     private medicalService: MedicalService,
     private medicineTypeService: MedicineTypeService
   ) {
-    this.medicineTypes = [];
-
     this.medicineTypeControlChanged = new Subscription();
     this.transactionDateControlChanged = new Subscription();
     this.doseControlChanged = new Subscription();
@@ -48,13 +53,15 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
     this.medicineTypeChanged = new Subscription();
   }
 
-  ngOnInit() {
-    this.initForm();
-
-    this.medicineTypeChanged = this.medicineTypeService.medicineTypesChanged.subscribe(
-      (medicineTypes: MedicineType[]) => (this.medicineTypes = medicineTypes)
+  public ngOnInit(): void {
+    this.medicineTypes$ = this.store.pipe(
+      select(medicineTypeStore.selectors.getMedicineTypes),
+      takeUntil(this.destroyed$)
     );
-    this.medicineTypeService.getMedicineTypes();
+
+    this.store.dispatch(new FetchMedicineTypes());
+
+    this.initForm();
   }
 
   public deleteTransaction(id: number) {
@@ -62,7 +69,7 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
   }
 
   private medicineTypeControlChangedHandler(value: number) {
-    this.medicalTransaction.medicineTypeCode = value;
+    this.medicalTransaction.medicineId = value;
     this.updateMedicalTransaction();
   }
 
@@ -77,7 +84,7 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
   }
 
   private unitControlChangedHandler(value: number) {
-    this.medicalTransaction.unit = value;
+    this.medicalTransaction.unitId = value;
     this.updateMedicalTransaction();
   }
 
@@ -87,7 +94,7 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
 
   private initForm() {
     this.medicineTypeControl = new FormControl(
-      this.medicalTransaction.medicineTypeCode,
+      this.medicalTransaction.medicineId,
       [Validators.required]
     );
     this.transactionDateControl = new FormControl(
@@ -95,10 +102,10 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
       [Validators.required]
     );
     this.doseControl = new FormControl(this.medicalTransaction.dose, [
-      Validators.required
+      Validators.required,
     ]);
-    this.unitControl = new FormControl(this.medicalTransaction.unit, [
-      Validators.required
+    this.unitControl = new FormControl(this.medicalTransaction.unitId, [
+      Validators.required,
     ]);
 
     this.medicineTypeControlChanged = this.medicineTypeControl.valueChanges.subscribe(
@@ -115,14 +122,17 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
     );
 
     this.medicalTransactionForm = new FormGroup({
-      medicineTypeCode: this.medicineTypeControl,
+      medicineTypeId: this.medicineTypeControl,
       transactionDate: this.transactionDateControl,
       dose: this.doseControl,
-      unit: this.unitControl
+      unitId: this.unitControl,
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+
     this.medicineTypeControlChanged.unsubscribe();
     this.transactionDateControlChanged.unsubscribe();
     this.doseControlChanged.unsubscribe();

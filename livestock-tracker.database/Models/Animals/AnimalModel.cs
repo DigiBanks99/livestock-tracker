@@ -1,15 +1,17 @@
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Enums;
 using LivestockTracker.Abstractions.Models.Animals;
+using LivestockTracker.Database.Models.Feed;
+using LivestockTracker.Database.Models.Medical;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
 
-namespace LivestockTracker.Database.Models
+namespace LivestockTracker.Database.Models.Animals
 {
-    [DebuggerDisplay("[{ID} - {Number}]: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
+    [DebuggerDisplay("[{Id} - {Number}]: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
     [Table("Animals", Schema = "animal")]
     public class AnimalModel : IEntity<int>, IAnimal
     {

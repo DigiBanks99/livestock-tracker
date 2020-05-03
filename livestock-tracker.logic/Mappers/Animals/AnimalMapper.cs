@@ -1,6 +1,7 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models.Animals;
-using LivestockTracker.Database.Models;
+using LivestockTracker.Database.Models.Animals;
+using LivestockTracker.Models.Animals;
 
 namespace LivestockTracker.Logic.Mappers.Animals
 {
@@ -49,10 +50,10 @@ namespace LivestockTracker.Logic.Mappers.Animals
         {
             if (left == null)
             {
-                return new Models.Animal();
+                return new Animal();
             }
 
-            return new Models.Animal
+            return new Animal
             {
                 ArrivalWeight = left.ArrivalWeight,
                 BatchNumber = left.BatchNumber,

@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions.Services;
-using LivestockTracker.Database.Models;
-using LivestockTracker.Models;
+using LivestockTracker.Database.Models.Medical;
+using LivestockTracker.Models.Medical;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

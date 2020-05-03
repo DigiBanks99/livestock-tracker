@@ -1,6 +1,8 @@
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Enums;
-using LivestockTracker.Database.Models;
+using LivestockTracker.Database.Models.Animals;
+using LivestockTracker.Database.Models.Feed;
+using LivestockTracker.Database.Models.Medical;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;

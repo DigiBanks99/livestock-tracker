@@ -41,6 +41,6 @@ import { unitEffects, unitReducers } from '@unit/store';
     EffectsModule.forFeature([unitEffects.UnitEffects]),
   ],
   providers: [UnitService],
-  exports: [UnitContainerComponent, UnitComponent, UnitDetailComponent],
+  exports: [UnitContainerComponent],
 })
 export class UnitModule {}

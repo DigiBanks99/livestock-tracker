@@ -17,11 +17,17 @@ export class FeedTypeDetailComponent implements OnInit {
     this.feedTypeForm = null;
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.initForm();
   }
 
-  public initForm() {
+  public onUpdate(): void {
+    if (this.feedTypeForm.valid) {
+      this.save.emit(this.feedTypeForm.value);
+    }
+  }
+
+  private initForm(): void {
     this.feedTypeForm = new FormGroup({
       id: new FormControl(this.feedType.id),
       description: new FormControl(this.feedType.description, {
@@ -29,11 +35,5 @@ export class FeedTypeDetailComponent implements OnInit {
         validators: Validators.required,
       }),
     });
-  }
-
-  public onUpdate() {
-    if (this.feedTypeForm.valid) {
-      this.save.emit(this.feedTypeForm.value);
-    }
   }
 }

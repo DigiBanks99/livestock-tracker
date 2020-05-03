@@ -30,7 +30,7 @@ describe('MedicalTransactionComponent', () => {
       providers: [
         { provide: MedicalService, useClass: MockMedicalService },
         { provide: UnitService, useClass: MockUnitService },
-        { provide: MedicineTypeService, useClass: MockMedicineTypeService }
+        { provide: MedicineTypeService, useClass: MockMedicineTypeService },
       ],
       imports: [
         ReactiveFormsModule,
@@ -42,8 +42,8 @@ describe('MedicalTransactionComponent', () => {
         MatInputModule,
         MatIconModule,
         HttpClientTestingModule,
-        NativeDateModule
-      ]
+        NativeDateModule,
+      ],
     }).compileComponents();
   }));
 
@@ -54,9 +54,9 @@ describe('MedicalTransactionComponent', () => {
     component.medicalTransaction.animalID = 1;
     component.medicalTransaction.dose = 1;
     component.medicalTransaction.id = 1;
-    component.medicalTransaction.medicineTypeCode = 1;
+    component.medicalTransaction.medicineId = 1;
     component.medicalTransaction.transactionDate = new Date(Date.now());
-    component.medicalTransaction.unit = 1;
+    component.medicalTransaction.unitId = 1;
     fixture.detectChanges();
   }));
 

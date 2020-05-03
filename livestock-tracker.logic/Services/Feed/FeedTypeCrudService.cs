@@ -2,7 +2,7 @@ using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models.Feed;
 using LivestockTracker.Abstractions.Services.Feed;
 using LivestockTracker.Database;
-using LivestockTracker.Database.Models;
+using LivestockTracker.Database.Models.Feed;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;

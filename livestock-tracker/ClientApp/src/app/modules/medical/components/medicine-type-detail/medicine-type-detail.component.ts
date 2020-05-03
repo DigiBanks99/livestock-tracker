@@ -1,7 +1,4 @@
-import { Subscription } from 'rxjs';
-import { isNullOrUndefined } from 'util';
-
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MedicineType } from '@core/models/medicine-type.model';
 import { MedicineTypeService } from '@medical/services/medicine-type.service';
@@ -9,52 +6,35 @@ import { MedicineTypeService } from '@medical/services/medicine-type.service';
 @Component({
   selector: 'app-medicine-type-detail',
   templateUrl: './medicine-type-detail.component.html',
-  styleUrls: ['./medicine-type-detail.component.scss']
+  styleUrls: ['./medicine-type-detail.component.scss'],
 })
-export class MedicineTypeDetailComponent implements OnInit, OnDestroy {
+export class MedicineTypeDetailComponent implements OnInit {
   @Input() medicineType: MedicineType;
+  @Output() save = new EventEmitter<MedicineType>();
 
   public medicineTypeForm: FormGroup;
-
-  private onDescriptionChanged: Subscription;
 
   constructor(private medicineTypeService: MedicineTypeService) {
     this.medicineTypeForm = null;
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.initForm();
   }
 
-  public deleteMedicineType(typeCode: number) {
-    this.medicineTypeService.deleteMedicineType(typeCode);
-  }
-
-  private initForm() {
-    this.medicineTypeForm = new FormGroup({
-      description: new FormControl(this.medicineType.description, [
-        Validators.required
-      ])
-    });
-
-    this.onDescriptionChanged = this.medicineTypeForm
-      .get('description')
-      .valueChanges.subscribe((description: string) =>
-        this.updateUnit(description)
-      );
-  }
-
-  private updateUnit(descritpion: string) {
-    this.medicineType.description = descritpion;
-    this.medicineTypeService.updateMedicineType(this.medicineType);
-  }
-
-  ngOnDestroy() {
-    if (
-      this.onDescriptionChanged !== undefined &&
-      this.onDescriptionChanged !== null
-    ) {
-      this.onDescriptionChanged.unsubscribe();
+  public onUpdate(): void {
+    if (this.medicineTypeForm.valid) {
+      this.save.emit(this.medicineTypeForm.value);
     }
+  }
+
+  private initForm(): void {
+    this.medicineTypeForm = new FormGroup({
+      id: new FormControl(this.medicineType.id),
+      description: new FormControl(this.medicineType.description, {
+        updateOn: 'blur',
+        validators: Validators.required,
+      }),
+    });
   }
 }
