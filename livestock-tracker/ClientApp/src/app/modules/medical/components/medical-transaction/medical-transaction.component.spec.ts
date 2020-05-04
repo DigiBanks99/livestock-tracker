@@ -11,9 +11,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicalTransactionComponent } from '@medical/components/medical-transaction/medical-transaction.component';
 import {
-  MedicalService,
+  MedicalTransactionService,
   MockMedicalService
-} from '@medical/services/medical.service';
+} from '@medical/services/medical-transaction.service';
 import {
   MedicineTypeService,
   MockMedicineTypeService
@@ -28,7 +28,7 @@ describe('MedicalTransactionComponent', () => {
     TestBed.configureTestingModule({
       declarations: [MedicalTransactionComponent],
       providers: [
-        { provide: MedicalService, useClass: MockMedicalService },
+        { provide: MedicalTransactionService, useClass: MockMedicalService },
         { provide: UnitService, useClass: MockUnitService },
         { provide: MedicineTypeService, useClass: MockMedicineTypeService },
       ],

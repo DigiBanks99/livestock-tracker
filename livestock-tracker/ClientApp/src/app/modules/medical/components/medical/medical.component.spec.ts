@@ -9,20 +9,20 @@ import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import {
   LivestockService,
   MockLivestockService
 } from '@animal/services/livestock.service';
+import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicalComponent } from '@medical/components/medical/medical.component';
 import {
-  MedicalService,
+  MedicalTransactionService,
   MockMedicalService
-} from '@medical/services/medical.service';
+} from '@medical/services/medical-transaction.service';
 
 @Component({
   selector: 'app-animal-select-container',
-  template: '<div></div>'
+  template: '<div></div>',
 })
 class AnimalSelectContainerComponent {
   @Input() public disabled: boolean;
@@ -30,7 +30,7 @@ class AnimalSelectContainerComponent {
 
 @Component({
   selector: 'app-medical-transaction-container',
-  template: '<div></div>'
+  template: '<div></div>',
 })
 class MedicalTransactionContainerComponent {
   @Input() medicalTransaction: MedicalTransaction;
@@ -45,11 +45,11 @@ describe('MedicalComponent', () => {
       declarations: [
         MedicalComponent,
         MedicalTransactionContainerComponent,
-        AnimalSelectContainerComponent
+        AnimalSelectContainerComponent,
       ],
       providers: [
-        { provide: MedicalService, useClass: MockMedicalService },
-        { provide: LivestockService, useClass: MockLivestockService }
+        { provide: MedicalTransactionService, useClass: MockMedicalService },
+        { provide: LivestockService, useClass: MockLivestockService },
       ],
       imports: [
         ReactiveFormsModule,
@@ -60,8 +60,8 @@ describe('MedicalComponent', () => {
         MatToolbarModule,
         MatListModule,
         MatDatepickerModule,
-        HttpClientTestingModule
-      ]
+        HttpClientTestingModule,
+      ],
     }).compileComponents();
   }));
 

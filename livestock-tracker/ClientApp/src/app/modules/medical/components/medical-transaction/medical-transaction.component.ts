@@ -9,7 +9,7 @@ import { MedicineType } from '@core/models/medicine-type.model';
 import { Unit } from '@core/models/unit.model';
 import { AppState } from '@core/store';
 import { environment } from '@env/environment';
-import { MedicalService } from '@medical/services/medical.service';
+import { MedicalTransactionService } from '@medical/services/medical-transaction.service';
 import { MedicineTypeService } from '@medical/services/medicine-type.service';
 import { medicineTypeStore } from '@medical/store';
 import { FetchMedicineTypes } from '@medical/store/medicine-type.actions';
@@ -43,7 +43,7 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<AppState>,
-    private medicalService: MedicalService,
+    private medicalService: MedicalTransactionService,
     private medicineTypeService: MedicineTypeService
   ) {
     this.medicineTypeControlChanged = new Subscription();
@@ -65,7 +65,7 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
   }
 
   public deleteTransaction(id: number) {
-    this.medicalService.deleteMedicalTransaction(id);
+    this.medicalService.delete(id);
   }
 
   private medicineTypeControlChangedHandler(value: number) {
@@ -89,7 +89,7 @@ export class MedicalTransactionComponent implements OnInit, OnDestroy {
   }
 
   private updateMedicalTransaction() {
-    this.medicalService.updateMedicalTransaction(this.medicalTransaction);
+    this.medicalService.update(this.medicalTransaction);
   }
 
   private initForm() {

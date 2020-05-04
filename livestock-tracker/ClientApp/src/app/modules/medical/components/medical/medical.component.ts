@@ -5,12 +5,12 @@ import { PageEvent } from '@angular/material/paginator';
 import { Livestock } from '@app/core/models/livestock.model';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { environment } from '@env/environment';
-import { MedicalService } from '@medical/services/medical.service';
+import { MedicalTransactionService } from '@medical/services/medical-transaction.service';
 
 @Component({
   selector: 'app-medical',
   templateUrl: './medical.component.html',
-  styleUrls: ['./medical.component.scss']
+  styleUrls: ['./medical.component.scss'],
 })
 export class MedicalComponent implements OnInit, OnChanges, OnDestroy {
   @Input() public currentAnimal: Livestock;
@@ -21,7 +21,7 @@ export class MedicalComponent implements OnInit, OnChanges, OnDestroy {
   public medicalTransactionsChanged: Subscription;
   private lastPage: number;
 
-  constructor(private medicalService: MedicalService) {
+  constructor(private medicalService: MedicalTransactionService) {
     this.medicalTransactions = [];
     this.filteredMedicalTransactions = [];
     this.pageSize = environment.pageSize;
