@@ -114,16 +114,34 @@ namespace LivestockTracker.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Update([FromRoute] int id, [Required][FromBody] MedicalTransaction medicalTransaction)
         {
-            Logger.LogInformation($"Requesting the creation of medical transaction {medicalTransaction}");
-            if (!ModelState.IsValid)
+            Logger.LogInformation($"Requesting the updating of medical transaction with ID {id} with values {medicalTransaction}...");
+
+            if (medicalTransaction == null)
             {
+                ModelState.AddModelError(nameof(medicalTransaction), $"{nameof(medicalTransaction)} is required.");
                 return BadRequest(ModelState);
             }
 
-            var addedTransaction = await _medicalTransactionCrudService.AddAsync(medicalTransaction, RequestAbortToken)
-                                                                       .ConfigureAwait(false);
+            if (id != medicalTransaction.Id)
+            {
+                ModelState.AddModelError(nameof(medicalTransaction.Id), "The id in the transaction body does match the id in the route.");
+            }
 
-            return CreatedAtAction(nameof(Get), new { id = addedTransaction.Id, animalId = addedTransaction.AnimalId }, addedTransaction);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            try
+            {
+                var updatedTransaction = await _medicalTransactionCrudService.UpdateAsync(medicalTransaction, RequestAbortToken)
+                                                                             .ConfigureAwait(false);
+                return Ok(updatedTransaction);
+            }
+            catch (EntityNotFoundException<IMedicalTransaction> ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         /// <summary>
