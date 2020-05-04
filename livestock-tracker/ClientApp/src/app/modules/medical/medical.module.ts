@@ -21,7 +21,7 @@ import { MedicalComponent } from '@medical/components/medical/medical.component'
 import { MedicalContainerComponent } from '@medical/components/medical/medical.container';
 import { MedicineTypeDetailComponent } from '@medical/components/medicine-type-detail/medicine-type-detail.component';
 import { MedicineTypeComponent } from '@medical/components/medicine-type/medicine-type.component';
-import { MedicalService } from '@medical/services/medical.service';
+import { MedicalTransactionService } from '@medical/services/medical-transaction.service';
 import { MedicineTypeService } from '@medical/services/medicine-type.service';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -66,7 +66,7 @@ import { MedicalStoreConstants } from './store/constants';
       medicineTypeReducer.medicineTypeReducer
     ),
   ],
-  providers: [MedicalService, MedicineTypeService],
+  providers: [MedicalTransactionService, MedicineTypeService],
   exports: [
     MedicalTransactionContainerComponent,
     MedicineTypeContainerComponent,
