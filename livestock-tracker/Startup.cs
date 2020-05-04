@@ -1,9 +1,4 @@
-using LivestockTracker.Abstractions;
-using LivestockTracker.Database.Models.Medical;
 using LivestockTracker.Extensions;
-using LivestockTracker.Mappers;
-using LivestockTracker.Models.Medical;
-using LivestockTracker.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -40,8 +35,6 @@ namespace LivestockTracker
 
             services.AddLivestockTrackerSqliteDatabase(Configuration)
                     .AddLivestockTrackerLogic()
-                    .AddScoped<IMedicalService, MedicalService>()
-                    .AddSingleton<IMapper<MedicalTransactionModel, MedicalTransaction>, MedicalTransactionMapper>()
                     .AddSwagger();
 
             // In production, the Angular files will be served from this directory
