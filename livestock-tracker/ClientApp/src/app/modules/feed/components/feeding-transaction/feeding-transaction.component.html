@@ -18,7 +18,7 @@
             'edit'
           ]"
         >
-          {{ getFeedTypePipe(feedingTransaction.feedTypeId) }}
+          {{ feedingTransaction.feedTypeId | lookup: feedTypes }}
         </a>
       </td>
     </ng-container>
@@ -40,7 +40,7 @@
     <ng-container matColumnDef="unit">
       <th mat-header-cell *matHeaderCellDef>Unit</th>
       <td mat-cell *matCellDef="let feedingTransaction">
-        {{ getUnitPipe(feedingTransaction.unitId) }}
+        {{ feedingTransaction.unitId | lookup: units }}
       </td>
     </ng-container>
 

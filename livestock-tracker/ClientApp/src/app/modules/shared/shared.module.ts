@@ -15,6 +15,7 @@ import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
 import { CommandButtonComponent } from './components/command-button/command-button.component';
 import { AnimalTypeSelectComponent } from './components/form-components';
+import { LookupPipe } from './pipes/lookup.pipe';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { AnimalTypeSelectComponent } from './components/form-components';
     AnimalTypeSelectComponent,
     CommandButtonComponent,
     LsGridComponent,
+    LookupPipe,
   ],
   imports: [
     CommonModule,
@@ -42,6 +44,7 @@ import { AnimalTypeSelectComponent } from './components/form-components';
     AnimalTypeSelectComponent,
     CommandButtonComponent,
     LsGridComponent,
+    LookupPipe,
   ],
 })
 export class SharedModule {}

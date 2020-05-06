@@ -1,50 +1,69 @@
-<form class="form" [formGroup]="medicalTransactionForm">
-  <mat-form-field class="medical-toolbar__trans-type">
-    <mat-select
-      [value]="medicalTransaction.medicineId"
-      formControlName="medicineTypeId"
-    >
-      <mat-option
-        *ngFor="let medType of medicineTypes$ | async"
-        [value]="medType.id"
-        >{{ medType.description }}</mat-option
-      >
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="medical-toolbar__trans-date">
-    <input
-      id="transactionDate"
-      matInput
-      [matDatepicker]="td"
-      formControlName="transactionDate"
-      required
-    />
-    <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
-    <mat-datepicker #td disabled="false"></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field class="medical-toolbar__trans-dose">
-    <input
-      id="dose"
-      type="number"
-      matInput
-      formControlName="dose"
-      class="currency-input"
-      required
-    />
-  </mat-form-field>
-  <mat-form-field class="medical-toolbar__trans-unit">
-    <mat-select formControlName="unitId" id="unit">
-      <mat-option *ngFor="let unitType of units" [value]="unitType.id">{{
-        unitType.description
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button
-    mat-icon-button
-    class="medical-toolbar__trans-trash"
-    (click)="deleteTransaction(medicalTransaction.id)"
-    title="Delete this transaction"
+<h1>Medical transactions</h1>
+<div class="medical-transaction-list mat-elevation-z1">
+  <mat-toolbar>
+    <app-animal-select-container></app-animal-select-container>
+  </mat-toolbar>
+  <table
+    mat-table
+    [dataSource]="medicalTransactions"
+    class="medical-transaction-list-table full-width-table"
   >
-    <mat-icon>delete</mat-icon>
-  </button>
-</form>
+    <ng-container matColumnDef="medicineType">
+      <th mat-header-cell *matHeaderCellDef>Medicine type</th>
+      <td mat-cell *matCellDef="let medicalTransaction">
+        <a
+          [routerLink]="[
+            medicalTransaction.animalId,
+            medicalTransaction.id,
+            'edit'
+          ]"
+        >
+          {{ medicalTransaction.medicineId | lookup: medicineTypes }}
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let medicalTransaction">
+        {{ medicalTransaction.transactionDate | date }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dose">
+      <th mat-header-cell *matHeaderCellDef>Dose</th>
+      <td mat-cell *matCellDef="let medicalTransaction">
+        {{ medicalTransaction.dose | number }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="unit">
+      <th mat-header-cell *matHeaderCellDef>Unit</th>
+      <td mat-cell *matCellDef="let medicalTransaction">
+        {{ medicalTransaction.unitId | lookup: units }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="star" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td
+        mat-cell
+        *matCellDef="let medicalTransaction"
+        (click)="onRemove(medicalTransaction.id)"
+      >
+        <mat-icon>delete</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator
+    [pageIndex]="pageNumber"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    [length]="recordCount"
+    (page)="onPage($event)"
+  ></mat-paginator>
+</div>
+<app-command-button (click)="onAdd()"></app-command-button>

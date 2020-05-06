@@ -15,10 +15,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
+import { MedicalTransactionFormComponent } from '@medical/components/medical-transaction-form/medical-transaction-form.component';
+import { MedicalTransactionFormContainerComponent } from '@medical/components/medical-transaction-form/medical-transaction-form.container';
 import { MedicalTransactionComponent } from '@medical/components/medical-transaction/medical-transaction.component';
 import { MedicalTransactionContainerComponent } from '@medical/components/medical-transaction/medical-transaction.container';
-import { MedicalComponent } from '@medical/components/medical/medical.component';
-import { MedicalContainerComponent } from '@medical/components/medical/medical.container';
 import { MedicineTypeDetailComponent } from '@medical/components/medicine-type-detail/medicine-type-detail.component';
 import { MedicineTypeComponent } from '@medical/components/medicine-type/medicine-type.component';
 import { MedicalTransactionService } from '@medical/services/medical-transaction.service';
@@ -28,22 +29,30 @@ import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 
 import { MedicineTypeContainerComponent } from './components/medicine-type/medicine-type.container';
-import { medicineTypeEffects, medicineTypeReducer } from './store';
+import {
+  medicalTransactionEffects,
+  medicalTransactionReducer,
+  medicineTypeEffects,
+  medicineTypeReducer
+} from './store';
 import { MedicalStoreConstants } from './store/constants';
 
 @NgModule({
   declarations: [
+    MedicalTransactionFormContainerComponent,
     MedicalTransactionContainerComponent,
-    MedicalContainerComponent,
-    MedicalComponent,
     MedicalTransactionComponent,
+    MedicalTransactionFormComponent,
     MedicineTypeContainerComponent,
     MedicineTypeComponent,
     MedicineTypeDetailComponent,
   ],
   imports: [
     CommonModule,
-    EffectsModule.forFeature([medicineTypeEffects.MedicineTypeEffects]),
+    EffectsModule.forFeature([
+      medicineTypeEffects.MedicineTypeEffects,
+      medicalTransactionEffects.MedicalTransactionEffects,
+    ]),
     FormsModule,
     HttpClientModule,
     MatButtonModule,
@@ -60,7 +69,12 @@ import { MedicalStoreConstants } from './store/constants';
     MatTableModule,
     MatToolbarModule,
     ReactiveFormsModule,
+    RouterModule,
     SharedModule,
+    StoreModule.forFeature(
+      MedicalStoreConstants.MedicalTransactionStoreKey,
+      medicalTransactionReducer.medicalTransactionReducer
+    ),
     StoreModule.forFeature(
       MedicalStoreConstants.MedicineTypeStoreKey,
       medicineTypeReducer.medicineTypeReducer
@@ -68,9 +82,9 @@ import { MedicalStoreConstants } from './store/constants';
   ],
   providers: [MedicalTransactionService, MedicineTypeService],
   exports: [
-    MedicalTransactionContainerComponent,
+    MedicalTransactionFormContainerComponent,
     MedicineTypeContainerComponent,
-    MedicalContainerComponent,
+    MedicalTransactionContainerComponent,
   ],
 })
 export class MedicalModule {}
