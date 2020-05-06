@@ -31,7 +31,7 @@ export class FeedingTransactionComponent implements OnDestroy {
   @Input() public currentAnimal: Livestock;
   @Input() public feedingTransactions: FeedingTransaction[];
   @Input() public feedTypes: FeedType[];
-  @Input() public unitTypes: Unit[];
+  @Input() public units: Unit[];
   @Input() public pageNumber = 0;
   @Input() public pageSize = 100;
   @Input() public recordCount: number;
@@ -68,32 +68,6 @@ export class FeedingTransactionComponent implements OnDestroy {
 
   public onPage(page: PageEvent) {
     this.page.emit(page);
-  }
-
-  public getFeedTypePipe(id: number): string {
-    if (this.feedTypes === undefined || this.feedTypes === null) {
-      this.feedTypes = [];
-    }
-
-    const foundType = this.feedTypes.find((feedType) => feedType.id === id);
-    if (foundType === undefined || foundType === null) {
-      return '';
-    }
-
-    return foundType.description;
-  }
-
-  public getUnitPipe(id: number): string {
-    if (this.unitTypes === undefined || this.unitTypes === null) {
-      this.unitTypes = [];
-    }
-
-    const foundType = this.unitTypes.find((unit) => unit.id === id);
-    if (foundType === undefined || foundType === null) {
-      return '';
-    }
-
-    return foundType.description;
   }
 
   public ngOnDestroy(): void {

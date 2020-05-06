@@ -11,7 +11,7 @@ import { FeedTypeContainerComponent } from '@feed/components/feed-type/feed-type
 import { FeedingTransactionDetailComponent } from '@feed/components/feeding-transaction-detail/feeding-transaction-detail.component';
 import { FeedingTransactionNewComponent } from '@feed/components/feeding-transaction-new/feeding-transaction-new.component';
 import { HomeComponent } from '@home/components/home.component';
-import { MedicalContainerComponent } from '@medical/components/medical/medical.container';
+import { MedicalTransactionContainerComponent } from '@medical/components/medical-transaction/medical-transaction.container';
 import { MedicineTypeContainerComponent } from '@medical/components/medicine-type/medicine-type.container';
 import { MedicalModule } from '@medical/medical.module';
 import { ReportsComponent } from '@reports/components/reports.component';
@@ -23,7 +23,7 @@ const routes: Routes = [
   { path: 'animal', component: AnimalComponent },
   { path: 'animal/new', component: AnimalNewComponent },
   { path: 'animal/:id/edit', component: AnimalDetailComponent },
-  { path: 'medical', component: MedicalContainerComponent },
+  { path: 'medical', component: MedicalTransactionContainerComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'units', component: UnitContainerComponent },
   { path: 'medicine-type', component: MedicineTypeContainerComponent },

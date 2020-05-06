@@ -28,7 +28,7 @@ import { select, Store } from '@ngrx/store';
       [currentAnimal]="selectedAnimal$ | async"
       [feedingTransactions]="feedingTransactions$ | async"
       [feedTypes]="feedTypes$ | async"
-      [unitTypes]="units$ | async"
+      [units]="units$ | async"
       [pageNumber]="pageNumber$ | async"
       [pageSize]="pageSize$ | async"
       [recordCount]="recordCount$ | async"

@@ -1,24 +1,40 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { Component, Input } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatOptionModule, NativeDateModule } from '@angular/material/core';
+import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import {
+  LivestockService,
+  MockLivestockService
+} from '@animal/services/livestock.service';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicalTransactionComponent } from '@medical/components/medical-transaction/medical-transaction.component';
 import {
   MedicalTransactionService,
   MockMedicalService
 } from '@medical/services/medical-transaction.service';
-import {
-  MedicineTypeService,
-  MockMedicineTypeService
-} from '@medical/services/medicine-type.service';
-import { MockUnitService, UnitService } from '@unit/services/unit.service';
+
+@Component({
+  selector: 'app-animal-select-container',
+  template: '<div></div>',
+})
+class AnimalSelectContainerComponent {
+  @Input() public disabled: boolean;
+}
+
+@Component({
+  selector: 'app-medical-transaction-container',
+  template: '<div></div>',
+})
+class MedicalTransactionContainerComponent {
+  @Input() medicalTransaction: MedicalTransaction;
+}
 
 describe('MedicalTransactionComponent', () => {
   let component: MedicalTransactionComponent;
@@ -26,39 +42,34 @@ describe('MedicalTransactionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [MedicalTransactionComponent],
+      declarations: [
+        MedicalTransactionComponent,
+        MedicalTransactionContainerComponent,
+        AnimalSelectContainerComponent,
+      ],
       providers: [
         { provide: MedicalTransactionService, useClass: MockMedicalService },
-        { provide: UnitService, useClass: MockUnitService },
-        { provide: MedicineTypeService, useClass: MockMedicineTypeService },
+        { provide: LivestockService, useClass: MockLivestockService },
       ],
       imports: [
         ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatOptionModule,
-        MatSelectModule,
-        MatFormFieldModule,
-        MatDatepickerModule,
-        MatInputModule,
         MatIconModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatPaginatorModule,
+        MatToolbarModule,
+        MatListModule,
+        MatDatepickerModule,
         HttpClientTestingModule,
-        NativeDateModule,
       ],
     }).compileComponents();
   }));
 
-  beforeEach(async(() => {
+  beforeEach(() => {
     fixture = TestBed.createComponent(MedicalTransactionComponent);
     component = fixture.componentInstance;
-    component.medicalTransaction = new MedicalTransaction();
-    component.medicalTransaction.animalID = 1;
-    component.medicalTransaction.dose = 1;
-    component.medicalTransaction.id = 1;
-    component.medicalTransaction.medicineId = 1;
-    component.medicalTransaction.transactionDate = new Date(Date.now());
-    component.medicalTransaction.unitId = 1;
     fixture.detectChanges();
-  }));
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
