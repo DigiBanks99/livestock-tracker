@@ -57,7 +57,9 @@
       </a>
       <mat-menu #manageMenu="matMenu">
         <a mat-menu-item [routerLink]="['units']">Units</a>
-        <a mat-menu-item [routerLink]="['medicine-type']">Medicine Type</a>
+        <a mat-menu-item [routerLink]="['medical', 'medicine-type']"
+          >Medicine Type</a
+        >
         <a mat-menu-item [routerLink]="['feed-type']">Feed Type</a>
       </mat-menu>
     </mat-nav-list>

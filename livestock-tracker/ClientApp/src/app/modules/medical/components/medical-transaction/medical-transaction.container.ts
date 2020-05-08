@@ -3,6 +3,7 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
 import { Animal } from '@app/core/models/livestock.model';
 import { MedicalTransaction, MedicineType, Unit } from '@core/models';
 import { AppState } from '@core/store';

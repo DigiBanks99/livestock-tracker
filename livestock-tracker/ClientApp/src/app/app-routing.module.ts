@@ -11,22 +11,22 @@ import { FeedTypeContainerComponent } from '@feed/components/feed-type/feed-type
 import { FeedingTransactionDetailComponent } from '@feed/components/feeding-transaction-detail/feeding-transaction-detail.component';
 import { FeedingTransactionNewComponent } from '@feed/components/feeding-transaction-new/feeding-transaction-new.component';
 import { HomeComponent } from '@home/components/home.component';
-import { MedicalTransactionContainerComponent } from '@medical/components/medical-transaction/medical-transaction.container';
-import { MedicineTypeContainerComponent } from '@medical/components/medicine-type/medicine-type.container';
 import { MedicalModule } from '@medical/medical.module';
 import { ReportsComponent } from '@reports/components/reports.component';
 import { UnitContainerComponent } from '@unit/components/unit/unit.container';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
   { path: 'home', component: HomeComponent },
   { path: 'animal', component: AnimalComponent },
   { path: 'animal/new', component: AnimalNewComponent },
   { path: 'animal/:id/edit', component: AnimalDetailComponent },
-  { path: 'medical', component: MedicalTransactionContainerComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'units', component: UnitContainerComponent },
-  { path: 'medicine-type', component: MedicineTypeContainerComponent },
   { path: 'feed-type', component: FeedTypeContainerComponent },
   {
     path: 'feeding-transaction',
@@ -40,10 +40,17 @@ const routes: Routes = [
     path: 'feeding-transaction/:animalId/:id/edit',
     component: FeedingTransactionDetailComponent,
   },
+  {
+    path: 'medical',
+    loadChildren: () =>
+      import('./modules/medical/medical.module').then(
+        (module) => module.MedicalModule
+      ),
+  },
 ];
 
 @NgModule({
-  imports: [MedicalModule, AnimalModule, RouterModule.forRoot(routes)],
+  imports: [AnimalModule, RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
