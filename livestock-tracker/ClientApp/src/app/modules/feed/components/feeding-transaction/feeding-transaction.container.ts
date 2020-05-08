@@ -4,7 +4,6 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import { FetchAnimals } from '@animal/store/animal.actions';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { Animal, Livestock } from '@core/models/livestock.model';
@@ -59,7 +58,7 @@ export class FeedingTransactionContainerComponent implements OnInit, OnDestroy {
     this.store.dispatch(new FetchFeedTypes(0, environment.pageSize, true));
     this.selectedAnimal$ = this.store.pipe(
       select(getSelectedAnimal),
-      filter((animal) => animal !== null && animal !== undefined),
+      filter((animal: Animal) => animal !== null && animal !== undefined),
       tap((animal: Animal) => {
         this.selectedAnimal = animal;
         this.store.dispatch(

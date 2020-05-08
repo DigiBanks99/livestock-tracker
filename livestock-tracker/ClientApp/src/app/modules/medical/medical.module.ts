@@ -28,7 +28,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
 
+import { MedicalTransactionDetailComponent } from './components/medical-transaction-detail/medical-transaction-detail.component';
+import { MedicalTransactionNewComponent } from './components/medical-transaction-new/medical-transaction-new.component';
 import { MedicineTypeContainerComponent } from './components/medicine-type/medicine-type.container';
+import { MedicalRoutingModule } from './medical-routing.module';
 import {
   medicalTransactionEffects,
   medicalTransactionReducer,
@@ -46,6 +49,8 @@ import { MedicalStoreConstants } from './store/constants';
     MedicineTypeContainerComponent,
     MedicineTypeComponent,
     MedicineTypeDetailComponent,
+    MedicalTransactionDetailComponent,
+    MedicalTransactionNewComponent,
   ],
   imports: [
     CommonModule,
@@ -68,6 +73,7 @@ import { MedicalStoreConstants } from './store/constants';
     MatSortModule,
     MatTableModule,
     MatToolbarModule,
+    MedicalRoutingModule,
     ReactiveFormsModule,
     RouterModule,
     SharedModule,
