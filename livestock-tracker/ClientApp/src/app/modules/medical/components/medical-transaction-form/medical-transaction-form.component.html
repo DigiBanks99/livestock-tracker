@@ -1,50 +1,53 @@
-<form class="form" [formGroup]="medicalTransactionForm">
-  <mat-form-field class="medical-toolbar__trans-type">
-    <mat-select
-      [value]="medicalTransaction.medicineId"
-      formControlName="medicineTypeId"
-    >
-      <mat-option
-        *ngFor="let medType of medicineTypes$ | async"
-        [value]="medType.id"
-        >{{ medType.description }}</mat-option
-      >
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field class="medical-toolbar__trans-date">
-    <input
-      id="transactionDate"
-      matInput
-      [matDatepicker]="td"
-      formControlName="transactionDate"
-      required
-    />
-    <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
-    <mat-datepicker #td disabled="false"></mat-datepicker>
-  </mat-form-field>
-  <mat-form-field class="medical-toolbar__trans-dose">
-    <input
-      id="dose"
-      type="number"
-      matInput
-      formControlName="dose"
-      class="currency-input"
-      required
-    />
-  </mat-form-field>
-  <mat-form-field class="medical-toolbar__trans-unit">
-    <mat-select formControlName="unitId" id="unit">
-      <mat-option *ngFor="let unitType of units" [value]="unitType.id">{{
-        unitType.description
-      }}</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <button
-    mat-icon-button
-    class="medical-toolbar__trans-trash"
-    (click)="deleteTransaction(medicalTransaction.id)"
-    title="Delete this transaction"
+<mat-card>
+  <form
+    class="form"
+    [formGroup]="medicalTransactionForm"
+    fxLayout="column"
+    fxLayoutAlign="space-around center"
+    (ngSubmit)="onSave()"
   >
-    <mat-icon>delete</mat-icon>
-  </button>
-</form>
+    <mat-form-field appearance="outline">
+      <mat-label>Medicine type</mat-label>
+      <mat-select
+        [value]="medicalTransaction.medicineId"
+        formControlName="medicineId"
+      >
+        <mat-option *ngFor="let medType of medicineTypes" [value]="medType.id">
+          {{ medType.description }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Transaction date</mat-label>
+      <input
+        id="transactionDate"
+        matInput
+        [matDatepicker]="td"
+        formControlName="transactionDate"
+        required
+      />
+      <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
+      <mat-datepicker #td disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Dosage</mat-label>
+      <input
+        id="dose"
+        type="number"
+        matInput
+        formControlName="dose"
+        class="currency-input"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Unit</mat-label>
+      <mat-select formControlName="unitId" id="unit" placeholder="Unit">
+        <mat-option *ngFor="let unitType of units" [value]="unitType.id">
+          {{ unitType.description }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button type="submit" color="primary">Save</button>
+  </form>
+</mat-card>
