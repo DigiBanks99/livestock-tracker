@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +19,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { MedicalTransactionFormComponent } from '@medical/components/medical-transaction-form/medical-transaction-form.component';
-import { MedicalTransactionFormContainerComponent } from '@medical/components/medical-transaction-form/medical-transaction-form.container';
 import { MedicalTransactionComponent } from '@medical/components/medical-transaction/medical-transaction.component';
 import { MedicalTransactionContainerComponent } from '@medical/components/medical-transaction/medical-transaction.container';
 import { MedicineTypeDetailComponent } from '@medical/components/medicine-type-detail/medicine-type-detail.component';
@@ -42,7 +43,6 @@ import { MedicalStoreConstants } from './store/constants';
 
 @NgModule({
   declarations: [
-    MedicalTransactionFormContainerComponent,
     MedicalTransactionContainerComponent,
     MedicalTransactionComponent,
     MedicalTransactionFormComponent,
@@ -58,15 +58,17 @@ import { MedicalStoreConstants } from './store/constants';
       medicineTypeEffects.MedicineTypeEffects,
       medicalTransactionEffects.MedicalTransactionEffects,
     ]),
+    FlexLayoutModule,
     FormsModule,
     HttpClientModule,
     MatButtonModule,
+    MatCardModule,
     MatDatepickerModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
-    MatMomentDateModule,
     MatListModule,
+    MatMomentDateModule,
     MatOptionModule,
     MatPaginatorModule,
     MatSelectModule,
@@ -88,7 +90,6 @@ import { MedicalStoreConstants } from './store/constants';
   ],
   providers: [MedicalTransactionService, MedicineTypeService],
   exports: [
-    MedicalTransactionFormContainerComponent,
     MedicineTypeContainerComponent,
     MedicalTransactionContainerComponent,
   ],

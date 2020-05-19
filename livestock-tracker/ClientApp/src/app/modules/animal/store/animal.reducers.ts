@@ -1,7 +1,5 @@
 import { ActionTypes, SelectAnimal } from '@animal/store/animal.actions';
 import { Animal } from '@app/core/models/livestock.model';
-import { PagedData } from '@core/models/paged-data.model';
-import { PayloadAction } from '@core/store';
 import { AnimalState } from '@core/store/animal-state.interface';
 import { crudReducer } from '@core/store/crud.reducer';
 import { createEntityAdapter } from '@ngrx/entity';
