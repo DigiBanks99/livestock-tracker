@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MedicalTransaction } from '@core/models';
 import { PagedData } from '@core/models/paged-data.model';
 import { CrudEffects } from '@core/store/crud.effects';
@@ -11,7 +12,7 @@ import { Action } from '@ngrx/store';
 import { MedicalStoreConstants } from './constants';
 import {
   actions,
-  FetchMedicalTransaction as FetchMedicalTransactions,
+  FetchMedicalTransactions,
   FetchSingleMedicalTransactionParams
 } from './medical-transaction.actions';
 
@@ -23,13 +24,15 @@ export class MedicalTransactionEffects extends CrudEffects<
 > {
   constructor(
     actions$: Actions,
-    private medicalTransactionService: MedicalTransactionService
+    private medicalTransactionService: MedicalTransactionService,
+    snackBar: MatSnackBar
   ) {
     super(
       actions$,
       medicalTransactionService,
       actions,
-      MedicalStoreConstants.MedicalTransactionKey
+      MedicalStoreConstants.MedicalTransactionKey,
+      snackBar
     );
   }
 

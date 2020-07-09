@@ -6,7 +6,8 @@
     fxLayoutAlign="space-around center"
     (ngSubmit)="onSave()"
   >
-    <mat-form-field appearance="outline">
+    <app-animal-select-container disabled></app-animal-select-container>
+    <mat-form-field>
       <mat-label>Medicine type</mat-label>
       <mat-select
         [value]="medicalTransaction.medicineId"
@@ -17,7 +18,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>Transaction date</mat-label>
       <input
         id="transactionDate"
@@ -29,7 +30,7 @@
       <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
       <mat-datepicker #td disabled="false"></mat-datepicker>
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>Dosage</mat-label>
       <input
         id="dose"
@@ -40,7 +41,7 @@
         required
       />
     </mat-form-field>
-    <mat-form-field appearance="outline">
+    <mat-form-field>
       <mat-label>Unit</mat-label>
       <mat-select formControlName="unitId" id="unit" placeholder="Unit">
         <mat-option *ngFor="let unitType of units" [value]="unitType.id">

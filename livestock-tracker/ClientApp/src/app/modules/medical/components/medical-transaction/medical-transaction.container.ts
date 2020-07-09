@@ -14,7 +14,7 @@ import {
   medicalTransactionStore,
   medicineTypeStore
 } from '@medical/store';
-import { FetchMedicalTransaction } from '@medical/store/medical-transaction.actions';
+import { FetchMedicalTransactions } from '@medical/store/medical-transaction.actions';
 import { FetchMedicineTypes } from '@medical/store/medicine-type.actions';
 import { select, Store } from '@ngrx/store';
 
@@ -60,7 +60,7 @@ export class MedicalTransactionContainerComponent implements OnDestroy, OnInit {
       tap((animal: Animal) => {
         this.selectedAnimal = animal;
         this.store.dispatch(
-          new FetchMedicalTransaction(animal.id, 0, environment.pageSize)
+          new FetchMedicalTransactions(animal.id, 0, environment.pageSize)
         );
       }),
       takeUntil(this.destroyed$)
@@ -106,7 +106,7 @@ export class MedicalTransactionContainerComponent implements OnDestroy, OnInit {
 
   public onPage(pageEvent: PageEvent): void {
     this.store.dispatch(
-      new FetchMedicalTransaction(
+      new FetchMedicalTransactions(
         this.selectedAnimal.id,
         pageEvent.pageIndex,
         pageEvent.pageSize

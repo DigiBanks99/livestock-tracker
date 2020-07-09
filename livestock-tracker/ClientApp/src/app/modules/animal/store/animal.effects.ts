@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalService } from '@animal/services/animal.service';
 import { actions, FetchAnimals } from '@animal/store/animal.actions';
 import { Animal } from '@app/core/models/livestock.model';
@@ -16,9 +17,10 @@ import { AnimalKey } from './constants';
 export class AnimalEffects extends CrudEffects<Animal, number, number> {
   constructor(
     protected actions$: Actions,
-    protected animalService: AnimalService
+    protected animalService: AnimalService,
+    snackBar: MatSnackBar
   ) {
-    super(actions$, animalService, actions, AnimalKey, true);
+    super(actions$, animalService, actions, AnimalKey, snackBar, true);
   }
 
   protected get defaultFetchAction(): Action {

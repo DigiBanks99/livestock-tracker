@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PagedData } from '@core/models/paged-data.model';
 import { Unit } from '@core/models/unit.model';
 import { CrudEffects } from '@core/store/crud.effects';
@@ -13,8 +14,12 @@ import { UnitKey } from './constants';
 
 @Injectable()
 export class UnitEffects extends CrudEffects<Unit, number, number> {
-  constructor(protected actions$: Actions, private unitService: UnitService) {
-    super(actions$, unitService, actions, UnitKey);
+  constructor(
+    protected actions$: Actions,
+    private unitService: UnitService,
+    snackBar: MatSnackBar
+  ) {
+    super(actions$, unitService, actions, UnitKey, snackBar);
   }
 
   protected get defaultFetchAction(): Action {

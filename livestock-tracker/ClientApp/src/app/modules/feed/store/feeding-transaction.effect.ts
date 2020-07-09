@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { PagedData } from '@core/models/paged-data.model';
 import { CrudEffects } from '@core/store/crud.effects';
@@ -23,13 +24,15 @@ export class FeedingTransactionEffects extends CrudEffects<
 > {
   constructor(
     protected actions$: Actions,
-    private feedingTransactionService: FeedingTransactionService
+    private feedingTransactionService: FeedingTransactionService,
+    snackBar: MatSnackBar
   ) {
     super(
       actions$,
       feedingTransactionService,
       feedingTransactionActions,
-      FeedingTransactionKey
+      FeedingTransactionKey,
+      snackBar
     );
   }
 
