@@ -84,7 +84,7 @@ export class MockMedicalService implements IMedicalTransactionService {
     payload: FetchSingleMedicalTransactionParams
   ): Observable<MedicalTransaction> {
     return of({
-      animalID: 0,
+      animalId: 0,
       dose: 0,
       id: 0,
       medicineId: 0,

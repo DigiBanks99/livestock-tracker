@@ -1,5 +1,6 @@
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { NgModule } from '@angular/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalModule } from '@animal/index';
@@ -31,6 +32,12 @@ import { UnitModule } from '@unit/unit.module';
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     UnitModule,
+  ],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline' },
+    },
   ],
   bootstrap: [AppComponent],
 })

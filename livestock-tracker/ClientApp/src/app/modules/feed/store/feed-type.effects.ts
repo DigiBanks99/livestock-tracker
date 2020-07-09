@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { FeedType } from '@core/models/feed-type.model';
 import { PagedData } from '@core/models/paged-data.model';
 import { CrudEffects } from '@core/store/crud.effects';
@@ -16,8 +17,12 @@ import { FeedTypeKey } from './constants';
 
 @Injectable()
 export class FeedTypeEffects extends CrudEffects<FeedType, number, number> {
-  constructor(actions$: Actions, private feedTypeService: FeedTypeService) {
-    super(actions$, feedTypeService, feedTypeActions, FeedTypeKey);
+  constructor(
+    actions$: Actions,
+    private feedTypeService: FeedTypeService,
+    snackBar: MatSnackBar
+  ) {
+    super(actions$, feedTypeService, feedTypeActions, FeedTypeKey, snackBar);
   }
 
   protected handleFetchAction$ = (

@@ -4,11 +4,13 @@ import {
   map,
   mergeMap,
   startWith,
-  switchMap
+  switchMap,
+  tap
 } from 'rxjs/operators';
 
 import { KeyValue } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CrudService } from '@core/models/crud-service.interface';
 import { KeyEntity } from '@core/models/key-entity.interface';
 import { PagedData } from '@core/models/paged-data.model';
@@ -32,6 +34,7 @@ export class CrudEffects<
     private service: CrudService<TData, TKey, TFetchSinglePayload>,
     private typeActions: CrudActions<TData, TKey>,
     private typeName: string,
+    private snackBar: MatSnackBar,
     shouldFetchOnStartup: boolean = false
   ) {
     this.shouldFetchOnStartup = shouldFetchOnStartup;
@@ -67,6 +70,9 @@ export class CrudEffects<
       ofType(`ADD_${this.typeName}`),
       map((action: PayloadAction<TData>) => action.payload),
       switchMap((item: TData) => this.service.add(item)),
+      tap(() =>
+        this.snackBar.open('Added successfully.', null, { duration: 2500 })
+      ),
       map((item: TData) => this.typeActions.apiAddItem(item)),
       catchError((error) => this.handleError(error, this.typeActions))
     )
@@ -78,6 +84,9 @@ export class CrudEffects<
       map((action: PayloadAction<KeyValue<TKey, TData>>) => action.payload),
       switchMap((payload: KeyValue<TKey, TData>) =>
         this.service.update(payload.value, payload.key)
+      ),
+      tap(() =>
+        this.snackBar.open('Updated successfully.', null, { duration: 2500 })
       ),
       map((item: TData) =>
         this.typeActions.apiUpdateItem(
@@ -94,6 +103,9 @@ export class CrudEffects<
       ofType(`DELETE_${this.typeName}`),
       map((action: PayloadAction<TKey>) => action.payload),
       switchMap((id: TKey) => this.service.delete(id)),
+      tap(() =>
+        this.snackBar.open('Deleted successfully.', null, { duration: 2500 })
+      ),
       map((id: TKey) => this.typeActions.apiDeleteItem(id)),
       catchError((error) => this.handleError(error, this.typeActions))
     )
@@ -112,6 +124,7 @@ export class CrudEffects<
       error.stack = httpError.url;
     } else error = new Error(err);
 
+    this.snackBar.open(`Failed: ${error.message}`, null, { duration: 2500 });
     return of(actions.apiError(error));
   }
 

@@ -1,6 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MedicineType } from '@core/models';
 import { PagedData } from '@core/models/paged-data.model';
 import { CrudEffects } from '@core/store/crud.effects';
@@ -19,13 +20,15 @@ export class MedicineTypeEffects extends CrudEffects<
 > {
   constructor(
     actions$: Actions,
-    private medicineTypeService: MedicineTypeService
+    private medicineTypeService: MedicineTypeService,
+    snackBar: MatSnackBar
   ) {
     super(
       actions$,
       medicineTypeService,
       actions,
-      MedicalStoreConstants.MedicineTypeKey
+      MedicalStoreConstants.MedicineTypeKey,
+      snackBar
     );
   }
 

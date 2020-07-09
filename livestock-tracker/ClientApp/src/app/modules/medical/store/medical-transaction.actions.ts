@@ -14,7 +14,7 @@ export interface FetchSingleMedicalTransactionParams {
   id: number;
 }
 
-export class FetchMedicalTransaction implements Action {
+export class FetchMedicalTransactions implements Action {
   readonly type = ActionTypes.FETCH_MEDICAL_TRANSACTIONS;
   animalId: number;
   pageNumber: number;

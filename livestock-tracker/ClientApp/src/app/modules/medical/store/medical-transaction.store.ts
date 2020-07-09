@@ -36,7 +36,19 @@ const getSelectedMedicalTransactionId = createSelector(
 const getSelectedMedicalTransaction = createSelector(
   getMedicalTransactionEntities,
   getSelectedMedicalTransactionId,
-  (entities: Dictionary<MedicalTransaction>, id: number) => entities[id]
+  (entities: Dictionary<MedicalTransaction>, id: number) => {
+    if (entities == null || id == null) {
+      return {
+        id: 0,
+        animalId: 0,
+        dose: null,
+        transactionDate: new Date(),
+        medicineId: null,
+        unitId: null,
+      };
+    }
+    return entities[id];
+  }
 );
 
 const getPending = createSelector(

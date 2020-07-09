@@ -5,9 +5,10 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
-  OnInit,
-  Output
+  Output,
+  SimpleChanges
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
@@ -25,18 +26,18 @@ import { environment } from '@env/environment';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MedicalTransactionFormComponent implements OnInit, OnDestroy {
-  @Input() public selectedAnimalId: number;
+export class MedicalTransactionFormComponent implements OnDestroy, OnChanges {
+  @Input() public selectedAnimalId = 0;
   @Input() public medicalTransaction: MedicalTransaction = {
-    animalID: this.selectedAnimalId,
+    animalId: this.selectedAnimalId,
     dose: null,
     id: 0,
     medicineId: null,
     transactionDate: new Date(),
     unitId: null,
   };
-  @Input() public medicineTypes: MedicineType[];
-  @Input() public units: Unit[];
+  @Input() public medicineTypes: MedicineType[] = [];
+  @Input() public units: Unit[] = [];
 
   @Output() public save = new EventEmitter<MedicalTransaction>();
 
@@ -48,8 +49,23 @@ export class MedicalTransactionFormComponent implements OnInit, OnDestroy {
 
   private destroyed$ = new Subject<void>();
 
-  public ngOnInit(): void {
+  constructor() {
     this.initForm();
+  }
+
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (null != changes.medicalTransaction) {
+      this.medicalTransactionForm.patchValue({
+        ...changes.medicalTransaction.currentValue,
+        animalId: this.selectedAnimalId,
+      });
+    }
+
+    if (null != changes.selectedAnimalId) {
+      this.medicalTransactionForm.patchValue({
+        animalId: changes.selectedAnimalId.currentValue,
+      });
+    }
   }
 
   public onSave(): void {
@@ -60,6 +76,7 @@ export class MedicalTransactionFormComponent implements OnInit, OnDestroy {
 
   private initForm(): void {
     this.medicalTransactionForm = new FormGroup({
+      id: new FormControl(this.medicalTransaction.id),
       animalId: new FormControl(this.selectedAnimalId),
       medicineId: new FormControl(this.medicalTransaction.medicineId, [
         Validators.required,

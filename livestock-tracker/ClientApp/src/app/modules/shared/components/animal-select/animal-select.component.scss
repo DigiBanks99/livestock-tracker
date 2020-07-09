@@ -14,6 +14,11 @@
     background-color: mat-color($candy-app-accent);
     border-radius: 50%;
   }
+
+  .mat-form-field-infix {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .form-detail
