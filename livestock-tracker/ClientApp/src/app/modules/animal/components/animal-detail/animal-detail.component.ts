@@ -1,8 +1,8 @@
-import { Observable, Subject } from 'rxjs';
+import { EMPTY, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Location } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { animalActions, animalStore } from '@animal/store/index';
 import { Animal } from '@app/core/models';
 import { AppState } from '@core/store';
@@ -12,17 +12,16 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'app-animal-detail',
   templateUrl: './animal-detail.component.html',
-  styleUrls: ['./animal-detail.component.scss']
+  styleUrls: ['./animal-detail.component.scss'],
 })
-export class AnimalDetailComponent implements OnInit, OnDestroy {
-  public animal$: Observable<Animal>;
-  public isPending$: Observable<boolean>;
-  public error$: Observable<Error>;
-  public destroyed$ = new Subject();
+export class AnimalDetailComponent implements OnDestroy {
+  public animal$: Observable<Animal> = EMPTY;
+  public isPending$: Observable<boolean> = EMPTY;
+  public error$: Observable<Error> = EMPTY;
 
-  constructor(private store: Store<AppState>, private location: Location) {}
+  private destroyed$ = new Subject();
 
-  public ngOnInit(): void {
+  constructor(private store: Store<AppState>, private location: Location) {
     this.isPending$ = this.store.pipe(
       select(animalStore.selectors.getAnimalsPendingState),
       takeUntil(this.destroyed$)

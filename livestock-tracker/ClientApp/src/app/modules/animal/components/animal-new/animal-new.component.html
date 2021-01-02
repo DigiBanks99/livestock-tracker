@@ -1,6 +1,6 @@
 <app-animal-form
-  [currentAnimal$]="createAnimal()"
-  [isPending$]="isPending$"
+  [currentAnimal]="createAnimal"
+  [isPending]="isPending$ | async"
   [error]="error$ | async"
   header="Add animal"
   successMessage="Animal created."

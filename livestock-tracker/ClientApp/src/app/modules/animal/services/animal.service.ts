@@ -32,7 +32,7 @@ export class AnimalService implements CrudService<Animal, number, number> {
     this.http.post<Animal>(this.apiUrl, item);
 
   public update = (item: Animal, key: number): Observable<Animal> =>
-    this.http.patch<Animal>(`${this.apiUrl}/${key}`, item);
+    this.http.put<Animal>(`${this.apiUrl}/${key}`, item);
 
   public delete = (key: number): Observable<number> =>
     this.http.delete<number>(`${this.apiUrl}/${key}`);

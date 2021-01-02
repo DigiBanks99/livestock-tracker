@@ -138,7 +138,7 @@ function fetchSingleApiReducer<TData extends KeyEntity<TKey>, TKey>(
   state: CrudState<TData, TKey>,
   action: PayloadAction<TData>
 ): CrudState<TData, TKey> {
-  const newState = adapter.addOne(action.payload, state);
+  const newState = adapter.upsertOne(action.payload, state);
   const selectedId = action.payload.id;
   return {
     ...newState,

@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { async, TestBed } from '@angular/core/testing';
 import { CrudService } from '@core/models/crud-service.interface';
 import { KeyEntity } from '@core/models/key-entity.interface';
+import { PagedData } from '@core/models/paged-data.model';
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Update } from '@ngrx/entity';
@@ -19,11 +20,11 @@ interface TestEntity extends KeyEntity<number> {}
 const testActions = crudActionsFactory<TestEntity, number>('TEST');
 
 @Injectable()
-class TestService implements CrudService<TestEntity, number> {
-  getAll(): Observable<TestEntity[]> {
+class TestService implements CrudService<TestEntity, number, TestEntity> {
+  getAll(): Observable<PagedData<TestEntity>> {
     throw new Error('Method not implemented.');
   }
-  get(key: number): Observable<TestEntity> {
+  get(key: TestEntity): Observable<TestEntity> {
     throw new Error('Method not implemented.');
   }
   add(item: TestEntity): Observable<TestEntity> {
@@ -38,9 +39,9 @@ class TestService implements CrudService<TestEntity, number> {
 }
 
 @Injectable()
-class TestEffects extends CrudEffects<TestEntity, number> {
+class TestEffects extends CrudEffects<TestEntity, number, TestEntity> {
   constructor(protected actions$: Actions, service: TestService) {
-    super(actions$, service, testActions, 'TEST');
+    super(actions$, service, testActions, 'TEST', null);
   }
 }
 
@@ -57,7 +58,7 @@ describe('Crud Effects', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      providers: [TestService, TestEffects, provideMockActions(() => actions$)]
+      providers: [TestService, TestEffects, provideMockActions(() => actions$)],
     });
 
     service = TestBed.get(TestService);
@@ -87,7 +88,7 @@ describe('Crud Effects', () => {
           { id: 2 },
           { id: 3 },
           { id: 4 },
-          { id: 5 }
+          { id: 5 },
         ];
         const completion = testActions.apiFetchItems(items);
 
@@ -110,7 +111,7 @@ describe('Crud Effects', () => {
         getAllSpy.and.throwError(error.message);
 
         expectObservable(effects.getAll$).toBe(switchMapMarble, {
-          a: completion
+          a: completion,
         });
 
         flush();
@@ -136,7 +137,7 @@ describe('Crud Effects', () => {
         addSpy.and.returnValue(of({ ...item }));
 
         expectObservable(effects.add$).toBe('a', {
-          a: completion
+          a: completion,
         });
 
         flush();
@@ -156,7 +157,7 @@ describe('Crud Effects', () => {
         addSpy.and.throwError(error.message);
 
         expectObservable(effects.add$).toBe(switchMapMarble, {
-          a: completion
+          a: completion,
         });
 
         flush();
@@ -174,7 +175,7 @@ describe('Crud Effects', () => {
       testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
         const updateItem: Update<TestEntity> = {
           changes: item,
-          id: item.id.toString()
+          id: item.id.toString(),
         };
         const completion = testActions.apiUpdateItem(updateItem, item.id);
 
@@ -183,7 +184,7 @@ describe('Crud Effects', () => {
         updateSpy.and.returnValue(of(item));
 
         expectObservable(effects.update$).toBe('a', {
-          a: completion
+          a: completion,
         });
 
         flush();
@@ -203,7 +204,7 @@ describe('Crud Effects', () => {
         updateSpy.and.throwError(error.message);
 
         expectObservable(effects.update$).toBe(switchMapMarble, {
-          a: completion
+          a: completion,
         });
 
         flush();
@@ -226,7 +227,7 @@ describe('Crud Effects', () => {
         deleteSpy.and.returnValue(of(key));
 
         expectObservable(effects.remove$).toBe('a', {
-          a: completion
+          a: completion,
         });
 
         flush();
@@ -246,7 +247,7 @@ describe('Crud Effects', () => {
         deleteSpy.and.throwError(error.message);
 
         expectObservable(effects.remove$).toBe(switchMapMarble, {
-          a: completion
+          a: completion,
         });
 
         flush();

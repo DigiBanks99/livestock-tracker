@@ -20,7 +20,10 @@
           >
           </mat-icon>
           <span class="animal-list-type__desc">
-            <a [routerLink]="[animal.id, 'edit']">
+            <a
+              [routerLink]="[animal.id, 'edit']"
+              (click)="onEditAnimal(animal.id)"
+            >
               {{ animal.subspecies }}
             </a>
           </span>

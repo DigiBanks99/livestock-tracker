@@ -19,7 +19,7 @@ export interface CrudActions<TData extends KeyEntity<TKey>, TKey> {
   deleteItem: (key: TKey) => PayloadAction<TKey>;
   apiDeleteItem: (key: TKey) => PayloadAction<TKey>;
   fetchItems: () => Action;
-  fetchSingle: <TPayload>(key: TPayload) => PayloadAction<TPayload>;
+  fetchSingle: (key: TKey) => PayloadAction<TKey>;
   apiFetchSingle: (item: TData) => PayloadAction<TData>;
   apiError: (error: Error) => PayloadAction<Error>;
   apiFetchItems(data: PagedData<TData>): PayloadAction<PagedData<TData>>;
@@ -100,10 +100,10 @@ function apiFetchItems<TData>(
   };
 }
 
-function fetchSingle<TPayload>(
-  payload: TPayload,
+function fetchSingle<TKey>(
+  payload: TKey,
   typeName: string
-): PayloadAction<TPayload> {
+): PayloadAction<TKey> {
   return {
     type: `FETCH_SINGLE_${typeName}`,
     payload,
@@ -147,8 +147,7 @@ export function crudActionsFactory<TData extends KeyEntity<TKey>, TKey>(
     apiDeleteItem: (key: TKey): PayloadAction<TKey> =>
       apiDeleteItem(key, typeName),
     fetchItems: (): Action => fetchItems(typeName),
-    fetchSingle: <TPayload>(key: TPayload): PayloadAction<TPayload> =>
-      fetchSingle(key, typeName),
+    fetchSingle: (key: TKey): PayloadAction<TKey> => fetchSingle(key, typeName),
     apiFetchSingle: (item: TData): PayloadAction<TData> =>
       apiFetchSingle(item, typeName),
     apiFetchItems: (data: PagedData<TData>): PayloadAction<PagedData<TData>> =>
