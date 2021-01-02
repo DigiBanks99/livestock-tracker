@@ -17,7 +17,6 @@ import { animalStore } from '@animal/store';
 import { FetchAnimals } from '@animal/store/animal.actions';
 import { Animal } from '@core/models';
 import { AppState } from '@core/store';
-import { environment } from '@env/environment';
 import { select, Store } from '@ngrx/store';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
@@ -78,7 +77,6 @@ export class AnimalListComponent implements OnInit, OnDestroy {
   }
 
   public onEditAnimal(id: number): void {
-    console.log('edit animal', id);
     this.showDetail.emit(id);
   }
 

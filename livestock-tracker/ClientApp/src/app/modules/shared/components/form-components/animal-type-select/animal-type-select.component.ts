@@ -28,8 +28,8 @@ const Selector = 'app-animal-type-select';
   templateUrl: './animal-type-select.component.html',
   styleUrls: ['./animal-type-select.components.scss'],
   providers: [
-    { provide: MatFormFieldControl, useExisting: AnimalTypeSelectComponent }
-  ]
+    { provide: MatFormFieldControl, useExisting: AnimalTypeSelectComponent },
+  ],
 })
 export class AnimalTypeSelectComponent
   implements MatFormFieldControl<AnimalType>, ControlValueAccessor, OnDestroy {
@@ -42,11 +42,11 @@ export class AnimalTypeSelectComponent
 
   @Input()
   public get value(): AnimalType {
-    return this.form.value.type;
+    return this.form.value.typeSelect;
   }
   public set value(v: AnimalType) {
     const type = v;
-    this.form.setValue({ type });
+    this.form.setValue({ typeSelect: type });
     this.stateChanges.next();
     this.onChange(v);
   }
@@ -120,12 +120,12 @@ export class AnimalTypeSelectComponent
     private elRef: ElementRef<HTMLElement>
   ) {
     this.form = fb.group({
-      type: null
+      typeSelect: null,
     });
 
     this._keys = Object.keys(AnimalType)
       .filter(Number)
-      .map(type => +type)
+      .map((type) => +type)
       .concat(0)
       .sort();
 

@@ -1,6 +1,5 @@
 import { Animal } from '@core/models';
-import { PagedData } from '@core/models/paged-data.model';
-import { CrudActions, crudActionsFactory, PayloadAction } from '@core/store';
+import { CrudActions, crudActionsFactory } from '@core/store';
 import { Action } from '@ngrx/store';
 
 import { AnimalKey } from './constants';
@@ -8,6 +7,7 @@ import { AnimalKey } from './constants';
 export enum ActionTypes {
   SELECT_ANIMAL = 'SELECT_ANIMAL',
   FETCH_ANIMALS = 'FETCH_ANIMAL',
+  FETCH_SINGLE_ANIMAL = 'FETCH_SINGLE_ANIMAL',
   API_FETCH_ANIMAL = 'API_FETCH_ANIMAL',
   SELECT_ANIMAL_PAGE = 'SELECT_ANIMAL_PAGE',
 }

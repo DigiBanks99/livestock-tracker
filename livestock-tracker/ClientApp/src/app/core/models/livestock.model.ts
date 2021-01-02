@@ -42,3 +42,20 @@ export class Livestock implements Animal {
     }
   }
 }
+
+export class NullAnimal implements Animal {
+  id: number = Number.NaN;
+  type: AnimalType = AnimalType.Cattle;
+  subspecies: string = null;
+  number: number = null;
+  birthDate: Date = null;
+  purchaseDate: Date = null;
+  purchasePrice: number = null;
+  sold = false;
+  sellPrice: number = null;
+  sellDate: Date = null;
+  arrivalWeight: number = null;
+  batchNumber: number = null;
+  deceased = false;
+  dateOfDeath: Date = null;
+}
