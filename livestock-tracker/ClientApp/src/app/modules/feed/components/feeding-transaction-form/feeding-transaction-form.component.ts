@@ -1,18 +1,14 @@
-import * as moment from 'moment';
-
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
   Output,
   SimpleChanges
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { Unit } from '@core/models/unit.model';
@@ -25,18 +21,18 @@ import { environment } from '@env/environment';
   providers: [
     { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeedingTransactionFormComponent
-  implements OnInit, OnChanges, OnDestroy {
+export class FeedingTransactionFormComponent implements OnChanges {
   public feedForm: FormGroup;
-  @Input() public selectedAnimalId: number;
+  @Input() public selectedAnimalId = 0;
   @Input() public feedingTransaction: FeedingTransaction = {
     animalId: this.selectedAnimalId,
     feedTypeId: null,
-    id: undefined,
-    quantity: 0,
-    transactionDate: moment().utc().toDate(),
-    unitId: 0,
+    id: 0,
+    quantity: null,
+    transactionDate: new Date(),
+    unitId: null,
   };
   @Input() isPending: boolean;
   @Input() error: Error;
@@ -47,53 +43,26 @@ export class FeedingTransactionFormComponent
   @Output() save = new EventEmitter<FeedingTransaction>();
   @Output() navigateBack = new EventEmitter();
 
-  constructor(private snackbar: MatSnackBar) {}
-
-  public ngOnInit(): void {
+  constructor() {
     this.initForm();
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
-    this.onSaveResponse();
+    if (null != changes.feedingTransaction) {
+      this.feedForm.patchValue({
+        ...changes.feedingTransaction.currentValue,
+        animalId: this.selectedAnimalId,
+      });
+    }
 
-    if (
-      (changes.feedingTransaction && changes.feedingTransaction.currentValue) ||
-      (changes.selectedAnimalId && changes.selectedAnimalId.currentValue)
-    ) {
-      this.resetForm();
+    if (null != changes.selectedAnimalId) {
+      this.feedForm.patchValue({
+        animalId: changes.selectedAnimalId.currentValue,
+      });
     }
   }
 
-  public ngOnDestroy(): void {}
-
-  public getHeaderText() {
-    return this.header;
-  }
-
-  public resetForm(): void {
-    if (!this.feedForm) return;
-
-    let animalId = this.selectedAnimalId;
-    if (this.feedingTransaction !== null) {
-      animalId = this.feedingTransaction.animalId
-        ? this.feedingTransaction.animalId
-        : animalId;
-    }
-
-    this.feedForm.get('id').setValue(this.feedingTransaction.id);
-    this.feedForm.get('animalId').setValue(animalId);
-    this.feedForm
-      .get('transactionDate')
-      .setValue(moment(this.feedingTransaction.transactionDate));
-    this.feedForm
-      .get('feedTypeId')
-      .setValue(this.feedingTransaction.feedTypeId);
-    this.feedForm.get('quantity').setValue(this.feedingTransaction.quantity);
-    this.feedForm.get('unitId').setValue(this.feedingTransaction.unitId);
-    this.feedForm.markAsPristine();
-  }
-
-  public submit() {
+  public onSave() {
     if (this.feedForm.valid) {
       this.save.emit(this.feedForm.value);
     }
@@ -127,20 +96,5 @@ export class FeedingTransactionFormComponent
         Validators.required
       ),
     });
-
-    this.resetForm();
-  }
-
-  private onSaveResponse() {
-    if (this.feedForm) {
-      if (!this.isPending && !this.feedForm.pristine) {
-        let message = this.successMessage;
-        if (this.error != null) message = this.error.message;
-        setTimeout(() => {
-          this.snackbar.open(message, 'Dismiss', { duration: 4000 });
-          if (!this.error) this.onNavigateBack();
-        });
-      }
-    }
   }
 }

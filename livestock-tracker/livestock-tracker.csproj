@@ -14,6 +14,7 @@
     <NeutralLanguage>en-Gb</NeutralLanguage>
     <Nullable>enable</Nullable>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <UserSecretsId>d4589abf-493f-469d-9611-99d5f00586cb</UserSecretsId>
   </PropertyGroup>
   
   <ItemGroup>

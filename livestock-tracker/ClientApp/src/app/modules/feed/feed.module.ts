@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -47,6 +49,7 @@ import { SharedModule } from '@shared/shared.module';
   ],
   imports: [
     CommonModule,
+    FlexLayoutModule,
     FormsModule,
     MatButtonModule,
     MatCardModule,
@@ -54,6 +57,7 @@ import { SharedModule } from '@shared/shared.module';
     MatIconModule,
     MatInputModule,
     MatListModule,
+    MatNativeDateModule,
     MatPaginatorModule,
     MatSelectModule,
     MatSortModule,
