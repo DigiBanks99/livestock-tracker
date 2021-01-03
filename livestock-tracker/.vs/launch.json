@@ -1,0 +1,36 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "$adapter": "C:\\windows\\sysnative\\bash.exe",
+            "$adapterArgs": "-c ~/vsdbg/vsdbg",
+            "name": ".NET Core Launch (web)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "/home/digibanks99/source/repos/livestock-tracker/livestock-tracker/bin/Debug/netcoreapp3.1/livestock-tracker.dll",
+            "args": [],
+            "cwd": "/home/digibanks99/source/repos/livestock-tracker/livestock-tracker",
+            "stopAtEntry": false,
+            // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "pipeTransport": {
+                "pipeCwd": "${workspaceRoot}",
+                "pipeProgram": "bash.exe",
+                "pipeArgs": [ "-c" ],
+                "debuggerPath": "~/vsdbg/vsdbg"
+            },
+            "logging": { "engineLogging": true }
+        }
+    ]
+}

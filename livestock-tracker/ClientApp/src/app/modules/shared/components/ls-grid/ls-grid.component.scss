@@ -1,0 +1,7 @@
+@import '~@angular/material/theming';
+@import 'app-theme';
+
+.mat-accent-background {
+  background-color: mat-color($candy-app-accent);
+  color: mat-color($candy-app-accent, '600-contrast', 0.6);
+}

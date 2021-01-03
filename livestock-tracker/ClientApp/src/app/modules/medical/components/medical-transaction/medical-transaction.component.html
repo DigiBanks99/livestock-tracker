@@ -1,0 +1,71 @@
+<h1>Medical transactions</h1>
+<div class="medical-transaction-list mat-elevation-z1">
+  <mat-toolbar>
+    <app-animal-select-container></app-animal-select-container>
+  </mat-toolbar>
+  <table
+    mat-table
+    [dataSource]="medicalTransactions"
+    class="medical-transaction-list-table full-width-table"
+  >
+    <ng-container matColumnDef="medicineType">
+      <th mat-header-cell *matHeaderCellDef>Medicine type</th>
+      <td mat-cell *matCellDef="let medicalTransaction">
+        <a
+          [routerLink]="[
+            medicalTransaction.animalId,
+            medicalTransaction.id,
+            'edit'
+          ]"
+        >
+          {{ medicalTransaction.medicineId | lookup: medicineTypes }}
+        </a>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let medicalTransaction">
+        {{ medicalTransaction.transactionDate | date }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="dose">
+      <th mat-header-cell *matHeaderCellDef>Dose</th>
+      <td mat-cell *matCellDef="let medicalTransaction">
+        {{ medicalTransaction.dose | number }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="unit">
+      <th mat-header-cell *matHeaderCellDef>Unit</th>
+      <td mat-cell *matCellDef="let medicalTransaction">
+        {{ medicalTransaction.unitId | lookup: units }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="star" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td
+        mat-cell
+        *matCellDef="let medicalTransaction"
+        (click)="onRemove(medicalTransaction.id)"
+      >
+        <mat-icon>delete</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator
+    [pageIndex]="pageNumber"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    [length]="recordCount"
+    (page)="onPage($event)"
+  ></mat-paginator>
+</div>
+<app-command-button
+  [routerLink]="[currentAnimal.id, 'new']"
+></app-command-button>

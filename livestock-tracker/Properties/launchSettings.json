@@ -4,7 +4,7 @@
     "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:5000/",
-      "sslPort": 0
+      "sslPort": 44374
     }
   },
   "profiles": {
@@ -15,13 +15,31 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "livestock-tracker": {
+    "Dev Settings [Angular]": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:5000/"
+      "applicationUrl": "https://localhost:5001;http://localhost:5000/"
+    },
+    "Dev Settings [Swagger]": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:5001;http://localhost:5000/"
+    },
+    "WSL 2": {
+      "commandName": "WSL2",
+      "launchBrowser": true,
+      "launchUrl": "https://localhost:5001",
+      "environmentVariables": {
+        "ASPNETCORE_URLS": "https://localhost:5001;http://localhost:5000/",
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
     }
   }
 }

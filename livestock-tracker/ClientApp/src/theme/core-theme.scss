@@ -1,0 +1,42 @@
+@import '~@angular/material/theming';
+@include mat-core();
+@import 'variables';
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://www.google.com/design/spec/style/color.html
+$candy-app-primary: mat-palette($mat-lime, 700);
+$candy-app-accent: mat-palette($mat-light-green, 800, 900);
+
+// The warn palette is optional (defaults to red).
+$candy-app-warn: mat-palette($mat-red);
+
+$background-color: map-get($mat-lime, 100);
+$component-background-color: mat-palette($mat-lime, 200);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$theme: mat-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
+
+$background: map-get(
+  $map: $theme,
+  $key: background,
+);
+$background: map-merge(
+  $map1: $background,
+  $map2: (
+    background: $background-color,
+  ),
+);
+$theme: map-merge(
+  $map1: $theme,
+  $map2: (
+    background: $background,
+  ),
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($theme);
+
+@import './paginator-theme';

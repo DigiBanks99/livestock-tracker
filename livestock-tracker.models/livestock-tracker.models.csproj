@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>LivestockTracker.Models</RootNamespace>
-    <Configurations>Debug;Release;Debug Updater</Configurations>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\livestock-tracker.database\livestock-tracker.database.csproj" />
+    <ProjectReference Include="..\livestock-tracker.abstractions\livestock-tracker.abstractions.csproj" />
+    <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
   </ItemGroup>
 
 </Project>

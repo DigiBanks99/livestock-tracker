@@ -1,0 +1,38 @@
+<h1>Feed types</h1>
+<div class="feed-type-list mat-elevation-z8">
+  <table
+    mat-table
+    [dataSource]="feedTypes"
+    class="feed-type-list-table full-width-table"
+    matSort
+  >
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
+      <td mat-cell *matCellDef="let feedType">
+        <app-feed-type-detail
+          [feedType]="feedType"
+          (save)="onSave($event)"
+        ></app-feed-type-detail>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="star" stickyEnd>
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let feedType" (click)="onRemove(feedType.id)">
+        <mat-icon>delete</mat-icon>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+  <mat-paginator
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[5, 10, 25, 50]"
+    [pageIndex]="pageNumber"
+    [length]="recordCount"
+    class="mat-accent-background"
+    (page)="onPage($event)"
+  ></mat-paginator>
+</div>
+<app-command-button (click)="onAdd()"></app-command-button>

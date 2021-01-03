@@ -1,125 +1,98 @@
-using LivestockTracker.Database;
-using LivestockTracker.Services;
+using LivestockTracker.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Hosting;
 using System;
 
 namespace LivestockTracker
 {
-  public class Startup
-  {
-    public Startup(IConfiguration configuration)
+    /// <summary>
+    /// Defines and manages the application start-up process.
+    /// </summary>
+    public class Startup
     {
-      Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
-
-    // This method gets called by the runtime. Use this method to add services to the container.
-    public void ConfigureServices(IServiceCollection services)
-    {
-      services.AddMvc(options =>
-      {
-        options.EnableEndpointRouting = false;
-      });
-
-      services.AddDbContext<LivestockContext>(options => options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-
-      services.AddScoped<IAnimalRepository, AnimalRepository>();
-      services.AddScoped<IMedicineTypeRepository, MedicineTypeRepository>();
-      services.AddScoped<IMedicalRepository, MedicalRepository>();
-      services.AddScoped<IUnitRepository, UnitRepository>();
-      services.AddScoped<IFeedTypeRepository, FeedTypeRepository>();
-      services.AddScoped<IFeedingTransactionRepository, FeedingTransactionRepository>();
-
-      services.AddScoped<IAnimalService, AnimalService>();
-      services.AddScoped<IMedicalService, MedicalService>();
-      services.AddScoped<IMedicineService, MedicineService>();
-      services.AddScoped<IUnitService, UnitService>();
-
-      // In production, the Angular files will be served from this directory
-      services.AddSpaStaticFiles(configuration =>
-      {
-        configuration.RootPath = "ClientApp/dist";
-      });
-    }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-      if (env.IsDevelopment())
-      {
-        SeedDevDatabase(app);
-      }
-      else
-      {
-        SeedDatabase(app);
-      }
-
-      app.UseStaticFiles();
-      app.UseSpaStaticFiles();
-
-      app.UseMvc(routes =>
-      {
-        routes.MapRoute("default", "{controller}/{action=Index}/{id?}");
-      });
-
-      app.UseSpa(spa =>
-      {
-        // To learn more about options for serving an Angular SPA from ASP.NET Core,
-        // see https://go.microsoft.com/fwlink/?linkid=864501
-
-        spa.Options.SourcePath = "ClientApp";
-
-        if (env.IsDevelopment())
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        /// <param name="configuration">The application configuration information.</param>
+        public Startup(IConfiguration configuration)
         {
-          spa.UseProxyToSpaDevelopmentServer(Configuration.GetSection("SpaUrl").Value);
+            Configuration = configuration;
         }
-      });
-    }
 
-    private static void SeedDevDatabase(IApplicationBuilder app)
-    {
-      using (var serviceScope = app.ApplicationServices.CreateScope())
-      {
-        using (var context = serviceScope.ServiceProvider.GetRequiredService<LivestockContext>())
-        {
-          try
-          {
-            SeedData.Initialize(serviceScope.ServiceProvider);
-            SeedData.SeedDevData(serviceScope.ServiceProvider);
-          }
-          catch (Exception ex)
-          {
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "An error occurred seeding the DB.");
-          }
-        }
-      }
-    }
+        /// <summary>
+        /// The application configuration information.
+        /// </summary>
+        public IConfiguration Configuration { get; }
 
-    private static void SeedDatabase(IApplicationBuilder app)
-    {
-      using (var serviceScope = app.ApplicationServices.CreateScope())
-      {
-        using (var context = serviceScope.ServiceProvider.GetRequiredService<LivestockContext>())
+        ///<summary>This method gets called by the runtime. Use this method to add services to the container.</summary>
+        public void ConfigureServices(IServiceCollection services)
         {
-          try
-          {
-            SeedData.Initialize(serviceScope.ServiceProvider);
-          }
-          catch (Exception ex)
-          {
-            var logger = app.ApplicationServices.GetRequiredService<ILogger<Program>>();
-            logger.LogError(ex, "An error occurred seeding the DB.");
-          }
+            services.AddControllersWithViews();
+
+            services.AddLivestockTrackerSqliteDatabase(Configuration)
+                    .AddLivestockTrackerLogic()
+                    .AddSwagger();
+
+            // In production, the Angular files will be served from this directory
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "ClientApp/dist";
+            });
         }
-      }
+
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        public static void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (app == null)
+            {
+                throw new ArgumentNullException(nameof(app));
+            }
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                app.UseHsts();
+            }
+
+            app.SeedLivestockDatabase(env)
+               .UseHttpsRedirection()
+               .UseStaticFiles();
+
+            if (!env.IsDevelopment())
+            {
+                app.UseSpaStaticFiles();
+            }
+
+            app.UseRouting()
+               .UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
+                })
+               .UseSwaggerMiddleware()
+               .UseSpa(spa =>
+               {
+                   // To learn more about options for serving an Angular SPA from ASP.NET Core,
+                   // see https://go.microsoft.com/fwlink/?linkid=864501
+
+                   spa.Options.SourcePath = "ClientApp";
+
+                   if (env.IsDevelopment())
+                   {
+                       spa.UseAngularCliServer("start");
+                   }
+
+               });
+        }
     }
-  }
 }

@@ -1,0 +1,11 @@
+<form [formGroup]="medicineTypeForm">
+  <mat-form-field class="description">
+    <input
+      matInput
+      type="text"
+      id="description"
+      formControlName="description"
+      (ngModelChange)="onUpdate()"
+    />
+  </mat-form-field>
+</form>

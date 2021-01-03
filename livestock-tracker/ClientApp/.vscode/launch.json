@@ -5,6 +5,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "pwa-msedge",
+      "request": "launch",
+      "name": "Debug HTTP Edge [localhost]",
+      "url": "http://localhost:5000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "pwa-msedge",
+      "request": "launch",
+      "name": "Debug HTTPS Edge [localhost]",
+      "url": "https://localhost:5001",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
       "type": "chrome",
       "request": "attach",
       "name": "Attach to Chrome",
@@ -15,16 +29,16 @@
     {
       "type": "chrome",
       "request": "launch",
-      "name": "Launch in Chrome",
+      "name": "Debug HTTP [localhost]",
       "url": "http://localhost:5000",
       "webRoot": "${workspaceFolder}",
       "smartStep": true
     },
     {
-      "type": "brave",
+      "type": "chrome",
       "request": "launch",
-      "name": "Launch in Brave",
-      "url": "http://localhost:5000",
+      "name": "Debug HTTPS [localhost]",
+      "url": "https://localhost:5001",
       "webRoot": "${workspaceFolder}",
       "smartStep": true
     }

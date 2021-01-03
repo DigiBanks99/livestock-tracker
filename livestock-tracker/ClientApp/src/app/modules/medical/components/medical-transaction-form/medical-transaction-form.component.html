@@ -1,0 +1,54 @@
+<mat-card>
+  <form
+    class="form"
+    [formGroup]="medicalTransactionForm"
+    fxLayout="column"
+    fxLayoutAlign="space-around center"
+    (ngSubmit)="onSave()"
+  >
+    <app-animal-select-container disabled></app-animal-select-container>
+    <mat-form-field>
+      <mat-label>Medicine type</mat-label>
+      <mat-select
+        [value]="medicalTransaction.medicineId"
+        formControlName="medicineId"
+      >
+        <mat-option *ngFor="let medType of medicineTypes" [value]="medType.id">
+          {{ medType.description }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Transaction date</mat-label>
+      <input
+        id="transactionDate"
+        matInput
+        [matDatepicker]="td"
+        formControlName="transactionDate"
+        required
+      />
+      <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
+      <mat-datepicker #td disabled="false"></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Dosage</mat-label>
+      <input
+        id="dose"
+        type="number"
+        matInput
+        formControlName="dose"
+        class="currency-input"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Unit</mat-label>
+      <mat-select formControlName="unitId" id="unit" placeholder="Unit">
+        <mat-option *ngFor="let unitType of units" [value]="unitType.id">
+          {{ unitType.description }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button mat-raised-button type="submit" color="primary">Save</button>
+  </form>
+</mat-card>

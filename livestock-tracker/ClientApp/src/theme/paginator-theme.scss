@@ -1,0 +1,5 @@
+@import '~@angular/material/theming';
+
+.mat-paginator-container {
+  background-color: mat-color($component-background-color);
+}

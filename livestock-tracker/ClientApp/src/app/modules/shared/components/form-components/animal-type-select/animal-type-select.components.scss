@@ -1,0 +1,16 @@
+label.mat-form-field-label {
+  top: 0.5em;
+  display: block;
+}
+:host.floating label.mat-form-field-label.mat-form-field-should-float {
+  opacity: 1;
+  transform: translateY(-0.9em) scale(0.75);
+}
+
+mat-label {
+  transition: opacity 200ms;
+}
+:host.floating mat-label {
+  opacity: 1;
+  top: 0.2em;
+}
