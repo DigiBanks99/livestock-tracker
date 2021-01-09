@@ -23,12 +23,11 @@ import { MedicalTransactionComponent } from '@medical/components/medical-transac
 import { MedicalTransactionContainerComponent } from '@medical/components/medical-transaction/medical-transaction.container';
 import { MedicineTypeDetailComponent } from '@medical/components/medicine-type-detail/medicine-type-detail.component';
 import { MedicineTypeComponent } from '@medical/components/medicine-type/medicine-type.component';
-import { MedicalTransactionService } from '@medical/services/medical-transaction.service';
+import { MedicalTransactionService } from '@medical/services';
 import { MedicineTypeService } from '@medical/services/medicine-type.service';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
-
 import { MedicalTransactionDetailComponent } from './components/medical-transaction-detail/medical-transaction-detail.component';
 import { MedicalTransactionNewComponent } from './components/medical-transaction-new/medical-transaction-new.component';
 import { MedicineTypeContainerComponent } from './components/medicine-type/medicine-type.container';
@@ -37,7 +36,7 @@ import {
   medicalTransactionEffects,
   medicalTransactionReducer,
   medicineTypeEffects,
-  medicineTypeReducer
+  medicineTypeReducer,
 } from './store';
 import { MedicalStoreConstants } from './store/constants';
 
