@@ -12,11 +12,11 @@ import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicalTransactionFormComponent } from '@medical/components/medical-transaction-form/medical-transaction-form.component';
 import {
   MedicalTransactionService,
-  MockMedicalService
-} from '@medical/services/medical-transaction.service';
+  MockMedicalService,
+} from '@medical/services';
 import {
   MedicineTypeService,
-  MockMedicineTypeService
+  MockMedicineTypeService,
 } from '@medical/services/medicine-type.service';
 import { MockUnitService, UnitService } from '@unit/services/unit.service';
 

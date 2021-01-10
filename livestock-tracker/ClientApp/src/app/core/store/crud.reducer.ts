@@ -3,7 +3,6 @@ import { KeyEntity } from '@core/models/key-entity.interface';
 import { PagedData } from '@core/models/paged-data.model';
 import { EntityAdapter, Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
-
 import { PayloadAction } from './';
 import { CrudState } from './crud-state.interface';
 
@@ -112,7 +111,7 @@ function fetchApiReducer<TData extends KeyEntity<TKey>, TKey>(
   state: CrudState<TData, TKey>,
   action: PayloadAction<PagedData<TData>>
 ): CrudState<TData, TKey> {
-  const newState = adapter.addAll(action.payload.data, state);
+  const newState = adapter.setAll(action.payload.data, state);
   const idAsString = String(newState.selectedId);
   const ids = <string[]>newState.ids || [];
   const selectedIndex = ids.findIndex((id: string) => id === idAsString);

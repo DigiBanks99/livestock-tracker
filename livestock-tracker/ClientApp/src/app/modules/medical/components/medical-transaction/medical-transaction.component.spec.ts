@@ -11,14 +11,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import {
   LivestockService,
-  MockLivestockService
+  MockLivestockService,
 } from '@animal/services/livestock.service';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicalTransactionComponent } from '@medical/components/medical-transaction/medical-transaction.component';
 import {
   MedicalTransactionService,
-  MockMedicalService
-} from '@medical/services/medical-transaction.service';
+  MockMedicalService,
+} from '@medical/services';
 
 @Component({
   selector: 'app-animal-select-container',

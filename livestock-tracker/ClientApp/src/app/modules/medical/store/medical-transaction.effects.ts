@@ -1,19 +1,17 @@
-import { Observable } from 'rxjs';
-
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MedicalTransaction } from '@core/models';
 import { PagedData } from '@core/models/paged-data.model';
 import { CrudEffects } from '@core/store/crud.effects';
-import { MedicalTransactionService } from '@medical/services/medical-transaction.service';
+import { MedicalTransactionService } from '@medical/services';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
-
+import { Observable } from 'rxjs';
 import { MedicalStoreConstants } from './constants';
 import {
   actions,
   FetchMedicalTransactions,
-  FetchSingleMedicalTransactionParams
+  FetchSingleMedicalTransactionParams,
 } from './medical-transaction.actions';
 
 @Injectable()
