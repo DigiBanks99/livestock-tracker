@@ -25,7 +25,7 @@ import { LookupPipe } from './pipes/lookup.pipe';
     AnimalTypeSelectComponent,
     CommandButtonComponent,
     LsGridComponent,
-    LookupPipe,
+    LookupPipe
   ],
   imports: [
     CommonModule,
@@ -38,15 +38,15 @@ import { LookupPipe } from './pipes/lookup.pipe';
     MatPaginatorModule,
     MatSelectModule,
     MatToolbarModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [AgeCalculatorService],
   exports: [
     AnimalSelectContainerComponent,
     AnimalTypeSelectComponent,
     CommandButtonComponent,
-    LsGridComponent,
     LookupPipe,
-  ],
+    LsGridComponent
+  ]
 })
 export class SharedModule {}

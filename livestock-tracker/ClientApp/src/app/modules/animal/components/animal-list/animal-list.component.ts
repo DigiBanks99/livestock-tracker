@@ -24,12 +24,13 @@ import { AgeCalculatorService } from '@shared/services/age-calculator.service';
   selector: 'app-animal-list',
   templateUrl: './animal-list.component.html',
   styleUrls: ['./animal-list.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class AnimalListComponent implements OnInit, OnDestroy {
   private destroyed$ = new Subject<void>();
 
   @Input() public animals: Animal[];
+  @Input() public isFetching = false;
   @Output() public remove = new EventEmitter<Animal>();
   @Output() public showDetail = new EventEmitter<number>();
   @Output() public addAnimal = new EventEmitter();

@@ -13,18 +13,16 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'app-animal',
   templateUrl: './animal.component.html',
-  styleUrls: ['./animal.component.scss'],
+  styleUrls: ['./animal.component.scss']
 })
-export class AnimalComponent implements OnInit, OnDestroy {
+export class AnimalComponent implements OnDestroy {
   public animals$: Observable<Animal[]>;
   public selectedAnimal$: Observable<number>;
   public isFetching$: Observable<boolean>;
   public error$: Observable<Error>;
   public destroyed$ = new Subject();
 
-  constructor(private store: Store<AppState>, private router: Router) {}
-
-  public ngOnInit(): void {
+  constructor(private store: Store<AppState>, private router: Router) {
     this.animals$ = this.store.pipe(
       select(getAnimals),
       takeUntil(this.destroyed$)

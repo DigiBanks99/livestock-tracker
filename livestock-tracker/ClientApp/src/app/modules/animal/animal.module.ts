@@ -35,6 +35,7 @@ import { AnimalService, LivestockService } from '@animal/services';
 import { animalEffects, animalReducers } from '@animal/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
+import { LoaderModule } from '@shared/components';
 import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
@@ -43,13 +44,14 @@ import { SharedModule } from '@shared/shared.module';
     AnimalNewComponent,
     AnimalListComponent,
     AnimalDetailComponent,
-    AnimalFormComponent,
+    AnimalFormComponent
   ],
   imports: [
     CommonModule,
     FlexLayoutModule,
     FormsModule,
     HttpClientModule,
+    LoaderModule,
     MatButtonModule,
     MatCardModule,
     MatIconModule,
@@ -72,9 +74,9 @@ import { SharedModule } from '@shared/shared.module';
     RouterModule,
     SharedModule,
     StoreModule.forFeature('animals', animalReducers.animalsReducer),
-    EffectsModule.forFeature([animalEffects.AnimalEffects]),
+    EffectsModule.forFeature([animalEffects.AnimalEffects])
   ],
   providers: [LivestockService, AnimalService],
-  exports: [AnimalComponent],
+  exports: [AnimalComponent]
 })
 export class AnimalModule {}
