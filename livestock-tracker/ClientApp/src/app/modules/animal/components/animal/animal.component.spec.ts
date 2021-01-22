@@ -34,13 +34,11 @@ import { animalStore } from '@animal/store';
 import { Animal } from '@core/models';
 import { getAnimals, getSelectedAnimalId } from '@core/store/selectors';
 import { provideMockStore } from '@ngrx/store/testing';
-import { AgeCalculatorService } from '@shared/services/age-calculator.service';
+import { AgeCalculatorService } from '@shared/services';
 
 @Component({
   selector: 'app-animal-list',
-  template: `
-    <div></div>
-  `
+  template: ` <div></div> `
 })
 class MockAnimalListComponent {
   @Input() public animals: Animal[];
@@ -71,7 +69,7 @@ describe('Animal Component', () => {
             { selector: getAnimals, value: null },
             { selector: getSelectedAnimalId, value: -1 },
             {
-              selector: animalStore.selectors.getAnimalsPendingState,
+              selector: animalStore.selectors.animalsPendingState,
               value: false
             },
             { selector: animalStore.selectors.getAnimalsError, value: null }

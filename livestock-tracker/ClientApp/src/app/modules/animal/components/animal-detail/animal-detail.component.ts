@@ -12,7 +12,7 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'app-animal-detail',
   templateUrl: './animal-detail.component.html',
-  styleUrls: ['./animal-detail.component.scss'],
+  styleUrls: ['./animal-detail.component.scss']
 })
 export class AnimalDetailComponent implements OnDestroy {
   public animal$: Observable<Animal> = EMPTY;
@@ -23,7 +23,7 @@ export class AnimalDetailComponent implements OnDestroy {
 
   constructor(private store: Store<AppState>, private location: Location) {
     this.isPending$ = this.store.pipe(
-      select(animalStore.selectors.getAnimalsPendingState),
+      select(animalStore.selectors.animalsPendingState),
       takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(

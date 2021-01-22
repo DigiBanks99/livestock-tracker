@@ -3,7 +3,6 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { initialState } from '@animal/store/animal.reducers';
 import { animalActions, animalStore } from '@animal/store/index';
 import { Animal, AnimalType } from '@core/models';
 import { AnimalState } from '@core/store';
@@ -22,7 +21,7 @@ export class AnimalNewComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.isPending$ = this.store.pipe(
-      select(animalStore.selectors.getAnimalsPendingState),
+      select(animalStore.selectors.animalsPendingState),
       takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(
