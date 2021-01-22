@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { delay, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -51,9 +51,9 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     action: Action
   ): Observable<PagedData<Animal>> => {
     const fetchAction = <FetchAnimals>action;
-    console.trace('a.handleFetch', fetchAction);
-    return this.animalService
-      .getAll(fetchAction.pageSize, fetchAction.pageNumber)
-      .pipe(delay(2000));
+    return this.animalService.getAll(
+      fetchAction.pageSize,
+      fetchAction.pageNumber
+    );
   };
 }
