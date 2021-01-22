@@ -1,10 +1,14 @@
 import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, tap } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { animalStore } from '@animal/store';
-import { actions, SelectAnimal } from '@animal/store/animal.actions';
+import {
+  actions,
+  FetchAnimals,
+  SelectAnimal
+} from '@animal/store/animal.actions';
 import { Animal } from '@core/models/livestock.model';
 import { AppState } from '@core/store';
 import { getAnimals, getSelectedAnimalId } from '@core/store/selectors';
@@ -13,18 +17,17 @@ import { select, Store } from '@ngrx/store';
 @Component({
   selector: 'app-animal',
   templateUrl: './animal.component.html',
-  styleUrls: ['./animal.component.scss'],
+  styleUrls: ['./animal.component.scss']
 })
-export class AnimalComponent implements OnInit, OnDestroy {
+export class AnimalComponent implements OnDestroy {
   public animals$: Observable<Animal[]>;
   public selectedAnimal$: Observable<number>;
   public isFetching$: Observable<boolean>;
   public error$: Observable<Error>;
   public destroyed$ = new Subject();
 
-  constructor(private store: Store<AppState>, private router: Router) {}
-
-  public ngOnInit(): void {
+  constructor(private store: Store<AppState>, private router: Router) {
+    this.store.dispatch(new FetchAnimals());
     this.animals$ = this.store.pipe(
       select(getAnimals),
       takeUntil(this.destroyed$)
@@ -34,7 +37,8 @@ export class AnimalComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$)
     );
     this.isFetching$ = this.store.pipe(
-      select(animalStore.selectors.getFetchAnimalsPendingState),
+      select(animalStore.selectors.animalsPendingState),
+      tap(console.log),
       takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(

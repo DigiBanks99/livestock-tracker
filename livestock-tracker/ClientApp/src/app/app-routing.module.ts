@@ -45,12 +45,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/medical/medical.module').then(
         (module) => module.MedicalModule
-      ),
-  },
+      )
+  }
 ];
 
 @NgModule({
   imports: [AnimalModule, RouterModule.forRoot(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class AppRoutingModule {}

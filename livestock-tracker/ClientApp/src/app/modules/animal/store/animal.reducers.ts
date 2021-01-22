@@ -9,7 +9,7 @@ import { AnimalKey } from './constants';
 
 export const animalsAdapter = createEntityAdapter<Animal>({
   selectId: (animal: Animal) => animal.id,
-  sortComparer: (animal: Animal) => animal.number,
+  sortComparer: (animal: Animal) => animal.number
 });
 
 export const initialState: AnimalState = animalsAdapter.getInitialState({
@@ -19,23 +19,25 @@ export const initialState: AnimalState = animalsAdapter.getInitialState({
   isPending: false,
   pageNumber: 0,
   pageSize: 10,
-  recordCount: 0,
+  recordCount: 0
 });
 
 export function animalsReducer(
   state: AnimalState = initialState,
   action: Action
 ): AnimalState {
+  console.log('ar', action.type);
   switch (action.type) {
     case ActionTypes.SELECT_ANIMAL:
       return {
         ...state,
-        selectedId: selectAnimal(state.selectedId, <SelectAnimal>action),
+        selectedId: selectAnimal(state.selectedId, <SelectAnimal>action)
       };
     default:
+      console.log('ar.default', action.type);
       return {
         ...state,
-        ...crudReducer(AnimalKey, animalsAdapter, state, action),
+        ...crudReducer(AnimalKey, animalsAdapter, state, action)
       };
   }
 }

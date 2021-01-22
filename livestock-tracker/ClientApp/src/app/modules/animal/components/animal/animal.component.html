@@ -1,5 +1,6 @@
 <app-animal-list
   [animals]="animals$ | async"
+  [isFetching]="isFetching$ | async"
   (remove)="deleteAnimal($event)"
   (showDetail)="showDetail($event)"
   (addAnimal)="addAnimal()"

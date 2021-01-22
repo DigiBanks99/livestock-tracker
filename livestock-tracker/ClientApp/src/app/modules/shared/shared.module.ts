@@ -9,13 +9,15 @@ import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AnimalSelectComponent } from '@shared/components/animal-select/animal-select.component';
-import { AnimalSelectContainerComponent } from '@shared/components/animal-select/animal-select.container';
-import { LsGridComponent } from '@shared/components/ls-grid/ls-grid.component';
-import { AgeCalculatorService } from '@shared/services/age-calculator.service';
+import { AgeCalculatorService } from '@shared/services';
 
-import { CommandButtonComponent } from './components/command-button/command-button.component';
-import { AnimalTypeSelectComponent } from './components/form-components';
+import {
+  AnimalSelectComponent,
+  AnimalSelectContainerComponent,
+  AnimalTypeSelectComponent,
+  CommandButtonComponent,
+  LsGridComponent
+} from './components';
 import { LookupPipe } from './pipes/lookup.pipe';
 
 @NgModule({
@@ -25,7 +27,7 @@ import { LookupPipe } from './pipes/lookup.pipe';
     AnimalTypeSelectComponent,
     CommandButtonComponent,
     LsGridComponent,
-    LookupPipe,
+    LookupPipe
   ],
   imports: [
     CommonModule,
@@ -38,15 +40,15 @@ import { LookupPipe } from './pipes/lookup.pipe';
     MatPaginatorModule,
     MatSelectModule,
     MatToolbarModule,
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
   providers: [AgeCalculatorService],
   exports: [
     AnimalSelectContainerComponent,
     AnimalTypeSelectComponent,
     CommandButtonComponent,
-    LsGridComponent,
     LookupPipe,
-  ],
+    LsGridComponent
+  ]
 })
 export class SharedModule {}

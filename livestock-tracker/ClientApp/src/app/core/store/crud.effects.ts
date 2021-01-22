@@ -1,12 +1,5 @@
-import { Observable, of, OperatorFunction } from 'rxjs';
-import {
-  catchError,
-  map,
-  mergeMap,
-  startWith,
-  switchMap,
-  tap
-} from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 import { KeyValue } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -26,7 +19,7 @@ export class CrudEffects<
 > {
   private shouldFetchOnStartup: boolean;
   private noOpAction: Action = {
-    type: 'NOOP',
+    type: 'NOOP'
   };
 
   constructor(
@@ -46,8 +39,6 @@ export class CrudEffects<
 
   public getAll$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
-      ofType(`FETCH_${this.typeName}`),
-      startWith(this.defaultFetchAction),
       ofType(`FETCH_${this.typeName}`),
       switchMap((action: Action) => this.handleFetchAction$(action)),
       map((data: PagedData<TData>) => this.typeActions.apiFetchItems(data)),
