@@ -1,10 +1,10 @@
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { AnimalListComponent } from '@animal/components/animal-list/animal-list.component';
 import { LivestockService } from '@animal/services';
-import { MockLivestockService } from '@animal/services/livestock.service';
 import { Animal, AnimalType } from '@core/models';
 import { StoreModule } from '@ngrx/store';
 import { LoaderModule } from '@shared/components';
@@ -19,6 +19,7 @@ export default {
     moduleMetadata({
       declarations: [AnimalListComponent],
       imports: [
+        HttpClientTestingModule,
         LoaderModule,
         MatTableModule,
         MatIconModule,
@@ -28,8 +29,9 @@ export default {
         StoreModule.forRoot({})
       ],
       providers: [
-        { provide: LivestockService, useClass: MockLivestockService },
-        AgeCalculatorService
+        LivestockService,
+        AgeCalculatorService,
+        { provide: 'BASE_URL', useValue: '' }
       ]
     })
   ]
@@ -42,7 +44,7 @@ const Template: Story<AnimalListComponent> = (args: AnimalListComponent) => ({
 
 const fewAnimals: Animal[] = [
   {
-    id: 0,
+    id: 1,
     type: AnimalType.Chicken,
     subspecies: 'Roberto',
     number: 55,
@@ -52,6 +54,38 @@ const fewAnimals: Animal[] = [
     sellPrice: null,
     arrivalWeight: 1,
     batchNumber: 2,
+    dateOfDeath: null,
+    deceased: false,
+    sellDate: null,
+    sold: false
+  },
+  {
+    id: 2,
+    type: AnimalType.Chicken,
+    subspecies: 'Firmino',
+    number: 56,
+    birthDate: new Date(),
+    purchaseDate: new Date(),
+    purchasePrice: 20,
+    sellPrice: null,
+    arrivalWeight: 1,
+    batchNumber: 2,
+    dateOfDeath: null,
+    deceased: false,
+    sellDate: null,
+    sold: false
+  },
+  {
+    id: 3,
+    type: AnimalType.Cattle,
+    subspecies: 'Lola',
+    number: 57,
+    birthDate: new Date(),
+    purchaseDate: new Date(),
+    purchasePrice: 120,
+    sellPrice: null,
+    arrivalWeight: 25,
+    batchNumber: 1,
     dateOfDeath: null,
     deceased: false,
     sellDate: null,

@@ -1,17 +1,14 @@
 import * as moment from 'moment';
-import { Observable, of, Subject, Subscription, throwError } from 'rxjs';
+import { Observable, of, Subject, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Inject, Injectable, OnDestroy, OnInit } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { Animal, AnimalType, Livestock } from '@core/models';
-import { environment } from '@env/environment';
 
 interface ILivestockService {
-  livestockChanged: Subject<Livestock[]>;
-  editingStarted: Subject<number>;
-
   index(): Observable<Livestock[]>;
-  getLivestock();
+  getLivestock(): Observable<Livestock[]>;
   getAnimal(id: number): Livestock;
   removeLivestock(id: number): Observable<Livestock>;
   addAnimal(animal: Livestock): Observable<Livestock>;
@@ -22,36 +19,21 @@ interface ILivestockService {
 }
 
 @Injectable()
-export class LivestockService implements ILivestockService, OnDestroy {
+export class LivestockService implements ILivestockService {
   private livestock: Livestock[];
   private readonly apiUrl: string;
-  private httpGetSubscription: Subscription;
-  private httpDeleteSubscription: Subscription;
-  private httpPutSubscription: Subscription;
-  private httpPostSubscription: Subscription;
-
-  public livestockChanged: Subject<Livestock[]>;
-  public editingStarted: Subject<number>;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     this.livestock = [];
     this.apiUrl = baseUrl;
-
-    this.livestockChanged = new Subject<Livestock[]>();
-    this.editingStarted = new Subject<number>();
   }
 
-  public getLivestock() {
+  public getLivestock(): Observable<Livestock[]> {
     this.livestock = [];
 
-    this.httpGetSubscription = this.http
+    return this.http
       .get<Livestock[]>(this.apiUrl + 'animal')
-      .subscribe((animals: Livestock[]) => {
-        for (const animal of animals) {
-          this.livestock.push(this.cloneAnimal(animal));
-          this.emitLivestockChanged();
-        }
-      }, this.handleError);
+      .pipe(catchError(this.handleError));
   }
 
   public index(): Observable<Livestock[]> {
@@ -83,7 +65,7 @@ export class LivestockService implements ILivestockService, OnDestroy {
     }
 
     const index = this.livestock
-      .map(animal => {
+      .map((animal) => {
         return animal.id;
       })
       .indexOf(id);
@@ -165,23 +147,15 @@ export class LivestockService implements ILivestockService, OnDestroy {
     clonedAnimal.sold = animal.sold;
     if (clonedAnimal.sold) {
       clonedAnimal.sellPrice = animal.sellPrice;
-      clonedAnimal.sellDate = moment(animal.sellDate)
-        .utc()
-        .toDate();
+      clonedAnimal.sellDate = moment(animal.sellDate).utc().toDate();
     }
 
     clonedAnimal.deceased = animal.deceased;
     if (clonedAnimal.deceased) {
-      clonedAnimal.dateOfDeath = moment(animal.dateOfDeath)
-        .utc()
-        .toDate();
+      clonedAnimal.dateOfDeath = moment(animal.dateOfDeath).utc().toDate();
     }
 
     return clonedAnimal;
-  }
-
-  private emitLivestockChanged() {
-    this.livestockChanged.next(this.livestock.slice());
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -195,13 +169,6 @@ export class LivestockService implements ILivestockService, OnDestroy {
     // return an observable with a user-facing error message
     return throwError('Something bad happened; please try again later.');
   }
-
-  ngOnDestroy() {
-    this.httpGetSubscription.unsubscribe();
-    this.httpDeleteSubscription.unsubscribe();
-    this.httpPostSubscription.unsubscribe();
-    this.httpPutSubscription.unsubscribe();
-  }
 }
 
 export class MockLivestockService implements ILivestockService {
@@ -212,8 +179,8 @@ export class MockLivestockService implements ILivestockService {
     return of([]);
   }
 
-  public getLivestock(): Livestock[] {
-    return [];
+  public getLivestock(): Observable<Livestock[]> {
+    return of([]);
   }
 
   public getAnimal(id: number): Livestock {
