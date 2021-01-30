@@ -26,7 +26,6 @@ export function animalsReducer(
   state: AnimalState = initialState,
   action: Action
 ): AnimalState {
-  console.log('ar', action.type);
   switch (action.type) {
     case ActionTypes.SELECT_ANIMAL:
       return {
@@ -34,7 +33,6 @@ export function animalsReducer(
         selectedId: selectAnimal(state.selectedId, <SelectAnimal>action)
       };
     default:
-      console.log('ar.default', action.type);
       return {
         ...state,
         ...crudReducer(AnimalKey, animalsAdapter, state, action)

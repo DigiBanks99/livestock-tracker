@@ -1,5 +1,5 @@
 import { Observable, Subject } from 'rxjs';
-import { takeUntil, tap } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
@@ -15,11 +15,15 @@ import { getAnimals, getSelectedAnimalId } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-animal',
-  templateUrl: './animal.component.html',
-  styleUrls: ['./animal.component.scss']
+  template: `<app-animal-list
+    [animals]="animals$ | async"
+    [isFetching]="isFetching$ | async"
+    (remove)="deleteAnimal($event)"
+    (showDetail)="showDetail($event)"
+    (addAnimal)="addAnimal()"
+  ></app-animal-list>`
 })
-export class AnimalComponent implements OnDestroy {
+export class AnimalListPage implements OnDestroy {
   public animals$: Observable<Animal[]>;
   public selectedAnimal$: Observable<number>;
   public isFetching$: Observable<boolean>;
@@ -38,7 +42,6 @@ export class AnimalComponent implements OnDestroy {
     );
     this.isFetching$ = this.store.pipe(
       select(animalStore.selectors.animalsPendingState),
-      tap(console.log),
       takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(

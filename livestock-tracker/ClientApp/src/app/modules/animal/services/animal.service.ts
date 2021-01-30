@@ -2,11 +2,14 @@ import { Observable } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { Animal } from '@core/models';
 import { CrudService } from '@core/models/crud-service.interface';
 import { PagedData } from '@core/models/paged-data.model';
 
-@Injectable()
+@Injectable({
+  providedIn: AnimalProviderModule
+})
 export class AnimalService implements CrudService<Animal, number, number> {
   private apiUrl: string;
 
@@ -21,8 +24,8 @@ export class AnimalService implements CrudService<Animal, number, number> {
     this.http.get<PagedData<Animal>>(this.apiUrl, {
       params: {
         pageNumber: pageNumber.toString(),
-        pageSize: pageSize.toString(),
-      },
+        pageSize: pageSize.toString()
+      }
     });
 
   public get = (key: number): Observable<Animal> =>

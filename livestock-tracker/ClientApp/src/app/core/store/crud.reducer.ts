@@ -13,19 +13,12 @@ export function crudReducer<TData extends KeyEntity<TKey>, TKey>(
   state: CrudState<TData, TKey>,
   action: Action
 ) {
-  console.log('cr', action.type);
   switch (action.type) {
     case `ADD_${typeName}`:
     case `UPDATE_${typeName}`:
     case `DELETE_${typeName}`:
     case `FETCH_${typeName}`:
     case `FETCH_SINGLE_${typeName}`:
-      const s = {
-        ...state,
-        isPending: true,
-        error: null
-      };
-      console.log(action, s);
       return {
         ...state,
         isPending: true,

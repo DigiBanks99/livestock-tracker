@@ -10,11 +10,17 @@ import { getSelectedAnimal } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-animal-detail',
-  templateUrl: './animal-detail.component.html',
-  styleUrls: ['./animal-detail.component.scss']
+  template: `<app-animal-form
+    [currentAnimal]="animal$ | async"
+    [isPending]="isPending$ | async"
+    [error]="error$ | async"
+    header="Edit animal"
+    successMessage="Animal saved."
+    (navigateBack)="onNavigateBack()"
+    (save)="onSave($event)"
+  ></app-animal-form>`
 })
-export class AnimalDetailComponent implements OnDestroy {
+export class AnimalDetailPage implements OnDestroy {
   public animal$: Observable<Animal> = EMPTY;
   public isPending$: Observable<boolean> = EMPTY;
   public error$: Observable<Error> = EMPTY;

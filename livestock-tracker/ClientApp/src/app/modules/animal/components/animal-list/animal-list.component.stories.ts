@@ -1,11 +1,18 @@
+import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalListComponent } from '@animal/components/animal-list/animal-list.component';
 import { LivestockService } from '@animal/services';
+import { animalReducers } from '@animal/store';
 import { Animal, AnimalType } from '@core/models';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { LoaderModule } from '@shared/components';
 import { AgeCalculatorService } from '@shared/services';
@@ -19,19 +26,26 @@ export default {
     moduleMetadata({
       declarations: [AnimalListComponent],
       imports: [
+        BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+        BrowserAnimationsModule,
         HttpClientTestingModule,
         LoaderModule,
-        MatTableModule,
+        MatCheckboxModule,
         MatIconModule,
+        MatTableModule,
         MatPaginatorModule,
         ReactiveFormsModule,
+        RouterTestingModule,
         SharedModule,
-        StoreModule.forRoot({})
+        StoreModule.forRoot({}),
+        EffectsModule.forRoot(),
+        StoreModule.forFeature('animals', animalReducers.animalsReducer)
       ],
       providers: [
         LivestockService,
         AgeCalculatorService,
-        { provide: 'BASE_URL', useValue: '' }
+        { provide: 'BASE_URL', useValue: '' },
+        { provide: APP_BASE_HREF, useValue: '/' }
       ]
     })
   ]

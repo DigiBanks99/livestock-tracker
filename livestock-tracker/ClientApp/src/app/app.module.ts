@@ -1,9 +1,7 @@
-import { OverlayContainer } from '@angular/cdk/overlay';
 import { NgModule } from '@angular/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AnimalModule } from '@animal/index';
 import { AppRoutingModule } from '@app/app-routing.module';
 import { AppComponent } from '@app/app.component';
 import { FeedModule } from '@feed/feed.module';
@@ -23,7 +21,6 @@ import { UnitModule } from '@unit/unit.module';
     AppRoutingModule,
 
     SharedModule,
-    AnimalModule,
     FeedModule,
     HeaderModule,
     HomeModule,
@@ -31,14 +28,14 @@ import { UnitModule } from '@unit/unit.module';
 
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    UnitModule,
+    UnitModule
   ],
   providers: [
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'outline' },
-    },
+      useValue: { appearance: 'outline' }
+    }
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}

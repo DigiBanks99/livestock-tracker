@@ -9,10 +9,17 @@ import { AnimalState } from '@core/store';
 import { select, Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-animal-new',
-  templateUrl: './animal-new.component.html'
+  template: `<app-animal-form
+    [currentAnimal]="createAnimal"
+    [isPending]="isPending$ | async"
+    [error]="error$ | async"
+    header="Add animal"
+    successMessage="Animal created."
+    (save)="onSave($event)"
+    (navigateBack)="onNavigateBack()"
+  ></app-animal-form>`
 })
-export class AnimalNewComponent implements OnInit, OnDestroy {
+export class AnimalNewPage implements OnInit, OnDestroy {
   public isPending$: Observable<boolean>;
   public error$: Observable<Error>;
   private destroyed$ = new Subject();

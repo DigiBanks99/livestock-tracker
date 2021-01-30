@@ -23,15 +23,10 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { RouterModule } from '@angular/router';
-import {
-  AnimalComponent,
-  AnimalDetailComponent,
-  AnimalFormComponent,
-  AnimalListComponent,
-  AnimalNewComponent
-} from '@animal/components';
-import { AnimalService, LivestockService } from '@animal/services';
+import { AnimalProviderModule } from '@animal/animal-provider.module';
+import { AnimalRoutingModule } from '@animal/animal-routing.module';
+import { AnimalFormComponent, AnimalListComponent } from '@animal/components';
+import { AnimalDetailPage, AnimalListPage, AnimalNewPage } from '@animal/pages';
 import { animalEffects, animalReducers } from '@animal/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -40,13 +35,14 @@ import { SharedModule } from '@shared/shared.module';
 
 @NgModule({
   declarations: [
-    AnimalComponent,
-    AnimalNewComponent,
+    AnimalDetailPage,
+    AnimalFormComponent,
     AnimalListComponent,
-    AnimalDetailComponent,
-    AnimalFormComponent
+    AnimalListPage,
+    AnimalNewPage
   ],
   imports: [
+    AnimalRoutingModule,
     CommonModule,
     FlexLayoutModule,
     FormsModule,
@@ -71,12 +67,10 @@ import { SharedModule } from '@shared/shared.module';
     MatSnackBarModule,
     MatSortModule,
     ReactiveFormsModule,
-    RouterModule,
     SharedModule,
+    AnimalProviderModule,
     StoreModule.forFeature('animals', animalReducers.animalsReducer),
     EffectsModule.forFeature([animalEffects.AnimalEffects])
-  ],
-  providers: [LivestockService, AnimalService],
-  exports: [AnimalComponent]
+  ]
 })
 export class AnimalModule {}

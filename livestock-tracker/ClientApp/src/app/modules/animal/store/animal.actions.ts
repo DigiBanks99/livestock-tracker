@@ -29,8 +29,6 @@ export class FetchAnimals implements Action {
   constructor(pageNumber: number = 0, pageSize: number = 10) {
     this.pageNumber = pageNumber;
     this.pageSize = pageSize;
-
-    console.log(this);
   }
 }
 

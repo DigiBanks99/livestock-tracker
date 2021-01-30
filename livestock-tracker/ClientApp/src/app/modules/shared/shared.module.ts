@@ -4,11 +4,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { DomSanitizer } from '@angular/platform-browser';
 import { AgeCalculatorService } from '@shared/services';
 
 import {
@@ -51,4 +52,27 @@ import { LookupPipe } from './pipes/lookup.pipe';
     LsGridComponent
   ]
 })
-export class SharedModule {}
+export class SharedModule {
+  constructor(matIconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
+    matIconRegistry.addSvgIcon(
+      'farmer',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/farmer.svg')
+    );
+    matIconRegistry.addSvgIcon(
+      'cow',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/cow.svg')
+    );
+    matIconRegistry.addSvgIcon(
+      'chicken',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/cock.svg')
+    );
+    matIconRegistry.addSvgIcon(
+      'pig',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/pig.svg')
+    );
+    matIconRegistry.addSvgIcon(
+      'sheep',
+      sanitizer.bypassSecurityTrustResourceUrl('/assets/sheep.svg')
+    );
+  }
+}

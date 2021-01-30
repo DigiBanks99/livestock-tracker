@@ -30,18 +30,17 @@ const Constants = {
     PURCHASE_DATE: 'purchaseDate',
     PURCHASE_PRICE: 'purchasePrice',
     ARRIVAL_WEIGHT: 'arrivalWeight',
-    BATCH_NUMBER: 'batchNumber',
-  },
+    BATCH_NUMBER: 'batchNumber'
+  }
 };
 
 @Component({
   selector: 'app-animal-form',
   templateUrl: './animal-form.component.html',
-  styleUrls: ['./animal-form.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.short },
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.short }
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnimalFormComponent {
   private _currentAnimal: Animal = null;
@@ -133,11 +132,11 @@ export class AnimalFormComponent {
       age: [
         {
           value: this.ageCalculatorService.calculateAge(new Date()),
-          disabled: true,
-        },
+          disabled: true
+        }
       ],
       deceased: [null, [Validators.required]],
-      dateOfDeath: [{ value: null, disabled: true }, []],
+      dateOfDeath: [{ value: null, disabled: true }, []]
     });
 
     this.animalForm
@@ -154,7 +153,7 @@ export class AnimalFormComponent {
 
     combineLatest([
       this.animalForm.get(Constants.Controls.BIRTH_DATE).valueChanges,
-      this.animalForm.get(Constants.Controls.DATE_OF_DEATH).valueChanges,
+      this.animalForm.get(Constants.Controls.DATE_OF_DEATH).valueChanges
     ])
       .pipe(takeUntil(this.destroyed$))
       .subscribe(([birthDate, deceasedDate]) => {
@@ -184,7 +183,7 @@ export class AnimalFormComponent {
       sellPrice: animal.sold ? animal.sellPrice : null,
       sellDate: animal.sellDate,
       deceased: animal.deceased,
-      dateOfDeath: animal.dateOfDeath,
+      dateOfDeath: animal.dateOfDeath
     });
 
     this.updateSoldCtrl(animal.sold);

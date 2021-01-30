@@ -4,6 +4,7 @@ import { catchError } from 'rxjs/operators';
 
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { Animal, AnimalType, Livestock } from '@core/models';
 
 interface ILivestockService {
@@ -18,7 +19,9 @@ interface ILivestockService {
   getSvgIconByString(type: string): string;
 }
 
-@Injectable()
+@Injectable({
+  providedIn: AnimalProviderModule
+})
 export class LivestockService implements ILivestockService {
   private livestock: Livestock[];
   private readonly apiUrl: string;

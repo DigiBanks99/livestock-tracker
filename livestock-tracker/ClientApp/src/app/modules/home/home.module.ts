@@ -7,6 +7,6 @@ import { HomeComponent } from '@home/components/home.component';
 @NgModule({
   declarations: [HomeComponent],
   imports: [CommonModule, MatCardModule, MatGridListModule],
-  exports: [HomeComponent],
+  exports: [HomeComponent]
 })
 export class HomeModule {}
