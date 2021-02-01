@@ -1,3 +1,4 @@
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -10,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalFormComponent } from '@animal/components/animal-form/animal-form.component';
 import { LoaderModule } from '@shared/components';
 import { AgeCalculatorService } from '@shared/services';
+import { SharedModule } from '@shared/shared.module';
 import { moduleMetadata, Story } from '@storybook/angular';
 
 export default {
@@ -20,6 +22,7 @@ export default {
       declarations: [AnimalFormComponent],
       imports: [
         BrowserAnimationsModule,
+        FlexLayoutModule,
         LoaderModule,
         MatButtonModule,
         MatCardModule,
@@ -28,7 +31,8 @@ export default {
         MatFormFieldModule,
         MatInputModule,
         MatNativeDateModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        SharedModule
       ],
       providers: [AgeCalculatorService]
     })

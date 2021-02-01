@@ -15,14 +15,14 @@
           Type
         </th>
         <td mat-cell *matCellDef="let animal">
-          <div class="animal-list-type">
+          <div class="animal-list-type" fxLayout="row">
             <mat-icon
               matListIcon
               class="mat-icon-button mat-accent"
               svgIcon="{{ getSvgIcon(animal) }}"
             >
             </mat-icon>
-            <span class="animal-list-type__desc">
+            <span class="animal-list-type__desc" fxLayoutAlign="center" fx>
               <a
                 [routerLink]="[animal.id, 'edit']"
                 (click)="onEditAnimal(animal.id)"
