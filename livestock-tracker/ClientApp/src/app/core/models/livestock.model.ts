@@ -44,10 +44,11 @@ export class Livestock implements Animal {
 }
 
 export class NullAnimal implements Animal {
+  static instance: NullAnimal = new NullAnimal();
   id: number = Number.NaN;
   type: AnimalType = AnimalType.Cattle;
-  subspecies: string = null;
-  number: number = null;
+  subspecies = '';
+  number: number = Number.NaN;
   birthDate: Date = null;
   purchaseDate: Date = null;
   purchasePrice: number = null;

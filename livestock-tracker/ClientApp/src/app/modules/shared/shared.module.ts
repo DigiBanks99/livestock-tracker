@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
@@ -10,30 +10,23 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DomSanitizer } from '@angular/platform-browser';
+import { LivestockFormsModule } from '@shared/components/form-components/livestock-forms.module';
 import { AgeCalculatorService } from '@shared/services';
 
 import {
-  AnimalSelectComponent,
-  AnimalSelectContainerComponent,
-  AnimalTypeSelectComponent,
+  AnimalSelectModule,
   CommandButtonComponent,
   LsGridComponent
 } from './components';
 import { LookupPipe } from './pipes/lookup.pipe';
 
 @NgModule({
-  declarations: [
-    AnimalSelectContainerComponent,
-    AnimalSelectComponent,
-    AnimalTypeSelectComponent,
-    CommandButtonComponent,
-    LsGridComponent,
-    LookupPipe
-  ],
+  declarations: [CommandButtonComponent, LsGridComponent, LookupPipe],
   imports: [
+    AnimalSelectModule,
     CommonModule,
     FlexLayoutModule,
-    FormsModule,
+    LivestockFormsModule,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
@@ -45,9 +38,9 @@ import { LookupPipe } from './pipes/lookup.pipe';
   ],
   providers: [AgeCalculatorService],
   exports: [
-    AnimalSelectContainerComponent,
-    AnimalTypeSelectComponent,
+    AnimalSelectModule,
     CommandButtonComponent,
+    LivestockFormsModule,
     LookupPipe,
     LsGridComponent
   ]

@@ -1,10 +1,10 @@
 import { Observable } from 'rxjs';
 
 import { Component, Input, OnInit } from '@angular/core';
-import { Livestock } from '@app/core/models/livestock.model';
+import { SelectAnimal } from '@animal/store/animal.actions';
+import { Animal } from '@app/core/models/livestock.model';
 import { AppState } from '@core/store';
 import { getAnimals, getSelectedAnimal } from '@core/store/selectors';
-import { SelectAnimal } from '@animal/store/animal.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -18,9 +18,9 @@ import { select, Store } from '@ngrx/store';
     ></app-animal-select>
   `
 })
-export class AnimalSelectContainerComponent implements OnInit {
-  public animal$: Observable<Livestock>;
-  public animals$: Observable<Livestock[]>;
+export class AnimalSelectContainer implements OnInit {
+  public animal$: Observable<Animal>;
+  public animals$: Observable<Animal[]>;
 
   @Input() public disabled: boolean;
 

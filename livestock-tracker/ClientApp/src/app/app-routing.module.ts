@@ -14,11 +14,6 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
-  {
-    path: 'animal',
-    loadChildren: () =>
-      import('./modules/animal/animal.module').then((data) => data.AnimalModule)
-  },
   { path: 'home', component: HomeComponent },
   { path: 'reports', component: ReportsComponent },
   { path: 'units', component: UnitContainerComponent },

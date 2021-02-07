@@ -1,4 +1,7 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 
-@NgModule({})
+@NgModule({
+  exports: [HttpClientModule]
+})
 export class AnimalProviderModule {}

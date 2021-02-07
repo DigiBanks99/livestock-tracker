@@ -8,10 +8,16 @@
       fxLayoutAlign="space-around center"
       (ngSubmit)="onSave()"
     >
-      <app-animal-type-select formControlName="type"></app-animal-type-select>
+      <mat-form-field appearance="fill">
+        <mat-label for="type">Animal Type</mat-label>
+        <app-animal-type-select
+          formControlName="type"
+          required
+        ></app-animal-type-select>
+      </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label for="subspecies">Subspecies</mat-label>
-        <input formControlName="subspecies" id="subspecies" matInput />
+        <input formControlName="subspecies" id="subspecies" matInput required />
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label for="number">Number</mat-label>
