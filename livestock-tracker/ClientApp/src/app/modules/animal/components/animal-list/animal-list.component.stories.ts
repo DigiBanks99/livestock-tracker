@@ -11,14 +11,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalListComponent } from '@animal/components/animal-list/animal-list.component';
-import { LivestockService } from '@animal/services';
 import { animalReducers } from '@animal/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { LoaderModule } from '@shared/components';
-import { AgeCalculatorService } from '@shared/services';
 import { SharedModule } from '@shared/shared.module';
 import { moduleMetadata, Story } from '@storybook/angular';
+import { AgeCalculatorService, SvgService } from '@svg/services';
 
 export default {
   title: 'Animal/List',
@@ -43,7 +42,7 @@ export default {
         StoreModule.forFeature('animals', animalReducers.animalsReducer)
       ],
       providers: [
-        LivestockService,
+        SvgService,
         AgeCalculatorService,
         { provide: 'BASE_URL', useValue: '' },
         { provide: APP_BASE_HREF, useValue: '/' }

@@ -22,15 +22,16 @@ import { UnitModule } from '@unit/unit.module';
     AppRoutingModule,
 
     SharedModule,
+
     AnimalModule,
     FeedModule,
     HeaderModule,
     HomeModule,
     ReportsModule,
+    UnitModule,
 
     StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
-    UnitModule
+    EffectsModule.forRoot([])
   ],
   providers: [
     {

@@ -1,17 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AnimalProviderModule } from '@animal/animal-provider.module';
+import { SvgProviderModule } from '@app/modules/svg/svg-provider.module';
 import { Animal, AnimalType } from '@core/models';
 
-interface ILivestockService {
-  getSvgIcon(animal: Animal): string;
-  getSvgIconByType(type: AnimalType): string;
-  getSvgIconByString(type: string): string;
-}
-
 @Injectable({
-  providedIn: AnimalProviderModule
+  providedIn: SvgProviderModule
 })
-export class LivestockService implements ILivestockService {
+export class SvgService {
   public getSvgIcon(animal: Animal): string {
     if (animal === undefined || animal === null) {
       return null;
@@ -47,17 +41,5 @@ export class LivestockService implements ILivestockService {
     } else {
       throw Error(type + ' not implemented');
     }
-  }
-}
-
-export class MockLivestockService implements ILivestockService {
-  public getSvgIcon(animal: Animal): string {
-    return null;
-  }
-  public getSvgIconByType(type: AnimalType): string {
-    return null;
-  }
-  public getSvgIconByString(type: string): string {
-    return null;
   }
 }

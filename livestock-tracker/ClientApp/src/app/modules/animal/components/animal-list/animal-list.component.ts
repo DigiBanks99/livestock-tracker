@@ -12,9 +12,9 @@ import {
 } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
-import { LivestockService } from '@animal/services/livestock.service';
 import { animalStore } from '@animal/store';
 import { FetchAnimals } from '@animal/store/animal.actions';
+import { SvgService } from '@app/modules/svg/services/svg.service';
 import { Animal } from '@core/models';
 import { AppState } from '@core/store';
 import { select, Store } from '@ngrx/store';
@@ -42,7 +42,7 @@ export class AnimalListComponent implements OnInit, OnDestroy {
   public recordCount$: Observable<number> = EMPTY;
 
   constructor(
-    private livestockService: LivestockService,
+    private svgService: SvgService,
     private ageCalculatorService: AgeCalculatorService,
     private store: Store<AppState>
   ) {}
@@ -68,7 +68,7 @@ export class AnimalListComponent implements OnInit, OnDestroy {
   }
 
   public getSvgIcon(animal: Animal): string {
-    return this.livestockService.getSvgIcon(animal);
+    return this.svgService.getSvgIcon(animal);
   }
 
   public removeAnimal(selectedItems: MatListOption[]): void {

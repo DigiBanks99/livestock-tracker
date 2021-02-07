@@ -6,9 +6,13 @@ import { AnimalDetailPage, AnimalListPage, AnimalNewPage } from '@animal/pages';
   exports: [RouterModule],
   imports: [
     RouterModule.forChild([
-      { path: '', pathMatch: 'full', component: AnimalListPage },
-      { path: 'new', component: AnimalNewPage },
-      { path: ':id/edit', component: AnimalDetailPage }
+      {
+        path: 'animal',
+        pathMatch: 'full',
+        component: AnimalListPage
+      },
+      { path: 'animal/new', component: AnimalNewPage },
+      { path: 'animal/:id/edit', component: AnimalDetailPage }
     ])
   ]
 })

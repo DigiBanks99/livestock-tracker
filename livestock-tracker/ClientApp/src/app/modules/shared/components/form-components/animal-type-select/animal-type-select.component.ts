@@ -1,4 +1,5 @@
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { FocusMonitor, FocusOrigin } from '@angular/cdk/a11y';
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
@@ -24,8 +25,8 @@ import {
   NgControl
 } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
-import { LivestockService } from '@animal/services';
 import { AnimalType } from '@core/models';
+import { SvgService } from '@svg/services';
 
 const Selector = 'app-animal-type-select';
 
@@ -47,7 +48,7 @@ export class AnimalTypeSelectComponent
     ControlValueAccessor,
     OnDestroy,
     OnInit {
-  public static nextId = 0;
+  public static NEXT_ID = 0;
 
   private readonly _keys: number[] = Object.keys(AnimalType)
     .filter(Number)
@@ -58,16 +59,16 @@ export class AnimalTypeSelectComponent
   private _required = false;
   private _disabled = false;
   private _touched = false;
+  private readonly _destroyed$ = new Subject<void>();
 
   @Input()
-  public get value(): AnimalType {
-    return this.form.value.typeSelect;
+  public get value(): AnimalType | null {
+    return this.form.controls.typeSelect.value;
   }
-  public set value(v: AnimalType) {
-    const type = v;
-    this.form.setValue({ typeSelect: type });
+  public set value(value: AnimalType | null) {
+    this.form.setValue({ typeSelect: value ?? null });
     this.stateChanges.next();
-    this.onChange(v);
+    this.onChange(value);
   }
 
   @Input()
@@ -103,7 +104,7 @@ export class AnimalTypeSelectComponent
   @Output() public change = new EventEmitter<AnimalType>();
 
   @HostBinding()
-  public id = `animal-type-select-${AnimalTypeSelectComponent.nextId++}`;
+  public readonly id = `animal-type-select-${AnimalTypeSelectComponent.NEXT_ID++}`;
   @HostBinding('attr.aria-describedby') public describedBy = '';
   @HostBinding('class.floating')
   public get shouldLabelFloat() {
@@ -117,14 +118,40 @@ export class AnimalTypeSelectComponent
   public stateChanges = new Subject<void>();
   public focused = false;
   public controlType = Selector;
+
   public get empty(): boolean {
     return this.value < 0 || this.value == null;
   }
+
   public get keys(): number[] {
     return this._keys;
   }
+
   public get errorState(): boolean {
     return this._touched && !this.disabled && this.empty;
+  }
+
+  constructor(
+    private svgService: SvgService,
+    @Optional() @Self() public ngControl: NgControl,
+    private focusMonitor: FocusMonitor,
+    private elRef: ElementRef<HTMLElement>
+  ) {
+    this._placeholder = '';
+    this.stateChanges = new Subject<void>();
+    this.focused = false;
+
+    focusMonitor
+      .monitor(elRef.nativeElement, true)
+      .pipe(takeUntil(this._destroyed$))
+      .subscribe((origin: FocusOrigin) => {
+        this.focused = origin !== null;
+        this.stateChanges.next();
+      });
+
+    if (this.ngControl != null) {
+      this.ngControl.valueAccessor = this;
+    }
   }
 
   public onChange: (value: AnimalType) => void = (value: AnimalType): void => {
@@ -141,24 +168,19 @@ export class AnimalTypeSelectComponent
     this._touched = true;
   };
 
-  constructor(
-    private svgService: LivestockService,
-    @Optional() @Self() public ngControl: NgControl,
-    private fm: FocusMonitor,
-    private elRef: ElementRef<HTMLElement>
-  ) {
-    this._placeholder = '';
-    this.stateChanges = new Subject<void>();
-    this.focused = false;
+  public getIcon(animalType: AnimalType): string {
+    return this.svgService.getSvgIconByType(animalType);
+  }
 
-    fm.monitor(elRef.nativeElement, true).subscribe((origin: FocusOrigin) => {
-      this.focused = origin !== null;
-      this.stateChanges.next();
-    });
+  public getAnimalTypeDescription(type: number | AnimalType): string {
+    return AnimalType[type];
+  }
 
-    if (this.ngControl != null) {
-      this.ngControl.valueAccessor = this;
-    }
+  public ngOnDestroy(): void {
+    this.stateChanges.complete();
+    this.focusMonitor.stopMonitoring(this.elRef.nativeElement);
+    this._destroyed$.next();
+    this._destroyed$.complete();
   }
 
   public ngOnInit(): void {
@@ -172,27 +194,11 @@ export class AnimalTypeSelectComponent
     this.onTouched();
   }
 
-  public setDescribedByIds(ids: string[]): void {
-    this.describedBy = ids.join(' ');
-  }
-
   public onContainerClick(event: MouseEvent): void {
-    const el = event.target as Element;
+    const el: Element = <Element>event.target;
     if (el && el.tagName.toLowerCase() !== 'mat-select') {
       el.dispatchEvent(new Event('click'));
     }
-  }
-
-  public getIcon(animalType: AnimalType): string {
-    return this.svgService.getSvgIconByType(animalType);
-  }
-
-  public getAnimalTypeDescription(type: number | AnimalType): string {
-    return AnimalType[type];
-  }
-
-  public writeValue(animalType: AnimalType): void {
-    this.value = animalType;
   }
 
   public registerOnChange(fn: (_: AnimalType) => void): void {
@@ -213,8 +219,11 @@ export class AnimalTypeSelectComponent
     }
   }
 
-  public ngOnDestroy(): void {
-    this.stateChanges.complete();
-    this.fm.stopMonitoring(this.elRef.nativeElement);
+  public setDescribedByIds(ids: string[]): void {
+    this.describedBy = ids.join(' ');
+  }
+
+  public writeValue(animalType: AnimalType): void {
+    this.value = animalType;
   }
 }

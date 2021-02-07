@@ -23,11 +23,8 @@ import {
   FeedingTransactionService,
   MockFeedingTransactionService
 } from '@feed/services';
-import {
-  LivestockService,
-  MockLivestockService
-} from '@animal/services/livestock.service';
 import { provideMockStore } from '@ngrx/store/testing';
+import { SvgService } from '@svg/services';
 
 import { FeedingTransactionDetailComponent } from './feeding-transaction-detail.component';
 
@@ -59,7 +56,7 @@ describe('FeedingTransactionDetailComponent', () => {
         FeedingTransactionFormComponent
       ],
       providers: [
-        { provide: LivestockService, useClass: MockLivestockService },
+        SvgService,
         {
           provide: FeedingTransactionService,
           useClass: MockFeedingTransactionService

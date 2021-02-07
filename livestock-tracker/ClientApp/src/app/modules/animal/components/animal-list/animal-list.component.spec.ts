@@ -14,11 +14,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalListComponent } from '@animal/components';
-import {
-  LivestockService,
-  MockLivestockService
-} from '@animal/services/livestock.service';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
+import { SvgService } from '@svg/services';
 
 describe('Animal List Component', () => {
   let component: AnimalListComponent;
@@ -30,10 +27,7 @@ describe('Animal List Component', () => {
 
     TestBed.configureTestingModule({
       declarations: [AnimalListComponent],
-      providers: [
-        { provide: AgeCalculatorService, useValue: spy },
-        { provide: LivestockService, useClass: MockLivestockService }
-      ],
+      providers: [{ provide: AgeCalculatorService, useValue: spy }, SvgService],
       imports: [
         MatIconModule,
         MatToolbarModule,

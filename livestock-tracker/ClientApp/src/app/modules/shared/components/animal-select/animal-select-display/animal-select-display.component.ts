@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { LivestockService } from '@animal/services';
 import { Animal, NullAnimal } from '@core/models';
+import { SvgService } from '@svg/services';
 
 @Component({
   selector: 'app-animal-select-display',
@@ -23,13 +23,13 @@ export class AnimalSelectDisplayComponent {
 
   private _animal: Animal = NullAnimal.instance;
 
-  constructor(private livestockService: LivestockService) {}
+  constructor(private svgService: SvgService) {}
 
   public get display(): string {
     return `${this.animal.number} - ${this.animal.subspecies}`;
   }
 
   public get svgIcon(): string {
-    return this.livestockService.getSvgIcon(this.animal);
+    return this.svgService.getSvgIcon(this.animal);
   }
 }

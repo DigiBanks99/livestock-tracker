@@ -9,20 +9,17 @@ import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {
-  LivestockService,
-  MockLivestockService,
-} from '@animal/services/livestock.service';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicalTransactionComponent } from '@medical/components/medical-transaction/medical-transaction.component';
 import {
   MedicalTransactionService,
-  MockMedicalService,
+  MockMedicalService
 } from '@medical/services';
+import { SvgService } from '@svg/services';
 
 @Component({
   selector: 'app-animal-select-container',
-  template: '<div></div>',
+  template: '<div></div>'
 })
 class AnimalSelectContainerComponent {
   @Input() public disabled: boolean;
@@ -30,7 +27,7 @@ class AnimalSelectContainerComponent {
 
 @Component({
   selector: 'app-medical-transaction-container',
-  template: '<div></div>',
+  template: '<div></div>'
 })
 class MedicalTransactionContainerComponent {
   @Input() medicalTransaction: MedicalTransaction;
@@ -45,11 +42,11 @@ describe('MedicalTransactionComponent', () => {
       declarations: [
         MedicalTransactionComponent,
         MedicalTransactionContainerComponent,
-        AnimalSelectContainerComponent,
+        AnimalSelectContainerComponent
       ],
       providers: [
         { provide: MedicalTransactionService, useClass: MockMedicalService },
-        { provide: LivestockService, useClass: MockLivestockService },
+        SvgService
       ],
       imports: [
         ReactiveFormsModule,
@@ -60,8 +57,8 @@ describe('MedicalTransactionComponent', () => {
         MatToolbarModule,
         MatListModule,
         MatDatepickerModule,
-        HttpClientTestingModule,
-      ],
+        HttpClientTestingModule
+      ]
     }).compileComponents();
   }));
 

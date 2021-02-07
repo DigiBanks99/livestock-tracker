@@ -18,11 +18,8 @@ import {
   FeedTypeService,
   MockFeedTypeService
 } from '@feed/services/feed-type.service';
-import {
-  LivestockService,
-  MockLivestockService
-} from '@animal/services/livestock.service';
 import { LsGridComponent } from '@shared/components/ls-grid/ls-grid.component';
+import { SvgService } from '@svg/services';
 import { MockUnitService, UnitService } from '@unit/services/unit.service';
 
 import { FeedingTransactionComponent } from './feeding-transaction.component';
@@ -47,7 +44,7 @@ describe('FeedingTransactionComponent', () => {
         AnimalSelectContainerComponent
       ],
       providers: [
-        { provide: LivestockService, useClass: MockLivestockService },
+        SvgService,
         {
           provide: FeedingTransactionService,
           useClass: MockFeedingTransactionService

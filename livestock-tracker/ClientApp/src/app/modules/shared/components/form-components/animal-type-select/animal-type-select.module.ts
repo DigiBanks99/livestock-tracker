@@ -1,13 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DomSanitizer } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
-import { AnimalTypeSelectComponent } from '@shared/components/form-components/animal-type-select/animal-type-select.component';
+import { SvgProviderModule } from '@svg/svg-provider.module';
+
+import { AnimalTypeSelectComponent } from './animal-type-select.component';
 
 @NgModule({
   declarations: [AnimalTypeSelectComponent],
@@ -15,34 +16,12 @@ import { AnimalTypeSelectComponent } from '@shared/components/form-components/an
     AnimalProviderModule,
     BrowserAnimationsModule,
     CommonModule,
-    ReactiveFormsModule,
     MatIconModule,
     MatInputModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule,
+    SvgProviderModule
   ],
   exports: [AnimalTypeSelectComponent, ReactiveFormsModule]
 })
-export class AnimalTypeSelectModule {
-  constructor(matIconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-    matIconRegistry.addSvgIcon(
-      'farmer',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/farmer.svg')
-    );
-    matIconRegistry.addSvgIcon(
-      'cow',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/cow.svg')
-    );
-    matIconRegistry.addSvgIcon(
-      'chicken',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/cock.svg')
-    );
-    matIconRegistry.addSvgIcon(
-      'pig',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/pig.svg')
-    );
-    matIconRegistry.addSvgIcon(
-      'sheep',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/sheep.svg')
-    );
-  }
-}
+export class AnimalTypeSelectModule {}
