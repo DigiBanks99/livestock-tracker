@@ -34,3 +34,8 @@ export const LongList = Template.bind({});
 LongList.args = {
   animals: TestData.LongAnimalList
 };
+export const WithValue = Template.bind({});
+WithValue.args = {
+  animals: TestData.ShortAnimalList,
+  animal: TestData.ShortAnimalList[1]
+};

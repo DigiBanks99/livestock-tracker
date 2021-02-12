@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { AnimalType } from '@core/models';
 import { AnimalTypeSelectComponent } from '@shared/components/form-components/animal-type-select/animal-type-select.component';
 import { AnimalTypeSelectModule } from '@shared/components/form-components/animal-type-select/animal-type-select.module';
 import { moduleMetadata, Story } from '@storybook/angular';
@@ -77,4 +78,10 @@ Required.args = {
 export const Placeholder = Template.bind({});
 Placeholder.args = {
   placeholder: 'Animal Type'
+};
+export const WithValue = Template.bind({});
+WithValue.args = {
+  form: new FormGroup({
+    animalType: new FormControl(AnimalType.Pig, [])
+  })
 };

@@ -15,9 +15,10 @@ import { animalReducers } from '@animal/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { LoaderModule } from '@shared/components';
+import { AgeCalculatorService } from '@shared/services';
 import { SharedModule } from '@shared/shared.module';
 import { moduleMetadata, Story } from '@storybook/angular';
-import { AgeCalculatorService, SvgService } from '@svg/services';
+import { SvgService } from '@svg/services';
 
 export default {
   title: 'Animal/List',
