@@ -8,14 +8,14 @@
     (valueChange)="writeValue($event)"
   >
     <mat-option *ngFor="let key of keys" [value]="key">
-      <mat-icon [svgIcon]="getIcon(key)"></mat-icon>
-      <span>{{ AnimalTypes[key] }}</span>
+      <app-animal-type-select-display
+        [value]="key"
+      ></app-animal-type-select-display>
     </mat-option>
     <mat-select-trigger>
-      <mat-icon [svgIcon]="getIcon(value)"></mat-icon>
-      <span>
-        {{ value >= 0 ? AnimalTypes[value] : '' }}
-      </span>
+      <app-animal-type-select-display
+        [value]="value"
+      ></app-animal-type-select-display>
     </mat-select-trigger>
   </mat-select>
 </div>

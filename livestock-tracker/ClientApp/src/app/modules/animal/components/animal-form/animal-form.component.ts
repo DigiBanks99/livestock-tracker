@@ -66,6 +66,7 @@ export class AnimalFormComponent {
     .filter(Number)
     .map((type) => +type)
     .concat(0);
+  public gapSize = '16px';
 
   private destroyed$ = new Subject();
 

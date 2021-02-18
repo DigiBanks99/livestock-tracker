@@ -168,10 +168,6 @@ export class AnimalTypeSelectComponent
     this._touched = true;
   };
 
-  public getIcon(animalType: AnimalType): string {
-    return this.svgService.getSvgIconByType(animalType);
-  }
-
   public getAnimalTypeDescription(type: number | AnimalType): string {
     return AnimalType[type];
   }

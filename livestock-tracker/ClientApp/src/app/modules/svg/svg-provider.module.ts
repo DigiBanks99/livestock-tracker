@@ -1,9 +1,10 @@
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
 @NgModule({
-  imports: [MatIconModule],
+  imports: [MatIconModule, HttpClientModule],
   exports: [MatIconModule]
 })
 export class SvgProviderModule {

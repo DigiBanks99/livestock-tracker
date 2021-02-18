@@ -1,22 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { SvgProviderModule } from '@svg/svg-provider.module';
 
+import { AnimalTypeSelectDisplayComponent } from './animal-type-select-display/animal-type-select-display.component';
 import { AnimalTypeSelectComponent } from './animal-type-select.component';
 
 @NgModule({
-  declarations: [AnimalTypeSelectComponent],
+  declarations: [AnimalTypeSelectComponent, AnimalTypeSelectDisplayComponent],
   imports: [
     AnimalProviderModule,
     BrowserAnimationsModule,
     CommonModule,
-    MatIconModule,
     MatInputModule,
     MatSelectModule,
     ReactiveFormsModule,
