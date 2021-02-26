@@ -134,7 +134,7 @@ export class AnimalFormComponent {
       purchasePrice: [null, [Validators.required]],
       arrivalWeight: [null, [Validators.required]],
       batchNumber: [null, [Validators.required]],
-      sold: [null, [Validators.required]],
+      sold: [null],
       sellPrice: [{ value: null, disabled: true }],
       sellDate: [{ value: null, disabled: true }],
       age: [
@@ -143,7 +143,7 @@ export class AnimalFormComponent {
           disabled: true
         }
       ],
-      deceased: [null, [Validators.required]],
+      deceased: [null],
       dateOfDeath: [{ value: null, disabled: true }, []]
     });
 
