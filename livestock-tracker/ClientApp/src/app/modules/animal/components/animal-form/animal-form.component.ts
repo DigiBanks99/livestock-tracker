@@ -1,4 +1,4 @@
-import { combineLatest, Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
@@ -8,7 +8,12 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { Animal, AnimalType, NullAnimal } from '@core/models';
 import { environment } from '@env/environment';
@@ -69,12 +74,22 @@ export class AnimalFormComponent {
   public gapSize = '16px';
 
   private destroyed$ = new Subject();
+  private calcAge$ = new Subject();
+
+  public get birthDateCtrl(): AbstractControl {
+    return this.animalForm.get(Constants.Controls.BIRTH_DATE);
+  }
+
+  public get dateOfDeathCtrl(): AbstractControl {
+    return this.animalForm.get(Constants.Controls.DATE_OF_DEATH);
+  }
 
   constructor(
     private formBuilder: FormBuilder,
     private ageCalculatorService: AgeCalculatorService
   ) {
     this.initForm();
+    this.calcAge$.next();
   }
 
   public onNavigateBack() {
@@ -152,17 +167,19 @@ export class AnimalFormComponent {
         this.updateDateOfDeathCtrl(deceased);
       });
 
-    combineLatest([
-      this.animalForm.get(Constants.Controls.BIRTH_DATE).valueChanges,
-      this.animalForm.get(Constants.Controls.DATE_OF_DEATH).valueChanges
-    ])
+    merge(this.birthDateCtrl?.valueChanges, this.dateOfDeathCtrl?.valueChanges)
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(([birthDate, deceasedDate]) => {
-        this.setControlValue(
-          this.ageCalculatorService.calculateAge(birthDate, deceasedDate),
-          Constants.Controls.AGE
-        );
-      });
+      .subscribe((_) => this.calcAge$.next());
+
+    this.calcAge$.pipe(takeUntil(this.destroyed$)).subscribe((_) => {
+      this.setControlValue(
+        this.ageCalculatorService.calculateAge(
+          this.birthDateCtrl?.value ?? new Date(),
+          this.dateOfDeathCtrl?.value
+        ),
+        Constants.Controls.AGE
+      );
+    });
   }
 
   private updateForm(animal: Animal): void {

@@ -1,11 +1,11 @@
 import { TestData } from 'test/modules/animal';
 
-import { AnimalSelectComponent } from '@shared/components/animal-select/animal-select.component';
-import { AnimalSelectModule } from '@shared/components/animal-select/animal-select.module';
+import { AnimalSelectComponent, AnimalSelectModule } from '@shared/components';
 import { moduleMetadata, Story } from '@storybook/angular';
 
 export default {
   title: 'Shared/Animal Select',
+  component: AnimalSelectComponent,
   decorators: [
     moduleMetadata({
       imports: [AnimalSelectModule]

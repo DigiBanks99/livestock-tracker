@@ -3,8 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AnimalType } from '@core/models';
-import { AnimalTypeSelectComponent } from '@shared/components/form-components/animal-type-select/animal-type-select.component';
-import { AnimalTypeSelectModule } from '@shared/components/form-components/animal-type-select/animal-type-select.module';
+import { AnimalTypeSelectModule } from '@shared/components';
 import { moduleMetadata, Story } from '@storybook/angular';
 
 @Component({
@@ -28,11 +27,11 @@ import { moduleMetadata, Story } from '@storybook/angular';
     </form>`
 })
 class HostComponent {
-  @Input() public form: FormGroup = new FormGroup({
-    animalType: new FormControl(null, [])
-  });
   @Input() public label = 'The label';
   @Input() public placeholder = '';
+  @Input() public set value(value: AnimalType) {
+    this.form.patchValue({ animalType: value });
+  }
   @Input() public set disabled(value: boolean) {
     if (value) {
       this.form.controls.animalType.disable();
@@ -46,11 +45,14 @@ class HostComponent {
       this.form.controls.animalType.setValidators([Validators.required]);
     }
   }
+  public form: FormGroup = new FormGroup({
+    animalType: new FormControl(null, [])
+  });
 }
 
 export default {
   title: 'Forms/Animal Type Select',
-  component: AnimalTypeSelectComponent,
+  component: HostComponent,
   decorators: [
     moduleMetadata({
       declarations: [HostComponent],
@@ -61,9 +63,7 @@ export default {
 
 const Template: Story<HostComponent> = (args: HostComponent) => ({
   component: HostComponent,
-  props: {
-    ...args
-  }
+  props: args
 });
 
 export const Empty = Template.bind({});
@@ -71,17 +71,18 @@ export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true
 };
+
 export const Required = Template.bind({});
 Required.args = {
   required: true
 };
+
 export const Placeholder = Template.bind({});
 Placeholder.args = {
   placeholder: 'Animal Type'
 };
+
 export const WithValue = Template.bind({});
 WithValue.args = {
-  form: new FormGroup({
-    animalType: new FormControl(AnimalType.Pig, [])
-  })
+  value: AnimalType.Pig
 };
