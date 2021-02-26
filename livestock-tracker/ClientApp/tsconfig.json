@@ -35,5 +35,10 @@
     },
     "newLine": "LF",
     "charset": "UTF-8"
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": true
   }
 }

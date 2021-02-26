@@ -84,6 +84,14 @@ export class AnimalFormComponent {
     return this.animalForm.get(Constants.Controls.DATE_OF_DEATH);
   }
 
+  public get purchasePriceCtrl(): AbstractControl {
+    return this.animalForm.get(Constants.Controls.PURCHASE_PRICE);
+  }
+
+  public get sellPriceCtrl(): AbstractControl {
+    return this.animalForm.get(Constants.Controls.SELL_PRICE);
+  }
+
   constructor(
     private formBuilder: FormBuilder,
     private ageCalculatorService: AgeCalculatorService
@@ -102,24 +110,8 @@ export class AnimalFormComponent {
     }
   }
 
-  public showPrefix(elementID: string): boolean {
-    if (elementID === undefined || elementID === null) {
-      return false;
-    }
-
-    const elem = document.querySelector('#' + elementID);
-    if (elem === undefined || elementID === null) {
-      return false;
-    } else if (elem === document.activeElement) {
-      return true;
-    }
-
-    const value = this.animalForm.get(elementID).value;
-    if (value === undefined || elementID === null) {
-      return false;
-    }
-
-    return true;
+  public showPrefix(value: any): boolean {
+    return value != null;
   }
 
   public reset(animal: Animal): void {

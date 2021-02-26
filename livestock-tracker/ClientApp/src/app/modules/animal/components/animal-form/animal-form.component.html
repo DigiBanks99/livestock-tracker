@@ -13,17 +13,11 @@
           <mat-label for="type">Animal Type</mat-label>
           <app-animal-type-select
             formControlName="type"
-            required
           ></app-animal-type-select>
         </mat-form-field>
         <mat-form-field appearance="fill" fxFlex>
           <mat-label for="subspecies">Subspecies</mat-label>
-          <input
-            formControlName="subspecies"
-            id="subspecies"
-            matInput
-            required
-          />
+          <input formControlName="subspecies" id="subspecies" matInput />
         </mat-form-field>
       </div>
 
@@ -41,7 +35,6 @@
             formControlName="number"
             matInput
             class="currency-input"
-            required
           />
         </mat-form-field>
         <mat-form-field appearance="fill" fxFlex>
@@ -52,7 +45,6 @@
             formControlName="batchNumber"
             matInput
             class="currency-input"
-            required
           />
         </mat-form-field>
       </div>
@@ -70,7 +62,6 @@
             formControlName="birthDate"
             matInput
             [matDatepicker]="bd"
-            required
           />
           <mat-datepicker-toggle matSuffix [for]="bd"></mat-datepicker-toggle>
           <mat-datepicker #bd></mat-datepicker>
@@ -95,14 +86,15 @@
             matInput
             [matDatepicker]="pd"
             placeholder="Purchase Date"
-            required
           />
           <mat-datepicker-toggle matSuffix [for]="pd"></mat-datepicker-toggle>
           <mat-datepicker #pd></mat-datepicker>
         </mat-form-field>
         <mat-form-field appearance="fill" fxFlex>
           <mat-label for="purchasePrice">Purchase Price</mat-label>
-          <span matPrefix *ngIf="showPrefix('purchasePrice')">R &nbsp;</span>
+          <span matPrefix *ngIf="showPrefix(purchasePriceCtrl.value)"
+            >R &nbsp;</span
+          >
           <input
             type="number"
             id="purchasePrice"
@@ -110,7 +102,6 @@
             matInput
             placeholder="Purchase Price"
             class="currency-input"
-            required
           />
         </mat-form-field>
       </div>
@@ -130,9 +121,8 @@
             matInput
             placeholder="Arrival Weight"
             class="currency-input"
-            required
           />
-          <span matSuffix *ngIf="showPrefix('arrivalWeight')">&nbsp;kg</span>
+          <span matSuffix>kg</span>
         </mat-form-field>
       </div>
 
@@ -142,33 +132,47 @@
         fxLayout.lt-sm="column"
         [fxLayoutGap.gt-xs]="gapSize"
       >
-        <mat-checkbox id="sold" formControlName="sold" labelPosition="before">
+        <mat-checkbox
+          id="sold"
+          formControlName="sold"
+          labelPosition="before"
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+        >
           Sold
         </mat-checkbox>
-        <mat-form-field appearance="fill" fxFlex>
-          <mat-label for="sellPrice">Sell Price</mat-label>
-          <input
-            type="number"
-            id="sellPrice"
-            formControlName="sellPrice"
-            matInput
-            placeholder="Sell Price"
-            class="currency-input"
-            [required]="animalForm.get('sold').value"
-          />
-          <span matPrefix *ngIf="showPrefix('sellPrice')">R&nbsp;</span>
-        </mat-form-field>
-        <mat-form-field appearance="fill" fxFlex>
-          <mat-label for="sellDate">Sell Date</mat-label>
-          <input
-            id="sellDate"
-            formControlName="sellDate"
-            matInput
-            [matDatepicker]="sd"
-          />
-          <mat-datepicker-toggle matSuffix [for]="sd"></mat-datepicker-toggle>
-          <mat-datepicker #sd></mat-datepicker>
-        </mat-form-field>
+        <div
+          fxFlex
+          fxLayout="row"
+          fxLayout.lt-sm="column"
+          [fxLayoutGap.gt-xs]="gapSize"
+        >
+          <mat-form-field appearance="fill" fxFlex>
+            <mat-label for="sellPrice">Sell Price</mat-label>
+            <input
+              type="number"
+              id="sellPrice"
+              formControlName="sellPrice"
+              matInput
+              placeholder="Sell Price"
+              class="currency-input"
+            />
+            <span matPrefix *ngIf="showPrefix(sellPriceCtrl.value)"
+              >R&nbsp;</span
+            >
+          </mat-form-field>
+          <mat-form-field appearance="fill" fxFlex>
+            <mat-label for="sellDate">Sell Date</mat-label>
+            <input
+              id="sellDate"
+              formControlName="sellDate"
+              matInput
+              [matDatepicker]="sd"
+            />
+            <mat-datepicker-toggle matSuffix [for]="sd"></mat-datepicker-toggle>
+            <mat-datepicker #sd></mat-datepicker>
+          </mat-form-field>
+        </div>
       </div>
 
       <div
@@ -177,7 +181,12 @@
         fxLayout.lt-sm="column"
         [fxLayoutGap.gt-xs]="gapSize"
       >
-        <mat-checkbox formControlName="deceased" labelPosition="before">
+        <mat-checkbox
+          formControlName="deceased"
+          labelPosition="before"
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+        >
           Deceased
         </mat-checkbox>
         <mat-form-field appearance="fill" fxFlex>
