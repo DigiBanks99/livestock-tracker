@@ -10,11 +10,11 @@ function selectItems<T>(
   ids: (string | number)[]
 ): T[] {
   return ids
-    .map(id => entities[id])
+    .map((id) => entities[id])
     .filter((entity): entity is T => entity !== null);
 }
 
-const animalState = createFeatureSelector<AnimalState>('animals');
+export const animalState = createFeatureSelector<AnimalState>('animals');
 const unitState = createFeatureSelector<UnitState>('units');
 
 const getAnimalEntities = createSelector(

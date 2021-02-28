@@ -15,7 +15,7 @@ import { SvgService } from '@svg/services';
 })
 export class AnimalSelectDisplayComponent {
   @Input() public set animal(value: Animal) {
-    if (!value) {
+    if (value != null) {
       this._animal = value;
     }
   }

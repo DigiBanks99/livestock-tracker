@@ -6,7 +6,6 @@ import { FeedingTransactionDetailComponent } from '@feed/components/feeding-tran
 import { FeedingTransactionNewComponent } from '@feed/components/feeding-transaction-new/feeding-transaction-new.component';
 import { HomeComponent } from '@home/components/home.component';
 import { ReportsComponent } from '@reports/components/reports.component';
-import { UnitContainerComponent } from '@unit/components/unit/unit.container';
 
 const routes: Routes = [
   {
@@ -16,7 +15,6 @@ const routes: Routes = [
   },
   { path: 'home', component: HomeComponent },
   { path: 'reports', component: ReportsComponent },
-  { path: 'units', component: UnitContainerComponent },
   { path: 'feed-type', component: FeedTypeContainerComponent },
   {
     path: 'feeding-transaction',
@@ -32,10 +30,8 @@ const routes: Routes = [
   },
   {
     path: 'medical',
-    loadChildren: () =>
-      import('./modules/medical/medical.module').then(
-        (data) => data.MedicalModule
-      )
+    loadChildren: async () =>
+      (await import('./modules/medical/medical.module')).MedicalModule
   }
 ];
 

@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -28,6 +27,7 @@ import { MedicineTypeService } from '@medical/services/medicine-type.service';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { SharedModule } from '@shared/shared.module';
+
 import { MedicalTransactionDetailComponent } from './components/medical-transaction-detail/medical-transaction-detail.component';
 import { MedicalTransactionNewComponent } from './components/medical-transaction-new/medical-transaction-new.component';
 import { MedicineTypeContainerComponent } from './components/medicine-type/medicine-type.container';
@@ -36,7 +36,7 @@ import {
   medicalTransactionEffects,
   medicalTransactionReducer,
   medicineTypeEffects,
-  medicineTypeReducer,
+  medicineTypeReducer
 } from './store';
 import { MedicalStoreConstants } from './store/constants';
 
@@ -49,17 +49,16 @@ import { MedicalStoreConstants } from './store/constants';
     MedicineTypeComponent,
     MedicineTypeDetailComponent,
     MedicalTransactionDetailComponent,
-    MedicalTransactionNewComponent,
+    MedicalTransactionNewComponent
   ],
   imports: [
     CommonModule,
     EffectsModule.forFeature([
       medicineTypeEffects.MedicineTypeEffects,
-      medicalTransactionEffects.MedicalTransactionEffects,
+      medicalTransactionEffects.MedicalTransactionEffects
     ]),
     FlexLayoutModule,
     FormsModule,
-    HttpClientModule,
     MatButtonModule,
     MatCardModule,
     MatDatepickerModule,
@@ -85,12 +84,12 @@ import { MedicalStoreConstants } from './store/constants';
     StoreModule.forFeature(
       MedicalStoreConstants.MedicineTypeStoreKey,
       medicineTypeReducer.medicineTypeReducer
-    ),
+    )
   ],
   providers: [MedicalTransactionService, MedicineTypeService],
   exports: [
     MedicineTypeContainerComponent,
-    MedicalTransactionContainerComponent,
-  ],
+    MedicalTransactionContainerComponent
+  ]
 })
 export class MedicalModule {}

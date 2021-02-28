@@ -1,9 +1,8 @@
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { combineLatest, EMPTY, Observable, Subject } from 'rxjs';
 import { filter, takeUntil, tap } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
 import { Animal } from '@app/core/models/livestock.model';
 import { MedicalTransaction, MedicineType, Unit } from '@core/models';
 import { AppState } from '@core/store';
@@ -33,9 +32,9 @@ import { select, Store } from '@ngrx/store';
       (page)="onPage($event)"
       (remove)="onRemove($event)"
     ></app-medical-transaction>
-  `,
+  `
 })
-export class MedicalTransactionContainerComponent implements OnDestroy, OnInit {
+export class MedicalTransactionContainerComponent implements OnDestroy {
   public selectedAnimal$: Observable<Animal> = EMPTY;
   public medicalTransactions$: Observable<MedicalTransaction[]> = EMPTY;
   public medicineTypes$: Observable<MedicineType[]> = EMPTY;
@@ -44,21 +43,18 @@ export class MedicalTransactionContainerComponent implements OnDestroy, OnInit {
   public pageSize$: Observable<number> = EMPTY;
   public recordCount$: Observable<number> = EMPTY;
 
-  public selectedAnimal: Animal;
-
   private destroyed$ = new Subject<void>();
+  private page$ = new Subject<PageEvent>();
 
   constructor(private store: Store<AppState>) {
-    this.selectedAnimal = null;
-  }
-
-  public ngOnInit(): void {
     this.store.dispatch(new FetchMedicineTypes());
     this.selectedAnimal$ = this.store.pipe(
       select(getSelectedAnimal),
-      filter((animal) => animal !== null && animal !== undefined),
+      filter((animal: Animal) => {
+        console.log(`MT: ${JSON.stringify(animal)}`);
+        return animal != null;
+      }),
       tap((animal: Animal) => {
-        this.selectedAnimal = animal;
         this.store.dispatch(
           new FetchMedicalTransactions(animal.id, 0, environment.pageSize)
         );
@@ -87,6 +83,19 @@ export class MedicalTransactionContainerComponent implements OnDestroy, OnInit {
       select(medicalTransactionStore.selectors.getRecordCount),
       takeUntil(this.destroyed$)
     );
+
+    combineLatest([this.selectedAnimal$, this.page$])
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe(([animal, pageEvent]: [Animal, PageEvent]) => {
+        console.log(animal, pageEvent);
+        this.store.dispatch(
+          new FetchMedicalTransactions(
+            animal.id,
+            pageEvent.pageIndex,
+            pageEvent.pageSize
+          )
+        );
+      });
   }
 
   public ngOnDestroy(): void {
@@ -105,12 +114,6 @@ export class MedicalTransactionContainerComponent implements OnDestroy, OnInit {
   }
 
   public onPage(pageEvent: PageEvent): void {
-    this.store.dispatch(
-      new FetchMedicalTransactions(
-        this.selectedAnimal.id,
-        pageEvent.pageIndex,
-        pageEvent.pageSize
-      )
-    );
+    this.page$.next(pageEvent);
   }
 }

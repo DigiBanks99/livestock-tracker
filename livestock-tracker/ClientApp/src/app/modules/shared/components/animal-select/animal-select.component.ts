@@ -5,7 +5,7 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { Animal } from '@app/core/models';
+import { Animal, NullAnimal } from '@app/core/models';
 
 @Component({
   selector: 'app-animal-select',
@@ -14,10 +14,9 @@ import { Animal } from '@app/core/models';
 })
 export class AnimalSelectComponent {
   @Input() public set animal(value: Animal) {
-    if (value == null) {
-      return;
+    if (value != null) {
+      this._animal = value;
     }
-    this._animal = value;
   }
   public get animal(): Animal {
     return this._animal;
@@ -26,7 +25,7 @@ export class AnimalSelectComponent {
   @Input() public disabled: boolean;
   @Output() public animalChanged = new EventEmitter<number>();
 
-  private _animal: Animal;
+  private _animal: Animal = { ...NullAnimal.instance };
 
   public onChange(id: number): void {
     this._animal =

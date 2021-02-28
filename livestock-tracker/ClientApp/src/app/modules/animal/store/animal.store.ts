@@ -1,9 +1,10 @@
 import { AnimalState } from '@core/store';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { animalState } from '@core/store/selectors';
+import { createSelector } from '@ngrx/store';
 
 import { animalsAdapter } from './animal.reducers';
 
-export const getAnimalsState = createFeatureSelector<AnimalState>('animals');
+export const getAnimalsState = animalState;
 
 export const {
   selectEntities: getAnimalsEntities

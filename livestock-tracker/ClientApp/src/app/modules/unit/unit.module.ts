@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,13 +18,13 @@ import { UnitComponent } from '@unit/components/unit/unit.component';
 import { UnitContainerComponent } from '@unit/components/unit/unit.container';
 import { UnitService } from '@unit/services/unit.service';
 import { unitEffects, unitReducers } from '@unit/store';
+import { UnitRoutingModule } from '@unit/unit-routing.module';
 
 @NgModule({
   declarations: [UnitContainerComponent, UnitComponent, UnitDetailComponent],
   imports: [
     CommonModule,
     FormsModule,
-    HttpClientModule,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
@@ -39,8 +38,9 @@ import { unitEffects, unitReducers } from '@unit/store';
     SharedModule,
     StoreModule.forFeature('units', unitReducers.unitReducer),
     EffectsModule.forFeature([unitEffects.UnitEffects]),
+    UnitRoutingModule
   ],
   providers: [UnitService],
-  exports: [UnitContainerComponent],
+  exports: [UnitContainerComponent, UnitRoutingModule]
 })
 export class UnitModule {}

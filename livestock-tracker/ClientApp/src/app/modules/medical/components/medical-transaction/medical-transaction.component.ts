@@ -6,7 +6,7 @@ import {
   Output
 } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Animal } from '@app/core/models/livestock.model';
+import { Animal, NullAnimal } from '@app/core/models/livestock.model';
 import { MedicineType, Unit } from '@core/models';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 
@@ -17,7 +17,15 @@ import { MedicalTransaction } from '@core/models/medical-transaction.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MedicalTransactionComponent {
-  @Input() public currentAnimal: Animal;
+  private _currentAnimal: Animal = NullAnimal.instance;
+  @Input() public set currentAnimal(value: Animal) {
+    if (value != null) {
+      this._currentAnimal = value;
+    }
+  }
+  public get currentAnimal(): Animal {
+    return this._currentAnimal;
+  }
   @Input() public medicalTransactions: MedicalTransaction[];
   @Input() public medicineTypes: MedicineType[];
   @Input() public units: Unit[];
@@ -42,6 +50,7 @@ export class MedicalTransactionComponent {
   }
 
   public onPage(pageEvent: PageEvent) {
+    console.log(`MTC - Page event: ${pageEvent}`);
     this.page.emit(pageEvent);
   }
 
