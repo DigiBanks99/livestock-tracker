@@ -264,7 +264,13 @@ describe('animals reducer', () => {
       200,
       3
     );
-    const setAnimals1 = actions.apiFetchItems([animal1, animal2, animal3]);
+    const setAnimals1 = actions.apiFetchItems({
+      data: [animal1, animal2, animal3],
+      pageSize: 10,
+      currentPage: 0,
+      pageCount: 1,
+      totalRecordCount: 3
+    });
     const state1 = animalsReducer(initialState, setAnimals1);
     expect(state1.entities).toBeDefined();
     expect(state1.entities).not.toBeNull();

@@ -2,6 +2,7 @@ import { TestData } from 'test/modules/animal';
 
 import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,7 +12,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalListComponent } from '@animal/components/animal-list/animal-list.component';
-import { animalReducers } from '@animal/store';
+import { AnimalStore } from '@animal/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { LoaderModule } from '@shared/components';
@@ -29,6 +30,7 @@ export default {
       imports: [
         BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
         BrowserAnimationsModule,
+        FlexLayoutModule,
         HttpClientModule,
         LoaderModule,
         MatCheckboxModule,
@@ -40,7 +42,7 @@ export default {
         SharedModule,
         StoreModule.forRoot({}),
         EffectsModule.forRoot(),
-        StoreModule.forFeature('animals', animalReducers.animalsReducer)
+        StoreModule.forFeature('animals', AnimalStore.reducers.animalsReducer)
       ],
       providers: [
         SvgService,

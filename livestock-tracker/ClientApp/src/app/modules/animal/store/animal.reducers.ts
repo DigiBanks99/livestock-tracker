@@ -1,5 +1,6 @@
 import { ActionTypes, SelectAnimal } from '@animal/store/animal.actions';
 import { Animal } from '@app/core/models/livestock.model';
+import { SaveState } from '@core/models';
 import { AnimalState } from '@core/store/animal-state.interface';
 import { crudReducer } from '@core/store/crud.reducer';
 import { createEntityAdapter } from '@ngrx/entity';
@@ -19,7 +20,8 @@ export const initialState: AnimalState = animalsAdapter.getInitialState({
   isPending: false,
   pageNumber: 0,
   pageSize: 10,
-  recordCount: 0
+  recordCount: 0,
+  saveState: SaveState.New
 });
 
 export function animalsReducer(

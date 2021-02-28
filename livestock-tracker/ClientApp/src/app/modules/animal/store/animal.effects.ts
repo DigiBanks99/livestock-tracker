@@ -30,7 +30,7 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     protected animalService: AnimalService,
     snackBar: MatSnackBar
   ) {
-    super(actions$, animalService, actions, AnimalKey, snackBar, true);
+    super(actions$, animalService, actions, AnimalKey, snackBar);
   }
 
   public fetchSelectedAnimalDetail$: Observable<

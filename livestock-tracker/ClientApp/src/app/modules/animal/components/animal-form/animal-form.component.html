@@ -202,25 +202,38 @@
         </mat-form-field>
       </div>
 
-      <div fxFill fxLayout="row" fxLayoutAlign="center start">
-        <button
-          type="button"
-          mat-button
-          title="Reset changes"
-          [disabled]="!animalForm.dirty"
-          (click)="reset(currentAnimal)"
-        >
-          Cancel
-        </button>
-        <button
-          type="submit"
-          mat-raised-button
-          color="primary"
-          title="Submit changes"
-          [disabled]="animalForm.invalid || !animalForm.dirty"
-        >
-          Save
-        </button>
+      <div fxFill fxLayout="row" fxLayoutAlign="flex-start start">
+        <div fxFlex fxLayoutAlign="start start">
+          <button
+            type="button"
+            mat-stroked-button
+            title="Back to animal list"
+            [disabled]="isPending"
+            (click)="navigateBack.next()"
+          >
+            Back
+          </button>
+        </div>
+        <div fxFlex fxLayoutAlign="end start">
+          <button
+            type="button"
+            mat-button
+            title="Reset changes"
+            [disabled]="!animalForm.dirty"
+            (click)="reset(currentAnimal)"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            title="Submit changes"
+            [disabled]="animalForm.invalid || !animalForm.dirty"
+          >
+            Save
+          </button>
+        </div>
       </div>
     </form>
   </mat-card>

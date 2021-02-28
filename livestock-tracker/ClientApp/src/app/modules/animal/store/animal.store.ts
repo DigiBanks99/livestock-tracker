@@ -3,43 +3,43 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { animalsAdapter } from './animal.reducers';
 
-const getAnimalsState = createFeatureSelector<AnimalState>('animals');
+export const getAnimalsState = createFeatureSelector<AnimalState>('animals');
 
-const { selectEntities: getAnimalsEntities } = animalsAdapter.getSelectors(
-  getAnimalsState
-);
+export const {
+  selectEntities: getAnimalsEntities
+} = animalsAdapter.getSelectors(getAnimalsState);
 
-const fetchAnimalsPendingState = createSelector(
+export const fetchAnimalsPendingState = createSelector(
   getAnimalsState,
   (state) => state.isFetching
 );
 
-const animalsPendingState = createSelector(
+export const animalsPendingState = createSelector(
   getAnimalsState,
   (state) => state.isPending
 );
 
-const getPageSize = createSelector(getAnimalsState, (state) => state.pageSize);
+export const getPageSize = createSelector(
+  getAnimalsState,
+  (state) => state.pageSize
+);
 
-const getCurrentPage = createSelector(
+export const getCurrentPage = createSelector(
   getAnimalsState,
   (state) => state.pageNumber
 );
 
-const getRecordCount = createSelector(
+export const getRecordCount = createSelector(
   getAnimalsState,
   (state) => state.recordCount
 );
 
-const getAnimalsError = createSelector(getAnimalsState, (state) => state.error);
-
-export const selectors = {
+export const getAnimalsError = createSelector(
   getAnimalsState,
-  getAnimalsEntities,
-  fetchAnimalsPendingState,
-  animalsPendingState,
-  getAnimalsError,
-  getCurrentPage,
-  getPageSize,
-  getRecordCount
-};
+  (state) => state.error
+);
+
+export const getSaveState = createSelector(
+  getAnimalsState,
+  (state: AnimalState) => state.saveState
+);

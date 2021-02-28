@@ -22,13 +22,14 @@ export interface CrudActions<TData extends KeyEntity<TKey>, TKey> {
   fetchSingle: (key: TKey) => PayloadAction<TKey>;
   apiFetchSingle: (item: TData) => PayloadAction<TData>;
   apiError: (error: Error) => PayloadAction<Error>;
-  apiFetchItems(data: PagedData<TData>): PayloadAction<PagedData<TData>>;
+  apiFetchItems: (data: PagedData<TData>) => PayloadAction<PagedData<TData>>;
+  resetSaveState: () => Action;
 }
 
 function addItem<TData>(item: TData, typeName: string): PayloadAction<TData> {
   return {
     type: `ADD_${typeName}`,
-    payload: item,
+    payload: item
   };
 }
 
@@ -38,7 +39,7 @@ function apiAddItem<TData>(
 ): PayloadAction<TData> {
   return {
     type: `API_ADD_${typeName}`,
-    payload: item,
+    payload: item
   };
 }
 
@@ -51,8 +52,8 @@ function updateItem<TData, TKey>(
     type: `UPDATE_${typeName}`,
     payload: {
       key,
-      value: item,
-    },
+      value: item
+    }
   };
 }
 
@@ -65,28 +66,28 @@ function apiUpdateItem<TData, TKey>(
     type: `API_UPDATE_${typeName}`,
     payload: {
       key,
-      value: item,
-    },
+      value: item
+    }
   };
 }
 
 function deleteItem<TKey>(key: TKey, typeName: string): PayloadAction<TKey> {
   return {
     type: `DELETE_${typeName}`,
-    payload: key,
+    payload: key
   };
 }
 
 function apiDeleteItem<TKey>(key: TKey, typeName: string): PayloadAction<TKey> {
   return {
     type: `API_DELETE_${typeName}`,
-    payload: key,
+    payload: key
   };
 }
 
 function fetchItems(typeName: string): Action {
   return {
-    type: `FETCH_${typeName}`,
+    type: `FETCH_${typeName}`
   };
 }
 
@@ -96,7 +97,7 @@ function apiFetchItems<TData>(
 ): PayloadAction<PagedData<TData>> {
   return {
     type: `API_FETCH_${typeName}`,
-    payload: data,
+    payload: data
   };
 }
 
@@ -106,7 +107,7 @@ function fetchSingle<TKey>(
 ): PayloadAction<TKey> {
   return {
     type: `FETCH_SINGLE_${typeName}`,
-    payload,
+    payload
   };
 }
 
@@ -116,14 +117,20 @@ function apiFetchSingle<EntityType>(
 ): PayloadAction<EntityType> {
   return {
     type: `API_FETCH_SINGLE_${typeName}`,
-    payload: item,
+    payload: item
   };
 }
 
 function apiError(error: Error, typeName: string): PayloadAction<Error> {
   return {
     type: `API_ERROR_${typeName}`,
-    payload: error,
+    payload: error
+  };
+}
+
+function resetSaveState(typeName: string): Action {
+  return {
+    type: `RESET_SAVE_STATE_${typeName}`
   };
 }
 
@@ -153,5 +160,6 @@ export function crudActionsFactory<TData extends KeyEntity<TKey>, TKey>(
     apiFetchItems: (data: PagedData<TData>): PayloadAction<PagedData<TData>> =>
       apiFetchItems(data, typeName),
     apiError: (error: Error): PayloadAction<Error> => apiError(error, typeName),
+    resetSaveState: (): Action => resetSaveState(typeName)
   };
 }

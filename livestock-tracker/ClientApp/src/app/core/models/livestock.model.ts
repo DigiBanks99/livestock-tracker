@@ -44,19 +44,22 @@ export class Livestock implements Animal {
 }
 
 export class NullAnimal implements Animal {
-  static instance: NullAnimal = new NullAnimal();
-  id: number = Number.NaN;
-  type: AnimalType = AnimalType.Cattle;
-  subspecies = '';
-  number: number = Number.NaN;
-  birthDate: Date = null;
-  purchaseDate: Date = null;
-  purchasePrice: number = null;
-  sold = false;
-  sellPrice: number = null;
-  sellDate: Date = null;
-  arrivalWeight: number = null;
-  batchNumber: number = null;
-  deceased = false;
-  dateOfDeath: Date = null;
+  private static _instance: NullAnimal = new NullAnimal();
+  static get instance(): NullAnimal {
+    return this._instance;
+  }
+  readonly id: number = Number.NaN;
+  readonly type: AnimalType = AnimalType.Cattle;
+  readonly subspecies = '';
+  readonly number: number = Number.NaN;
+  readonly birthDate: Date = null;
+  readonly purchaseDate: Date = null;
+  readonly purchasePrice: number = null;
+  readonly sold = false;
+  readonly sellPrice: number = null;
+  readonly sellDate: Date = null;
+  readonly arrivalWeight: number = null;
+  readonly batchNumber: number = null;
+  readonly deceased = false;
+  readonly dateOfDeath: Date = null;
 }

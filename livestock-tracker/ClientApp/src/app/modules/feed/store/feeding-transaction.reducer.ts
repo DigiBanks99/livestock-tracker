@@ -1,3 +1,4 @@
+import { SaveState } from '@core/models';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { FeedingTransactionState } from '@core/store';
 import { crudReducer } from '@core/store/crud.reducer';
@@ -14,7 +15,7 @@ export const feedingTransactionAdapter = createEntityAdapter<
   FeedingTransaction
 >({
   selectId: (transaction: FeedingTransaction) => transaction.id,
-  sortComparer: false,
+  sortComparer: false
 });
 
 export const initialState: FeedingTransactionState = feedingTransactionAdapter.getInitialState(
@@ -26,6 +27,7 @@ export const initialState: FeedingTransactionState = feedingTransactionAdapter.g
     pageNumber: 0,
     pageSize: 10,
     recordCount: 0,
+    saveState: SaveState.New
   }
 );
 
@@ -37,7 +39,7 @@ export function feedingTransactionReducer(
     case ActionTypes.SELECT_FEED_TRANSACTION:
       return {
         ...state,
-        selectedId: (<SelectFeedTransaction>action).transactionId,
+        selectedId: (<SelectFeedTransaction>action).transactionId
       };
     default:
       return {
@@ -47,7 +49,7 @@ export function feedingTransactionReducer(
           feedingTransactionAdapter,
           state,
           action
-        ),
+        )
       };
   }
 }

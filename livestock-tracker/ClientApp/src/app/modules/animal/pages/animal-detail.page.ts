@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Location } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { animalActions, animalStore } from '@animal/store/index';
+import { AnimalStore } from '@animal/store/index';
 import { Animal } from '@app/core/models';
 import { AppState } from '@core/store';
 import { getSelectedAnimal } from '@core/store/selectors';
@@ -29,11 +29,11 @@ export class AnimalDetailPage implements OnDestroy {
 
   constructor(private store: Store<AppState>, private location: Location) {
     this.isPending$ = this.store.pipe(
-      select(animalStore.selectors.animalsPendingState),
+      select(AnimalStore.selectors.animalsPendingState),
       takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(
-      select(animalStore.selectors.getAnimalsError),
+      select(AnimalStore.selectors.getAnimalsError),
       takeUntil(this.destroyed$)
     );
     this.animal$ = this.store.pipe(
@@ -43,7 +43,7 @@ export class AnimalDetailPage implements OnDestroy {
   }
 
   public onSave(animal: Animal): void {
-    this.store.dispatch(animalActions.actions.updateItem(animal, animal.id));
+    this.store.dispatch(AnimalStore.actions.updateItem(animal, animal.id));
   }
 
   public onNavigateBack(): void {

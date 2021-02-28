@@ -15,13 +15,15 @@ import { SvgService } from '@svg/services';
 })
 export class AnimalSelectDisplayComponent {
   @Input() public set animal(value: Animal) {
-    this._animal = value;
+    if (!value) {
+      this._animal = value;
+    }
   }
   public get animal(): Animal {
-    return this._animal ?? NullAnimal.instance;
+    return this._animal;
   }
 
-  private _animal: Animal = NullAnimal.instance;
+  private _animal: Animal = { ...new NullAnimal() };
 
   constructor(private svgService: SvgService) {}
 

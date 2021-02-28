@@ -27,7 +27,7 @@ import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { AnimalRoutingModule } from '@animal/animal-routing.module';
 import { AnimalFormComponent, AnimalListComponent } from '@animal/components';
 import { AnimalDetailPage, AnimalListPage, AnimalNewPage } from '@animal/pages';
-import { animalEffects, animalReducers } from '@animal/store';
+import { AnimalStore } from '@animal/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { LoaderModule } from '@shared/components';
@@ -69,8 +69,8 @@ import { SharedModule } from '@shared/shared.module';
     ReactiveFormsModule,
     SharedModule,
     AnimalProviderModule,
-    StoreModule.forFeature('animals', animalReducers.animalsReducer),
-    EffectsModule.forFeature([animalEffects.AnimalEffects])
+    StoreModule.forFeature('animals', AnimalStore.reducers.animalsReducer),
+    EffectsModule.forFeature([AnimalStore.effects.AnimalEffects])
   ]
 })
 export class AnimalModule {}

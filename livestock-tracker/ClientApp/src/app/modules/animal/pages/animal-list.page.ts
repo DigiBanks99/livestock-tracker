@@ -3,7 +3,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { animalStore } from '@animal/store';
+import { AnimalStore } from '@animal/store';
 import {
   actions,
   FetchAnimals,
@@ -41,11 +41,11 @@ export class AnimalListPage implements OnDestroy {
       takeUntil(this.destroyed$)
     );
     this.isFetching$ = this.store.pipe(
-      select(animalStore.selectors.animalsPendingState),
+      select(AnimalStore.selectors.animalsPendingState),
       takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(
-      select(animalStore.selectors.getAnimalsError),
+      select(AnimalStore.selectors.getAnimalsError),
       takeUntil(this.destroyed$)
     );
   }

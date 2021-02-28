@@ -1,4 +1,4 @@
-import { MedicalTransaction } from '@core/models';
+import { MedicalTransaction, SaveState } from '@core/models';
 import { MedicalTransactionState } from '@core/store';
 import { crudReducer } from '@core/store/crud.reducer';
 import { environment } from '@env/environment';
@@ -12,7 +12,7 @@ export const medicalTransactionAdapter = createEntityAdapter<
 >({
   selectId: (medicalTransaction: MedicalTransaction) => medicalTransaction.id,
   sortComparer: (medicalTransaction: MedicalTransaction) =>
-    medicalTransaction.transactionDate.valueOf(),
+    medicalTransaction.transactionDate.valueOf()
 });
 
 const initialState: MedicalTransactionState = {
@@ -24,6 +24,7 @@ const initialState: MedicalTransactionState = {
   pageNumber: 0,
   pageSize: environment.pageSize,
   recordCount: 0,
+  saveState: SaveState.New
 };
 
 export function medicalTransactionReducer(
@@ -39,7 +40,7 @@ export function medicalTransactionReducer(
           medicalTransactionAdapter,
           state,
           action
-        ),
+        )
       };
   }
 }

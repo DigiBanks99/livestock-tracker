@@ -116,7 +116,7 @@ export class AnimalFormComponent {
 
   public reset(animal: Animal): void {
     if (animal == null) {
-      animal = new NullAnimal();
+      animal = { ...new NullAnimal() };
     }
 
     this.animalForm.reset();
@@ -176,7 +176,7 @@ export class AnimalFormComponent {
 
   private updateForm(animal: Animal): void {
     if (animal == null) {
-      animal = new NullAnimal();
+      animal = { ...new NullAnimal() };
     }
 
     this.animalForm.patchValue({

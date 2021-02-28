@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
-import { animalStore } from '@animal/store';
+import { AnimalStore } from '@animal/store';
 import { FetchAnimals } from '@animal/store/animal.actions';
 import { SvgService } from '@app/modules/svg/services/svg.service';
 import { Animal } from '@core/models';
@@ -49,15 +49,15 @@ export class AnimalListComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this.pageSize$ = this.store.pipe(
-      select(animalStore.selectors.getPageSize),
+      select(AnimalStore.selectors.getPageSize),
       takeUntil(this.destroyed$)
     );
     this.currentPage$ = this.store.pipe(
-      select(animalStore.selectors.getCurrentPage),
+      select(AnimalStore.selectors.getCurrentPage),
       takeUntil(this.destroyed$)
     );
     this.recordCount$ = this.store.pipe(
-      select(animalStore.selectors.getRecordCount),
+      select(AnimalStore.selectors.getRecordCount),
       takeUntil(this.destroyed$)
     );
   }
