@@ -27,7 +27,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -41,7 +40,6 @@
               ]
             },
             "serve": {
-              "extractCss": true,
               "namedChunks": true,
               "vendorChunk": true,
               "commonChunk": true,
