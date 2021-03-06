@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatMomentDateModule,
@@ -49,7 +49,7 @@ describe('FeedingTransactionDetailComponent', () => {
   let component: FeedingTransactionDetailComponent;
   let fixture: ComponentFixture<FeedingTransactionDetailComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         FeedingTransactionDetailComponent,

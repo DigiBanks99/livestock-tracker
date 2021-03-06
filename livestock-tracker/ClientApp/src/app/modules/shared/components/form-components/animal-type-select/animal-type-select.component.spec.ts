@@ -1,11 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import {
-  async,
-  ComponentFixture,
-  fakeAsync,
-  TestBed,
-  tick
-} from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
 import {
   FormBuilder,
   FormControl,
@@ -53,7 +47,7 @@ describe('AnimalTypeSelectComponent', () => {
   let hostComponent: TestComponent;
   let hostFixture: ComponentFixture<TestComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AnimalTypeSelectComponent, TestComponent],
       imports: [

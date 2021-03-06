@@ -1,5 +1,5 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule, NativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -24,7 +24,7 @@ describe('MedicalTransactionFormComponent', () => {
   let component: MedicalTransactionFormComponent;
   let fixture: ComponentFixture<MedicalTransactionFormComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [MedicalTransactionFormComponent],
       providers: [
@@ -47,7 +47,7 @@ describe('MedicalTransactionFormComponent', () => {
     }).compileComponents();
   }));
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     fixture = TestBed.createComponent(MedicalTransactionFormComponent);
     component = fixture.componentInstance;
     component.medicalTransaction = new MedicalTransaction();

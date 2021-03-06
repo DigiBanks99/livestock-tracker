@@ -3,7 +3,7 @@ import { RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { TestScheduler } from 'rxjs/testing';
 
 import { Injectable } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { CrudService } from '@core/models/crud-service.interface';
 import { KeyEntity } from '@core/models/key-entity.interface';
 import { PagedData } from '@core/models/paged-data.model';
@@ -56,7 +56,7 @@ describe('Crud Effects', () => {
   let actions$: Observable<Action>;
   let testScheduler: TestScheduler;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       providers: [TestService, TestEffects, provideMockActions(() => actions$)],
     });

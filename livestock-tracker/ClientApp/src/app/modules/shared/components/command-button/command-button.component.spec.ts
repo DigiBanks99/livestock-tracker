@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { CommandButtonComponent } from './command-button.component';
 
@@ -6,7 +6,7 @@ describe('CommandButtonComponent', () => {
   let component: CommandButtonComponent;
   let fixture: ComponentFixture<CommandButtonComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CommandButtonComponent ]
     })
