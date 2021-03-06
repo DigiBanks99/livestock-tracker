@@ -26,9 +26,9 @@
             *ngFor="let colDefIndex of getColumnDefIndexes()"
             [ngStyle]="{ width: getColumnWidth(colDefIndex) }"
           >
-            <span *ngIf="isDisplayColumn(colDefIndex)">{{
-              getValueDisplay(item, colDefIndex)
-            }}</span>
+            <span *ngIf="isDisplayColumn(colDefIndex)">
+              {{ getValueDisplay(item, colDefIndex) }}
+            </span>
             <span *ngIf="isDeleteColumn(colDefIndex)">
               <button
                 mat-icon-button

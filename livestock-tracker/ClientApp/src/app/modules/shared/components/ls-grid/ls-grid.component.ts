@@ -89,9 +89,9 @@ export class LsGridComponent implements OnChanges, OnDestroy {
     return this.getConfig().columnDef;
   }
 
-  public getColumnDefIndexes(): Array<Object> {
+  public getColumnDefIndexes(): number[] {
     const colDefs = this.getColumnDefs();
-    return colDefs.map(colDef => colDefs.indexOf(colDef));
+    return colDefs.map((colDef) => colDefs.indexOf(colDef));
   }
 
   public getColumnDef(index: number): LsGridColumnDef {
@@ -199,7 +199,7 @@ export class LsGridComponent implements OnChanges, OnDestroy {
     this.setLoadingStatus(true);
     this.dataChanged = observable.subscribe(
       (data: Object) => this.setData(data),
-      error => this.handleError(error),
+      (error) => this.handleError(error),
       () => this.setLoadingStatus(false)
     );
   }

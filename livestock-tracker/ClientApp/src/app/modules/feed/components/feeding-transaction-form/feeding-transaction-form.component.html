@@ -6,7 +6,9 @@
     fxLayoutAlign="space-around center"
     (ngSubmit)="onSave()"
   >
-    <app-animal-select-container disabled></app-animal-select-container>
+    <app-animal-select-container
+      [disabled]="true"
+    ></app-animal-select-container>
     <mat-form-field>
       <mat-label for="transactionDate">Transaction Date</mat-label>
       <input
