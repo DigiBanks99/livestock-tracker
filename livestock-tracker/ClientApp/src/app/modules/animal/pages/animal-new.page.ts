@@ -2,7 +2,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { Location } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { AnimalStore } from '@animal/store/index';
 import { Animal, SaveState } from '@core/models';
 import { AnimalState } from '@core/store';
@@ -17,14 +17,13 @@ import { select, Store } from '@ngrx/store';
     successMessage="Animal created."
     (save)="onSave($event)"
     (navigateBack)="onNavigateBack()"
-  ></app-animal-form>`,
-  changeDetection: ChangeDetectionStrategy.Default
+  ></app-animal-form>`
 })
 export class AnimalNewPage implements OnDestroy {
-  public isPending$: Observable<boolean>;
-  public error$: Observable<Error>;
+  public readonly isPending$: Observable<boolean>;
+  public readonly error$: Observable<Error>;
 
-  private destroyed$ = new Subject();
+  private readonly destroyed$ = new Subject();
 
   constructor(private store: Store<AnimalState>, private location: Location) {
     store.dispatch(AnimalStore.actions.resetSaveState());

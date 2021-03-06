@@ -1,10 +1,10 @@
 import { EMPTY, Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { Location } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { AnimalStore } from '@animal/store/index';
-import { Animal } from '@app/core/models';
+import { Animal, SaveState } from '@app/core/models';
 import { AppState } from '@core/store';
 import { getSelectedAnimal } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';
@@ -21,13 +21,22 @@ import { select, Store } from '@ngrx/store';
   ></app-animal-form>`
 })
 export class AnimalDetailPage implements OnDestroy {
-  public animal$: Observable<Animal> = EMPTY;
-  public isPending$: Observable<boolean> = EMPTY;
-  public error$: Observable<Error> = EMPTY;
+  public readonly animal$: Observable<Animal> = EMPTY;
+  public readonly isPending$: Observable<boolean> = EMPTY;
+  public readonly error$: Observable<Error> = EMPTY;
 
-  private destroyed$ = new Subject();
+  private readonly destroyed$ = new Subject();
 
   constructor(private store: Store<AppState>, private location: Location) {
+    store.dispatch(AnimalStore.actions.resetSaveState());
+    store
+      .select(AnimalStore.selectors.getSaveState)
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((saveState: SaveState): void => {
+        if (saveState === SaveState.Success) {
+          this.location.back();
+        }
+      });
     this.isPending$ = this.store.pipe(
       select(AnimalStore.selectors.animalsPendingState),
       takeUntil(this.destroyed$)
@@ -38,6 +47,7 @@ export class AnimalDetailPage implements OnDestroy {
     );
     this.animal$ = this.store.pipe(
       select(getSelectedAnimal),
+      filter((animal: Animal | null | undefined) => animal != null),
       takeUntil(this.destroyed$)
     );
   }
