@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
-import { AnimalService } from '@animal/services/animal.service';
+import { AnimalService } from '@animal/services';
 import {
   actions,
   ActionTypes,
