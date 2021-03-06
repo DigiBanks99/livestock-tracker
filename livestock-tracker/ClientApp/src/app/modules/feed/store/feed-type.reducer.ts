@@ -11,7 +11,8 @@ import { FeedTypeKey } from './constants';
 
 export const feedTypeAdapter = createEntityAdapter<FeedType>({
   selectId: (feedType: FeedType) => feedType.id,
-  sortComparer: (feedType: FeedType) => feedType.description
+  sortComparer: (left: FeedType, right: FeedType): number =>
+    left.description.localeCompare(right.description)
 });
 
 const initialState: FeedTypeState = {
