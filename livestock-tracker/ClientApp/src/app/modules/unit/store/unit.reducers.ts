@@ -1,5 +1,4 @@
-import { SaveState } from '@core/models';
-import { Unit } from '@core/models/unit.model';
+import { SaveState, Unit } from '@core/models';
 import { UnitState } from '@core/store';
 import { crudReducer } from '@core/store/crud.reducer';
 import { createEntityAdapter } from '@ngrx/entity';
@@ -9,8 +8,9 @@ import { ActionTypes, SelectUnit } from '@unit/store/unit.actions';
 import { UnitKey } from './constants';
 
 export const unitAdapter = createEntityAdapter<Unit>({
-  selectId: (unit) => unit.id,
-  sortComparer: (unit) => unit.description
+  selectId: (unit: Unit) => unit.id,
+  sortComparer: (left: Unit, right: Unit) =>
+    left.description.localeCompare(right.description)
 });
 
 export const initialState: UnitState = unitAdapter.getInitialState({

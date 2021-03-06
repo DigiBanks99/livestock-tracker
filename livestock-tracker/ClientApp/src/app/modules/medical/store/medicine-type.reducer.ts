@@ -9,7 +9,8 @@ import { MedicalStoreConstants } from './constants';
 
 export const medicineTypeAdapter = createEntityAdapter<MedicineType>({
   selectId: (medicineType: MedicineType) => medicineType.id,
-  sortComparer: (medicineType: MedicineType) => medicineType.description
+  sortComparer: (left: MedicineType, right: MedicineType) =>
+    left.description.localeCompare(right.description)
 });
 
 const initialState: MedicineTypeState = {
