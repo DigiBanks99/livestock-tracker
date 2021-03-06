@@ -17,7 +17,6 @@ export class CrudEffects<
   TKey,
   TFetchSinglePayload
 > {
-  private shouldFetchOnStartup: boolean;
   private noOpAction: Action = {
     type: 'NOOP'
   };
@@ -27,11 +26,8 @@ export class CrudEffects<
     private service: CrudService<TData, TKey, TFetchSinglePayload>,
     private typeActions: CrudActions<TData, TKey>,
     private typeName: string,
-    private snackBar: MatSnackBar,
-    shouldFetchOnStartup: boolean = false
-  ) {
-    this.shouldFetchOnStartup = shouldFetchOnStartup;
-  }
+    private snackBar: MatSnackBar
+  ) {}
 
   protected get defaultFetchAction(): Action {
     return this.noOpAction;

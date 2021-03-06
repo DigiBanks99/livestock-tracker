@@ -1,12 +1,12 @@
 import { combineLatest, EMPTY, Observable, Subject } from 'rxjs';
 import { filter, takeUntil, tap } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { Animal, Livestock } from '@core/models/livestock.model';
+import { Animal } from '@core/models/livestock.model';
 import { Unit } from '@core/models/unit.model';
 import { AppState } from '@core/store';
 import { getSelectedAnimal, getUnits } from '@core/store/selectors';
@@ -35,7 +35,7 @@ import { select, Store } from '@ngrx/store';
       (delete)="onDelete($event)"
       (page)="onPage($event)"
     ></app-feeding-transaction>
-  `,
+  `
 })
 export class FeedingTransactionContainerComponent implements OnDestroy {
   private destroyed$ = new Subject<void>();
@@ -114,7 +114,7 @@ export class FeedingTransactionContainerComponent implements OnDestroy {
       '/feeding-transaction',
       identifier.animalId,
       identifier.id,
-      'edit',
+      'edit'
     ]);
   }
 

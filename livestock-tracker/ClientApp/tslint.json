@@ -95,7 +95,7 @@
     "no-output-rename": true,
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
-    "component-class-suffix": true,
+    "component-class-suffix": [true, "Component", "Page", "Container"],
     "directive-class-suffix": true
   }
 }

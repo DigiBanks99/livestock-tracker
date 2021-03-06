@@ -1,9 +1,0 @@
-<app-animal-form
-  [currentAnimal]="createAnimal"
-  [isPending]="isPending$ | async"
-  [error]="error$ | async"
-  header="Add animal"
-  successMessage="Animal created."
-  (save)="onSave($event)"
-  (navigateBack)="onNavigateBack()"
-></app-animal-form>

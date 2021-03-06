@@ -1,19 +1,21 @@
 <div [formGroup]="form">
-  <label class="mat-form-field-label" for="type" aria-owns="type">
-    <mat-label for="type">Animal Type</mat-label>
-  </label>
   <mat-select
     class="animal-type-select-input"
-    [id]="id"
+    [id]="id + '-value'"
     formControlName="typeSelect"
     [placeholder]="placeholder"
-    [required]="required"
-    [disabled]="disabled"
-    (valueChange)="onChange($event)"
+    (blur)="onBlur()"
+    (valueChange)="writeValue($event)"
   >
     <mat-option *ngFor="let key of keys" [value]="key">
-      <mat-icon svgIcon="{{ getSvgIconByType(key) }}"></mat-icon>
-      <span>{{ getAnimalTypeDescription(key) }}</span>
+      <app-animal-type-select-display
+        [value]="key"
+      ></app-animal-type-select-display>
     </mat-option>
+    <mat-select-trigger>
+      <app-animal-type-select-display
+        [value]="value"
+      ></app-animal-type-select-display>
+    </mat-select-trigger>
   </mat-select>
 </div>

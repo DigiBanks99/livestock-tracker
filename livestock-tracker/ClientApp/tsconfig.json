@@ -27,6 +27,7 @@
       "@medical/*": ["app/modules/medical/*"],
       "@reports/*": ["app/modules/reports/*"],
       "@shared/*": ["app/modules/shared/*"],
+      "@svg/*": ["app/modules/svg/*"],
       "@unit/*": ["app/modules/unit/*"],
       "@unit-store/*": ["app/modules/unit/store/*"],
       "@app/*": ["app/*"],
@@ -34,5 +35,10 @@
     },
     "newLine": "LF",
     "charset": "UTF-8"
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": true
   }
 }

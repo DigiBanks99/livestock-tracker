@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { AnimalService } from '@animal/services/animal.service';
 import {
   actions,
@@ -20,14 +21,16 @@ import { Action } from '@ngrx/store';
 
 import { AnimalKey } from './constants';
 
-@Injectable()
+@Injectable({
+  providedIn: AnimalProviderModule
+})
 export class AnimalEffects extends CrudEffects<Animal, number, number> {
   constructor(
     protected actions$: Actions,
     protected animalService: AnimalService,
     snackBar: MatSnackBar
   ) {
-    super(actions$, animalService, actions, AnimalKey, snackBar, true);
+    super(actions$, animalService, actions, AnimalKey, snackBar);
   }
 
   public fetchSelectedAnimalDetail$: Observable<

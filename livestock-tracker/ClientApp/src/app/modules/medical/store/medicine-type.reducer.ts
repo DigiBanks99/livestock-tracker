@@ -1,4 +1,4 @@
-import { MedicineType } from '@core/models';
+import { MedicineType, SaveState } from '@core/models';
 import { crudReducer } from '@core/store/crud.reducer';
 import { MedicineTypeState } from '@core/store/medicine-type-state.interface';
 import { environment } from '@env/environment';
@@ -9,7 +9,7 @@ import { MedicalStoreConstants } from './constants';
 
 export const medicineTypeAdapter = createEntityAdapter<MedicineType>({
   selectId: (medicineType: MedicineType) => medicineType.id,
-  sortComparer: (medicineType: MedicineType) => medicineType.description,
+  sortComparer: (medicineType: MedicineType) => medicineType.description
 });
 
 const initialState: MedicineTypeState = {
@@ -21,6 +21,7 @@ const initialState: MedicineTypeState = {
   pageNumber: 0,
   pageSize: environment.pageSize,
   recordCount: 0,
+  saveState: SaveState.New
 };
 
 export function medicineTypeReducer(
@@ -36,7 +37,7 @@ export function medicineTypeReducer(
           medicineTypeAdapter,
           state,
           action
-        ),
+        )
       };
   }
 }

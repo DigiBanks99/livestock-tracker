@@ -1,3 +1,4 @@
+import { SaveState } from '@core/models';
 import { FeedType } from '@core/models/feed-type.model';
 import { crudReducer } from '@core/store/crud.reducer';
 import { FeedTypeState } from '@core/store/feed-type-state.interface';
@@ -10,7 +11,7 @@ import { FeedTypeKey } from './constants';
 
 export const feedTypeAdapter = createEntityAdapter<FeedType>({
   selectId: (feedType: FeedType) => feedType.id,
-  sortComparer: (feedType: FeedType) => feedType.description,
+  sortComparer: (feedType: FeedType) => feedType.description
 });
 
 const initialState: FeedTypeState = {
@@ -22,6 +23,7 @@ const initialState: FeedTypeState = {
   pageNumber: 0,
   pageSize: environment.pageSize,
   recordCount: 0,
+  saveState: SaveState.New
 };
 
 export function feedTypeReducer(
@@ -32,12 +34,12 @@ export function feedTypeReducer(
     case ActionTypes.SELECT_FEED_TYPE:
       return {
         selectedId: (<SelectFeedType>action).id,
-        ...state,
+        ...state
       };
     default:
       return {
         ...state,
-        ...crudReducer(FeedTypeKey, feedTypeAdapter, state, action),
+        ...crudReducer(FeedTypeKey, feedTypeAdapter, state, action)
       };
   }
 }

@@ -1,5 +1,6 @@
 import { ActionTypes, SelectAnimal } from '@animal/store/animal.actions';
 import { Animal } from '@app/core/models/livestock.model';
+import { SaveState } from '@core/models';
 import { AnimalState } from '@core/store/animal-state.interface';
 import { crudReducer } from '@core/store/crud.reducer';
 import { createEntityAdapter } from '@ngrx/entity';
@@ -19,14 +20,14 @@ export const initialState: AnimalState = animalsAdapter.getInitialState({
   isPending: false,
   pageNumber: 0,
   pageSize: 10,
-  recordCount: 0
+  recordCount: 0,
+  saveState: SaveState.New
 });
 
 export function animalsReducer(
   state: AnimalState = initialState,
   action: Action
 ): AnimalState {
-  console.log('ar', action.type);
   switch (action.type) {
     case ActionTypes.SELECT_ANIMAL:
       return {
@@ -34,7 +35,6 @@ export function animalsReducer(
         selectedId: selectAnimal(state.selectedId, <SelectAnimal>action)
       };
     default:
-      console.log('ar.default', action.type);
       return {
         ...state,
         ...crudReducer(AnimalKey, animalsAdapter, state, action)

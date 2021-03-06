@@ -1,4 +1,5 @@
 import { KeyValue } from '@angular/common';
+import { SaveState } from '@core/models';
 import { KeyEntity } from '@core/models/key-entity.interface';
 import { PagedData } from '@core/models/paged-data.model';
 import { EntityAdapter, Update } from '@ngrx/entity';
@@ -13,19 +14,18 @@ export function crudReducer<TData extends KeyEntity<TKey>, TKey>(
   state: CrudState<TData, TKey>,
   action: Action
 ) {
-  console.log('cr', action.type);
   switch (action.type) {
     case `ADD_${typeName}`:
     case `UPDATE_${typeName}`:
+      return {
+        ...state,
+        isPending: true,
+        error: null,
+        saveState: SaveState.Saving
+      };
     case `DELETE_${typeName}`:
     case `FETCH_${typeName}`:
     case `FETCH_SINGLE_${typeName}`:
-      const s = {
-        ...state,
-        isPending: true,
-        error: null
-      };
-      console.log(action, s);
       return {
         ...state,
         isPending: true,
@@ -63,6 +63,11 @@ export function crudReducer<TData extends KeyEntity<TKey>, TKey>(
         error: errorAction.payload,
         isPending: false
       };
+    case `RESET_SAVE_STATE_${typeName}`:
+      return {
+        ...state,
+        saveState: SaveState.New
+      };
     default:
       return state;
   }
@@ -78,6 +83,7 @@ function addApiReducer<TData extends KeyEntity<TKey>, TKey>(
     ...newState,
     selectedId: action.payload.id,
     isPending: false,
+    saveState: SaveState.Success,
     error: null
   };
 }
