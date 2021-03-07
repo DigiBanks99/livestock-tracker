@@ -25,14 +25,6 @@ import { AnimalKey } from './constants';
   providedIn: AnimalProviderModule
 })
 export class AnimalEffects extends CrudEffects<Animal, number, number> {
-  constructor(
-    protected actions$: Actions,
-    protected animalService: AnimalService,
-    snackBar: MatSnackBar
-  ) {
-    super(actions$, animalService, actions, AnimalKey, snackBar);
-  }
-
   public fetchSelectedAnimalDetail$: Observable<
     PayloadAction<number>
   > = createEffect(
@@ -48,6 +40,14 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
 
   protected get defaultFetchAction(): Action {
     return new FetchAnimals(0, environment.pageSize);
+  }
+
+  constructor(
+    protected actions$: Actions,
+    protected animalService: AnimalService,
+    snackBar: MatSnackBar
+  ) {
+    super(actions$, animalService, actions, AnimalKey, snackBar);
   }
 
   protected handleFetchAction$ = (
