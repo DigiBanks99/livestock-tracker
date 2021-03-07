@@ -30,8 +30,10 @@ const routes: Routes = [
   },
   {
     path: 'medical',
-    loadChildren: async () =>
-      (await import('./modules/medical/medical.module')).MedicalModule
+    loadChildren: () =>
+      import('./modules/medical/medical.module').then(
+        (module) => module.MedicalModule
+      )
   }
 ];
 
