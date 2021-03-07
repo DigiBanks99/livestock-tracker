@@ -3,7 +3,7 @@ import { RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { TestScheduler } from 'rxjs/testing';
 
 import { Injectable } from '@angular/core';
-import { async, TestBed } from '@angular/core/testing';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { CrudService } from '@core/models/crud-service.interface';
 import { KeyEntity } from '@core/models/key-entity.interface';
 import { PagedData } from '@core/models/paged-data.model';
@@ -56,25 +56,31 @@ describe('Crud Effects', () => {
   let actions$: Observable<Action>;
   let testScheduler: TestScheduler;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      providers: [TestService, TestEffects, provideMockActions(() => actions$)],
-    });
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        providers: [
+          TestService,
+          TestEffects,
+          provideMockActions(() => actions$)
+        ]
+      });
 
-    service = TestBed.get(TestService);
-    getAllSpy = spyOn(service, 'getAll');
-    getSpy = spyOn(service, 'get');
-    addSpy = spyOn(service, 'add');
-    updateSpy = spyOn(service, 'update');
-    deleteSpy = spyOn(service, 'delete');
+      service = TestBed.inject(TestService);
+      getAllSpy = spyOn(service, 'getAll');
+      getSpy = spyOn(service, 'get');
+      addSpy = spyOn(service, 'add');
+      updateSpy = spyOn(service, 'update');
+      deleteSpy = spyOn(service, 'delete');
 
-    effects = TestBed.get(TestEffects);
-    actions$ = TestBed.get(Actions);
+      effects = TestBed.inject(TestEffects);
+      actions$ = TestBed.inject(Actions);
 
-    testScheduler = new TestScheduler((actual, expected) => {
-      expect(actual).toEqual(expected);
-    });
-  }));
+      testScheduler = new TestScheduler((actual, expected) => {
+        expect(actual).toEqual(expected);
+      });
+    })
+  );
 
   it('should create', () => {
     expect(effects).toBeTruthy();
@@ -88,9 +94,15 @@ describe('Crud Effects', () => {
           { id: 2 },
           { id: 3 },
           { id: 4 },
-          { id: 5 },
+          { id: 5 }
         ];
-        const completion = testActions.apiFetchItems(items);
+        const completion = testActions.apiFetchItems({
+          data: items,
+          currentPage: 1,
+          pageCount: 1,
+          totalRecordCount: items.length,
+          pageSize: 10
+        });
 
         getAllSpy.and.returnValue(of(items));
 
@@ -111,7 +123,7 @@ describe('Crud Effects', () => {
         getAllSpy.and.throwError(error.message);
 
         expectObservable(effects.getAll$).toBe(switchMapMarble, {
-          a: completion,
+          a: completion
         });
 
         flush();
@@ -137,7 +149,7 @@ describe('Crud Effects', () => {
         addSpy.and.returnValue(of({ ...item }));
 
         expectObservable(effects.add$).toBe('a', {
-          a: completion,
+          a: completion
         });
 
         flush();
@@ -157,7 +169,7 @@ describe('Crud Effects', () => {
         addSpy.and.throwError(error.message);
 
         expectObservable(effects.add$).toBe(switchMapMarble, {
-          a: completion,
+          a: completion
         });
 
         flush();
@@ -175,7 +187,7 @@ describe('Crud Effects', () => {
       testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
         const updateItem: Update<TestEntity> = {
           changes: item,
-          id: item.id.toString(),
+          id: item.id.toString()
         };
         const completion = testActions.apiUpdateItem(updateItem, item.id);
 
@@ -184,7 +196,7 @@ describe('Crud Effects', () => {
         updateSpy.and.returnValue(of(item));
 
         expectObservable(effects.update$).toBe('a', {
-          a: completion,
+          a: completion
         });
 
         flush();
@@ -204,7 +216,7 @@ describe('Crud Effects', () => {
         updateSpy.and.throwError(error.message);
 
         expectObservable(effects.update$).toBe(switchMapMarble, {
-          a: completion,
+          a: completion
         });
 
         flush();
@@ -227,7 +239,7 @@ describe('Crud Effects', () => {
         deleteSpy.and.returnValue(of(key));
 
         expectObservable(effects.remove$).toBe('a', {
-          a: completion,
+          a: completion
         });
 
         flush();
@@ -247,7 +259,7 @@ describe('Crud Effects', () => {
         deleteSpy.and.throwError(error.message);
 
         expectObservable(effects.remove$).toBe(switchMapMarble, {
-          a: completion,
+          a: completion
         });
 
         flush();

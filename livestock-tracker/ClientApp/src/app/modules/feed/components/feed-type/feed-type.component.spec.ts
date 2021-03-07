@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -17,7 +17,7 @@ describe('FeedTypeComponent', () => {
   let component: FeedTypeComponent;
   let fixture: ComponentFixture<FeedTypeComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [FeedTypeComponent, FeedTypeDetailComponent],
       providers: [{ provide: FeedTypeService, useClass: MockFeedTypeService }],

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +12,7 @@ describe('UnitDetailComponent', () => {
   let component: UnitDetailComponent;
   let fixture: ComponentFixture<UnitDetailComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [UnitDetailComponent],
       providers: [{ provide: UnitService, useClass: MockUnitService }],
@@ -26,7 +26,7 @@ describe('UnitDetailComponent', () => {
     }).compileComponents();
   }));
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     fixture = TestBed.createComponent(UnitDetailComponent);
     component = fixture.componentInstance;
     component.unit = new Unit();
@@ -35,7 +35,7 @@ describe('UnitDetailComponent', () => {
     fixture.detectChanges();
   }));
 
-  it('should create', async(() => {
+  it('should create', waitForAsync(() => {
     expect(component).toBeTruthy();
   }));
 });

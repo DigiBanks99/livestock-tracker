@@ -30,13 +30,15 @@ const routes: Routes = [
   },
   {
     path: 'medical',
-    loadChildren: async () =>
-      (await import('./modules/medical/medical.module')).MedicalModule
+    loadChildren: () =>
+      import('./modules/medical/medical.module').then(
+        (module) => module.MedicalModule
+      )
   }
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}
