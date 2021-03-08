@@ -1,15 +1,14 @@
-import { NumberValueAccessor } from '@angular/forms';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { crudActionsFactory, PayloadAction } from '@core/store';
 import { Action } from '@ngrx/store';
 
 import { FeedingTransactionKey } from './constants';
 
-export enum ActionTypes {
-  SELECT_FEED_TRANSACTION = 'SELECT_FEED_TRANSACTION',
-  FETCH_SINGLE_FEED_TRANSACTION = 'FETCH_SINGLE_FEED_TRANSACTION',
-  FETCH_FEED_TRANSACTION = 'FETCH_FEED_TRANSACTION',
-  API_FETCH_FEED_TRANSACTION = 'API_FETCH_FEED_TRANSACTION',
+export enum FeedingTranscationActionTypes {
+  SelectFeedTransaction = 'SELECT_FEED_TRANSACTION',
+  FetchSingleFeedTransaction = 'FETCH_SINGLE_FEED_TRANSACTION',
+  FetchFeedTransaction = 'FETCH_FEED_TRANSACTION',
+  FetchFeedTransactionSucceeded = 'API_FETCH_FEED_TRANSACTION'
 }
 
 export interface FetchSingleFeedTransactionParams {
@@ -17,8 +16,8 @@ export interface FetchSingleFeedTransactionParams {
   id: number;
 }
 
-export class SelectFeedTransaction implements Action {
-  readonly type = ActionTypes.SELECT_FEED_TRANSACTION;
+export class SelectFeedTransactionAction implements Action {
+  readonly type = FeedingTranscationActionTypes.SelectFeedTransaction;
   transactionId: number;
 
   constructor(transactionId: number) {
@@ -26,21 +25,21 @@ export class SelectFeedTransaction implements Action {
   }
 }
 
-export class FetchSingleFeedTransaction
+export class FetchSingleFeedTransactionAction
   implements PayloadAction<FetchSingleFeedTransactionParams> {
-  readonly type = ActionTypes.FETCH_SINGLE_FEED_TRANSACTION;
+  readonly type = FeedingTranscationActionTypes.FetchSingleFeedTransaction;
   payload: FetchSingleFeedTransactionParams;
 
   constructor(animalId: number, id: number) {
     this.payload = {
       animalId,
-      id,
+      id
     };
   }
 }
 
-export class FetchFeedingTransaction implements Action {
-  readonly type = ActionTypes.FETCH_FEED_TRANSACTION;
+export class FetchFeedingTransactionAction implements Action {
+  readonly type = FeedingTranscationActionTypes.FetchFeedTransaction;
 
   constructor(
     public animalId: number,

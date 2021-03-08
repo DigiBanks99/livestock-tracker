@@ -13,7 +13,7 @@ import {
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { AnimalStore } from '@animal/store';
-import { FetchAnimals } from '@animal/store/animal.actions';
+import { FetchAnimalsAction } from '@animal/store/animal.actions';
 import { SvgService } from '@app/modules/svg/services/svg.service';
 import { Animal } from '@core/models';
 import { AppState } from '@core/store';
@@ -27,8 +27,6 @@ import { AgeCalculatorService } from '@shared/services/age-calculator.service';
   encapsulation: ViewEncapsulation.None
 })
 export class AnimalListComponent implements OnInit, OnDestroy {
-  private destroyed$ = new Subject<void>();
-
   @Input() public animals: Animal[];
   @Input() public isFetching = false;
   @Output() public remove = new EventEmitter<Animal>();
@@ -40,6 +38,8 @@ export class AnimalListComponent implements OnInit, OnDestroy {
   public currentPage$: Observable<number> = EMPTY;
   public pageSize$: Observable<number> = EMPTY;
   public recordCount$: Observable<number> = EMPTY;
+
+  private destroyed$ = new Subject<void>();
 
   constructor(
     private svgService: SvgService,
@@ -87,7 +87,7 @@ export class AnimalListComponent implements OnInit, OnDestroy {
 
   public onPage(pageEvent: PageEvent): void {
     this.store.dispatch(
-      new FetchAnimals(pageEvent.pageIndex, pageEvent.pageSize)
+      new FetchAnimalsAction(pageEvent.pageIndex, pageEvent.pageSize)
     );
   }
 

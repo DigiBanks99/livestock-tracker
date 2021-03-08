@@ -8,12 +8,12 @@ import { AppState } from '@core/store';
 import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
 import { medicalTransactionStore, medicineTypeStore } from '@medical/store';
 import { actions } from '@medical/store/medical-transaction.actions';
-import { FetchMedicineTypes } from '@medical/store/medicine-type.actions';
+import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
   templateUrl: './medical-transaction-new.component.html',
-  styleUrls: ['./medical-transaction-new.component.scss'],
+  styleUrls: ['./medical-transaction-new.component.scss']
 })
 export class MedicalTransactionNewComponent implements OnDestroy, OnInit {
   public selectedAnimalId$: Observable<number>;
@@ -27,7 +27,7 @@ export class MedicalTransactionNewComponent implements OnDestroy, OnInit {
   constructor(private store: Store<AppState>, private router: Router) {}
 
   public ngOnInit(): void {
-    this.store.dispatch(new FetchMedicineTypes());
+    this.store.dispatch(new FetchMedicineTypesAction());
     this.selectedAnimalId$ = this.store.pipe(
       select(getSelectedAnimalId),
       takeUntil(this.destroyed$)

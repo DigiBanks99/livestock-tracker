@@ -11,13 +11,13 @@ import {
   medicalTransactionStore,
   medicineTypeStore
 } from '@medical/store';
-import { FetchSingleMedicalTransaction } from '@medical/store/medical-transaction.actions';
-import { FetchMedicineTypes } from '@medical/store/medicine-type.actions';
+import { FetchSingleMedicalTransactionAction } from '@medical/store/medical-transaction.actions';
+import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
   templateUrl: './medical-transaction-detail.component.html',
-  styleUrls: ['./medical-transaction-detail.component.scss'],
+  styleUrls: ['./medical-transaction-detail.component.scss']
 })
 export class MedicalTransactionDetailComponent implements OnDestroy, OnInit {
   public selectedMedicalTransaction$: Observable<MedicalTransaction>;
@@ -40,10 +40,10 @@ export class MedicalTransactionDetailComponent implements OnDestroy, OnInit {
       .pipe(takeUntil(this.destroyed$))
       .subscribe((params: Params) => {
         this.store.dispatch(
-          new FetchSingleMedicalTransaction(params.animalId, params.id)
+          new FetchSingleMedicalTransactionAction(params.animalId, params.id)
         );
       });
-    this.store.dispatch(new FetchMedicineTypes(0, 100, false));
+    this.store.dispatch(new FetchMedicineTypesAction(0, 100, false));
 
     this.selectedMedicalTransaction$ = this.store.pipe(
       select(medicalTransactionStore.selectors.getSelectedMedicalTransaction),

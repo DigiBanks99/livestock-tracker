@@ -1,4 +1,4 @@
-import { actions, SelectAnimal } from '@animal/store/animal.actions';
+import { actions, SelectAnimalAction } from '@animal/store/animal.actions';
 import { AnimalType, Livestock } from '@core/models';
 import { AnimalState } from '@core/store';
 
@@ -218,11 +218,11 @@ describe('animals reducer', () => {
     const addAnimalTask3 = actions.apiAddItem(animal3);
     const state3 = animalsReducer(state2, addAnimalTask3);
 
-    const selectAnimal2 = new SelectAnimal(2);
+    const selectAnimal2 = new SelectAnimalAction(2);
     const state4 = animalsReducer(state3, selectAnimal2);
     expect(state4.selectedId).toEqual(2);
 
-    const selectAnimal3 = new SelectAnimal(3);
+    const selectAnimal3 = new SelectAnimalAction(3);
     const state5 = animalsReducer(state4, selectAnimal3);
     expect(state5.selectedId).toEqual(3);
   });

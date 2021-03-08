@@ -1,5 +1,11 @@
 import { Component, ViewChild } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  fakeAsync,
+  TestBed,
+  tick,
+  waitForAsync
+} from '@angular/core/testing';
 import {
   FormBuilder,
   FormControl,
@@ -30,9 +36,10 @@ import { AnimalTypeSelectComponent } from './animal-type-select.component';
   `
 })
 class TestComponent {
-  public form: FormGroup;
   @ViewChild(AnimalTypeSelectComponent, { static: false, read: false })
   public typeSelect: AnimalTypeSelectComponent;
+
+  public form: FormGroup;
 
   constructor(formBuilder: FormBuilder) {
     this.form = formBuilder.group({
@@ -47,18 +54,20 @@ describe('AnimalTypeSelectComponent', () => {
   let hostComponent: TestComponent;
   let hostFixture: ComponentFixture<TestComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [AnimalTypeSelectComponent, TestComponent],
-      imports: [
-        NoopAnimationsModule,
-        FormsModule,
-        MatIconModule,
-        MatSelectModule,
-        ReactiveFormsModule
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [AnimalTypeSelectComponent, TestComponent],
+        imports: [
+          NoopAnimationsModule,
+          FormsModule,
+          MatIconModule,
+          MatSelectModule,
+          ReactiveFormsModule
+        ]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AnimalTypeSelectComponent);
@@ -126,11 +135,11 @@ describe('AnimalTypeSelectComponent', () => {
     it('should contain all the AnimalType number values', () => {
       const expectedKeys = Object.keys(AnimalType)
         .filter(Number)
-        .map(type => +type)
+        .map((type) => +type)
         .concat(0)
         .sort();
 
-      expectedKeys.forEach(expectedKey => {
+      expectedKeys.forEach((expectedKey) => {
         expect(component.keys.indexOf(+expectedKey)).toBeGreaterThan(-1);
       });
     });

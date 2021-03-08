@@ -17,7 +17,6 @@ import { MedicalTransaction } from '@core/models/medical-transaction.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MedicalTransactionComponent {
-  private _currentAnimal: Animal = NullAnimal.instance;
   @Input() public set currentAnimal(value: Animal) {
     if (value != null) {
       this._currentAnimal = value;
@@ -44,6 +43,8 @@ export class MedicalTransactionComponent {
     'unit',
     'star'
   ];
+
+  private _currentAnimal: Animal = NullAnimal.instance;
 
   public onAdd(medicalTransaction: MedicalTransaction) {
     this.add.emit(medicalTransaction);

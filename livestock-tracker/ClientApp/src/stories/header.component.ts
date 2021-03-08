@@ -1,11 +1,16 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
-  selector: 'storybook-header',
+  selector: 'app-storybook-header',
   template: `<header>
     <div class="wrapper">
       <div>
-        <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <g fill="none" fillRule="evenodd">
             <path
               d="M10 0h12a10 10 0 0110 10v12a10 10 0 01-10 10H10A10 10 0 010 22V10A10 10 0 0110 0z"
@@ -24,40 +29,40 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
         <h1>Acme</h1>
       </div>
       <div>
-        <storybook-button
+        <app-storybook-button
           *ngIf="user"
           size="small"
-          (onClick)="onLogout.emit($event)"
+          (btnClick)="logout.emit($event)"
           label="Log out"
-        ></storybook-button>
-        <storybook-button
+        ></app-storybook-button>
+        <app-storybook-button
           *ngIf="!user"
           size="small"
-          (onClick)="onLogin.emit($event)"
+          (btnClick)="login.emit($event)"
           label="Log in"
-        ></storybook-button>
-        <storybook-button
+        ></app-storybook-button>
+        <app-storybook-button
           *ngIf="!user"
-          primary
+          [primary]="true"
           size="small"
-          (onClick)="onCreateAccount.emit($event)"
+          (btnClick)="createAccount.emit($event)"
           label="Sign up"
-        ></storybook-button>
+        ></app-storybook-button>
       </div>
     </div>
   </header>`,
-  styleUrls: ['./header.css'],
+  styleUrls: ['./header.css']
 })
 export default class HeaderComponent {
   @Input()
   user: unknown = null;
 
   @Output()
-  onLogin = new EventEmitter<Event>();
+  login = new EventEmitter<Event>();
 
   @Output()
-  onLogout = new EventEmitter<Event>();
+  logout = new EventEmitter<Event>();
 
   @Output()
-  onCreateAccount = new EventEmitter<Event>();
+  createAccount = new EventEmitter<Event>();
 }

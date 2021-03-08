@@ -19,12 +19,11 @@ import { environment } from '@env/environment';
   templateUrl: './feeding-transaction-form.component.html',
   styleUrls: ['./feeding-transaction-form.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium },
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FeedingTransactionFormComponent implements OnChanges {
-  public feedForm: FormGroup;
   @Input() public selectedAnimalId = 0;
   @Input() public feedingTransaction: FeedingTransaction = {
     animalId: this.selectedAnimalId,
@@ -32,7 +31,7 @@ export class FeedingTransactionFormComponent implements OnChanges {
     id: 0,
     quantity: null,
     transactionDate: new Date(),
-    unitId: null,
+    unitId: null
   };
   @Input() isPending: boolean;
   @Input() error: Error;
@@ -43,6 +42,8 @@ export class FeedingTransactionFormComponent implements OnChanges {
   @Output() save = new EventEmitter<FeedingTransaction>();
   @Output() navigateBack = new EventEmitter();
 
+  public feedForm: FormGroup;
+
   constructor() {
     this.initForm();
   }
@@ -51,13 +52,13 @@ export class FeedingTransactionFormComponent implements OnChanges {
     if (null != changes.feedingTransaction) {
       this.feedForm.patchValue({
         ...changes.feedingTransaction.currentValue,
-        animalId: this.selectedAnimalId,
+        animalId: this.selectedAnimalId
       });
     }
 
     if (null != changes.selectedAnimalId) {
       this.feedForm.patchValue({
-        animalId: changes.selectedAnimalId.currentValue,
+        animalId: changes.selectedAnimalId.currentValue
       });
     }
   }
@@ -79,7 +80,7 @@ export class FeedingTransactionFormComponent implements OnChanges {
       transactionDate: new FormControl(
         {
           value: this.feedingTransaction.transactionDate,
-          disabled: this.isPending,
+          disabled: this.isPending
         },
         Validators.required
       ),
@@ -94,7 +95,7 @@ export class FeedingTransactionFormComponent implements OnChanges {
       unitId: new FormControl(
         { value: this.feedingTransaction.unitId, disabled: this.isPending },
         Validators.required
-      ),
+      )
     });
   }
 }

@@ -6,17 +6,8 @@ import { CrudService } from '@core/models/crud-service.interface';
 import { FeedType } from '@core/models/feed-type.model';
 import { PagedData } from '@core/models/paged-data.model';
 
-export interface IFeedTypeService {
-  getFeedTypes(): Observable<PagedData<FeedType>>;
-  getFromServer(id: number): Observable<FeedType>;
-  add(feedType: FeedType): Observable<FeedType>;
-  update(feedType: FeedType): Observable<FeedType>;
-  delete(id: number): Observable<number>;
-}
-
 @Injectable()
-export class FeedTypeService
-  implements IFeedTypeService, CrudService<FeedType, number, number> {
+export class FeedTypeService implements CrudService<FeedType, number, number> {
   private readonly apiUrl: string;
 
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
@@ -39,8 +30,8 @@ export class FeedTypeService
       params: {
         pageNumber: pageNumber.toString(),
         pageSize: pageSize.toString(),
-        includeDeleted: includeDeleted.toString(),
-      },
+        includeDeleted: includeDeleted.toString()
+      }
     });
   }
 
@@ -63,7 +54,7 @@ export class FeedTypeService
   }
 }
 
-export class MockFeedTypeService implements IFeedTypeService {
+export class MockFeedTypeService {
   public feedTypesChanged: Subject<FeedType[]>;
 
   constructor() {
@@ -76,7 +67,7 @@ export class MockFeedTypeService implements IFeedTypeService {
       currentPage: 0,
       pageCount: 0,
       pageSize: 0,
-      totalRecordCount: 0,
+      totalRecordCount: 0
     });
   }
 

@@ -4,9 +4,9 @@ import { Action } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 
-export enum ActionTypes {
-  FETCH_MEDICAL_TRANSACTIONS = 'FETCH_MEDICAL_TRANSACTION',
-  FETCH_SINGLE_MEDICAL_TRANSACTION = 'FETCH_SINGLE_MEDICAL_TRANSACTION',
+export enum MedicalActionTypes {
+  FetchMedicalTransactions = 'FETCH_MEDICAL_TRANSACTION',
+  FetchSingleMedicalTransaction = 'FETCH_SINGLE_MEDICAL_TRANSACTION'
 }
 
 export interface FetchSingleMedicalTransactionParams {
@@ -14,8 +14,8 @@ export interface FetchSingleMedicalTransactionParams {
   id: number;
 }
 
-export class FetchMedicalTransactions implements Action {
-  readonly type = ActionTypes.FETCH_MEDICAL_TRANSACTIONS;
+export class FetchMedicalTransactionsAction implements Action {
+  readonly type = MedicalActionTypes.FetchMedicalTransactions;
   animalId: number;
   pageNumber: number;
   pageSize: number;
@@ -27,15 +27,15 @@ export class FetchMedicalTransactions implements Action {
   }
 }
 
-export class FetchSingleMedicalTransaction
+export class FetchSingleMedicalTransactionAction
   implements PayloadAction<FetchSingleMedicalTransactionParams> {
-  readonly type = ActionTypes.FETCH_SINGLE_MEDICAL_TRANSACTION;
+  readonly type = MedicalActionTypes.FetchSingleMedicalTransaction;
   payload: FetchSingleMedicalTransactionParams;
 
   constructor(animalId: number, id: number) {
     this.payload = {
       animalId,
-      id,
+      id
     };
   }
 }

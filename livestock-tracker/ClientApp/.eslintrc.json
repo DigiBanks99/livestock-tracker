@@ -1,18 +1,11 @@
 {
   "root": true,
-  "ignorePatterns": [
-    "projects/**/*"
-  ],
+  "ignorePatterns": ["projects/**/*"],
   "overrides": [
     {
-      "files": [
-        "*.ts"
-      ],
+      "files": ["*.ts"],
       "parserOptions": {
-        "project": [
-          "tsconfig.json",
-          "e2e/tsconfig.json"
-        ],
+        "project": ["tsconfig.json", "e2e/tsconfig.json"],
         "createDefaultProgram": true
       },
       "extends": [
@@ -24,11 +17,7 @@
         "@angular-eslint/component-class-suffix": [
           "error",
           {
-            "suffixes": [
-              "Component",
-              "Page",
-              "Container"
-            ]
+            "suffixes": ["Component", "Page", "Container"]
           }
         ],
         "@angular-eslint/component-selector": [
@@ -47,6 +36,13 @@
             "style": "camelCase"
           }
         ],
+        "@typescript-eslint/consistent-type-assertions": [
+          "warn",
+          {
+            "assertionStyle": "angle-bracket",
+            "objectLiteralTypeAssertions": "allow"
+          }
+        ],
         "@typescript-eslint/consistent-type-definitions": "error",
         "@typescript-eslint/dot-notation": "off",
         "@typescript-eslint/explicit-member-accessibility": [
@@ -55,10 +51,42 @@
             "accessibility": "explicit"
           }
         ],
-        "brace-style": [
+        "@typescript-eslint/naming-convention": [
           "error",
-          "1tbs"
+          {
+            "selector": "default",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": ["enum", "enumMember", "class", "interface"],
+            "format": ["StrictPascalCase"]
+          },
+          {
+            "selector": ["property", "parameterProperty", "accessor"],
+            "modifiers": ["private"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": ["property", "parameterProperty", "accessor"],
+            "modifiers": ["public"],
+            "format": ["camelCase", "StrictPascalCase"],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": ["variable", "property"],
+            "modifiers": ["const"],
+            "format": ["StrictPascalCase", "camelCase"]
+          },
+          {
+            "selector": "typeParameter",
+            "format": ["StrictPascalCase"],
+            "prefix": ["T"]
+          }
         ],
+        "@typescript-eslint/no-empty-interface": ["off"],
+        "@typescript-eslint/no-shadow": "error",
+        "brace-style": ["error", "1tbs"],
         "curly": "off",
         "id-blacklist": "off",
         "id-match": "off",
@@ -68,16 +96,23 @@
             "code": 140
           }
         ],
-        "no-underscore-dangle": "off"
+        "no-shadow": "off", // replaced by @typescript-eslint/no-shadow
+        "no-underscore-dangle": "off",
+        "prefer-arrow-callback": ["warn", { "allowNamedFunctions": true }],
+        "prefer-arrow/prefer-arrow-functions": [
+          "off",
+          {
+            "disallowPrototype": true,
+            "singleReturnOnly": false,
+            "classPropertiesAllowed": false,
+            "allowStandaloneDeclarations": true
+          }
+        ]
       }
     },
     {
-      "files": [
-        "*.html"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended"
-      ],
+      "files": ["*.html"],
+      "extends": ["plugin:@angular-eslint/template/recommended"],
       "rules": {}
     }
   ]

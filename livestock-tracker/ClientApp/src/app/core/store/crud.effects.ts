@@ -17,22 +17,6 @@ export class CrudEffects<
   TKey,
   TFetchSinglePayload
 > {
-  private noOpAction: Action = {
-    type: 'NOOP'
-  };
-
-  constructor(
-    protected actions$: Actions,
-    private service: CrudService<TData, TKey, TFetchSinglePayload>,
-    private typeActions: CrudActions<TData, TKey>,
-    private typeName: string,
-    private snackBar: MatSnackBar
-  ) {}
-
-  protected get defaultFetchAction(): Action {
-    return this.noOpAction;
-  }
-
   public getAll$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(`FETCH_${this.typeName}`),
@@ -98,6 +82,22 @@ export class CrudEffects<
     )
   );
 
+  protected get defaultFetchAction(): Action {
+    return this.noOpAction;
+  }
+
+  private noOpAction: Action = {
+    type: 'NOOP'
+  };
+
+  constructor(
+    protected actions$: Actions,
+    private service: CrudService<TData, TKey, TFetchSinglePayload>,
+    private typeActions: CrudActions<TData, TKey>,
+    private typeName: string,
+    private snackBar: MatSnackBar
+  ) {}
+
   protected handleError(
     err: any,
     actions: CrudActions<TData, TKey>
@@ -117,7 +117,5 @@ export class CrudEffects<
 
   protected handleFetchAction$ = (
     action: Action
-  ): Observable<PagedData<TData>> => {
-    return this.service.getAll();
-  };
+  ): Observable<PagedData<TData>> => this.service.getAll();
 }

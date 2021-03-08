@@ -20,22 +20,22 @@ import { environment } from '@env/environment';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
 const Constants = {
-  Controls: {
-    ID: 'id',
-    SELL_PRICE: 'sellPrice',
-    SELL_DATE: 'sellDate',
-    DATE_OF_DEATH: 'dateOfDeath',
-    SOLD: 'sold',
-    BIRTH_DATE: 'birthDate',
-    AGE: 'age',
-    DECEASED: 'deceased',
-    TYPE: 'type',
-    SUBSPECIES: 'subspecies',
-    NUMBER: 'number',
-    PURCHASE_DATE: 'purchaseDate',
-    PURCHASE_PRICE: 'purchasePrice',
-    ARRIVAL_WEIGHT: 'arrivalWeight',
-    BATCH_NUMBER: 'batchNumber'
+  controls: {
+    id: 'id',
+    sellPrice: 'sellPrice',
+    sellDate: 'sellDate',
+    dateOfDeath: 'dateOfDeath',
+    sold: 'sold',
+    birthDate: 'birthDate',
+    age: 'age',
+    deceased: 'deceased',
+    type: 'type',
+    subspecies: 'subspecies',
+    number: 'number',
+    purchaseDate: 'purchaseDate',
+    purchasePrice: 'purchasePrice',
+    arrivalWeight: 'arrivalWeight',
+    batchNumber: 'batchNumber'
   }
 };
 
@@ -48,8 +48,6 @@ const Constants = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnimalFormComponent {
-  private _currentAnimal: Animal = null;
-
   @Input()
   public set currentAnimal(value: Animal) {
     this._currentAnimal = value;
@@ -73,23 +71,24 @@ export class AnimalFormComponent {
     .concat(0);
   public gapSize = '16px';
 
+  private _currentAnimal: Animal = null;
   private destroyed$ = new Subject();
   private calcAge$ = new Subject();
 
   public get birthDateCtrl(): AbstractControl {
-    return this.animalForm.get(Constants.Controls.BIRTH_DATE);
+    return this.animalForm.get(Constants.controls.birthDate);
   }
 
   public get dateOfDeathCtrl(): AbstractControl {
-    return this.animalForm.get(Constants.Controls.DATE_OF_DEATH);
+    return this.animalForm.get(Constants.controls.dateOfDeath);
   }
 
   public get purchasePriceCtrl(): AbstractControl {
-    return this.animalForm.get(Constants.Controls.PURCHASE_PRICE);
+    return this.animalForm.get(Constants.controls.purchasePrice);
   }
 
   public get sellPriceCtrl(): AbstractControl {
-    return this.animalForm.get(Constants.Controls.SELL_PRICE);
+    return this.animalForm.get(Constants.controls.sellPrice);
   }
 
   constructor(
@@ -148,12 +147,12 @@ export class AnimalFormComponent {
     });
 
     this.animalForm
-      .get(Constants.Controls.SOLD)
+      .get(Constants.controls.sold)
       .valueChanges.pipe(takeUntil(this.destroyed$))
       .subscribe((value: boolean) => this.updateSoldCtrl(value));
 
     this.animalForm
-      .get(Constants.Controls.DECEASED)
+      .get(Constants.controls.deceased)
       .valueChanges.pipe(takeUntil(this.destroyed$))
       .subscribe((deceased: boolean) => {
         this.updateDateOfDeathCtrl(deceased);
@@ -161,15 +160,15 @@ export class AnimalFormComponent {
 
     merge(this.birthDateCtrl?.valueChanges, this.dateOfDeathCtrl?.valueChanges)
       .pipe(takeUntil(this.destroyed$))
-      .subscribe((_) => this.calcAge$.next());
+      .subscribe(() => this.calcAge$.next());
 
-    this.calcAge$.pipe(takeUntil(this.destroyed$)).subscribe((_) => {
+    this.calcAge$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.setControlValue(
         this.ageCalculatorService.calculateAge(
           this.birthDateCtrl?.value ?? new Date(),
           this.dateOfDeathCtrl?.value
         ),
-        Constants.Controls.AGE
+        Constants.controls.age
       );
     });
   }
@@ -206,18 +205,18 @@ export class AnimalFormComponent {
   private updateSoldCtrl(value: boolean): void {
     this.enableControlAndMakeRequiredWhenTrue(
       value,
-      Constants.Controls.SELL_PRICE
+      Constants.controls.sellPrice
     );
     this.enableControlAndMakeRequiredWhenTrue(
       value,
-      Constants.Controls.SELL_DATE
+      Constants.controls.sellDate
     );
   }
 
   private updateDateOfDeathCtrl(value: boolean): void {
     this.enableControlAndMakeRequiredWhenTrue(
       value,
-      Constants.Controls.DATE_OF_DEATH
+      Constants.controls.dateOfDeath
     );
   }
 

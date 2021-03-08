@@ -6,7 +6,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MedicineType } from '@core/models';
 import { MedicineTypeState } from '@core/store/medicine-type-state.interface';
 import { medicineTypeActions, medicineTypeStore } from '@medical/store';
-import { FetchMedicineTypes } from '@medical/store/medicine-type.actions';
+import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -22,7 +22,7 @@ import { select, Store } from '@ngrx/store';
       (remove)="onRemove($event)"
       (save)="onSave($event)"
     ></app-medicine-type>
-  `,
+  `
 })
 export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
   public medicineTypes$: Observable<MedicineType[]> = EMPTY;
@@ -63,7 +63,7 @@ export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
   }
 
   public ngOnInit(): void {
-    this.store.dispatch(new FetchMedicineTypes());
+    this.store.dispatch(new FetchMedicineTypesAction());
   }
 
   public ngOnDestroy(): void {
@@ -77,7 +77,7 @@ export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
 
   public onPage(pageEvent: PageEvent): void {
     this.store.dispatch(
-      new FetchMedicineTypes(pageEvent.pageIndex, pageEvent.pageSize)
+      new FetchMedicineTypesAction(pageEvent.pageIndex, pageEvent.pageSize)
     );
   }
 

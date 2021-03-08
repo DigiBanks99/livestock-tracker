@@ -7,9 +7,9 @@ import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { AnimalService } from '@animal/services';
 import {
   actions,
-  ActionTypes,
-  FetchAnimals,
-  SelectAnimal
+  AnimalActionTypes,
+  FetchAnimalsAction,
+  SelectAnimalAction
 } from '@animal/store/animal.actions';
 import { Animal } from '@app/core/models/livestock.model';
 import { PagedData } from '@core/models/paged-data.model';
@@ -30,16 +30,16 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
   > = createEffect(
     (): Observable<PayloadAction<number>> =>
       this.actions$.pipe(
-        ofType(ActionTypes.SELECT_ANIMAL),
+        ofType(AnimalActionTypes.SelectAnimal),
         map(
-          (action: SelectAnimal): PayloadAction<number> =>
+          (action: SelectAnimalAction): PayloadAction<number> =>
             actions.fetchSingle(action.key)
         )
       )
   );
 
   protected get defaultFetchAction(): Action {
-    return new FetchAnimals(0, environment.pageSize);
+    return new FetchAnimalsAction(0, environment.pageSize);
   }
 
   constructor(
@@ -53,7 +53,7 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
   protected handleFetchAction$ = (
     action: Action
   ): Observable<PagedData<Animal>> => {
-    const fetchAction = <FetchAnimals>action;
+    const fetchAction = <FetchAnimalsAction>action;
     return this.animalService.getAll(
       fetchAction.pageSize,
       fetchAction.pageNumber

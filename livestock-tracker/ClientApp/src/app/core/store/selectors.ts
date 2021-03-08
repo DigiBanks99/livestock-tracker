@@ -5,13 +5,13 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AnimalState } from './animal-state.interface';
 import { UnitState } from './unit-state.interface';
 
-function selectItems<T>(
-  entities: Dictionary<T>,
+function selectItems<TData>(
+  entities: Dictionary<TData>,
   ids: (string | number)[]
-): T[] {
+): TData[] {
   return ids
     .map((id) => entities[id])
-    .filter((entity): entity is T => entity !== null);
+    .filter((entity): entity is TData => entity !== null);
 }
 
 export const animalState = createFeatureSelector<AnimalState>('animals');
@@ -29,9 +29,7 @@ const getAnimalIds = createSelector(
 
 export const getSelectedAnimalId = createSelector(
   animalState,
-  (state: AnimalState): number => {
-    return state.selectedId;
-  }
+  (state: AnimalState): number => state.selectedId
 );
 
 export const getAnimals = createSelector(

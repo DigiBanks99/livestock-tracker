@@ -2,7 +2,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil, tap } from 'rxjs/operators';
 
 import { Component, Input, OnDestroy } from '@angular/core';
-import { SelectAnimal } from '@animal/store/animal.actions';
+import { SelectAnimalAction } from '@animal/store/animal.actions';
 import { Animal } from '@app/core/models/livestock.model';
 import { AppState } from '@core/store';
 import { getAnimals, getSelectedAnimal } from '@core/store/selectors';
@@ -21,10 +21,10 @@ import { select, Store } from '@ngrx/store';
   `
 })
 export class AnimalSelectContainer implements OnDestroy {
+  @Input() public disabled: boolean;
+
   public animal$: Observable<Animal>;
   public animals$: Observable<Animal[]>;
-
-  @Input() public disabled: boolean;
 
   private destroyed$ = new Subject<void>();
 
@@ -46,6 +46,6 @@ export class AnimalSelectContainer implements OnDestroy {
   }
 
   public onAnimalChanged(id: number) {
-    this.store.dispatch(new SelectAnimal(id));
+    this.store.dispatch(new SelectAnimalAction(id));
   }
 }

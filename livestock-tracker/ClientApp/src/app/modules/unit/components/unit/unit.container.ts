@@ -8,7 +8,7 @@ import { AppState } from '@core/store';
 import { getUnits } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';
 import { unitStore } from '@unit/store';
-import { actions, FetchUnits } from '@unit/store/unit.actions';
+import { actions, FetchUnitsAction } from '@unit/store/unit.actions';
 
 @Component({
   selector: 'app-unit-container',
@@ -38,7 +38,7 @@ export class UnitContainerComponent implements OnDestroy {
   private destroyed$ = new Subject<void>();
 
   constructor(private store: Store<AppState>) {
-    this.store.dispatch(new FetchUnits());
+    this.store.dispatch(new FetchUnitsAction());
     this.units$ = this.store.pipe(select(getUnits));
     this.isPending$ = this.store.pipe(
       select(unitStore.unitSelectors.getUnitPending)
@@ -78,7 +78,7 @@ export class UnitContainerComponent implements OnDestroy {
 
   public onPage(pageEvent: PageEvent) {
     this.store.dispatch(
-      new FetchUnits(pageEvent.pageIndex, pageEvent.pageSize)
+      new FetchUnitsAction(pageEvent.pageIndex, pageEvent.pageSize)
     );
   }
 }

@@ -1,39 +1,35 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Unit } from '@core/models/unit.model';
 
 @Component({
   selector: 'app-unit-detail',
   templateUrl: './unit-detail.component.html',
-  styleUrls: ['./unit-detail.component.scss'],
+  styleUrls: ['./unit-detail.component.scss']
 })
-export class UnitDetailComponent implements OnInit {
+export class UnitDetailComponent {
   @Input() unit: Unit;
   @Output() save = new EventEmitter<Unit>();
 
   public unitForm: FormGroup;
 
   constructor() {
-    this.unitForm = null;
-  }
-
-  ngOnInit() {
     this.initForm();
   }
 
-  private initForm() {
+  public onUpdate(): void {
+    if (this.unitForm.valid) {
+      this.save.emit(this.unitForm.value);
+    }
+  }
+
+  private initForm(): void {
     this.unitForm = new FormGroup({
       id: new FormControl(this.unit.id),
       description: new FormControl(this.unit.description, {
         validators: [Validators.required],
-        updateOn: 'blur',
-      }),
+        updateOn: 'blur'
+      })
     });
-  }
-
-  public onUpdate() {
-    if (this.unitForm.valid) {
-      this.save.emit(this.unitForm.value);
-    }
   }
 }

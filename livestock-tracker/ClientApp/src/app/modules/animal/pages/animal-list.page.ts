@@ -6,8 +6,8 @@ import { Router } from '@angular/router';
 import { AnimalStore } from '@animal/store';
 import {
   actions,
-  FetchAnimals,
-  SelectAnimal
+  FetchAnimalsAction,
+  SelectAnimalAction
 } from '@animal/store/animal.actions';
 import { Animal } from '@core/models/livestock.model';
 import { AppState } from '@core/store';
@@ -31,7 +31,7 @@ export class AnimalListPage implements OnDestroy {
   public destroyed$ = new Subject();
 
   constructor(private store: Store<AppState>, private router: Router) {
-    this.store.dispatch(new FetchAnimals());
+    this.store.dispatch(new FetchAnimalsAction());
     this.animals$ = this.store.pipe(
       select(getAnimals),
       takeUntil(this.destroyed$)
@@ -58,7 +58,7 @@ export class AnimalListPage implements OnDestroy {
   }
 
   public showDetail(id: number): void {
-    this.store.dispatch(new SelectAnimal(id));
+    this.store.dispatch(new SelectAnimalAction(id));
     this.router.navigate(['animal', id, 'edit']);
   }
 

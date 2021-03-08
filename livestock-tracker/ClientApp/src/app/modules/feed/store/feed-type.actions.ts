@@ -1,17 +1,17 @@
 import { FeedType } from '@core/models/feed-type.model';
-import { CrudActions, crudActionsFactory, PayloadAction } from '@core/store';
+import { crudActionsFactory } from '@core/store';
 import { Action } from '@ngrx/store';
 
 import { FeedTypeKey } from './constants';
 
-export enum ActionTypes {
-  SELECT_FEED_TYPE = 'SELECT_FEED_TYPE',
-  FETCH_FEED_TYPES = 'FETCH_FEED_TYPE',
-  API_FETCH_FEED_TYPES = 'API_FETCH_FEED_TYPE',
+export enum FeedTypeActionTypes {
+  SelectFeedType = 'SELECT_FEED_TYPE',
+  FetchFeedTypes = 'FETCH_FEED_TYPE',
+  FetchFeedTypesSucceeded = 'API_FETCH_FEED_TYPE'
 }
 
-export class SelectFeedType implements Action {
-  readonly type = ActionTypes.SELECT_FEED_TYPE;
+export class SelectFeedTypeAction implements Action {
+  readonly type = FeedTypeActionTypes.SelectFeedType;
   id: number;
 
   constructor(id: number) {
@@ -19,8 +19,8 @@ export class SelectFeedType implements Action {
   }
 }
 
-export class FetchFeedTypes implements Action {
-  readonly type = ActionTypes.FETCH_FEED_TYPES;
+export class FetchFeedTypesAction implements Action {
+  readonly type = FeedTypeActionTypes.FetchFeedTypes;
   pageNumber: number;
   pageSize: number;
   includeDeleted: boolean;

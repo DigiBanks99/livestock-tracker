@@ -1,4 +1,7 @@
-import { ActionTypes, SelectAnimal } from '@animal/store/animal.actions';
+import {
+  AnimalActionTypes,
+  SelectAnimalAction
+} from '@animal/store/animal.actions';
 import { Animal } from '@app/core/models/livestock.model';
 import { SaveState } from '@core/models';
 import { AnimalState } from '@core/store/animal-state.interface';
@@ -29,10 +32,10 @@ export function animalsReducer(
   action: Action
 ): AnimalState {
   switch (action.type) {
-    case ActionTypes.SELECT_ANIMAL:
+    case AnimalActionTypes.SelectAnimal:
       return {
         ...state,
-        selectedId: selectAnimal(state.selectedId, <SelectAnimal>action)
+        selectedId: selectAnimal(state.selectedId, <SelectAnimalAction>action)
       };
     default:
       return {
@@ -42,7 +45,7 @@ export function animalsReducer(
   }
 }
 
-function selectAnimal(key: number, action: SelectAnimal): number {
+function selectAnimal(key: number, action: SelectAnimalAction): number {
   if (action.key === undefined) return key;
   return action.key || 0;
 }

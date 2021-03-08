@@ -9,8 +9,8 @@ import { FeedTypeState } from '@core/store';
 import { feedTypeStore } from '@feed-store';
 import {
   actions,
-  FetchFeedTypes,
-  SelectFeedType
+  FetchFeedTypesAction,
+  SelectFeedTypeAction
 } from '@feed/store/feed-type.actions';
 import { select, Store } from '@ngrx/store';
 
@@ -27,17 +27,17 @@ import { select, Store } from '@ngrx/store';
       (save)="onSave($event)"
       (page)="onPage($event)"
     ></app-feed-type>
-  `,
+  `
 })
 export class FeedTypeContainerComponent implements OnInit, OnDestroy {
-  private destroyed$ = new Subject<void>();
-
   public feedTypes$: Observable<FeedType[]> = EMPTY;
   public isPending$: Observable<boolean> = EMPTY;
   public error$: Observable<Error> = EMPTY;
   public currentPage$: Observable<number> = EMPTY;
   public pageSize$: Observable<number> = EMPTY;
   public recordCount$: Observable<number> = EMPTY;
+
+  private destroyed$ = new Subject<void>();
 
   constructor(private store: Store<FeedTypeState>, private router: Router) {
     this.feedTypes$ = this.store.pipe(
@@ -68,7 +68,7 @@ export class FeedTypeContainerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
-    this.store.dispatch(new FetchFeedTypes());
+    this.store.dispatch(new FetchFeedTypesAction());
   }
 
   public ngOnDestroy(): void {
@@ -85,7 +85,7 @@ export class FeedTypeContainerComponent implements OnInit, OnDestroy {
   }
 
   public onShowDetail(feedType: FeedType) {
-    this.store.dispatch(new SelectFeedType(feedType.id));
+    this.store.dispatch(new SelectFeedTypeAction(feedType.id));
     this.router.navigate(['/feedType', feedType.id, 'edit']);
   }
 
@@ -95,7 +95,7 @@ export class FeedTypeContainerComponent implements OnInit, OnDestroy {
 
   public onPage(pageEvent: PageEvent) {
     this.store.dispatch(
-      new FetchFeedTypes(pageEvent.pageIndex, pageEvent.pageSize)
+      new FetchFeedTypesAction(pageEvent.pageIndex, pageEvent.pageSize)
     );
   }
 }
