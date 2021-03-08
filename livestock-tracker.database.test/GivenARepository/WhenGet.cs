@@ -18,10 +18,10 @@ namespace GivenARepository
         public void ItShouldReturnOnlyTheItemWithTheMatchingId(int id)
         {
             // Arrange
-            using TestDbContext context = TestDbContextFactory.Create();
+            using var context = TestDbContextFactory.Create();
 
             // Act
-            TestEntity item = context.Set<TestEntity>().Find(id);
+            var item = context.Set<TestEntity>().Find(id);
 
             // Assert
             Assert.Equal(item.Id, TestDataService.TestEntities[id - 1].Id);
@@ -32,26 +32,23 @@ namespace GivenARepository
         [InlineData(32)]
         [InlineData(33)]
         [InlineData(99)]
-        public void AndTheEntityIsNotFoundItShouldThrowAnEntityNotFoundException(int id)
+        public void AndTheEntityIsNotFoundItShouldReturnNull(int id)
         {
             // Arrange
-            using TestDbContext context = TestDbContextFactory.Create();
+            using var context = TestDbContextFactory.Create();
 
             // Act
-            EntityNotFoundException<TestEntity> exception = Assert.Throws<EntityNotFoundException<TestEntity>>(() =>
-      {
-          context.Set<TestEntity>().Find(id);
-      });
+            var result = context.Set<TestEntity>().Find(id);
 
             // Assert
-            Assert.Equal($"{typeof(TestEntity).Name} with id {id} not found.", exception.Message);
+            Assert.Null(result);
         }
 
         [Fact]
         public void AndTheIdIsNegativeItShouldThrowAnArgumentOutOfRangeException()
         {
             // Arrange
-            using TestDbContext context = TestDbContextFactory.Create();
+            using var context = TestDbContextFactory.Create();
 
             // Act and Assert
             Assert.Throws<ArgumentOutOfRangeException>(() =>

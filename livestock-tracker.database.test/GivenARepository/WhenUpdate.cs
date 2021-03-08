@@ -11,8 +11,8 @@ namespace GivenARepository
         public void ItShouldSetTheValues()
         {
             // Arrange
-            using TestDbContext context = TestDbContextFactory.Create();
-            TestEntity testEntity = new TestEntity
+            using var context = TestDbContextFactory.Create();
+            var testEntity = new TestEntity
             {
                 Id = 1,
                 Description = "A new description"
@@ -21,7 +21,7 @@ namespace GivenARepository
             // Act
             context.Set<TestEntity>().Update(testEntity);
             context.SaveChanges();
-            TestEntity updatedEntity = context.Set<TestEntity>().Find(testEntity.Id);
+            var updatedEntity = context.Set<TestEntity>().Find(testEntity.Id);
 
             // Assert
             Assert.Equal(testEntity.Description, updatedEntity.Description);
@@ -31,14 +31,15 @@ namespace GivenARepository
         public void AndEntityDoesNotExistItShouldThrowEntityNotFoundException()
         {
             // Arrange
-            using TestDbContext context = TestDbContextFactory.Create();
-            TestEntity testEntity = new TestEntity
+            using var context = TestDbContextFactory.Create();
+            var testEntity = new TestEntity
             {
                 Id = 88,
                 Description = "A new description"
             };
 
             // Act
+            var result = context.Set<TestEntity>().Update(testEntity);
             var exception = Assert.Throws<EntityNotFoundException<TestEntity>>(() => context.Set<TestEntity>().Update(testEntity));
 
             // Assert
