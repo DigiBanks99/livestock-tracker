@@ -48,18 +48,7 @@ export class AnimalTypeSelectComponent
     ControlValueAccessor,
     OnDestroy,
     OnInit {
-  public static NEXT_ID = 0;
-
-  private readonly _keys: number[] = Object.keys(AnimalType)
-    .filter(Number)
-    .map((type) => +type)
-    .concat(0)
-    .sort();
-  private _placeholder: string;
-  private _required = false;
-  private _disabled = false;
-  private _touched = false;
-  private readonly _destroyed$ = new Subject<void>();
+  public static NextId = 0;
 
   @Input()
   public get value(): AnimalType | null {
@@ -92,19 +81,21 @@ export class AnimalTypeSelectComponent
   @Input()
   public set disabled(value: boolean) {
     this._disabled = coerceBooleanProperty(value);
-    this._disabled
-      ? this.form.controls.typeSelect.disable()
-      : this.form.controls.typeSelect.enable();
+    if (this._disabled) {
+      this.form.controls.typeSelect.disable();
+    } else {
+      this.form.controls.typeSelect.enable();
+    }
     this.stateChanges.next();
   }
   public get disabled(): boolean {
     return this._disabled;
   }
 
-  @Output() public change = new EventEmitter<AnimalType>();
+  @Output() public typeChange = new EventEmitter<AnimalType>();
 
   @HostBinding()
-  public readonly id = `animal-type-select-${AnimalTypeSelectComponent.NEXT_ID++}`;
+  public readonly id = `animal-type-select-${AnimalTypeSelectComponent.NextId++}`;
   @HostBinding('attr.aria-describedby') public describedBy = '';
   @HostBinding('class.floating')
   public get shouldLabelFloat() {
@@ -131,6 +122,17 @@ export class AnimalTypeSelectComponent
     return this._touched && !this.disabled && this.empty;
   }
 
+  private readonly _keys: number[] = Object.keys(AnimalType)
+    .filter(Number)
+    .map((type) => +type)
+    .concat(0)
+    .sort();
+  private _placeholder: string;
+  private _required = false;
+  private _disabled = false;
+  private _touched = false;
+  private readonly _destroyed$ = new Subject<void>();
+
   constructor(
     private svgService: SvgService,
     @Optional() @Self() public ngControl: NgControl,
@@ -155,17 +157,10 @@ export class AnimalTypeSelectComponent
   }
 
   public onChange: (value: AnimalType) => void = (value: AnimalType): void => {
-    this._onChange(value);
+    this.onChangeInternal(value);
   };
   public onTouched: () => void = (): void => {
-    this._onTouched();
-  };
-
-  private _onChange: (value: AnimalType) => void = (_: AnimalType): void => {
-    this.stateChanges.next();
-  };
-  public _onTouched: () => void = (): void => {
-    this._touched = true;
+    this.onTouchedInternal();
   };
 
   public getAnimalTypeDescription(type: number | AnimalType): string {
@@ -200,7 +195,7 @@ export class AnimalTypeSelectComponent
   public registerOnChange(fn: (_: AnimalType) => void): void {
     if (typeof fn === 'function') {
       this.onChange = (args: AnimalType) => {
-        this._onChange(args);
+        this.onChangeInternal(args);
         fn(args);
       };
     }
@@ -209,7 +204,7 @@ export class AnimalTypeSelectComponent
   public registerOnTouched(fn: () => void): void {
     if (typeof fn === 'function') {
       this.onTouched = () => {
-        this._onTouched();
+        this.onTouchedInternal();
         fn();
       };
     }
@@ -222,4 +217,14 @@ export class AnimalTypeSelectComponent
   public writeValue(animalType: AnimalType): void {
     this.value = animalType;
   }
+
+  private onChangeInternal: (value: AnimalType) => void = (
+    type: AnimalType
+  ): void => {
+    this.stateChanges.next();
+  };
+
+  private onTouchedInternal: () => void = (): void => {
+    this._touched = true;
+  };
 }

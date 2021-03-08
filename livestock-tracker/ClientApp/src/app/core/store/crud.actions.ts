@@ -111,10 +111,10 @@ function fetchSingle<TKey>(
   };
 }
 
-function apiFetchSingle<EntityType>(
-  item: EntityType,
+function apiFetchSingle<TEntity>(
+  item: TEntity,
   typeName: string
-): PayloadAction<EntityType> {
+): PayloadAction<TEntity> {
   return {
     type: `API_FETCH_SINGLE_${typeName}`,
     payload: item

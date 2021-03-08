@@ -12,11 +12,11 @@ import { AppState } from '@core/store';
 import { getSelectedAnimal, getUnits } from '@core/store/selectors';
 import { environment } from '@env/environment';
 import { feedingTransactionStore, feedTypeStore } from '@feed-store';
-import { FetchFeedTypes } from '@feed/store/feed-type.actions';
+import { FetchFeedTypesAction } from '@feed/store/feed-type.actions';
 import {
   actions,
-  FetchFeedingTransaction as FetchFeedingTransactions,
-  SelectFeedTransaction
+  FetchFeedingTransactionAction as FetchFeedingTransactions,
+  SelectFeedTransactionAction
 } from '@feed/store/feeding-transaction.actions';
 import { select, Store } from '@ngrx/store';
 
@@ -38,8 +38,6 @@ import { select, Store } from '@ngrx/store';
   `
 })
 export class FeedingTransactionContainerComponent implements OnDestroy {
-  private destroyed$ = new Subject<void>();
-
   public selectedAnimal$: Observable<Animal> = EMPTY;
   public feedingTransactions$: Observable<FeedingTransaction[]> = EMPTY;
   public feedTypes$: Observable<FeedType[]> = EMPTY;
@@ -49,9 +47,12 @@ export class FeedingTransactionContainerComponent implements OnDestroy {
   public recordCount$: Observable<number> = EMPTY;
 
   private _pageEvent = new Subject<PageEvent>();
+  private _destroyed$ = new Subject<void>();
 
   constructor(private store: Store<AppState>, private router: Router) {
-    this.store.dispatch(new FetchFeedTypes(0, environment.pageSize, true));
+    this.store.dispatch(
+      new FetchFeedTypesAction(0, environment.pageSize, true)
+    );
 
     this.selectedAnimal$ = this.store.pipe(
       select(getSelectedAnimal),
@@ -61,33 +62,36 @@ export class FeedingTransactionContainerComponent implements OnDestroy {
           new FetchFeedingTransactions(animal.id, 0, environment.pageSize)
         );
       }),
-      takeUntil(this.destroyed$)
+      takeUntil(this._destroyed$)
     );
 
     this.feedingTransactions$ = this.store.pipe(
       select(feedingTransactionStore.selectors.getAllFeedingTransactions),
-      takeUntil(this.destroyed$)
+      takeUntil(this._destroyed$)
     );
     this.feedTypes$ = this.store.pipe(
       select(feedTypeStore.selectors.getFeedTypes),
-      takeUntil(this.destroyed$)
+      takeUntil(this._destroyed$)
     );
-    this.units$ = this.store.pipe(select(getUnits), takeUntil(this.destroyed$));
+    this.units$ = this.store.pipe(
+      select(getUnits),
+      takeUntil(this._destroyed$)
+    );
     this.pageNumber$ = this.store.pipe(
       select(feedingTransactionStore.selectors.getCurrentPage),
-      takeUntil(this.destroyed$)
+      takeUntil(this._destroyed$)
     );
     this.pageSize$ = this.store.pipe(
       select(feedingTransactionStore.selectors.getPageSize),
-      takeUntil(this.destroyed$)
+      takeUntil(this._destroyed$)
     );
     this.recordCount$ = this.store.pipe(
       select(feedingTransactionStore.selectors.getRecordCount),
-      takeUntil(this.destroyed$)
+      takeUntil(this._destroyed$)
     );
 
     combineLatest([this.selectedAnimal$, this._pageEvent])
-      .pipe(takeUntil(this.destroyed$))
+      .pipe(takeUntil(this._destroyed$))
       .subscribe(([selectedAnimal, pageEvent]: [Animal, PageEvent]) => {
         this.store.dispatch(
           new FetchFeedingTransactions(
@@ -100,8 +104,8 @@ export class FeedingTransactionContainerComponent implements OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
+    this._destroyed$.next();
+    this._destroyed$.complete();
   }
 
   public onAddTransaction(animalId: number) {
@@ -109,7 +113,7 @@ export class FeedingTransactionContainerComponent implements OnDestroy {
   }
 
   public onShowDetail(identifier: FeedingTransaction) {
-    this.store.dispatch(new SelectFeedTransaction(identifier.id));
+    this.store.dispatch(new SelectFeedTransactionAction(identifier.id));
     this.router.navigate([
       '/feeding-transaction',
       identifier.animalId,

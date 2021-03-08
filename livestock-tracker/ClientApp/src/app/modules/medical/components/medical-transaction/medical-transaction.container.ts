@@ -13,8 +13,8 @@ import {
   medicalTransactionStore,
   medicineTypeStore
 } from '@medical/store';
-import { FetchMedicalTransactions } from '@medical/store/medical-transaction.actions';
-import { FetchMedicineTypes } from '@medical/store/medicine-type.actions';
+import { FetchMedicalTransactionsAction } from '@medical/store/medical-transaction.actions';
+import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -47,7 +47,7 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
   private page$ = new Subject<PageEvent>();
 
   constructor(private store: Store<AppState>) {
-    this.store.dispatch(new FetchMedicineTypes());
+    this.store.dispatch(new FetchMedicineTypesAction());
     this.selectedAnimal$ = this.store.pipe(
       select(getSelectedAnimal),
       filter((animal: Animal) => {
@@ -56,7 +56,7 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
       }),
       tap((animal: Animal) => {
         this.store.dispatch(
-          new FetchMedicalTransactions(animal.id, 0, environment.pageSize)
+          new FetchMedicalTransactionsAction(animal.id, 0, environment.pageSize)
         );
       }),
       takeUntil(this.destroyed$)
@@ -89,7 +89,7 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
       .subscribe(([animal, pageEvent]: [Animal, PageEvent]) => {
         console.log(animal, pageEvent);
         this.store.dispatch(
-          new FetchMedicalTransactions(
+          new FetchMedicalTransactionsAction(
             animal.id,
             pageEvent.pageIndex,
             pageEvent.pageSize

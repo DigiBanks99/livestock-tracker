@@ -4,16 +4,16 @@ import { Action } from '@ngrx/store';
 
 import { AnimalKey } from './constants';
 
-export enum ActionTypes {
-  SELECT_ANIMAL = 'SELECT_ANIMAL',
-  FETCH_ANIMALS = 'FETCH_ANIMAL',
-  FETCH_SINGLE_ANIMAL = 'FETCH_SINGLE_ANIMAL',
-  API_FETCH_ANIMAL = 'API_FETCH_ANIMAL',
-  SELECT_ANIMAL_PAGE = 'SELECT_ANIMAL_PAGE'
+export enum AnimalActionTypes {
+  SelectAnimal = 'SELECT_ANIMAL',
+  FetchAnimals = 'FETCH_ANIMAL',
+  FetchSingleAnimal = 'FETCH_SINGLE_ANIMAL',
+  ApiFetchAnimal = 'API_FETCH_ANIMAL',
+  SelectAnimalPage = 'SELECT_ANIMAL_PAGE'
 }
 
-export class SelectAnimal implements Action {
-  readonly type = ActionTypes.SELECT_ANIMAL;
+export class SelectAnimalAction implements Action {
+  readonly type = AnimalActionTypes.SelectAnimal;
   key: number;
 
   constructor(id: number) {
@@ -21,8 +21,8 @@ export class SelectAnimal implements Action {
   }
 }
 
-export class FetchAnimals implements Action {
-  readonly type = ActionTypes.FETCH_ANIMALS;
+export class FetchAnimalsAction implements Action {
+  readonly type = AnimalActionTypes.FetchAnimals;
   pageNumber: number;
   pageSize: number;
 

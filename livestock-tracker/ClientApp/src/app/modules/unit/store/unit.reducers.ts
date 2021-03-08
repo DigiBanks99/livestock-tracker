@@ -3,7 +3,7 @@ import { UnitState } from '@core/store';
 import { crudReducer } from '@core/store/crud.reducer';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
-import { ActionTypes, SelectUnit } from '@unit/store/unit.actions';
+import { SelectUnitAction, UnitActionTypes } from '@unit/store/unit.actions';
 
 import { UnitKey } from './constants';
 
@@ -29,10 +29,10 @@ export function unitReducer(
   action: Action
 ): UnitState {
   switch (action.type) {
-    case ActionTypes.SELECT_UNIT:
+    case UnitActionTypes.SelectUnit:
       return {
         ...state,
-        selectedId: (<SelectUnit>action).typeCode
+        selectedId: (<SelectUnitAction>action).typeCode
       };
     default:
       return crudReducer(UnitKey, unitAdapter, state, action);

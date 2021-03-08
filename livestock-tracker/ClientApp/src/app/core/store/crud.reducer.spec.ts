@@ -1,5 +1,4 @@
-import { stat } from 'fs';
-
+import { SaveState } from '@core/models';
 import { KeyEntity } from '@core/models/key-entity.interface';
 import { createEntityAdapter, Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
@@ -18,9 +17,8 @@ const entityAdapter = createEntityAdapter<TestEntity>();
 const testActions = crudActionsFactory<TestEntity, number>(testKey);
 
 describe('Crud Reducers', () => {
-  const testReducer = (s: TestState, a: Action): TestState => {
-    return crudReducer(testKey, entityAdapter, s, a);
-  };
+  const testReducer = (s: TestState, a: Action): TestState =>
+    crudReducer(testKey, entityAdapter, s, a);
 
   let initialState: TestState;
   let expectedState: TestState;
@@ -31,7 +29,13 @@ describe('Crud Reducers', () => {
       selectedId: null,
       isPending: false,
       isFetching: false,
-      error: null
+      error: null,
+      entities: {},
+      ids: [],
+      pageNumber: 0,
+      pageSize: 10,
+      recordCount: 0,
+      saveState: SaveState.New
     });
   });
 
@@ -80,16 +84,22 @@ describe('Crud Reducers', () => {
       { id: 5, title: 'test 5' }
     ];
 
-    action = testActions.apiFetchItems(items);
+    action = testActions.apiFetchItems({
+      data: items,
+      pageSize: 10,
+      currentPage: 0,
+      pageCount: items.length / 10,
+      totalRecordCount: items.length
+    });
     const entities = {};
-    items.forEach(item => (entities[item.id] = item));
+    items.forEach((item) => (entities[item.id] = item));
 
     expectedState = {
       ...initialState,
       isPending: false,
       error: null,
       entities,
-      ids: items.map(item => item.id),
+      ids: items.map((item) => item.id),
       selectedId: items[0].id
     };
 
@@ -117,7 +127,7 @@ describe('Crud Reducers', () => {
       [99]: item
     };
 
-    const ids = Object.keys(entities).map(key => +key);
+    const ids = Object.keys(entities).map((key) => +key);
     expectedState = {
       ...state,
       isPending: false,

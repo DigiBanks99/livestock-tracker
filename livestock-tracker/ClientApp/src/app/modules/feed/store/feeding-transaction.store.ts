@@ -1,5 +1,7 @@
+import { FeedingTransaction } from '@core/models';
 import { FeedingTransactionState } from '@core/store';
 import { feedingTransactionAdapter } from '@feed/store/feeding-transaction.reducer';
+import { Dictionary } from '@ngrx/entity';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 const getFeedingTransactionState = createFeatureSelector<
@@ -9,47 +11,44 @@ const getFeedingTransactionState = createFeatureSelector<
 const {
   selectAll: getAllFeedingTransactions,
   selectEntities: getAllFeedingTransactionEntities,
-  selectTotal: getFeedingTransactionCount,
+  selectTotal: getFeedingTransactionCount
 } = feedingTransactionAdapter.getSelectors(getFeedingTransactionState);
 
 const getSelectedFeedingTransactionId = createSelector(
   getFeedingTransactionState,
-  (state) => {
-    return state.selectedId;
-  }
+  (state: FeedingTransactionState): number => state.selectedId
 );
 
 const getSelectedFeedingTransaction = createSelector(
   getAllFeedingTransactionEntities,
   getSelectedFeedingTransactionId,
-  (entities, id) => {
-    return entities[id];
-  }
+  (entities: Dictionary<FeedingTransaction>, id: number): FeedingTransaction =>
+    entities[id]
 );
 
 const getFeedingTransactionPendingState = createSelector(
   getFeedingTransactionState,
-  (state) => state.isPending
+  (state: FeedingTransactionState): boolean => state.isPending
 );
 
 const getPageSize = createSelector(
   getFeedingTransactionState,
-  (state) => state.pageSize
+  (state: FeedingTransactionState): number => state.pageSize
 );
 
 const getCurrentPage = createSelector(
   getFeedingTransactionState,
-  (state) => state.pageNumber
+  (state: FeedingTransactionState): number => state.pageNumber
 );
 
 const getRecordCount = createSelector(
   getFeedingTransactionState,
-  (state) => state.recordCount
+  (state: FeedingTransactionState): number => state.recordCount
 );
 
 const getFeedingTransactionErrorState = createSelector(
   getFeedingTransactionState,
-  (state) => state.error
+  (state: FeedingTransactionState): Error => state.error
 );
 
 export const selectors = {
@@ -63,5 +62,5 @@ export const selectors = {
   getSelectedFeedingTransaction,
   getPageSize,
   getCurrentPage,
-  getRecordCount,
+  getRecordCount
 };

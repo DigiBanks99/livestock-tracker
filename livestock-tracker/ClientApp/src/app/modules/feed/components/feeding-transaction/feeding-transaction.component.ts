@@ -26,8 +26,6 @@ import { environment } from '@env/environment';
   ]
 })
 export class FeedingTransactionComponent implements OnDestroy {
-  private destroyed$ = new Subject<void>();
-
   @Input() public currentAnimal: Animal;
   @Input() public feedingTransactions: FeedingTransaction[];
   @Input() public feedTypes: FeedType[];
@@ -49,6 +47,8 @@ export class FeedingTransactionComponent implements OnDestroy {
     'unit',
     'star'
   ];
+
+  private destroyed$ = new Subject<void>();
 
   constructor() {
     this.feedingTransactions = [];

@@ -3,8 +3,8 @@ import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { FeedingTransactionState } from '@core/store';
 import { crudReducer } from '@core/store/crud.reducer';
 import {
-  ActionTypes,
-  SelectFeedTransaction
+  FeedingTranscationActionTypes,
+  SelectFeedTransactionAction
 } from '@feed/store/feeding-transaction.actions';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
@@ -36,10 +36,10 @@ export function feedingTransactionReducer(
   action: Action
 ): FeedingTransactionState {
   switch (action.type) {
-    case ActionTypes.SELECT_FEED_TRANSACTION:
+    case FeedingTranscationActionTypes.SelectFeedTransaction:
       return {
         ...state,
-        selectedId: (<SelectFeedTransaction>action).transactionId
+        selectedId: (<SelectFeedTransactionAction>action).transactionId
       };
     default:
       return {

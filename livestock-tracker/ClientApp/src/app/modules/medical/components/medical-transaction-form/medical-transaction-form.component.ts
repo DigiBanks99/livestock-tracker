@@ -22,9 +22,9 @@ import { environment } from '@env/environment';
   templateUrl: './medical-transaction-form.component.html',
   styleUrls: ['./medical-transaction-form.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium },
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MedicalTransactionFormComponent implements OnDestroy, OnChanges {
   @Input() public selectedAnimalId = 0;
@@ -34,7 +34,7 @@ export class MedicalTransactionFormComponent implements OnDestroy, OnChanges {
     id: 0,
     medicineId: null,
     transactionDate: new Date(),
-    unitId: null,
+    unitId: null
   };
   @Input() public medicineTypes: MedicineType[] = [];
   @Input() public units: Unit[] = [];
@@ -57,15 +57,20 @@ export class MedicalTransactionFormComponent implements OnDestroy, OnChanges {
     if (null != changes.medicalTransaction) {
       this.medicalTransactionForm.patchValue({
         ...changes.medicalTransaction.currentValue,
-        animalId: this.selectedAnimalId,
+        animalId: this.selectedAnimalId
       });
     }
 
     if (null != changes.selectedAnimalId) {
       this.medicalTransactionForm.patchValue({
-        animalId: changes.selectedAnimalId.currentValue,
+        animalId: changes.selectedAnimalId.currentValue
       });
     }
+  }
+
+  public ngOnDestroy(): void {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   public onSave(): void {
@@ -79,23 +84,18 @@ export class MedicalTransactionFormComponent implements OnDestroy, OnChanges {
       id: new FormControl(this.medicalTransaction.id),
       animalId: new FormControl(this.selectedAnimalId),
       medicineId: new FormControl(this.medicalTransaction.medicineId, [
-        Validators.required,
+        Validators.required
       ]),
       transactionDate: new FormControl(
         this.medicalTransaction.transactionDate,
         [Validators.required]
       ),
       dose: new FormControl(this.medicalTransaction.dose, [
-        Validators.required,
+        Validators.required
       ]),
       unitId: new FormControl(this.medicalTransaction.unitId, [
-        Validators.required,
-      ]),
+        Validators.required
+      ])
     });
-  }
-
-  public ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 }

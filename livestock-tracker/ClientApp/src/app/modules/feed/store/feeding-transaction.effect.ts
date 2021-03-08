@@ -8,7 +8,7 @@ import { CrudEffects } from '@core/store/crud.effects';
 import { FeedingTransactionService } from '@feed/services';
 import {
   actions as feedingTransactionActions,
-  FetchFeedingTransaction,
+  FetchFeedingTransactionAction,
   FetchSingleFeedTransactionParams
 } from '@feed/store/feeding-transaction.actions';
 import { Actions } from '@ngrx/effects';
@@ -39,7 +39,7 @@ export class FeedingTransactionEffects extends CrudEffects<
   protected handleFetchAction$ = (
     action: Action
   ): Observable<PagedData<FeedingTransaction>> => {
-    const fetchAction = <FetchFeedingTransaction>action;
+    const fetchAction = <FetchFeedingTransactionAction>action;
     return this.feedingTransactionService.getAll(
       fetchAction.animalId,
       fetchAction.pageNumber,

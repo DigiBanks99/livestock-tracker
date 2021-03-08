@@ -1,17 +1,18 @@
 import { EventEmitter } from '@angular/core';
-import { ILsDataService } from '@core/models/ls-data-service.interface';
+import { Params } from '@angular/router';
+import { LsDataService } from '@core/models/ls-data-service.interface';
 import { LsGridColumnDef } from '@core/models/ls-grid-column-def.model';
 
-export class LsGridConfig<T, K> {
+export class LsGridConfig<TType, TKey> {
   columnDef: LsGridColumnDef[];
-  dataService: ILsDataService<T, K>;
-  fetchKey?: K;
+  dataService: LsDataService<TType, TKey>;
+  fetchKey?: TKey;
   useHeading?: boolean;
   heading?: string;
   pageSize?: number;
   pageNumber?: number;
   routerLink?: Array<string>;
-  queryParameters?: Function;
+  queryParameters?: (args: any) => Params;
   showDetail: EventEmitter<any>;
   routerLinkActive?: string[] | string;
 
@@ -24,7 +25,7 @@ export class LsGridConfig<T, K> {
     this.pageNumber = 1;
     this.pageSize = 20;
     this.routerLink = ['#'];
-    this.queryParameters = () => {};
+    this.queryParameters = () => null;
     this.showDetail = new EventEmitter<any>();
     this.routerLinkActive = ['active'];
   }

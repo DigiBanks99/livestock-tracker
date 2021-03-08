@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
-export interface ILsDataService<T, K> {
-  getAll(key: K): Observable<T[]>;
-  get(key: K): Observable<T>;
-  page(pageNumber: number, pageSize: number): Observable<T>;
+export interface LsDataService<TType, TKey> {
+  getAll(key: TKey): Observable<TType[]>;
+  get(key: TKey): Observable<TType>;
+  page(pageNumber: number, pageSize: number): Observable<TType>;
 }

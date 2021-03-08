@@ -10,7 +10,7 @@ import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
-import { actions, FetchMedicineTypes } from './medicine-type.actions';
+import { actions, FetchMedicineTypesAction } from './medicine-type.actions';
 
 @Injectable()
 export class MedicineTypeEffects extends CrudEffects<
@@ -35,7 +35,7 @@ export class MedicineTypeEffects extends CrudEffects<
   protected handleFetchAction$ = (
     action: Action
   ): Observable<PagedData<MedicineType>> => {
-    const fetchAction = <FetchMedicineTypes>action;
+    const fetchAction = <FetchMedicineTypesAction>action;
     return this.medicineTypeService.getAll(
       fetchAction.pageNumber,
       fetchAction.pageSize,

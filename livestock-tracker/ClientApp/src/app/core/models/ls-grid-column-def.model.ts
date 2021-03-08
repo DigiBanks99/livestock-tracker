@@ -3,12 +3,12 @@ import { LsGridColumnType } from '@shared/components/ls-grid/ls-grid-column-type
 export class LsGridColumnDef {
   field: string;
   description: string;
-  pipe?: Function;
+  pipe?: (...args: any) => string;
   sortable?: boolean;
   width?: number;
   widthUnits?: string;
   type?: LsGridColumnType;
-  delete?: Function;
+  delete?: (item: any, key?: any) => void;
   title?: string;
 
   constructor() {
@@ -30,11 +30,11 @@ export class LsGridColumnDef {
 
   public handleDelete(event: Event, item: any) {
     if (typeof this.delete === 'function') {
-      const deleteFunc: Function = this.delete;
+      const deleteFunc = this.delete;
       if (deleteFunc.length === 1) {
         this.delete(item);
       } else {
-        this.delete(event, item);
+        this.delete(item, event);
       }
     }
   }
