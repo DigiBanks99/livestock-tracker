@@ -4,24 +4,25 @@ using LivestockTracker.Database.Models.Animals;
 using LivestockTracker.Database.Test.Mocks;
 using LivestockTracker.Logic.Services.Animals;
 using LivestockTracker.Models.Animals;
-using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
 using Moq;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace LivestockTracker.Database.Test.Given.An.AnimalService.When
+namespace Given.An.AnimalService.When
 {
     public class AddingAnAnimal
     {
-        private readonly ITestOutputHelper _testOutputHelper;
+        private readonly ILogger<AnimalCrudService> _logger;
         private readonly Mock<IMapper<AnimalModel, IAnimal>> _mockMapper;
 
         public AddingAnAnimal(ITestOutputHelper testOutputHelper)
         {
-            _testOutputHelper = testOutputHelper;
+            _logger = testOutputHelper.ToLogger<AnimalCrudService>();
             _mockMapper = new Mock<IMapper<AnimalModel, IAnimal>>();
             _mockMapper.Setup(mapper => mapper.Map(It.IsAny<AnimalModel?>()))
                        .Returns((AnimalModel? animal) => animal == null ? new Animal() : new Animal
@@ -65,12 +66,35 @@ namespace LivestockTracker.Database.Test.Given.An.AnimalService.When
         [Fact]
         public async Task ThatDoesNotExistItShouldAddItToTheDatabase()
         {
+            // Arrange
             var context = TestDbContextFactory.Create();
-            var service = new AnimalCrudService(NullLogger<AnimalCrudService>.Instance, context, _mockMapper.Object);
-            var animal = new Animal();
+            var service = new AnimalCrudService(_logger, context, _mockMapper.Object);
 
+            // Act
+            var animal = new Animal();
             await service.AddAsync(animal, CancellationToken.None);
 
+            // Assert
+            Assert.Equal(1, context.Animals.Count());
+        }
+
+        [Fact]
+        public async Task ThatAlreadyExistItShouldAddItToTheDatabase()
+        {
+            // Arrange
+            var context = TestDbContextFactory.Create();
+            var service = new AnimalCrudService(_logger, context, _mockMapper.Object);
+            var animal = new Animal
+            {
+                Id = 1
+            };
+
+            // Act
+            await service.AddAsync(animal, CancellationToken.None);
+            var exception = await Assert.ThrowsAsync<InvalidOperationException>(async () => await service.AddAsync(animal, CancellationToken.None));
+
+            // Assert
+            Assert.NotNull(exception);
             Assert.Equal(1, context.Animals.Count());
         }
     }
