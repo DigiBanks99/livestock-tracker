@@ -21,7 +21,7 @@ namespace LivestockTracker.Updater.Windows
     private bool _downloading = false;
     private bool _updating = false;
 
-    public MainForm(ILogger logger, IUpdaterService updaterService, IFileService fileService, IDownloadService downloadService)
+    public MainForm(ILogger<MainForm> logger, IUpdaterService updaterService, IFileService fileService, IDownloadService downloadService)
     {
       logger.LogDebug("Constructing: {0}", nameof(MainForm));
 
