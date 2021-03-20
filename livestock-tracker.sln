@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker", "livest
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.database.sqlite", "livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj", "{42CC84FA-30B9-4F18-A081-314B30934764}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.database.test", "livestock-tracker.database.test\livestock-tracker.database.test.csproj", "{E99FACE8-D907-4584-B81A-295EAD67DB68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.logic.tests", "livestock-tracker.logic.tests\livestock-tracker.logic.tests.csproj", "{E99FACE8-D907-4584-B81A-295EAD67DB68}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.abstractions", "livestock-tracker.abstractions\livestock-tracker.abstractions.csproj", "{4589A780-8BB8-48CB-BF8B-E9CF21894CF7}"
 EndProject

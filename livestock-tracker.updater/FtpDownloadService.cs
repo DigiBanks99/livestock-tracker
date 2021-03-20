@@ -12,9 +12,9 @@ namespace LivestockTracker.Updater
 {
   public class FtpDownloadService : BaseDonwloadService, IDownloadService
   {
-    private readonly IFtpConfig _ftpConfig;
+    private readonly FtpConfig _ftpConfig;
 
-    public FtpDownloadService(ILogger logger, IFtpConfig ftpConfig) : base(logger)
+    public FtpDownloadService(ILogger logger, FtpConfig ftpConfig) : base(logger)
     {
       _ftpConfig = ftpConfig;
 

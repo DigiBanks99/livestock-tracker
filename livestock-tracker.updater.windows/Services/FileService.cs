@@ -12,7 +12,7 @@ namespace LivestockTracker.Updater.Windows.Services
     private const string FILE_IMAGE_FOLDERCLOSED16_KEY = "folder_closed_16";
     private const string FILE_IMAGE_CSS16_KEY = "css_16";
 
-    public FileService(ILogger logger)
+    public FileService(ILogger<FileService> logger)
     {
       _logger = logger;
     }
@@ -20,7 +20,7 @@ namespace LivestockTracker.Updater.Windows.Services
     public string GetFileTypeImageIndex(string fileExtension)
     {
       _logger.LogDebug("{0}: Getting file type image index for extension {1}", nameof(FileService), fileExtension);
-      string ext = string.IsNullOrEmpty(fileExtension) ? string.Empty : fileExtension.ToLowerInvariant().Trim().Replace(".", "");
+      var ext = string.IsNullOrEmpty(fileExtension) ? string.Empty : fileExtension.ToLowerInvariant().Trim().Replace(".", "");
       switch (ext)
       {
         case "": return FILE_IMAGE_FOLDERCLOSED16_KEY;
@@ -33,9 +33,10 @@ namespace LivestockTracker.Updater.Windows.Services
     public ImageList GetFileImageList()
     {
       _logger.LogDebug("{0}: Getting file image list", nameof(FileService));
-      ImageList imageListFiles = new ImageList();
-
-      imageListFiles.TransparentColor = Color.Transparent;
+      var imageListFiles = new ImageList
+      {
+        TransparentColor = Color.Transparent
+      };
       imageListFiles.Images.Add(FILE_IMAGE_FILE16_KEY, Properties.Resources.file_16);
       imageListFiles.Images.Add(1.ToString(), Properties.Resources.file_24);
       imageListFiles.Images.Add(2.ToString(), Properties.Resources.file_32);

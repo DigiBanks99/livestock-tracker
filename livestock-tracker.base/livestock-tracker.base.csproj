@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netStandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>LivestockTracker.Base</RootNamespace>
     <Configurations>Debug;Release;Debug Updater</Configurations>
     <Nullable>enable</Nullable>

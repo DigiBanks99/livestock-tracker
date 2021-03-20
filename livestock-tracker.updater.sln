@@ -7,9 +7,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.updater",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.base", "livestock-tracker.base\livestock-tracker.base.csproj", "{A029F396-EABB-4AD4-BAB5-F9C8113C48D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "livestock-tracker.updater.windows", "livestock-tracker.updater.windows\livestock-tracker.updater.windows.csproj", "{7ACD96E0-2D6C-4C0A-A11A-87F45A335D64}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.updater.windows", "livestock-tracker.updater.windows\livestock-tracker.updater.windows.csproj", "{7ACD96E0-2D6C-4C0A-A11A-87F45A335D64}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.process-manager", "livestock-tracker.process-manager\livestock-tracker.process-manager.csproj", "{4D5ECCE3-4E6D-4858-8816-4C60D7DAA58A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9937F64B-6C7A-45EB-82EC-8D5622DC0558}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

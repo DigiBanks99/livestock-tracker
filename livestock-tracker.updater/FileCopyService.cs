@@ -7,7 +7,7 @@ namespace LivestockTracker.Updater
   {
     private readonly ILogger _logger;
 
-    public FileCopyService(ILogger logger)
+    public FileCopyService(ILogger<FileCopyService> logger)
     {
       _logger = logger;
     }
@@ -17,11 +17,15 @@ namespace LivestockTracker.Updater
       _logger.LogDebug("{0}: Copying directory and contents from {1} to {2}", nameof(FileCopyService), from, to);
 
       if (!Directory.Exists(to))
+      {
         Directory.CreateDirectory(to);
+      }
 
       var dirInfo = new DirectoryInfo(from);
       if (!dirInfo.Exists)
+      {
         throw new DirectoryNotFoundException($"The directory cannot be found: {from}");
+      }
 
       var subDirectories = dirInfo.GetDirectories();
       foreach (var subDir in subDirectories)
@@ -44,7 +48,9 @@ namespace LivestockTracker.Updater
 
       var dirInfo = new DirectoryInfo(folder);
       if (!dirInfo.Exists)
+      {
         return;
+      }
 
       dirInfo.Delete(true);
     }
