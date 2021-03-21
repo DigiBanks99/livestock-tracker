@@ -160,7 +160,7 @@ namespace LivestockTracker.Logic.Services.Feed
         /// <param name="key">The unique identifier value for the feeding transaction.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The matching feeding transaction if found.</returns>
-        public virtual async Task<IFeedingTransaction?> GetOneAsync(int key, CancellationToken cancellationToken)
+        public virtual async Task<IFeedingTransaction?> GetOneAsync(long key, CancellationToken cancellationToken)
         {
             Logger.LogInformation($"Finding a feeding transaction that matches ID {key}...");
             var feedingTransaction = await LivestockContext.FeedingTransactions
@@ -177,7 +177,7 @@ namespace LivestockTracker.Logic.Services.Feed
         /// <param name="key">The unique identifier value for the feeding transaction.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The ID of the removed feeding transaction.</returns>
-        public virtual async Task<int> RemoveAsync(int key, CancellationToken cancellationToken)
+        public virtual async Task<long> RemoveAsync(long key, CancellationToken cancellationToken)
         {
             Logger.LogInformation($"Deleting feeding transaction with ID {key}...");
             var feedingTransaction = await LivestockContext.FeedingTransactions

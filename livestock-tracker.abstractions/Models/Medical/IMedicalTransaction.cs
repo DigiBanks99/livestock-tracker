@@ -10,12 +10,12 @@ namespace LivestockTracker.Abstractions.Models.Medical
         /// <summary>
         /// A key that uniquely identifies the medical transaction.
         /// </summary>
-        int Id { get; }
+        long Id { get; }
 
         /// <summary>
         /// A linking key to the animal to whom the medication was administered.
         /// </summary>
-        int AnimalId { get; }
+        long AnimalId { get; }
 
         /// <summary>
         /// A linking key to the type of medicine that was administered.

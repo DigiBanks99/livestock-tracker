@@ -170,7 +170,7 @@ namespace LivestockTracker.Logic.Services.Medical
         /// <param name="key">The unique identifier value for the medical transaction.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The matching medical transaction if found.</returns>
-        public virtual async Task<IMedicalTransaction?> GetOneAsync(int key, CancellationToken cancellationToken)
+        public virtual async Task<IMedicalTransaction?> GetOneAsync(long key, CancellationToken cancellationToken)
         {
             Logger.LogInformation($"Finding a medical transaction that matches ID {key}...");
             var medicalTransaction = await LivestockContext.MedicalTransactions
@@ -187,7 +187,7 @@ namespace LivestockTracker.Logic.Services.Medical
         /// <param name="key">The unique identifier value for the medical transaction.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The ID of the removed medical transaction.</returns>
-        public virtual async Task<int> RemoveAsync(int key, CancellationToken cancellationToken)
+        public virtual async Task<long> RemoveAsync(long key, CancellationToken cancellationToken)
         {
             Logger.LogInformation($"Deleting medical transaction with ID {key}...");
             var medicalTransaction = await LivestockContext.MedicalTransactions
