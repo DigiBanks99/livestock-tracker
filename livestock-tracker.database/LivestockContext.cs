@@ -20,7 +20,7 @@ namespace LivestockTracker.Database
         public DbSet<UnitModel> Units { get; set; } = null!;
         public DbSet<FeedTypeModel> FeedTypes { get; set; } = null!;
         public DbSet<FeedingTransactionModel> FeedingTransactions { get; set; } = null!;
-        public DbSet<WeightTransactionModel> WightTransactions { get; set; } = null!;
+        public DbSet<WeightTransactionModel> WeightTransactions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
