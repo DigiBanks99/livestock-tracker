@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions.Models;
 using System.Collections.Generic;
 
-namespace LivestockTracker.Models.Paging
+namespace LivestockTracker.Logic.Paging
 {
     /// <summary>
     /// Wraps data in a pagination model.
@@ -52,6 +52,11 @@ namespace LivestockTracker.Models.Paging
         {
             get
             {
+                if (TotalRecordCount == 0)
+                {
+                    return 0;
+                }
+
                 var count = TotalRecordCount / PageSize;
                 if (TotalRecordCount % PageSize > 0)
                 {

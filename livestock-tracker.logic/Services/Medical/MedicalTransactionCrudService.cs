@@ -4,6 +4,7 @@ using LivestockTracker.Abstractions.Models.Medical;
 using LivestockTracker.Abstractions.Services.Medical;
 using LivestockTracker.Database;
 using LivestockTracker.Database.Models.Medical;
+using LivestockTracker.Logic.Paging;
 using LivestockTracker.Models.Medical;
 using LivestockTracker.Models.Paging;
 using Microsoft.EntityFrameworkCore;

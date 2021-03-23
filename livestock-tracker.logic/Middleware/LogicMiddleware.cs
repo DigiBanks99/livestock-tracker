@@ -7,9 +7,9 @@ using LivestockTracker.Abstractions.Services.Animals;
 using LivestockTracker.Abstractions.Services.Feed;
 using LivestockTracker.Abstractions.Services.Medical;
 using LivestockTracker.Abstractions.Services.Units;
+using LivestockTracker.Abstractions.Services.Weight;
 using LivestockTracker.Database.Models.Animals;
 using LivestockTracker.Database.Models.Feed;
-using LivestockTracker.Database.Models.Medical;
 using LivestockTracker.Database.Models.Units;
 using LivestockTracker.Logic.Mappers.Animals;
 using LivestockTracker.Logic.Mappers.Feed;
@@ -19,6 +19,7 @@ using LivestockTracker.Logic.Services.Animals;
 using LivestockTracker.Logic.Services.Feed;
 using LivestockTracker.Logic.Services.Medical;
 using LivestockTracker.Logic.Services.Units;
+using LivestockTracker.Logic.Services.Weight;
 using LivestockTracker.Models.Animals;
 using LivestockTracker.Models.Feed;
 using LivestockTracker.Models.Medical;
@@ -55,7 +56,8 @@ namespace LivestockTracker
                     .AddScoped<IMedicalTransactionSearchService, MedicalTransactionSearchService>()
                     .AddScoped<IMedicineTypeCrudService, MedicineTypeCrudService>()
                     .AddScoped<IMedicineTypeSearchService, MedicineTypeSearchService>()
-                    .AddScoped<IUnitCrudService, UnitCrudService>();
+                    .AddScoped<IUnitCrudService, UnitCrudService>()
+                    .AddScoped<IWeightTransactionCrudService, WeightTransactionCrudService>();
 
             return services;
         }

@@ -4,6 +4,7 @@ using LivestockTracker.Abstractions.Models.Feed;
 using LivestockTracker.Abstractions.Services.Feed;
 using LivestockTracker.Database;
 using LivestockTracker.Database.Models.Feed;
+using LivestockTracker.Logic.Paging;
 using LivestockTracker.Models.Paging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

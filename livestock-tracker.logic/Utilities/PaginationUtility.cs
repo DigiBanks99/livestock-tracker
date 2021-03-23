@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Models.Paging;
+using LivestockTracker.Logic.Paging;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel;
@@ -13,6 +13,7 @@ namespace LivestockTracker.Logic.Utilities
 {
     internal static class PaginationUtility
     {
+        [Obsolete("This has been deprecated. Use LivestockTracker.Logic.Paging.PagedDataExtensions instead.")]
         internal static async Task<IPagedData<TInterface>> FindAsync<TInterface, TData, TDto, TSortProperty>(IQueryable<TData> queryable,
                                                                                                              IMapper<TInterface, TDto> mapper,
                                                                                                              Expression<Func<TInterface, bool>> filter,
