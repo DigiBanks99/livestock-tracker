@@ -27,5 +27,15 @@ namespace LivestockTracker.Abstractions.Services.Weight
                                                             IPagingOptions pagingOptions,
                                                             ListSortDirection sortDirection,
                                                             CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Fetches a single <see cref="WeightTransaction"/> with the given identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier for the transaction.</param>
+        /// <param name="cancellationToken">
+        /// A token that can be used to cancel long running operations.
+        /// </param>
+        /// <returns>The <see cref="WeightTransaction"/> that matches the identifier.</returns>
+        Task<WeightTransaction> GetSingleAsync(long id, CancellationToken cancellationToken);
     }
 }

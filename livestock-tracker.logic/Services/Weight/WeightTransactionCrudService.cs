@@ -10,6 +10,7 @@ using LivestockTracker.Logic.Sorting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -75,7 +76,7 @@ namespace LivestockTracker.Logic.Services.Weight
                                             .ConfigureAwait(false);
             if (transaction == null)
             {
-                throw new EntityNotFoundException<WeightTransactionModel>(key);
+                throw new EntityNotFoundException<WeightTransaction>(key);
             }
 
             _context.Remove(transaction);
@@ -120,6 +121,16 @@ namespace LivestockTracker.Logic.Services.Weight
                                               .FilterOnObject(filter)
                                               .SortByCriteria(t => t.TransactionDate, sortDirection)
                                               .ToPagedDataAsync(pagingOptions);
+        }
+
+        /// <inheritdoc/>
+        public Task<WeightTransaction> GetSingleAsync(long id, CancellationToken cancellationToken)
+        {
+            _logger.LogInformation("Fetching the weight transaction with {@Id}", id);
+
+            return _context.WeightTransactions.AsNoTracking()
+                                              .MapToWeightTransaction()
+                                              .FirstOrDefaultAsync(transaction => transaction.Id == id);
         }
     }
 }

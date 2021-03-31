@@ -88,16 +88,42 @@ namespace LivestockTracker.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Requests the rertrieval of a weight transaction with the given identifier.
         /// </summary>
-        /// <param name="viewModel"></param>
-        /// <returns></returns>
+        /// <param name="id">The unique identifier of the transaction.</param>
+        /// <returns>
+        /// <list type="bullet">
+        ///     <item>The weight transaction if found.</item>
+        ///     <item>404 if not found.</item>
+        /// </list>
+        /// </returns>
+        [HttpGet("{id}")]
+        [ProducesResponseType(typeof(WeightTransaction), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetSingleAsync(long id)
+        {
+            Logger.LogInformation("Requesting the weight transaction with {@Id}...", id);
+
+            var transaction = await _weightTransactionCrudService.GetSingleAsync(id, RequestAbortToken).ConfigureAwait(false);
+            if (transaction == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(transaction);
+        }
+
+        /// <summary>
+        /// Requests the creation of a weight transaction for a specific animal.
+        /// </summary>
+        /// <param name="model">The details of the weight transaction.</param>
+        /// <returns>The weight transaction that was added.</returns>
         [HttpPost]
         [ProducesResponseType(typeof(WeightTransaction), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddAsync(CreateWeightTransactionViewModel viewModel)
+        public async Task<IActionResult> CreateAsync(CreateWeightTransactionViewModel model)
         {
-            Logger.LogInformation("Requesting the creation of weight transaction: {@Transaction} for animal {@AnimalId}...", viewModel, viewModel.AnimalId);
+            Logger.LogInformation("Requesting the creation of weight transaction: {@Transaction} for animal {@AnimalId}...", model, model.AnimalId);
 
             if (!ModelState.IsValid)
             {
@@ -106,14 +132,79 @@ namespace LivestockTracker.Controllers
 
             var transaction = new WeightTransaction
             {
-                AnimalId = viewModel.AnimalId,
-                TransactionDate = viewModel.TransactionDate,
-                Weight = viewModel.Weight
+                AnimalId = model.AnimalId,
+                TransactionDate = model.TransactionDate,
+                Weight = model.Weight
             };
 
             transaction = await _weightTransactionCrudService.AddAsync(transaction, RequestAbortToken).ConfigureAwait(false);
 
             return Ok(transaction);
+        }
+
+        /// <summary>
+        /// Requests the update of an existing weight transaction with the given
+        /// values.
+        /// </summary>
+        /// <param name="id">The identifier for the weight transaction.</param>
+        /// <param name="model">The details of the weight transaction.</param>
+        /// <returns>The weight transaction that was updated.</returns>
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(WeightTransaction), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> UpdateAsync(long id, UpdateWeightTransactionViewModel model)
+        {
+            Logger.LogInformation("Requesting the update of weight transaction: {@Transaction} for animal {@AnimalId}...", model, model.AnimalId);
+
+            if (id != model.Id)
+            {
+                ModelState.AddModelError(nameof(model.Id), "The id in the body does match the id in the route.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var transaction = new WeightTransaction
+            {
+                Id = id,
+                AnimalId = model.AnimalId,
+                TransactionDate = model.TransactionDate,
+                Weight = model.Weight
+            };
+
+            transaction = await _weightTransactionCrudService.UpdateAsync(transaction, RequestAbortToken).ConfigureAwait(false);
+
+            return Ok(transaction);
+        }
+
+        /// <summary>
+        /// Requests the deletion of a weight transaction.
+        /// </summary>
+        /// <param name="id">The identifier of the transaction.</param>
+        /// <returns>
+        /// <list type="bullet">
+        ///     <item>The identifier of the deleted weight transaction if found.</item>
+        ///     <item>404 if not found.</item>
+        /// </list>
+        /// </returns>
+        [HttpDelete("{id}")]
+        [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> DeleteAsync(long id)
+        {
+            Logger.LogInformation("Requesting the deletion of weight transaction with {@Id}...", id);
+
+            try
+            {
+                var removedId = await _weightTransactionCrudService.RemoveAsync(id, RequestAbortToken).ConfigureAwait(false);
+                return Ok(removedId);
+            }
+            catch (EntityNotFoundException<WeightTransaction> ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
     }
 }
