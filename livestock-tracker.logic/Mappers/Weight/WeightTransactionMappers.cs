@@ -21,7 +21,7 @@ namespace LivestockTracker.Logic.Mappers.Weight
         {
             return query.Select(entity => new WeightTransaction
             {
-                AnimalId = entity.Animal.Id,
+                AnimalId = entity.AnimalId,
                 Id = entity.Id,
                 TransactionDate = entity.TransactionDate,
                 Weight = entity.Weight

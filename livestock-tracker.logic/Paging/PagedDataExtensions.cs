@@ -47,8 +47,8 @@ namespace LivestockTracker.Logic.Paging
         public static async Task<IPagedData<TData>> ToPagedDataAsync<TData>(this IQueryable<TData> query, IPagingOptions options)
             where TData : class
         {
-            query = query.Take(options.PageSize)
-                         .Skip(options.Offset);
+            query = query.Skip(options.Offset)
+                         .Take(options.PageSize);
             return new PagedData<TData>(await query.ToArrayAsync(), options.PageSize, options.PageNumber, query.Count());
         }
 

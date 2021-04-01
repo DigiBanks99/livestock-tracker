@@ -36,6 +36,6 @@ namespace LivestockTracker.Abstractions.Services.Weight
         /// A token that can be used to cancel long running operations.
         /// </param>
         /// <returns>The <see cref="WeightTransaction"/> that matches the identifier.</returns>
-        Task<WeightTransaction> GetSingleAsync(long id, CancellationToken cancellationToken);
+        Task<WeightTransaction?> GetSingleAsync(long id, CancellationToken cancellationToken);
     }
 }

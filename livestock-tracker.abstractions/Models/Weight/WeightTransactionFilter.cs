@@ -135,7 +135,12 @@ namespace LivestockTracker.Abstractions.Models.Weight
                 throw new InvalidOperationException("Changes to the Null instance is not permitted.");
             }
 
-            _weightRange = new WeightRange(lower == null ? decimal.MinValue : lower.Value,
+            if (lower < decimal.Zero)
+            {
+                throw new ArgumentException($"{nameof(lower)} should be greater or equal to {decimal.Zero}.", nameof(lower));
+            }
+
+            _weightRange = new WeightRange(lower == null ? decimal.Zero : lower.Value,
                                            upper == null ? decimal.MaxValue : upper.Value);
         }
 
@@ -172,12 +177,12 @@ namespace LivestockTracker.Abstractions.Models.Weight
         {
             if (AnimalIds.Any())
             {
-                query.Where(transaction => AnimalIds.Contains(transaction.AnimalId));
+                query = query.Where(transaction => AnimalIds.Contains(transaction.AnimalId));
             }
 
             if (WeightBounds != null)
             {
-                query.Where(transaction => transaction.Weight >= WeightBounds.Lower && transaction.Weight <= WeightBounds.Upper);
+                query = query.Where(transaction => transaction.Weight >= WeightBounds.Lower && transaction.Weight <= WeightBounds.Upper);
             }
             return query;
         }
@@ -186,12 +191,12 @@ namespace LivestockTracker.Abstractions.Models.Weight
         {
             if (AnimalIds.Any())
             {
-                query.Where(transaction => !AnimalIds.Contains(transaction.AnimalId));
+                query = query.Where(transaction => !AnimalIds.Contains(transaction.AnimalId));
             }
 
             if (WeightBounds != null)
             {
-                query.Where(transaction => transaction.Weight < WeightBounds.Lower || transaction.Weight > WeightBounds.Upper);
+                query = query.Where(transaction => transaction.Weight < WeightBounds.Lower || transaction.Weight > WeightBounds.Upper);
             }
             return query;
         }

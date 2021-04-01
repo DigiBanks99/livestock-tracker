@@ -19,10 +19,22 @@ namespace LivestockTracker.Database.Models.Weight
             return Id;
         }
 
+        /// <summary>
+        /// Sets the values that are allowed to be changed.
+        /// </summary>
+        /// <param name="transaction">
+        /// The transaction with the updated values.
+        /// </param>
+        /// <exception cref="InvalidOperationException">
+        /// When an attempt is made to move the transaction to another animal.
+        /// </exception>
         public void SetValues(WeightTransaction transaction)
         {
-            Id = transaction.Id;
-            AnimalId = transaction.AnimalId;
+            if (transaction.AnimalId != AnimalId)
+            {
+                throw new InvalidOperationException("Cannot move a transaction to a different animal.");
+            }
+
             TransactionDate = transaction.TransactionDate;
             Weight = transaction.Weight;
         }
