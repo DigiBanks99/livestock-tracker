@@ -1,15 +1,13 @@
-import { SaveState } from '@core/models';
-import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { FeedingTransactionState } from '@core/store';
-import { crudReducer } from '@core/store/crud.reducer';
-import {
-  FeedingTranscationActionTypes,
-  SelectFeedTransactionAction
-} from '@feed/store/feeding-transaction.actions';
+import { FeedingTransaction, SaveState } from '@core/models';
+import { crudReducer, FeedingTransactionState } from '@core/store';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { FeedingTransactionKey } from './constants';
+import {
+  FeedingTranscationActionTypes,
+  SelectFeedTransactionAction
+} from './feeding-transaction.actions';
 
 export const feedingTransactionAdapter = createEntityAdapter<
   FeedingTransaction

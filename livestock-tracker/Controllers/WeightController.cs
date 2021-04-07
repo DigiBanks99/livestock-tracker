@@ -78,7 +78,7 @@ namespace LivestockTracker.Controllers
                 filter.SetIncludeState(false);
             }
 
-            var transactions = await _weightTransactionCrudService.FetchPagedAsync(WeightTransactionFilter.Null,
+            var transactions = await _weightTransactionCrudService.FetchPagedAsync(filter,
                                                                                    pagingOptions,
                                                                                    ListSortDirection.Descending,
                                                                                    RequestAbortToken)

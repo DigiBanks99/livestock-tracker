@@ -2,6 +2,7 @@ import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { BaseUrl } from '@core/di/base-url.injection-token';
 import { MedicineType } from '@core/models/medicine-type.model';
 import { PagedData } from '@core/models/paged-data.model';
 
@@ -9,7 +10,7 @@ import { PagedData } from '@core/models/paged-data.model';
 export class MedicineTypeService {
   private readonly _apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
     this._apiUrl = `${baseUrl}medicineType`;
   }
 

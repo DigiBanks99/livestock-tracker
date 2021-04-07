@@ -24,11 +24,17 @@ export function crudReducer<TData extends KeyEntity<TKey>, TKey>(
         saveState: SaveState.Saving
       };
     case `DELETE_${typeName}`:
+      return {
+        ...state,
+        isPending: true,
+        error: null
+      };
     case `FETCH_${typeName}`:
     case `FETCH_SINGLE_${typeName}`:
       return {
         ...state,
         isPending: true,
+        isFetching: true,
         error: null
       };
     case `API_ADD_${typeName}`:
@@ -61,7 +67,8 @@ export function crudReducer<TData extends KeyEntity<TKey>, TKey>(
       return {
         ...state,
         error: errorAction.payload,
-        isPending: false
+        isPending: false,
+        isFetching: false
       };
     case `RESET_SAVE_STATE_${typeName}`:
       return {
@@ -98,7 +105,8 @@ function updateApiReducer<TData extends KeyEntity<TKey>, TKey>(
     ...newState,
     selectedId: action.payload.key,
     isPending: false,
-    error: null
+    error: null,
+    saveState: SaveState.Success
   };
 }
 
@@ -109,12 +117,14 @@ function deleteApiReducer<TData extends KeyEntity<TKey>, TKey>(
 ): CrudState<TData, TKey> {
   const idx = state.ids.findIndex((id) => id === action.payload);
   const newState = adapter.removeOne(String(action.payload), state);
-  const ids = newState.ids || [];
-  const newIdx = ids.length >= idx - 1 ? idx - 1 : 0;
-  const newId = ids[newIdx];
+  const newIdx = idx <= 0 ? 0 : idx - 1;
+  const newId = newState.ids[newIdx];
+  const selectedId = newState.entities[newId]
+    ? newState.entities[newId].id
+    : null;
   return {
     ...newState,
-    selectedId: newState.entities[newId] ? newState.entities[newId].id : null,
+    selectedId,
     isPending: false,
     error: null
   };
@@ -139,6 +149,7 @@ function fetchApiReducer<TData extends KeyEntity<TKey>, TKey>(
     ...newState,
     selectedId,
     isPending: false,
+    isFetching: false,
     error: null,
     pageNumber: action.payload.currentPage,
     pageSize: action.payload.pageSize,
@@ -157,6 +168,7 @@ function fetchSingleApiReducer<TData extends KeyEntity<TKey>, TKey>(
     ...newState,
     selectedId,
     isPending: false,
+    isFetching: false,
     error: null
   };
 }

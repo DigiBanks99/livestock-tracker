@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Unit } from '@core/models/unit.model';
 
@@ -7,13 +7,17 @@ import { Unit } from '@core/models/unit.model';
   templateUrl: './unit-detail.component.html',
   styleUrls: ['./unit-detail.component.scss']
 })
-export class UnitDetailComponent {
+export class UnitDetailComponent implements OnInit {
   @Input() unit: Unit;
   @Output() save = new EventEmitter<Unit>();
 
   public unitForm: FormGroup;
 
   constructor() {
+    this.unitForm = null;
+  }
+
+  public ngOnInit(): void {
     this.initForm();
   }
 
@@ -25,8 +29,8 @@ export class UnitDetailComponent {
 
   private initForm(): void {
     this.unitForm = new FormGroup({
-      id: new FormControl(this.unit.id),
-      description: new FormControl(this.unit.description, {
+      id: new FormControl(this.unit?.id),
+      description: new FormControl(this.unit?.description, {
         validators: [Validators.required],
         updateOn: 'blur'
       })

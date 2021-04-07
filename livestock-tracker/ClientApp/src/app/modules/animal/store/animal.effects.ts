@@ -5,20 +5,18 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { AnimalService } from '@animal/services';
+import { Animal, PagedData } from '@core/models';
+import { CrudEffects, PayloadAction } from '@core/store';
+import { environment } from '@env/environment';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
+
 import {
   actions,
   AnimalActionTypes,
   FetchAnimalsAction,
   SelectAnimalAction
-} from '@animal/store/animal.actions';
-import { Animal } from '@app/core/models/livestock.model';
-import { PagedData } from '@core/models/paged-data.model';
-import { PayloadAction } from '@core/store';
-import { CrudEffects } from '@core/store/crud.effects';
-import { environment } from '@env/environment';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
-
+} from './animal.actions';
 import { AnimalKey } from './constants';
 
 @Injectable({

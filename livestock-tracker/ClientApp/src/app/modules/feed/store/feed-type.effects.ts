@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FeedType } from '@core/models/feed-type.model';
 import { PagedData } from '@core/models/paged-data.model';
-import { CrudEffects } from '@core/store/crud.effects';
-import { FeedTypeService } from '@feed/services/feed-type.service';
+import { CrudEffects } from '@core/store';
+import { FeedTypeService } from '@feed/services';
 import {
   actions as feedTypeActions,
   FetchFeedTypesAction

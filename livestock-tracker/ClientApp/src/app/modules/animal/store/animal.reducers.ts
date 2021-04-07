@@ -1,14 +1,9 @@
-import {
-  AnimalActionTypes,
-  SelectAnimalAction
-} from '@animal/store/animal.actions';
-import { Animal } from '@app/core/models/livestock.model';
-import { SaveState } from '@core/models';
-import { AnimalState } from '@core/store/animal-state.interface';
-import { crudReducer } from '@core/store/crud.reducer';
+import { Animal, SaveState } from '@core/models';
+import { AnimalState, crudReducer } from '@core/store';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
+import { AnimalActionTypes, SelectAnimalAction } from './animal.actions';
 import { AnimalKey } from './constants';
 
 export const animalsAdapter = createEntityAdapter<Animal>({

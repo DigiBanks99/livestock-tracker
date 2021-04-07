@@ -39,16 +39,26 @@ describe('Crud Reducers', () => {
     });
   });
 
-  it('addItem should set isPending to true and error to null with no other changes', () => {
+  it('addItem should set isPending to true , error to null and saveState to Saving with no other changes', () => {
     action = testActions.addItem({ id: 99, title: 'test' });
-    expectedState = { ...initialState, isPending: true, error: null };
+    expectedState = {
+      ...initialState,
+      isPending: true,
+      error: null,
+      saveState: SaveState.Saving
+    };
     const newState = testReducer(initialState, action);
     expect(newState).toEqual(expectedState);
   });
 
-  it('updateItem should set isPending to true and error to null with no other changes', () => {
+  it('updateItem should set isPending to true, error to null and saveState to Saving with no other changes', () => {
     action = testActions.updateItem({ id: 99, title: 'test' }, 99);
-    expectedState = { ...initialState, isPending: true, error: null };
+    expectedState = {
+      ...initialState,
+      isPending: true,
+      error: null,
+      saveState: SaveState.Saving
+    };
     const newState = testReducer(initialState, action);
     expect(newState).toEqual(expectedState);
   });
@@ -62,7 +72,12 @@ describe('Crud Reducers', () => {
 
   it('fetchItems should set isPending to true and error to null with no other changes', () => {
     action = testActions.fetchItems();
-    expectedState = { ...initialState, isPending: true, error: null };
+    expectedState = {
+      ...initialState,
+      isPending: true,
+      isFetching: true,
+      error: null
+    };
     const newState = testReducer(initialState, action);
     expect(newState).toEqual(expectedState);
   });
@@ -100,7 +115,10 @@ describe('Crud Reducers', () => {
       error: null,
       entities,
       ids: items.map((item) => item.id),
-      selectedId: items[0].id
+      selectedId: items[0].id,
+      pageSize: 10,
+      pageNumber: 0,
+      recordCount: items.length
     };
 
     const state: TestState = {
@@ -134,7 +152,8 @@ describe('Crud Reducers', () => {
       error: null,
       entities,
       ids,
-      selectedId: item.id
+      selectedId: item.id,
+      saveState: SaveState.Success
     };
 
     action = testActions.apiAddItem(item);
@@ -161,7 +180,8 @@ describe('Crud Reducers', () => {
       entities: {
         [1]: { id: 1, title: 'updated' }
       },
-      selectedId: updateItem.id
+      selectedId: updateItem.id,
+      saveState: SaveState.Success
     };
 
     action = testActions.apiUpdateItem(updateItem, 1);

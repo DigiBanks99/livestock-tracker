@@ -9,6 +9,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicalTransactionComponent } from '@medical/components/medical-transaction/medical-transaction.component';
 import {
@@ -37,30 +38,33 @@ describe('MedicalTransactionComponent', () => {
   let component: MedicalTransactionComponent;
   let fixture: ComponentFixture<MedicalTransactionComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        MedicalTransactionComponent,
-        MedicalTransactionContainerComponent,
-        AnimalSelectContainerComponent
-      ],
-      providers: [
-        { provide: MedicalTransactionService, useClass: MockMedicalService },
-        SvgService
-      ],
-      imports: [
-        ReactiveFormsModule,
-        MatIconModule,
-        MatSelectModule,
-        MatOptionModule,
-        MatPaginatorModule,
-        MatToolbarModule,
-        MatListModule,
-        MatDatepickerModule,
-        HttpClientTestingModule
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          MedicalTransactionComponent,
+          MedicalTransactionContainerComponent,
+          AnimalSelectContainerComponent
+        ],
+        providers: [
+          { provide: MedicalTransactionService, useClass: MockMedicalService },
+          SvgService
+        ],
+        imports: [
+          NoopAnimationsModule,
+          ReactiveFormsModule,
+          MatIconModule,
+          MatSelectModule,
+          MatOptionModule,
+          MatPaginatorModule,
+          MatToolbarModule,
+          MatListModule,
+          MatDatepickerModule,
+          HttpClientTestingModule
+        ]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MedicalTransactionComponent);

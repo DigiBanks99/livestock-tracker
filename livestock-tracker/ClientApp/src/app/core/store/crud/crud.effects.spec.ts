@@ -4,9 +4,10 @@ import { TestScheduler } from 'rxjs/testing';
 
 import { Injectable } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
-import { CrudService } from '@core/models/crud-service.interface';
-import { KeyEntity } from '@core/models/key-entity.interface';
-import { PagedData } from '@core/models/paged-data.model';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { KeyEntity, PagedData } from '@core/models';
+import { CrudService } from '@core/models/services';
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Update } from '@ngrx/entity';
@@ -40,8 +41,12 @@ class TestService implements CrudService<TestEntity, number, TestEntity> {
 
 @Injectable()
 class TestEffects extends CrudEffects<TestEntity, number, TestEntity> {
-  constructor(protected actions$: Actions, service: TestService) {
-    super(actions$, service, testActions, 'TEST', null);
+  constructor(
+    protected actions$: Actions,
+    service: TestService,
+    snackBar: MatSnackBar
+  ) {
+    super(actions$, service, testActions, 'TEST', snackBar);
   }
 }
 
@@ -63,7 +68,8 @@ describe('Crud Effects', () => {
           TestService,
           TestEffects,
           provideMockActions(() => actions$)
-        ]
+        ],
+        imports: [MatSnackBarModule, NoopAnimationsModule]
       });
 
       service = TestBed.inject(TestService);
@@ -88,7 +94,7 @@ describe('Crud Effects', () => {
 
   describe('getAll$', () => {
     it('should return an apiFetchItems action when successful', () => {
-      testScheduler.run(({ expectObservable, flush }: RunHelpers) => {
+      testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
         const items: TestEntity[] = [
           { id: 1 },
           { id: 2 },
@@ -104,7 +110,17 @@ describe('Crud Effects', () => {
           pageSize: 10
         });
 
-        getAllSpy.and.returnValue(of(items));
+        actions$ = cold('a', { a: testActions.fetchItems() });
+
+        getAllSpy.and.returnValue(
+          of({
+            data: items,
+            currentPage: 1,
+            pageCount: 1,
+            totalRecordCount: items.length,
+            pageSize: 10
+          })
+        );
 
         expectObservable(effects.getAll$).toBe('a', { a: completion });
 
@@ -115,10 +131,12 @@ describe('Crud Effects', () => {
     });
 
     it('should return an apiError action when the http service fails', () => {
-      testScheduler.run(({ expectObservable, flush }: RunHelpers) => {
+      testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
         const error = new Error('Network connection error');
         const completion = testActions.apiError(error);
         const switchMapMarble = '(a|)';
+
+        actions$ = cold('a', { a: testActions.fetchItems() });
 
         getAllSpy.and.throwError(error.message);
 

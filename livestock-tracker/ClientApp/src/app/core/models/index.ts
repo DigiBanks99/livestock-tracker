@@ -9,5 +9,7 @@ export * from './ls-grid-column-def.model';
 export * from './ls-grid-config.model';
 export * from './medical-transaction.model';
 export * from './medicine-type.model';
+export * from './paged-data.model';
 export * from './save-state.enum';
+export * from './services/crud-service.interface';
 export * from './unit.model';

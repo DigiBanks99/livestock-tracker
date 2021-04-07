@@ -1,11 +1,10 @@
 import { SaveState, Unit } from '@core/models';
-import { UnitState } from '@core/store';
-import { crudReducer } from '@core/store/crud.reducer';
+import { crudReducer, UnitState } from '@core/store';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
-import { SelectUnitAction, UnitActionTypes } from '@unit/store/unit.actions';
 
 import { UnitKey } from './constants';
+import { SelectUnitAction, UnitActionTypes } from './unit.actions';
 
 export const unitAdapter = createEntityAdapter<Unit>({
   selectId: (unit: Unit) => unit.id,

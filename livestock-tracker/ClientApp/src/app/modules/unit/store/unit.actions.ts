@@ -1,6 +1,5 @@
-import { Unit } from '@core/models/unit.model';
-import { crudActionsFactory } from '@core/store';
-import { PaginationAction } from '@core/store/pagination-action.interface';
+import { Unit } from '@core/models';
+import { crudActionsFactory, PaginationAction } from '@core/store';
 import { Action } from '@ngrx/store';
 
 import { UnitKey } from './constants';

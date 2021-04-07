@@ -2,15 +2,15 @@ import { Observable, of, Subject } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { CrudService } from '@core/models/crud-service.interface';
-import { FeedType } from '@core/models/feed-type.model';
-import { PagedData } from '@core/models/paged-data.model';
+import { BaseUrl } from '@core/di';
+import { FeedType, PagedData } from '@core/models';
+import { CrudService } from '@core/models/services';
 
 @Injectable()
 export class FeedTypeService implements CrudService<FeedType, number, number> {
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
     this.apiUrl = baseUrl + 'feedType';
   }
 

@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalType } from '@core/models';
+import { SvgService } from '@svg/services';
 
 import { AnimalTypeSelectComponent } from './animal-type-select.component';
 
@@ -58,6 +59,7 @@ describe('AnimalTypeSelectComponent', () => {
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [AnimalTypeSelectComponent, TestComponent],
+        providers: [SvgService],
         imports: [
           NoopAnimationsModule,
           FormsModule,

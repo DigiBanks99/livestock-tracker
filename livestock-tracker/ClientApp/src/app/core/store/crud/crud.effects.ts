@@ -4,9 +4,7 @@ import { catchError, map, switchMap, tap } from 'rxjs/operators';
 import { KeyValue } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CrudService } from '@core/models/crud-service.interface';
-import { KeyEntity } from '@core/models/key-entity.interface';
-import { PagedData } from '@core/models/paged-data.model';
+import { CrudService, KeyEntity, PagedData } from '@core/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
@@ -92,9 +90,9 @@ export class CrudEffects<
 
   constructor(
     protected actions$: Actions,
-    private service: CrudService<TData, TKey, TFetchSinglePayload>,
-    private typeActions: CrudActions<TData, TKey>,
-    private typeName: string,
+    protected service: CrudService<TData, TKey, TFetchSinglePayload>,
+    protected typeActions: CrudActions<TData, TKey>,
+    protected typeName: string,
     private snackBar: MatSnackBar
   ) {}
 

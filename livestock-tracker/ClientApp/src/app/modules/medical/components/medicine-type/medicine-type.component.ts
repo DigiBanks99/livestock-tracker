@@ -1,22 +1,11 @@
-import { Subscription } from 'rxjs';
-
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MedicineType } from '@core/models/medicine-type.model';
-import { environment } from '@env/environment';
-import { MedicineTypeService } from '@medical/services/medicine-type.service';
 
 @Component({
   selector: 'app-medicine-type',
   templateUrl: './medicine-type.component.html',
-  styleUrls: ['./medicine-type.component.scss'],
+  styleUrls: ['./medicine-type.component.scss']
 })
 export class MedicineTypeComponent {
   @Input() public medicineTypes: MedicineType[];

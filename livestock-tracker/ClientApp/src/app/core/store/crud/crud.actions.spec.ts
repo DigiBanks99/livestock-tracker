@@ -1,4 +1,4 @@
-import { Animal, Unit } from '@core/models';
+import { Unit } from '@core/models';
 import { Update } from '@ngrx/entity';
 
 import { crudActionsFactory } from './crud.actions';
@@ -183,16 +183,29 @@ describe('Crud Actions', () => {
     });
 
     it('should replace type name variable in type for apiFetchItems', () => {
-      expect(actions.apiFetchItems(items).type).toBe('API_FETCH_TEST');
+      expect(
+        actions.apiFetchItems({
+          data: items,
+          pageSize: items.length,
+          currentPage: 0,
+          pageCount: 1,
+          totalRecordCount: items.length
+        }).type
+      ).toBe('API_FETCH_TEST');
     });
 
     it('should contain a payload that is the array provided', () => {
-      const { payload } = actions.apiFetchItems(items);
+      const { payload } = actions.apiFetchItems({
+        data: items,
+        pageSize: items.length,
+        currentPage: 0,
+        pageCount: 1,
+        totalRecordCount: items.length
+      });
       expect(payload).toBeDefined();
       expect(payload).not.toBeNull();
-      expect(payload.length).toBe(items.length);
-      expect(payload.length).toBe(items.length);
-      payload.forEach((item: Unit, index: number) => {
+      expect(payload.data.length).toBe(items.length);
+      payload.data.forEach((item: Unit, index: number) => {
         expect(item).toBe(items[index]);
       });
     });

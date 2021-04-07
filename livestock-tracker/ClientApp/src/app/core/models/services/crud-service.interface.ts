@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
-import { KeyEntity } from './key-entity.interface';
-import { PagedData } from './paged-data.model';
+import { KeyEntity } from '../key-entity.interface';
+import { PagedData } from '../paged-data.model';
 
 export interface CrudService<
   TData extends KeyEntity<TKey>,
