@@ -9,11 +9,10 @@ import {
 
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AnimalActionTypes } from '@animal/store/animal.action-types';
 import { AnimalTransaction, PagedData } from '@core/models';
 import { AnimalTransactionService } from '@core/models/services';
-import { AnimalState } from '@core/store';
-import { CrudEffects, PayloadAction } from '@core/store/crud';
-import { getSelectedAnimalId } from '@core/store/selectors';
+import { environment } from '@env/environment';
 import {
   Actions,
   createEffect,
@@ -22,11 +21,28 @@ import {
 } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
+import { CrudEffects, PayloadAction } from '../crud';
+import { getSelectedAnimalId } from '../selectors';
+import { AnimalState } from './animal-state.interface';
 import { FetchAnimalTransactionActions } from './fetch-animal-transaction.actions';
 
 export class FetchAnimalTransactionEffects<
   TData extends AnimalTransaction
 > extends CrudEffects<TData, number, TData> {
+  /**
+   * Fetches the transactions for the current active animal when the active
+   * animal changes.
+   */
+  public selectedAnimalChanged$: Observable<PayloadAction<PageEvent>> &
+    CreateEffectMetadata = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AnimalActionTypes.SelectAnimal),
+      map(() =>
+        this.transactionActions.fetchAnimalTransactions(0, environment.pageSize)
+      )
+    )
+  );
+
   /**
    * Retrieves the transactions for the active animal when a fetch transactions
    * action is fired.

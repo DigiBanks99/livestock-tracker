@@ -24,6 +24,7 @@ export interface CrudActions<TData extends KeyEntity<TKey>, TKey> {
   apiError: (error: Error) => PayloadAction<Error>;
   apiFetchItems: (data: PagedData<TData>) => PayloadAction<PagedData<TData>>;
   resetSaveState: () => Action;
+  selectItem: (key: TKey) => PayloadAction<TKey>;
 }
 
 function addItem<TData>(item: TData, typeName: string): PayloadAction<TData> {
@@ -134,6 +135,13 @@ function resetSaveState(typeName: string): Action {
   };
 }
 
+function selectItem<TKey>(key: TKey, typeName: string): PayloadAction<TKey> {
+  return {
+    type: `SELECT_${typeName}`,
+    payload: key
+  };
+}
+
 export function crudActionsFactory<TData extends KeyEntity<TKey>, TKey>(
   typeName: string
 ): CrudActions<TData, TKey> {
@@ -160,6 +168,7 @@ export function crudActionsFactory<TData extends KeyEntity<TKey>, TKey>(
     apiFetchItems: (data: PagedData<TData>): PayloadAction<PagedData<TData>> =>
       apiFetchItems(data, typeName),
     apiError: (error: Error): PayloadAction<Error> => apiError(error, typeName),
-    resetSaveState: (): Action => resetSaveState(typeName)
+    resetSaveState: (): Action => resetSaveState(typeName),
+    selectItem: (key: TKey): PayloadAction<TKey> => selectItem(key, typeName)
   };
 }

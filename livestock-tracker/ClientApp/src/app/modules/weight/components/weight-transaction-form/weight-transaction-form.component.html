@@ -1,0 +1,77 @@
+<app-loader *ngIf="isLoading; else content"></app-loader>
+
+<ng-template #content>
+  <mat-card>
+    <form [formGroup]="form" fxLayout="column" (ngSubmit)="onSave()">
+      <app-animal-select-container
+        [disabled]="true"
+        fxFill
+      ></app-animal-select-container>
+      <div
+        fxFill
+        fxLayout="row"
+        fxLayout.lt-sm="column"
+        [fxLayoutGap.gt-xs]="gapSize"
+      >
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label for="transactionDate">Transaction Date</mat-label>
+          <input
+            id="transactionDate"
+            formControlName="transactionDate"
+            matInput
+            [matDatepicker]="bd"
+          />
+          <mat-datepicker-toggle matSuffix [for]="bd"></mat-datepicker-toggle>
+          <mat-datepicker #bd></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label for="weight">Weight</mat-label>
+          <input
+            type="number"
+            id="weight"
+            formControlName="weight"
+            matInput
+            placeholder="Weight"
+            class="currency-input"
+          />
+          <span matSuffix>kg</span>
+        </mat-form-field>
+      </div>
+
+      <div fxFill fxLayout="row" fxLayoutAlign="flex-start start">
+        <div fxFlex fxLayoutAlign="start start">
+          <button
+            type="button"
+            id="back"
+            mat-stroked-button
+            title="Back to the weight transaction list"
+            [disabled]="isSaving"
+            (click)="onNavigateBack()"
+          >
+            Back
+          </button>
+        </div>
+        <div fxFlex fxLayoutAlign="end start">
+          <button
+            type="button"
+            mat-button
+            title="Reset changes"
+            [disabled]="!form.dirty"
+            (click)="onReset()"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            mat-raised-button
+            color="primary"
+            title="Submit changes"
+            [disabled]="form.invalid || !form.dirty || isSaving"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+</ng-template>

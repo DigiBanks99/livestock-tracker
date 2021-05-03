@@ -8,11 +8,17 @@ import { FeedModule } from '@feed/feed.module';
 import { HeaderModule } from '@header/header.module';
 import { HomeModule } from '@home/home.module';
 import { EffectsModule } from '@ngrx/effects';
+import {
+  NavigationActionTiming,
+  StoreRouterConnectingModule
+} from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ReportsModule } from '@reports/reports.module';
 import { SharedModule } from '@shared/shared.module';
 import { UnitModule } from '@unit/unit.module';
 
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -33,7 +39,14 @@ import { AppComponent } from './app.component';
     UnitModule,
 
     StoreModule.forRoot({}),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+    StoreRouterConnectingModule.forRoot({
+      navigationActionTiming: NavigationActionTiming.PreActivation
+    }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [
     {

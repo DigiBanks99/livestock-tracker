@@ -47,7 +47,7 @@ export class WeightTransactionsPage implements OnDestroy {
   }
 
   public onAddTransaction(): void {
-    this._router.navigateByUrl('new');
+    this._router.navigateByUrl('weight/new');
   }
 
   public onDeleteTransaction(transactionId: number): void {

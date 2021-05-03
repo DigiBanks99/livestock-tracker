@@ -21,7 +21,7 @@ import { select, Store } from '@ngrx/store';
   `
 })
 export class AnimalSelectContainer implements OnDestroy {
-  @Input() public disabled: boolean;
+  @Input() public disabled = false;
 
   public animal$: Observable<Animal>;
   public animals$: Observable<Animal[]>;

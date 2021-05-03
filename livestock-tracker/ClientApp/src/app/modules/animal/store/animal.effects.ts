@@ -11,9 +11,9 @@ import { environment } from '@env/environment';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
+import { AnimalActionTypes } from './animal.action-types';
 import {
   actions,
-  AnimalActionTypes,
   FetchAnimalsAction,
   SelectAnimalAction
 } from './animal.actions';

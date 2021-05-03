@@ -44,6 +44,11 @@ export const saveState = createSelector(
   (state: WeightState): SaveState => state.saveState
 );
 
+export const selectedWeightTransaction = createSelector(
+  weightState,
+  (state: WeightState): WeightTransaction => state.entities[state.selectedId]
+);
+
 export const paginationData = createSelector(
   weightState,
   ({ pageNumber, pageSize, recordCount }: WeightState): PaginationState => ({

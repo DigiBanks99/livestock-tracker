@@ -13,8 +13,9 @@ import { DefaultProjectorFn, MemoizedSelector } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { WeightTransactionListStubComponent } from '@test/weight';
 import { WeightState, WeightTransaction } from '@weight/interfaces';
-import { WeightTransactionsPage } from '@weight/pages/weight-transactions.page';
 import { WeightStore } from '@weight/store';
+
+import { WeightTransactionsPage } from './weight-transactions.page';
 
 describe('WeightTransactionPage', () => {
   let component: WeightTransactionsPage;
@@ -180,7 +181,7 @@ describe('WeightTransactionPage', () => {
   it(`should navigate to 'new' when onAddTransaction is called`, () => {
     component.onAddTransaction();
 
-    expect(routerSpy.navigateByUrl).toHaveBeenCalledOnceWith('new');
+    expect(routerSpy.navigateByUrl).toHaveBeenCalledOnceWith('weight/new');
   });
 
   it(`should dispatch a delete action when onDeleteTransaction is called`, () => {

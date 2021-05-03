@@ -1,5 +1,5 @@
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, SecurityContext } from '@angular/core';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 
@@ -8,26 +8,26 @@ import { DomSanitizer } from '@angular/platform-browser';
   exports: [MatIconModule]
 })
 export class SvgProviderModule {
-  constructor(matIconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-    matIconRegistry.addSvgIcon(
-      'farmer',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/farmer.svg')
-    );
-    matIconRegistry.addSvgIcon(
-      'cow',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/cow.svg')
-    );
-    matIconRegistry.addSvgIcon(
-      'chicken',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/cock.svg')
-    );
-    matIconRegistry.addSvgIcon(
-      'pig',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/pig.svg')
-    );
-    matIconRegistry.addSvgIcon(
-      'sheep',
-      sanitizer.bypassSecurityTrustResourceUrl('/assets/sheep.svg')
-    );
+  constructor(
+    private readonly _matIconRegistry: MatIconRegistry,
+    private readonly _sanitizer: DomSanitizer
+  ) {
+    this.registerSvgAsset('farmer', '/assets/farmer.svg');
+    this.registerSvgAsset('cow', '/assets/cow.svg');
+    this.registerSvgAsset('chicken', '/assets/cock.svg');
+    this.registerSvgAsset('pig', '/assets/pig.svg');
+    this.registerSvgAsset('sheep', '/assets/sheep.svg');
+  }
+
+  private registerSvgAsset(key: string, url: string): void {
+    try {
+      const sanitizedUrl = this._sanitizer.sanitize(SecurityContext.URL, url);
+      this._matIconRegistry.addSvgIcon(
+        key,
+        this._sanitizer.bypassSecurityTrustResourceUrl(sanitizedUrl)
+      );
+    } catch (err) {
+      console.error('The URL for an icon is not safe.', err);
+    }
   }
 }

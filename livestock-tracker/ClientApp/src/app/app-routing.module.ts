@@ -35,7 +35,11 @@ const routes: Routes = [
         (module) => module.MedicalModule
       )
   },
-  { path: 'weight', loadChildren: () => import('./modules/weight/weight.module').then(m => m.WeightModule) }
+  {
+    path: 'weight',
+    loadChildren: () =>
+      import('./modules/weight/weight.module').then((m) => m.WeightModule)
+  }
 ];
 
 @NgModule({

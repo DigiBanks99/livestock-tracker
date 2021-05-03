@@ -2,15 +2,8 @@ import { Animal } from '@core/models';
 import { CrudActions, crudActionsFactory } from '@core/store';
 import { Action } from '@ngrx/store';
 
+import { AnimalActionTypes } from './animal.action-types';
 import { AnimalKey } from './constants';
-
-export enum AnimalActionTypes {
-  SelectAnimal = 'SELECT_ANIMAL',
-  FetchAnimals = 'FETCH_ANIMAL',
-  FetchSingleAnimal = 'FETCH_SINGLE_ANIMAL',
-  ApiFetchAnimal = 'API_FETCH_ANIMAL',
-  SelectAnimalPage = 'SELECT_ANIMAL_PAGE'
-}
 
 export class SelectAnimalAction implements Action {
   readonly type = AnimalActionTypes.SelectAnimal;

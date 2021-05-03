@@ -18,9 +18,9 @@ export class WeightTransactionListComponent {
   @Input() public pageSize = environment.pageSize;
   @Input() public recordCount = 0;
 
-  @Output() public addTransaction = new EventEmitter<void>();
-  @Output() public deleteTransaction = new EventEmitter<number>();
-  @Output() public pageChanged = new EventEmitter<PageEvent>();
+  @Output() public readonly addTransaction = new EventEmitter<void>();
+  @Output() public readonly deleteTransaction = new EventEmitter<number>();
+  @Output() public readonly pageChanged = new EventEmitter<PageEvent>();
 
   private readonly _displayColumns: string[] = [
     'date',

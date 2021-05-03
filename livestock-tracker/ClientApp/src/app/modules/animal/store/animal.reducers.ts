@@ -3,7 +3,8 @@ import { AnimalState, crudReducer } from '@core/store';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
-import { AnimalActionTypes, SelectAnimalAction } from './animal.actions';
+import { AnimalActionTypes } from './animal.action-types';
+import { SelectAnimalAction } from './animal.actions';
 import { AnimalKey } from './constants';
 
 export const animalsAdapter = createEntityAdapter<Animal>({

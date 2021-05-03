@@ -75,6 +75,11 @@ export function crudReducer<TData extends KeyEntity<TKey>, TKey>(
         ...state,
         saveState: SaveState.New
       };
+    case `SELECT_${typeName}`:
+      return {
+        ...state,
+        selectedId: (<PayloadAction<TKey>>action).payload
+      };
     default:
       return state;
   }
