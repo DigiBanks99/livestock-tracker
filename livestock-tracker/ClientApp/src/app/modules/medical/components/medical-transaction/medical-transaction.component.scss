@@ -1,4 +1,4 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 @import 'app-theme';
 
 .medical-container {
@@ -7,8 +7,8 @@
   min-height: calc(100vh - 64px);
   margin-left: auto;
   margin-right: auto;
-  background-color: mat-color($candy-app-primary, 100);
-  color: mat-color($candy-app-accent, '600-contrast', 0.6);
+  background-color: mat.get-color-from-palette($candy-app-primary, 100);
+  color: mat.get-color-from-palette($candy-app-accent, '600-contrast', 0.6);
 
   .mat-fab-bottom-right {
     position: fixed;
@@ -17,7 +17,7 @@
   }
 
   .mat-toolbar.medical-toolbar {
-    background-color: mat-color($candy-app-primary, 100);
+    background-color: mat.get-color-from-palette($candy-app-primary, 100);
 
     .medical-toolbar__header {
       display: flex;
@@ -45,7 +45,7 @@
       width: 24px;
       height: 24px;
       padding: 8px;
-      background-color: mat-color($candy-app-accent);
+      background-color: mat.get-color-from-palette($candy-app-accent);
       border-radius: 50%;
     }
   }
@@ -67,14 +67,14 @@
   }
 
   .medical-list {
-    background-color: mat-color($candy-app-primary, 200);
+    background-color: mat.get-color-from-palette($candy-app-primary, 200);
     display: flex;
     flex-direction: column;
   }
 
   .mat-accent-background {
-    background-color: mat-color($candy-app-accent);
-    color: mat-color($candy-app-accent, '600-contrast', 0.6);
+    background-color: mat.get-color-from-palette($candy-app-accent);
+    color: mat.get-color-from-palette($candy-app-accent, '600-contrast', 0.6);
   }
 
   .medical-transaction {

@@ -1,7 +1,7 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 @import 'app-theme';
 
 .mat-accent-background {
-  background-color: mat-color($candy-app-accent);
-  color: mat-color($candy-app-accent, '600-contrast', 0.6);
+  background-color: mat.get-color-from-palette($candy-app-accent);
+  color: mat.get-color-from-palette($candy-app-accent, '600-contrast', 0.6);
 }
