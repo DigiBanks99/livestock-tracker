@@ -5,7 +5,7 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { Animal, NullAnimal } from '@app/core/models';
+import { Animal, NullAnimal } from '@core/models';
 
 @Component({
   selector: 'app-animal-select',

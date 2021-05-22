@@ -9,14 +9,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LivestockTracker.Database.Models.Medical
 {
     [Table("MedicalTransactions", Schema = "medical")]
-    public class MedicalTransactionModel : IEntity<int>, IMedicalTransaction
+    public class MedicalTransactionModel : IEntity<long>, IMedicalTransaction, IAnimalTransaction
     {
         [Column("ID")]
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Column("AnimalID")]
         [Required]
-        public int AnimalId { get; set; }
+        public long AnimalId { get; set; }
         [Column("MedicineID")]
         [Required]
         public int MedicineId { get; set; }
@@ -32,7 +32,7 @@ namespace LivestockTracker.Database.Models.Medical
         public UnitModel UnitOfMeasurement { get; internal set; } = null!;
         public MedicineTypeModel Medicine { get; internal set; } = null!;
 
-        public int GetKey()
+        public long GetKey()
         {
             return Id;
         }

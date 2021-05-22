@@ -8,7 +8,7 @@ namespace LivestockTracker.Models.Animals
     [DebuggerDisplay("[{Id} - {Number}]: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
     public class AnimalSummary : IAnimalSummary
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public int Number { get; set; }
 

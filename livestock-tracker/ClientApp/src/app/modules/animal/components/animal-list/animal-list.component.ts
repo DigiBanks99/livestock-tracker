@@ -14,11 +14,11 @@ import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { AnimalStore } from '@animal/store';
 import { FetchAnimalsAction } from '@animal/store/animal.actions';
-import { SvgService } from '@app/modules/svg/services/svg.service';
 import { Animal } from '@core/models';
 import { AppState } from '@core/store';
 import { select, Store } from '@ngrx/store';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
+import { SvgService } from '@svg/services/svg.service';
 
 @Component({
   selector: 'app-animal-list',

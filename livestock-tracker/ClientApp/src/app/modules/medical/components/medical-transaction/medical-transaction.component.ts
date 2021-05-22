@@ -6,8 +6,7 @@ import {
   Output
 } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Animal, NullAnimal } from '@app/core/models/livestock.model';
-import { MedicineType, Unit } from '@core/models';
+import { Animal, MedicineType, NullAnimal, Unit } from '@core/models';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 
 @Component({
@@ -51,7 +50,6 @@ export class MedicalTransactionComponent {
   }
 
   public onPage(pageEvent: PageEvent) {
-    console.log(`MTC - Page event: ${pageEvent}`);
     this.page.emit(pageEvent);
   }
 

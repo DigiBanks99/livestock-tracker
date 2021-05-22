@@ -14,6 +14,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalListComponent } from '@animal/components';
+import { AnimalStore } from '@animal/store';
+import { provideMockStore } from '@ngrx/store/testing';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 import { SvgService } from '@svg/services';
 
@@ -22,34 +24,46 @@ describe('Animal List Component', () => {
   let fixture: ComponentFixture<AnimalListComponent>;
   let spy: jasmine.SpyObj<AgeCalculatorService>;
 
-  beforeEach(waitForAsync(() => {
-    spy = jasmine.createSpyObj('AgeCalculatorService', ['calculateAge']);
+  beforeEach(
+    waitForAsync(() => {
+      spy = jasmine.createSpyObj('AgeCalculatorService', ['calculateAge']);
 
-    TestBed.configureTestingModule({
-      declarations: [AnimalListComponent],
-      providers: [{ provide: AgeCalculatorService, useValue: spy }, SvgService],
-      imports: [
-        MatIconModule,
-        MatToolbarModule,
-        MatDividerModule,
-        MatListModule,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatIconModule,
-        MatDatepickerModule,
-        MatInputModule,
-        MatSelectModule,
-        MatCheckboxModule,
-        NativeDateModule,
-        MatFormFieldModule,
-        MatInputModule,
-        RouterTestingModule,
-        MatSnackBarModule
-      ],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA]
-    }).compileComponents();
-  }));
+      TestBed.configureTestingModule({
+        declarations: [AnimalListComponent],
+        providers: [
+          { provide: AgeCalculatorService, useValue: spy },
+          SvgService,
+          provideMockStore({
+            selectors: [
+              { selector: AnimalStore.selectors.getPageSize, value: 10 },
+              { selector: AnimalStore.selectors.getCurrentPage, value: 0 },
+              { selector: AnimalStore.selectors.getRecordCount, value: 0 }
+            ]
+          })
+        ],
+        imports: [
+          MatIconModule,
+          MatToolbarModule,
+          MatDividerModule,
+          MatListModule,
+          FormsModule,
+          ReactiveFormsModule,
+          MatFormFieldModule,
+          MatIconModule,
+          MatDatepickerModule,
+          MatInputModule,
+          MatSelectModule,
+          MatCheckboxModule,
+          NativeDateModule,
+          MatFormFieldModule,
+          MatInputModule,
+          RouterTestingModule,
+          MatSnackBarModule
+        ],
+        schemas: [CUSTOM_ELEMENTS_SCHEMA]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AnimalListComponent);

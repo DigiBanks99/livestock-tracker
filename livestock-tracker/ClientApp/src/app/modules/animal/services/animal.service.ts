@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
-import { Animal } from '@core/models';
-import { CrudService } from '@core/models/crud-service.interface';
-import { PagedData } from '@core/models/paged-data.model';
+import { BaseUrl } from '@core/di';
+import { Animal, PagedData } from '@core/models';
+import { CrudService } from '@core/models/services';
 
 @Injectable({
   providedIn: AnimalProviderModule
@@ -13,7 +13,7 @@ import { PagedData } from '@core/models/paged-data.model';
 export class AnimalService implements CrudService<Animal, number, number> {
   private apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
     this.apiUrl = baseUrl + 'animal';
   }
 

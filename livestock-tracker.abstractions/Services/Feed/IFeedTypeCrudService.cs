@@ -5,7 +5,7 @@ namespace LivestockTracker.Abstractions.Services.Feed
     /// <summary>
     /// Provides create, read and update and deletion services for feed types.
     /// </summary>
-    public interface IFeedTypeCrudService : ICrudAsyncService<IFeedType, int>
+    public interface IFeedTypeCrudService : ICrudAsyncService<IFeedType, int>, IFetchAsyncService<IFeedType, int>
     {
     }
 }

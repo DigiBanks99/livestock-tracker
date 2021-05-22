@@ -4,7 +4,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
 import { AnimalStore } from '@animal/store/index';
-import { Animal, SaveState } from '@app/core/models';
+import { Animal, SaveState } from '@core/models';
 import { AppState } from '@core/store';
 import { getSelectedAnimal } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';

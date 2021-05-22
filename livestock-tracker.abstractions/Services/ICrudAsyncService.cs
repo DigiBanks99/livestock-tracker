@@ -9,7 +9,7 @@ namespace LivestockTracker.Abstractions.Services
     /// </summary>
     /// <typeparam name="TDto">The type of the object to be returned.</typeparam>
     /// <typeparam name="TKey">The type of the key of the object.</typeparam>
-    public interface ICrudAsyncService<TDto, TKey> : IFetchAsyncService<TDto, TKey>
+    public interface ICrudAsyncService<TDto, TKey>
         where TDto : class
         where TKey : IConvertible
     {

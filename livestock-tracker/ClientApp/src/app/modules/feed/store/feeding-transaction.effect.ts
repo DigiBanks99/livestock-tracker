@@ -2,19 +2,18 @@ import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { PagedData } from '@core/models/paged-data.model';
-import { CrudEffects } from '@core/store/crud.effects';
+import { FeedingTransaction, PagedData } from '@core/models';
+import { CrudEffects } from '@core/store';
 import { FeedingTransactionService } from '@feed/services';
-import {
-  actions as feedingTransactionActions,
-  FetchFeedingTransactionAction,
-  FetchSingleFeedTransactionParams
-} from '@feed/store/feeding-transaction.actions';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { FeedingTransactionKey } from './constants';
+import {
+  actions as feedingTransactionActions,
+  FetchFeedingTransactionAction,
+  FetchSingleFeedTransactionParams
+} from './feeding-transaction.actions';
 
 @Injectable()
 export class FeedingTransactionEffects extends CrudEffects<

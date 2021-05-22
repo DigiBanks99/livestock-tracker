@@ -11,7 +11,7 @@ namespace LivestockTracker.Abstractions.Models.Animals
         /// <summary>
         /// Uniquely identifies the animal.
         /// </summary>
-        int Id { get; }
+        long Id { get; }
 
         /// <summary>
         /// The human readable number assigned to the animal.

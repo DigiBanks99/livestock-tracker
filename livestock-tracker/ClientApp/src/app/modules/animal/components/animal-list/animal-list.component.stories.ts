@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalListComponent } from '@animal/components/animal-list/animal-list.component';
 import { AnimalStore } from '@animal/store';
+import { BaseUrl } from '@core/di/base-url.injection-token';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { LoaderModule } from '@shared/components';
@@ -47,7 +48,7 @@ export default {
       providers: [
         SvgService,
         AgeCalculatorService,
-        { provide: 'BASE_URL', useValue: '' },
+        { provide: BaseUrl, useValue: '' },
         { provide: APP_BASE_HREF, useValue: '/' }
       ]
     })

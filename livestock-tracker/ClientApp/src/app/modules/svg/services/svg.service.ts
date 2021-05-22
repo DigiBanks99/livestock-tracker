@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SvgProviderModule } from '@app/modules/svg/svg-provider.module';
 import { Animal, AnimalType } from '@core/models';
+import { SvgProviderModule } from '@svg/svg-provider.module';
 
 @Injectable({
   providedIn: SvgProviderModule

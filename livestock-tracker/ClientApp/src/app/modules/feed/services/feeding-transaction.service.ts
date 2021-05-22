@@ -2,6 +2,7 @@ import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { BaseUrl } from '@core/di/base-url.injection-token';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { PagedData } from '@core/models/paged-data.model';
 import { FetchSingleFeedTransactionParams } from '@feed/store/feeding-transaction.actions';
@@ -10,7 +11,7 @@ import { FetchSingleFeedTransactionParams } from '@feed/store/feeding-transactio
 export class FeedingTransactionService {
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
     this.apiUrl = baseUrl + 'feedingTransaction';
   }
 

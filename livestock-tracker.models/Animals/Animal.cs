@@ -9,7 +9,7 @@ namespace LivestockTracker.Models.Animals
     [DebuggerDisplay("[{Id} - {Number}]: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
     public class Animal : IAnimal
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required]
         public AnimalType Type { get; set; }
         [MaxLength(50)]

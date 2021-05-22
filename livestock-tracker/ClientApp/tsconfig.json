@@ -30,8 +30,8 @@
       "@svg/*": ["app/modules/svg/*"],
       "@unit/*": ["app/modules/unit/*"],
       "@unit-store/*": ["app/modules/unit/store/*"],
-      "@app/*": ["app/*"],
-      "@modules/*": ["app/modules/*"]
+      "@weight/*": ["app/modules/weight/*"],
+      "@test/*": ["test/modules/*"]
     },
     "newLine": "LF",
     "charset": "UTF-8"

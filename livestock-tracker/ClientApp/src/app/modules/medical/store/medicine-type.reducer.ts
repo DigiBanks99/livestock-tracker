@@ -1,6 +1,5 @@
 import { MedicineType, SaveState } from '@core/models';
-import { crudReducer } from '@core/store/crud.reducer';
-import { MedicineTypeState } from '@core/store/medicine-type-state.interface';
+import { crudReducer, MedicineTypeState } from '@core/store';
 import { environment } from '@env/environment';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';

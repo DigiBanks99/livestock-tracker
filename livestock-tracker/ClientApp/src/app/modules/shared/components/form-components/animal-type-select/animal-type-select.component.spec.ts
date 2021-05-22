@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import {
   ComponentFixture,
   fakeAsync,
@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalType } from '@core/models';
+import { SvgService } from '@svg/services';
 
 import { AnimalTypeSelectComponent } from './animal-type-select.component';
 
@@ -48,6 +49,14 @@ class TestComponent {
   }
 }
 
+@Component({
+  selector: 'app-animal-type-select-display',
+  template: ''
+})
+class AnimalTypeSelectDisplayStubComponent {
+  @Input() public value: AnimalType | null = null;
+}
+
 describe('AnimalTypeSelectComponent', () => {
   let component: AnimalTypeSelectComponent;
   let fixture: ComponentFixture<AnimalTypeSelectComponent>;
@@ -57,7 +66,12 @@ describe('AnimalTypeSelectComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [AnimalTypeSelectComponent, TestComponent],
+        declarations: [
+          AnimalTypeSelectComponent,
+          AnimalTypeSelectDisplayStubComponent,
+          TestComponent
+        ],
+        providers: [SvgService],
         imports: [
           NoopAnimationsModule,
           FormsModule,

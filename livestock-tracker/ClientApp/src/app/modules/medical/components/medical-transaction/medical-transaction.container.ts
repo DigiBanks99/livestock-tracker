@@ -3,8 +3,7 @@ import { filter, takeUntil, tap } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Animal } from '@app/core/models/livestock.model';
-import { MedicalTransaction, MedicineType, Unit } from '@core/models';
+import { Animal, MedicalTransaction, MedicineType, Unit } from '@core/models';
 import { AppState } from '@core/store';
 import { getSelectedAnimal, getUnits } from '@core/store/selectors';
 import { environment } from '@env/environment';
@@ -50,10 +49,7 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
     this.store.dispatch(new FetchMedicineTypesAction());
     this.selectedAnimal$ = this.store.pipe(
       select(getSelectedAnimal),
-      filter((animal: Animal) => {
-        console.log(`MT: ${JSON.stringify(animal)}`);
-        return animal != null;
-      }),
+      filter((animal: Animal) => animal != null),
       tap((animal: Animal) => {
         this.store.dispatch(
           new FetchMedicalTransactionsAction(animal.id, 0, environment.pageSize)
@@ -87,7 +83,6 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
     combineLatest([this.selectedAnimal$, this.page$])
       .pipe(takeUntil(this.destroyed$))
       .subscribe(([animal, pageEvent]: [Animal, PageEvent]) => {
-        console.log(animal, pageEvent);
         this.store.dispatch(
           new FetchMedicalTransactionsAction(
             animal.id,

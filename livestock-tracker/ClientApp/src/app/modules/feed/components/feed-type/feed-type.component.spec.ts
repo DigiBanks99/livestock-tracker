@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FeedTypeDetailComponent } from '@feed/components/feed-type-detail/feed-type-detail.component';
 import { FeedTypeComponent } from '@feed/components/feed-type/feed-type.component';
 import {
@@ -17,21 +18,26 @@ describe('FeedTypeComponent', () => {
   let component: FeedTypeComponent;
   let fixture: ComponentFixture<FeedTypeComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [FeedTypeComponent, FeedTypeDetailComponent],
-      providers: [{ provide: FeedTypeService, useClass: MockFeedTypeService }],
-      imports: [
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatDividerModule,
-        MatListModule,
-        MatPaginatorModule,
-        MatIconModule,
-        MatFormFieldModule
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [FeedTypeComponent, FeedTypeDetailComponent],
+        providers: [
+          { provide: FeedTypeService, useClass: MockFeedTypeService }
+        ],
+        imports: [
+          NoopAnimationsModule,
+          ReactiveFormsModule,
+          MatToolbarModule,
+          MatDividerModule,
+          MatListModule,
+          MatPaginatorModule,
+          MatIconModule,
+          MatFormFieldModule
+        ]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FeedTypeComponent);

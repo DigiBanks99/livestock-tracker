@@ -34,6 +34,11 @@ const routes: Routes = [
       import('./modules/medical/medical.module').then(
         (module) => module.MedicalModule
       )
+  },
+  {
+    path: 'weight',
+    loadChildren: () =>
+      import('./modules/weight/weight.module').then((m) => m.WeightModule)
   }
 ];
 

@@ -1,5 +1,6 @@
 import { TestData } from 'test/modules/animal';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalSelectComponent, AnimalSelectModule } from '@shared/components';
 import { moduleMetadata, Story } from '@storybook/angular';
 
@@ -8,7 +9,7 @@ export default {
   component: AnimalSelectComponent,
   decorators: [
     moduleMetadata({
-      imports: [AnimalSelectModule]
+      imports: [AnimalSelectModule, BrowserAnimationsModule]
     })
   ]
 };

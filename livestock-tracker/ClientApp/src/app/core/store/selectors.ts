@@ -2,7 +2,7 @@ import { Animal, Unit } from '@core/models';
 import { Dictionary } from '@ngrx/entity';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { AnimalState } from './animal-state.interface';
+import { AnimalState } from './animal';
 import { UnitState } from './unit-state.interface';
 
 function selectItems<TData>(

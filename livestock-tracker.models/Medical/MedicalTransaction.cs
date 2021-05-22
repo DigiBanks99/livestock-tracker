@@ -7,9 +7,9 @@ namespace LivestockTracker.Models.Medical
     public class MedicalTransaction : IMedicalTransaction
     {
         [Required]
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required]
-        public int AnimalId { get; set; }
+        public long AnimalId { get; set; }
         [Required]
         public int MedicineId { get; set; }
         [Required]

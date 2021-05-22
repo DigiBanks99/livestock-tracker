@@ -1,16 +1,12 @@
 import { SaveState } from '@core/models';
 import { FeedType } from '@core/models/feed-type.model';
-import { crudReducer } from '@core/store/crud.reducer';
-import { FeedTypeState } from '@core/store/feed-type-state.interface';
+import { crudReducer, FeedTypeState } from '@core/store';
 import { environment } from '@env/environment';
-import {
-  FeedTypeActionTypes,
-  SelectFeedTypeAction
-} from '@feed/store/feed-type.actions';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { FeedTypeKey } from './constants';
+import { FeedTypeActionTypes, SelectFeedTypeAction } from './feed-type.actions';
 
 export const feedTypeAdapter = createEntityAdapter<FeedType>({
   selectId: (feedType: FeedType) => feedType.id,

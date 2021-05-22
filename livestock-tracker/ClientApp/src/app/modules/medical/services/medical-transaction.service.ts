@@ -2,6 +2,7 @@ import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { BaseUrl } from '@core/di/base-url.injection-token';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { PagedData } from '@core/models/paged-data.model';
 import { environment } from '@env/environment';
@@ -11,7 +12,7 @@ import { FetchSingleMedicalTransactionParams } from '@medical/store/medical-tran
 export class MedicalTransactionService {
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
     this.apiUrl = `${baseUrl}medicalTransactions`;
   }
 

@@ -2,10 +2,9 @@ import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MedicineType } from '@core/models';
-import { PagedData } from '@core/models/paged-data.model';
-import { CrudEffects } from '@core/store/crud.effects';
-import { MedicineTypeService } from '@medical/services/medicine-type.service';
+import { MedicineType, PagedData } from '@core/models';
+import { CrudEffects } from '@core/store';
+import { MedicineTypeService } from '@medical/services';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
