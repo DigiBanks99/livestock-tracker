@@ -4,8 +4,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CommandButtonTestingModule } from '@test/shared';
 import { UnitDetailComponent } from '@unit/components/unit-detail/unit-detail.component';
 import { UnitComponent } from '@unit/components/unit/unit.component';
 import { MockUnitService, UnitService } from '@unit/services/unit.service';
@@ -20,13 +22,15 @@ describe('UnitComponent', () => {
         declarations: [UnitComponent, UnitDetailComponent],
         providers: [{ provide: UnitService, useClass: MockUnitService }],
         imports: [
+          CommandButtonTestingModule,
           NoopAnimationsModule,
           ReactiveFormsModule,
           MatFormFieldModule,
           MatToolbarModule,
           MatListModule,
           MatPaginatorModule,
-          MatIconModule
+          MatIconModule,
+          MatTableModule
         ]
       }).compileComponents();
     })

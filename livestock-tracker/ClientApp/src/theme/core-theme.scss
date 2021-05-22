@@ -1,6 +1,6 @@
-@include mat.core();
 @use '~@angular/material' as mat;
-@import 'variables';
+@use 'variables';
+@include mat.core();
 
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
@@ -15,28 +15,30 @@ $background-color: map-get(mat.$lime-palette, 100);
 $component-background-color: mat.define-palette(mat.$lime-palette, 200);
 
 // Create the theme object (a Sass map containing all of the palettes).
-$theme: mat.define-light-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
+$theme: mat.define-light-theme(
+  $candy-app-primary,
+  $candy-app-accent,
+  $candy-app-warn
+);
 
 $background: map-get(
   $map: $theme,
-  $key: background,
+  $key: background
 );
 $background: map-merge(
   $map1: $background,
   $map2: (
-    background: $background-color,
-  ),
+    background: $background-color
+  )
 );
 $theme: map-merge(
   $map1: $theme,
   $map2: (
-    background: $background,
-  ),
+    background: $background
+  )
 );
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($theme);
-
-@import './paginator-theme';

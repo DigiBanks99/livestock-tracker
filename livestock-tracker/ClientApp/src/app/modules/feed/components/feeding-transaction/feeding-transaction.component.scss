@@ -1,5 +1,5 @@
 @use '~@angular/material' as mat;
-@import 'app-theme';
+@use 'app-theme' as theme;
 
 .feeding-transaction-container {
   position: relative;
@@ -7,8 +7,12 @@
   min-height: calc(100vh - 64px);
   margin-left: auto;
   margin-right: auto;
-  background-color: mat.get-color-from-palette($candy-app-primary, 100);
-  color: mat.get-color-from-palette($candy-app-accent, '600-contrast', 0.6);
+  background-color: mat.get-color-from-palette(theme.$candy-app-primary, 100);
+  color: mat.get-color-from-palette(
+    theme.$candy-app-accent,
+    '600-contrast',
+    0.6
+  );
 
   .feeding-transaction {
     display: flex;

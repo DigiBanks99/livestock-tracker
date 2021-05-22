@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalListComponent } from '@animal/components';
@@ -18,6 +19,7 @@ import { AnimalStore } from '@animal/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 import { SvgService } from '@svg/services';
+import { CommandButtonTestingModule } from '@test/shared';
 
 describe('Animal List Component', () => {
   let component: AnimalListComponent;
@@ -42,11 +44,11 @@ describe('Animal List Component', () => {
           })
         ],
         imports: [
+          CommandButtonTestingModule,
           MatIconModule,
           MatToolbarModule,
           MatDividerModule,
           MatListModule,
-          FormsModule,
           ReactiveFormsModule,
           MatFormFieldModule,
           MatIconModule,
@@ -57,6 +59,7 @@ describe('Animal List Component', () => {
           NativeDateModule,
           MatFormFieldModule,
           MatInputModule,
+          MatTableModule,
           RouterTestingModule,
           MatSnackBarModule
         ],

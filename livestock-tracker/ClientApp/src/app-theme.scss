@@ -1,8 +1,9 @@
-@import 'theme/variables';
+@forward 'theme/variables';
 
-@import 'theme/core-theme';
-@import 'theme/forms';
+@forward 'theme/forms';
 
-@import 'theme/card-theme';
-@import 'theme/paginator-theme';
-@import 'theme/table-theme';
+@forward 'theme/card-theme';
+@forward 'theme/paginator-theme';
+@forward 'theme/table-theme';
+
+@forward 'theme/core-theme';

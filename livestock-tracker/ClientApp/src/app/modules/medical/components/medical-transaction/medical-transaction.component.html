@@ -66,6 +66,4 @@
     (page)="onPage($event)"
   ></mat-paginator>
 </div>
-<app-command-button
-  [routerLink]="[currentAnimal.id, 'new']"
-></app-command-button>
+<app-command-button (click)="onAdd()"></app-command-button>
