@@ -26,11 +26,9 @@ namespace LivestockTracker.Models.Animals
         public decimal PurchasePrice { get; set; }
         [Required]
         public decimal ArrivalWeight { get; set; }
-        [Required]
         public bool Sold { get; set; } = false;
         public decimal? SellPrice { get; set; }
         public DateTimeOffset? SellDate { get; set; }
-        [Required]
         public bool Deceased { get; set; } = false;
         public DateTimeOffset? DateOfDeath { get; set; }
     }

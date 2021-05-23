@@ -9,12 +9,12 @@ import {
   SelectFeedTransactionAction
 } from './feeding-transaction.actions';
 
-export const feedingTransactionAdapter = createEntityAdapter<
-  FeedingTransaction
->({
-  selectId: (transaction: FeedingTransaction) => transaction.id,
-  sortComparer: false
-});
+export const feedingTransactionAdapter = createEntityAdapter<FeedingTransaction>(
+  {
+    selectId: (transaction: FeedingTransaction) => transaction.id,
+    sortComparer: false
+  }
+);
 
 export const initialState: FeedingTransactionState = feedingTransactionAdapter.getInitialState(
   {

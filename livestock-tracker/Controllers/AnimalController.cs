@@ -96,7 +96,7 @@ namespace LivestockTracker.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Animal), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddAnimal([Required][FromBody]Animal animal)
+        public async Task<IActionResult> AddAnimal(Animal animal)
         {
             Logger.LogInformation($"Requesting the creation of a new animal {animal}...");
 
