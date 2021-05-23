@@ -5,6 +5,7 @@ import { MedicalTransaction } from '@core/models';
 import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
 import { medicalTransactionStore, medicineTypeStore } from '@medical/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { MedicalTransactionFormStubComponent } from '@test/medical';
 
 import { MedicalTransactionDetailComponent } from './medical-transaction-detail.component';
 
@@ -15,7 +16,10 @@ describe('MedicalTransactionDetailComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [MedicalTransactionDetailComponent],
+        declarations: [
+          MedicalTransactionDetailComponent,
+          MedicalTransactionFormStubComponent
+        ],
         providers: [
           provideMockStore({
             selectors: [

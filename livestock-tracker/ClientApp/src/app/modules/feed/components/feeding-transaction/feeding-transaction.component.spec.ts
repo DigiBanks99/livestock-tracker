@@ -7,19 +7,18 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
   FeedingTransactionService,
-  MockFeedingTransactionService
-} from '@feed/services';
-import {
   FeedTypeService,
+  MockFeedingTransactionService,
   MockFeedTypeService
-} from '@feed/services/feed-type.service';
-import { LsGridComponent } from '@shared/components/ls-grid/ls-grid.component';
+} from '@feed/services';
 import { SvgService } from '@svg/services';
+import { CommandButtonTestingModule } from '@test/shared';
 import { MockUnitService, UnitService } from '@unit/services/unit.service';
 
 import { FeedingTransactionComponent } from './feeding-transaction.component';
@@ -36,39 +35,42 @@ describe('FeedingTransactionComponent', () => {
   let component: FeedingTransactionComponent;
   let fixture: ComponentFixture<FeedingTransactionComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        FeedingTransactionComponent,
-        LsGridComponent,
-        AnimalSelectContainerComponent
-      ],
-      providers: [
-        SvgService,
-        {
-          provide: FeedingTransactionService,
-          useClass: MockFeedingTransactionService
-        },
-        {
-          provide: FeedTypeService,
-          useClass: MockFeedTypeService
-        },
-        { provide: UnitService, useClass: MockUnitService }
-      ],
-      imports: [
-        BrowserAnimationsModule,
-        MatButtonModule,
-        MatIconModule,
-        MatInputModule,
-        MatListModule,
-        MatOptionModule,
-        MatPaginatorModule,
-        MatSelectModule,
-        MatToolbarModule,
-        RouterTestingModule
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          FeedingTransactionComponent,
+          AnimalSelectContainerComponent
+        ],
+        providers: [
+          SvgService,
+          {
+            provide: FeedingTransactionService,
+            useClass: MockFeedingTransactionService
+          },
+          {
+            provide: FeedTypeService,
+            useClass: MockFeedTypeService
+          },
+          { provide: UnitService, useClass: MockUnitService }
+        ],
+        imports: [
+          BrowserAnimationsModule,
+          CommandButtonTestingModule,
+          MatButtonModule,
+          MatIconModule,
+          MatInputModule,
+          MatListModule,
+          MatOptionModule,
+          MatPaginatorModule,
+          MatSelectModule,
+          MatTableModule,
+          MatToolbarModule,
+          RouterTestingModule
+        ]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FeedingTransactionComponent);

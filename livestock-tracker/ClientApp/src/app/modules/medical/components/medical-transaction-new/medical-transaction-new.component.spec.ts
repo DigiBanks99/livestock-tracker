@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
 import { medicineTypeStore } from '@medical/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { MedicalTransactionFormStubComponent } from '@test/medical';
 
 import { MedicalTransactionNewComponent } from './medical-transaction-new.component';
 
@@ -13,7 +14,10 @@ describe('MedicalTransactionNewComponent', () => {
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
-        declarations: [MedicalTransactionNewComponent],
+        declarations: [
+          MedicalTransactionNewComponent,
+          MedicalTransactionFormStubComponent
+        ],
         providers: [
           provideMockStore({
             selectors: [

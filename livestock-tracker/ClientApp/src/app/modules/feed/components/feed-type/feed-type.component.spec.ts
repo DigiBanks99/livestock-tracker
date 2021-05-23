@@ -5,14 +5,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { FeedTypeDetailComponent } from '@feed/components/feed-type-detail/feed-type-detail.component';
-import { FeedTypeComponent } from '@feed/components/feed-type/feed-type.component';
-import {
-  FeedTypeService,
-  MockFeedTypeService
-} from '@feed/services/feed-type.service';
+import { FeedTypeService, MockFeedTypeService } from '@feed/services';
+import { CommandButtonTestingModule } from '@test/shared';
+
+import { FeedTypeDetailComponent } from '../feed-type-detail/feed-type-detail.component';
+import { FeedTypeComponent } from './feed-type.component';
 
 describe('FeedTypeComponent', () => {
   let component: FeedTypeComponent;
@@ -26,6 +26,7 @@ describe('FeedTypeComponent', () => {
           { provide: FeedTypeService, useClass: MockFeedTypeService }
         ],
         imports: [
+          CommandButtonTestingModule,
           NoopAnimationsModule,
           ReactiveFormsModule,
           MatToolbarModule,
@@ -33,7 +34,8 @@ describe('FeedTypeComponent', () => {
           MatListModule,
           MatPaginatorModule,
           MatIconModule,
-          MatFormFieldModule
+          MatFormFieldModule,
+          MatTableModule
         ]
       }).compileComponents();
     })

@@ -31,7 +31,7 @@ export class MedicalTransactionComponent {
   @Input() public pageSize: number;
   @Input() public recordCount: number;
 
-  @Output() public add = new EventEmitter<MedicalTransaction>();
+  @Output() public add = new EventEmitter<number>();
   @Output() public page = new EventEmitter<PageEvent>();
   @Output() public remove = new EventEmitter<number>();
 
@@ -45,8 +45,8 @@ export class MedicalTransactionComponent {
 
   private _currentAnimal: Animal = NullAnimal.instance;
 
-  public onAdd(medicalTransaction: MedicalTransaction) {
-    this.add.emit(medicalTransaction);
+  public onAdd() {
+    this.add.emit(this.currentAnimal.id);
   }
 
   public onPage(pageEvent: PageEvent) {

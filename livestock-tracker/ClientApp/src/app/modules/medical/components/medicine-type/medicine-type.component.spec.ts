@@ -5,16 +5,19 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MedicineTypeDetailComponent } from '@medical/components/medicine-type-detail/medicine-type-detail.component';
-import { MedicineTypeComponent } from '@medical/components/medicine-type/medicine-type.component';
 import {
   MedicineTypeService,
   MockMedicineTypeService
-} from '@medical/services/medicine-type.service';
+} from '@medical/services';
 import { medicineTypeStore } from '@medical/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { CommandButtonTestingModule } from '@test/shared';
+
+import { MedicineTypeDetailComponent } from '../medicine-type-detail/medicine-type-detail.component';
+import { MedicineTypeComponent } from './medicine-type.component';
 
 describe('MedicineTypeComponent', () => {
   let component: MedicineTypeComponent;
@@ -36,8 +39,10 @@ describe('MedicineTypeComponent', () => {
           })
         ],
         imports: [
+          CommandButtonTestingModule,
           NoopAnimationsModule,
           ReactiveFormsModule,
+          MatTableModule,
           MatToolbarModule,
           MatListModule,
           MatPaginatorModule,
