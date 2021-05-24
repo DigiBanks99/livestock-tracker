@@ -4,11 +4,11 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FeedType } from '@core/models/feed-type.model';
 import { PagedData } from '@core/models/paged-data.model';
-import { CrudEffects } from '@core/store/crud.effects';
-import { FeedTypeService } from '@feed/services/feed-type.service';
+import { CrudEffects } from '@core/store';
+import { FeedTypeService } from '@feed/services';
 import {
   actions as feedTypeActions,
-  FetchFeedTypes
+  FetchFeedTypesAction
 } from '@feed/store/feed-type.actions';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
@@ -28,7 +28,7 @@ export class FeedTypeEffects extends CrudEffects<FeedType, number, number> {
   protected handleFetchAction$ = (
     action: Action
   ): Observable<PagedData<FeedType>> => {
-    const fetchAction = <FetchFeedTypes>action;
+    const fetchAction = <FetchFeedTypesAction>action;
     return this.feedTypeService.getAll(
       fetchAction.pageNumber,
       fetchAction.pageSize,

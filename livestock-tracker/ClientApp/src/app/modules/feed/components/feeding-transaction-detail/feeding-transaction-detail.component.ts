@@ -9,21 +9,19 @@ import { Unit } from '@core/models/unit.model';
 import { AppState } from '@core/store';
 import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
 import { feedingTransactionStore, feedTypeStore } from '@feed-store';
-import { FetchFeedTypes } from '@feed/store/feed-type.actions';
+import { FetchFeedTypesAction } from '@feed/store/feed-type.actions';
 import {
   actions,
-  FetchSingleFeedTransaction
+  FetchSingleFeedTransactionAction
 } from '@feed/store/feeding-transaction.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-feeding-transaction-detail',
   templateUrl: './feeding-transaction-detail.component.html',
-  styleUrls: ['./feeding-transaction-detail.component.scss'],
+  styleUrls: ['./feeding-transaction-detail.component.scss']
 })
 export class FeedingTransactionDetailComponent implements OnInit, OnDestroy {
-  private destroyed$ = new Subject();
-
   public selectedAnimalId$: Observable<number>;
   public isPending$: Observable<boolean>;
   public error$: Observable<Error>;
@@ -33,6 +31,8 @@ export class FeedingTransactionDetailComponent implements OnInit, OnDestroy {
 
   public selectedAnimalId = 0;
   public pending = true;
+
+  private destroyed$ = new Subject();
 
   constructor(
     private store: Store<AppState>,
@@ -45,10 +45,10 @@ export class FeedingTransactionDetailComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroyed$))
       .subscribe((params: Params) => {
         this.store.dispatch(
-          new FetchSingleFeedTransaction(params.animalId, params.id)
+          new FetchSingleFeedTransactionAction(params.animalId, params.id)
         );
       });
-    this.store.dispatch(new FetchFeedTypes(0, 100, false));
+    this.store.dispatch(new FetchFeedTypesAction(0, 100, false));
     this.selectedAnimalId$ = this.store.pipe(
       select(getSelectedAnimalId),
       takeUntil(this.destroyed$)

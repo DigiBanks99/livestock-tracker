@@ -6,7 +6,12 @@
     "types": []
   },
   "exclude": [
+    "environments/environment.*.ts",
     "test.ts",
-    "**/*.spec.ts"
+    "test/**/*",
+    "**/test-data.ts",
+    "**/*.spec.ts",
+    "**/*.stories.*",
+    "stories/**/*"
   ]
 }

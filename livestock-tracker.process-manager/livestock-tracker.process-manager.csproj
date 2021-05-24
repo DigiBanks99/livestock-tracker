@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>LivestockTracker.ProcessManager</RootNamespace>
     <Configurations>Debug;Release;Debug Updater</Configurations>
   </PropertyGroup>

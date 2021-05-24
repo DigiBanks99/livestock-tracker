@@ -1,6 +1,6 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { Component, Input } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -8,21 +8,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {
-  LivestockService,
-  MockLivestockService
-} from '@animal/services/livestock.service';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
-import { MedicalTransactionComponent } from '@medical/components/medical-transaction/medical-transaction.component';
 import {
   MedicalTransactionService,
   MockMedicalService
-} from '@medical/services/medical-transaction.service';
+} from '@medical/services';
+import { SvgService } from '@svg/services';
+import { CommandButtonTestingModule } from '@test/shared';
+
+import { MedicalTransactionComponent } from './medical-transaction.component';
 
 @Component({
   selector: 'app-animal-select-container',
-  template: '<div></div>',
+  template: '<div></div>'
 })
 class AnimalSelectContainerComponent {
   @Input() public disabled: boolean;
@@ -30,7 +33,7 @@ class AnimalSelectContainerComponent {
 
 @Component({
   selector: 'app-medical-transaction-container',
-  template: '<div></div>',
+  template: '<div></div>'
 })
 class MedicalTransactionContainerComponent {
   @Input() medicalTransaction: MedicalTransaction;
@@ -40,30 +43,36 @@ describe('MedicalTransactionComponent', () => {
   let component: MedicalTransactionComponent;
   let fixture: ComponentFixture<MedicalTransactionComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
+  beforeEach(async () => {
+    const routerSpy = jasmine.createSpyObj<Router>(Router.name, ['navigate']);
+    await TestBed.configureTestingModule({
       declarations: [
         MedicalTransactionComponent,
         MedicalTransactionContainerComponent,
-        AnimalSelectContainerComponent,
+        AnimalSelectContainerComponent
       ],
       providers: [
         { provide: MedicalTransactionService, useClass: MockMedicalService },
-        { provide: LivestockService, useClass: MockLivestockService },
+        { provide: Router, useValue: routerSpy },
+        SvgService
       ],
       imports: [
+        CommandButtonTestingModule,
+        NoopAnimationsModule,
         ReactiveFormsModule,
+        MatDatepickerModule,
+        MatListModule,
         MatIconModule,
-        MatSelectModule,
         MatOptionModule,
         MatPaginatorModule,
+        MatTableModule,
         MatToolbarModule,
-        MatListModule,
-        MatDatepickerModule,
+        MatSelectModule,
         HttpClientTestingModule,
-      ],
+        RouterTestingModule
+      ]
     }).compileComponents();
-  }));
+  });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MedicalTransactionComponent);

@@ -1,4 +1,4 @@
-import { combineLatest, Subject } from 'rxjs';
+import { merge, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
@@ -8,44 +8,46 @@ import {
   Input,
   Output
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  Validators
+} from '@angular/forms';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { Animal, AnimalType, NullAnimal } from '@core/models';
 import { environment } from '@env/environment';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
 const Constants = {
-  Controls: {
-    ID: 'id',
-    SELL_PRICE: 'sellPrice',
-    SELL_DATE: 'sellDate',
-    DATE_OF_DEATH: 'dateOfDeath',
-    SOLD: 'sold',
-    BIRTH_DATE: 'birthDate',
-    AGE: 'age',
-    DECEASED: 'deceased',
-    TYPE: 'type',
-    SUBSPECIES: 'subspecies',
-    NUMBER: 'number',
-    PURCHASE_DATE: 'purchaseDate',
-    PURCHASE_PRICE: 'purchasePrice',
-    ARRIVAL_WEIGHT: 'arrivalWeight',
-    BATCH_NUMBER: 'batchNumber',
-  },
+  controls: {
+    id: 'id',
+    sellPrice: 'sellPrice',
+    sellDate: 'sellDate',
+    dateOfDeath: 'dateOfDeath',
+    sold: 'sold',
+    birthDate: 'birthDate',
+    age: 'age',
+    deceased: 'deceased',
+    type: 'type',
+    subspecies: 'subspecies',
+    number: 'number',
+    purchaseDate: 'purchaseDate',
+    purchasePrice: 'purchasePrice',
+    arrivalWeight: 'arrivalWeight',
+    batchNumber: 'batchNumber'
+  }
 };
 
 @Component({
   selector: 'app-animal-form',
   templateUrl: './animal-form.component.html',
-  styleUrls: ['./animal-form.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.short },
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.short }
   ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnimalFormComponent {
-  private _currentAnimal: Animal = null;
-
   @Input()
   public set currentAnimal(value: Animal) {
     this._currentAnimal = value;
@@ -67,14 +69,34 @@ export class AnimalFormComponent {
     .filter(Number)
     .map((type) => +type)
     .concat(0);
+  public gapSize = '16px';
 
+  private _currentAnimal: Animal = null;
   private destroyed$ = new Subject();
+  private calcAge$ = new Subject();
+
+  public get birthDateCtrl(): AbstractControl {
+    return this.animalForm.get(Constants.controls.birthDate);
+  }
+
+  public get dateOfDeathCtrl(): AbstractControl {
+    return this.animalForm.get(Constants.controls.dateOfDeath);
+  }
+
+  public get purchasePriceCtrl(): AbstractControl {
+    return this.animalForm.get(Constants.controls.purchasePrice);
+  }
+
+  public get sellPriceCtrl(): AbstractControl {
+    return this.animalForm.get(Constants.controls.sellPrice);
+  }
 
   constructor(
     private formBuilder: FormBuilder,
     private ageCalculatorService: AgeCalculatorService
   ) {
     this.initForm();
+    this.calcAge$.next();
   }
 
   public onNavigateBack() {
@@ -87,29 +109,13 @@ export class AnimalFormComponent {
     }
   }
 
-  public showPrefix(elementID: string): boolean {
-    if (elementID === undefined || elementID === null) {
-      return false;
-    }
-
-    const elem = document.querySelector('#' + elementID);
-    if (elem === undefined || elementID === null) {
-      return false;
-    } else if (elem === document.activeElement) {
-      return true;
-    }
-
-    const value = this.animalForm.get(elementID).value;
-    if (value === undefined || elementID === null) {
-      return false;
-    }
-
-    return true;
+  public showPrefix(value: any): boolean {
+    return value != null;
   }
 
   public reset(animal: Animal): void {
     if (animal == null) {
-      animal = new NullAnimal();
+      animal = { ...new NullAnimal() };
     }
 
     this.animalForm.reset();
@@ -127,47 +133,49 @@ export class AnimalFormComponent {
       purchasePrice: [null, [Validators.required]],
       arrivalWeight: [null, [Validators.required]],
       batchNumber: [null, [Validators.required]],
-      sold: [null, [Validators.required]],
+      sold: [null],
       sellPrice: [{ value: null, disabled: true }],
       sellDate: [{ value: null, disabled: true }],
       age: [
         {
           value: this.ageCalculatorService.calculateAge(new Date()),
-          disabled: true,
-        },
+          disabled: true
+        }
       ],
-      deceased: [null, [Validators.required]],
-      dateOfDeath: [{ value: null, disabled: true }, []],
+      deceased: [null],
+      dateOfDeath: [{ value: null, disabled: true }, []]
     });
 
     this.animalForm
-      .get(Constants.Controls.SOLD)
+      .get(Constants.controls.sold)
       .valueChanges.pipe(takeUntil(this.destroyed$))
       .subscribe((value: boolean) => this.updateSoldCtrl(value));
 
     this.animalForm
-      .get(Constants.Controls.DECEASED)
+      .get(Constants.controls.deceased)
       .valueChanges.pipe(takeUntil(this.destroyed$))
       .subscribe((deceased: boolean) => {
         this.updateDateOfDeathCtrl(deceased);
       });
 
-    combineLatest([
-      this.animalForm.get(Constants.Controls.BIRTH_DATE).valueChanges,
-      this.animalForm.get(Constants.Controls.DATE_OF_DEATH).valueChanges,
-    ])
+    merge(this.birthDateCtrl?.valueChanges, this.dateOfDeathCtrl?.valueChanges)
       .pipe(takeUntil(this.destroyed$))
-      .subscribe(([birthDate, deceasedDate]) => {
-        this.setControlValue(
-          this.ageCalculatorService.calculateAge(birthDate, deceasedDate),
-          Constants.Controls.AGE
-        );
-      });
+      .subscribe(() => this.calcAge$.next());
+
+    this.calcAge$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.setControlValue(
+        this.ageCalculatorService.calculateAge(
+          this.birthDateCtrl?.value ?? new Date(),
+          this.dateOfDeathCtrl?.value
+        ),
+        Constants.controls.age
+      );
+    });
   }
 
   private updateForm(animal: Animal): void {
     if (animal == null) {
-      animal = new NullAnimal();
+      animal = { ...new NullAnimal() };
     }
 
     this.animalForm.patchValue({
@@ -184,7 +192,7 @@ export class AnimalFormComponent {
       sellPrice: animal.sold ? animal.sellPrice : null,
       sellDate: animal.sellDate,
       deceased: animal.deceased,
-      dateOfDeath: animal.dateOfDeath,
+      dateOfDeath: animal.dateOfDeath
     });
 
     this.updateSoldCtrl(animal.sold);
@@ -197,18 +205,18 @@ export class AnimalFormComponent {
   private updateSoldCtrl(value: boolean): void {
     this.enableControlAndMakeRequiredWhenTrue(
       value,
-      Constants.Controls.SELL_PRICE
+      Constants.controls.sellPrice
     );
     this.enableControlAndMakeRequiredWhenTrue(
       value,
-      Constants.Controls.SELL_DATE
+      Constants.controls.sellDate
     );
   }
 
   private updateDateOfDeathCtrl(value: boolean): void {
     this.enableControlAndMakeRequiredWhenTrue(
       value,
-      Constants.Controls.DATE_OF_DEATH
+      Constants.controls.dateOfDeath
     );
   }
 

@@ -2,6 +2,7 @@ using LivestockTracker.Database.Models.Animals;
 using LivestockTracker.Database.Models.Feed;
 using LivestockTracker.Database.Models.Medical;
 using LivestockTracker.Database.Models.Units;
+using LivestockTracker.Database.Models.Weight;
 using Microsoft.EntityFrameworkCore;
 
 namespace LivestockTracker.Database
@@ -19,6 +20,7 @@ namespace LivestockTracker.Database
         public DbSet<UnitModel> Units { get; set; } = null!;
         public DbSet<FeedTypeModel> FeedTypes { get; set; } = null!;
         public DbSet<FeedingTransactionModel> FeedingTransactions { get; set; } = null!;
+        public DbSet<WeightTransactionModel> WeightTransactions { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,6 +49,7 @@ namespace LivestockTracker.Database
                 .HasOne(m => m.FeedType as FeedTypeModel)
                 .WithMany(t => t!.FeedingTransactions)
                 .HasForeignKey(m => m.FeedTypeId);
+            modelBuilder.ConfigureWeightModels();
 
             base.OnModelCreating(modelBuilder);
 

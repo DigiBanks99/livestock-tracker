@@ -2,17 +2,17 @@ import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { CrudService } from '@core/models/crud-service.interface';
-import { PagedData } from '@core/models/paged-data.model';
-import { Unit } from '@core/models/unit.model';
+import { BaseUrl } from '@core/di';
+import { PagedData, Unit } from '@core/models';
+import { CrudService } from '@core/models/services';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class UnitService implements CrudService<Unit, number, number> {
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
     this.apiUrl = baseUrl + 'unit';
   }
 
@@ -25,8 +25,8 @@ export class UnitService implements CrudService<Unit, number, number> {
       params: {
         pageNumber: pageNumber.toString(),
         pageSize: pageSize.toString(),
-        includeDeleted: includeDeleted.toString(),
-      },
+        includeDeleted: includeDeleted.toString()
+      }
     });
   }
 
@@ -54,7 +54,7 @@ export class MockUnitService implements CrudService<Unit, number, number> {
       currentPage: 0,
       pageCount: 0,
       pageSize: 0,
-      totalRecordCount: 0,
+      totalRecordCount: 0
     });
   }
   get(key: number): Observable<Unit> {

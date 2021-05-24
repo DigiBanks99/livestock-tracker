@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -45,7 +46,7 @@ import { SharedModule } from '@shared/shared.module';
     FeedingTransactionContainerComponent,
     FeedingTransactionDetailComponent,
     FeedingTransactionFormComponent,
-    FeedingTransactionNewComponent,
+    FeedingTransactionNewComponent
   ],
   imports: [
     CommonModule,
@@ -60,6 +61,7 @@ import { SharedModule } from '@shared/shared.module';
     MatNativeDateModule,
     MatPaginatorModule,
     MatSelectModule,
+    MatSnackBarModule,
     MatSortModule,
     MatTableModule,
     MatToolbarModule,
@@ -73,9 +75,9 @@ import { SharedModule } from '@shared/shared.module';
     ),
     EffectsModule.forFeature([
       feedTypeEffects.FeedTypeEffects,
-      feedingTransactionEffects.FeedingTransactionEffects,
-    ]),
+      feedingTransactionEffects.FeedingTransactionEffects
+    ])
   ],
-  providers: [FeedTypeService, FeedingTransactionService],
+  providers: [FeedTypeService, FeedingTransactionService]
 })
 export class FeedModule {}

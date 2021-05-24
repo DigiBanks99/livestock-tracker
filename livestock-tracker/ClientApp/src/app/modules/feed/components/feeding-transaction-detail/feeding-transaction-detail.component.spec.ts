@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   MatMomentDateModule,
@@ -23,11 +23,8 @@ import {
   FeedingTransactionService,
   MockFeedingTransactionService
 } from '@feed/services';
-import {
-  LivestockService,
-  MockLivestockService
-} from '@animal/services/livestock.service';
 import { provideMockStore } from '@ngrx/store/testing';
+import { SvgService } from '@svg/services';
 
 import { FeedingTransactionDetailComponent } from './feeding-transaction-detail.component';
 
@@ -52,14 +49,14 @@ describe('FeedingTransactionDetailComponent', () => {
   let component: FeedingTransactionDetailComponent;
   let fixture: ComponentFixture<FeedingTransactionDetailComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         FeedingTransactionDetailComponent,
         FeedingTransactionFormComponent
       ],
       providers: [
-        { provide: LivestockService, useClass: MockLivestockService },
+        SvgService,
         {
           provide: FeedingTransactionService,
           useClass: MockFeedingTransactionService

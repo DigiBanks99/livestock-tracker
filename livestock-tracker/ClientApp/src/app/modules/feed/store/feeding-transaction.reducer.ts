@@ -1,21 +1,20 @@
-import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { FeedingTransactionState } from '@core/store';
-import { crudReducer } from '@core/store/crud.reducer';
-import {
-  ActionTypes,
-  SelectFeedTransaction
-} from '@feed/store/feeding-transaction.actions';
+import { FeedingTransaction, SaveState } from '@core/models';
+import { crudReducer, FeedingTransactionState } from '@core/store';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { FeedingTransactionKey } from './constants';
+import {
+  FeedingTranscationActionTypes,
+  SelectFeedTransactionAction
+} from './feeding-transaction.actions';
 
-export const feedingTransactionAdapter = createEntityAdapter<
-  FeedingTransaction
->({
-  selectId: (transaction: FeedingTransaction) => transaction.id,
-  sortComparer: false,
-});
+export const feedingTransactionAdapter = createEntityAdapter<FeedingTransaction>(
+  {
+    selectId: (transaction: FeedingTransaction) => transaction.id,
+    sortComparer: false
+  }
+);
 
 export const initialState: FeedingTransactionState = feedingTransactionAdapter.getInitialState(
   {
@@ -26,6 +25,7 @@ export const initialState: FeedingTransactionState = feedingTransactionAdapter.g
     pageNumber: 0,
     pageSize: 10,
     recordCount: 0,
+    saveState: SaveState.New
   }
 );
 
@@ -34,10 +34,10 @@ export function feedingTransactionReducer(
   action: Action
 ): FeedingTransactionState {
   switch (action.type) {
-    case ActionTypes.SELECT_FEED_TRANSACTION:
+    case FeedingTranscationActionTypes.SelectFeedTransaction:
       return {
         ...state,
-        selectedId: (<SelectFeedTransaction>action).transactionId,
+        selectedId: (<SelectFeedTransactionAction>action).transactionId
       };
     default:
       return {
@@ -47,7 +47,7 @@ export function feedingTransactionReducer(
           feedingTransactionAdapter,
           state,
           action
-        ),
+        )
       };
   }
 }

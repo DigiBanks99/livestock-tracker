@@ -1,10 +1,13 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CommandButtonTestingModule } from '@test/shared';
 import { UnitDetailComponent } from '@unit/components/unit-detail/unit-detail.component';
 import { UnitComponent } from '@unit/components/unit/unit.component';
 import { MockUnitService, UnitService } from '@unit/services/unit.service';
@@ -13,20 +16,25 @@ describe('UnitComponent', () => {
   let component: UnitComponent;
   let fixture: ComponentFixture<UnitComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [UnitComponent, UnitDetailComponent],
-      providers: [{ provide: UnitService, useClass: MockUnitService }],
-      imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatToolbarModule,
-        MatListModule,
-        MatPaginatorModule,
-        MatIconModule
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [UnitComponent, UnitDetailComponent],
+        providers: [{ provide: UnitService, useClass: MockUnitService }],
+        imports: [
+          CommandButtonTestingModule,
+          NoopAnimationsModule,
+          ReactiveFormsModule,
+          MatFormFieldModule,
+          MatToolbarModule,
+          MatListModule,
+          MatPaginatorModule,
+          MatIconModule,
+          MatTableModule
+        ]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnitComponent);

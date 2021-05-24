@@ -6,9 +6,9 @@ namespace LivestockTracker.Models.Feed
 {
     public class FeedingTransaction : IFeedingTransaction
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Required]
-        public int AnimalId { get; set; }
+        public long AnimalId { get; set; }
         [Required]
         public int FeedTypeId { get; set; }
         [Required]

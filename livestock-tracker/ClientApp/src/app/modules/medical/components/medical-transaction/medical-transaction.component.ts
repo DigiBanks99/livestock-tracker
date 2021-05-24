@@ -6,18 +6,24 @@ import {
   Output
 } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Livestock } from '@app/core/models/livestock.model';
-import { MedicineType, Unit } from '@core/models';
+import { Animal, MedicineType, NullAnimal, Unit } from '@core/models';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 
 @Component({
   selector: 'app-medical-transaction',
   templateUrl: './medical-transaction.component.html',
   styleUrls: ['./medical-transaction.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MedicalTransactionComponent {
-  @Input() public currentAnimal: Livestock;
+  @Input() public set currentAnimal(value: Animal) {
+    if (value != null) {
+      this._currentAnimal = value;
+    }
+  }
+  public get currentAnimal(): Animal {
+    return this._currentAnimal;
+  }
   @Input() public medicalTransactions: MedicalTransaction[];
   @Input() public medicineTypes: MedicineType[];
   @Input() public units: Unit[];
@@ -25,7 +31,7 @@ export class MedicalTransactionComponent {
   @Input() public pageSize: number;
   @Input() public recordCount: number;
 
-  @Output() public add = new EventEmitter<MedicalTransaction>();
+  @Output() public add = new EventEmitter<number>();
   @Output() public page = new EventEmitter<PageEvent>();
   @Output() public remove = new EventEmitter<number>();
 
@@ -34,11 +40,13 @@ export class MedicalTransactionComponent {
     'date',
     'dose',
     'unit',
-    'star',
+    'star'
   ];
 
-  public onAdd(medicalTransaction: MedicalTransaction) {
-    this.add.emit(medicalTransaction);
+  private _currentAnimal: Animal = NullAnimal.instance;
+
+  public onAdd() {
+    this.add.emit(this.currentAnimal.id);
   }
 
   public onPage(pageEvent: PageEvent) {

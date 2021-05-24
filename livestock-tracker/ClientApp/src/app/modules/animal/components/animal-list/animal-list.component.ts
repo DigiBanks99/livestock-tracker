@@ -12,24 +12,23 @@ import {
 } from '@angular/core';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
-import { LivestockService } from '@animal/services/livestock.service';
-import { animalStore } from '@animal/store';
-import { FetchAnimals } from '@animal/store/animal.actions';
+import { AnimalStore } from '@animal/store';
+import { FetchAnimalsAction } from '@animal/store/animal.actions';
 import { Animal } from '@core/models';
 import { AppState } from '@core/store';
 import { select, Store } from '@ngrx/store';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
+import { SvgService } from '@svg/services/svg.service';
 
 @Component({
   selector: 'app-animal-list',
   templateUrl: './animal-list.component.html',
   styleUrls: ['./animal-list.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  encapsulation: ViewEncapsulation.None
 })
 export class AnimalListComponent implements OnInit, OnDestroy {
-  private destroyed$ = new Subject<void>();
-
   @Input() public animals: Animal[];
+  @Input() public isFetching = false;
   @Output() public remove = new EventEmitter<Animal>();
   @Output() public showDetail = new EventEmitter<number>();
   @Output() public addAnimal = new EventEmitter();
@@ -40,23 +39,25 @@ export class AnimalListComponent implements OnInit, OnDestroy {
   public pageSize$: Observable<number> = EMPTY;
   public recordCount$: Observable<number> = EMPTY;
 
+  private destroyed$ = new Subject<void>();
+
   constructor(
-    private livestockService: LivestockService,
+    private svgService: SvgService,
     private ageCalculatorService: AgeCalculatorService,
     private store: Store<AppState>
   ) {}
 
   public ngOnInit(): void {
     this.pageSize$ = this.store.pipe(
-      select(animalStore.selectors.getPageSize),
+      select(AnimalStore.selectors.getPageSize),
       takeUntil(this.destroyed$)
     );
     this.currentPage$ = this.store.pipe(
-      select(animalStore.selectors.getCurrentPage),
+      select(AnimalStore.selectors.getCurrentPage),
       takeUntil(this.destroyed$)
     );
     this.recordCount$ = this.store.pipe(
-      select(animalStore.selectors.getRecordCount),
+      select(AnimalStore.selectors.getRecordCount),
       takeUntil(this.destroyed$)
     );
   }
@@ -67,7 +68,7 @@ export class AnimalListComponent implements OnInit, OnDestroy {
   }
 
   public getSvgIcon(animal: Animal): string {
-    return this.livestockService.getSvgIcon(animal);
+    return this.svgService.getSvgIcon(animal);
   }
 
   public removeAnimal(selectedItems: MatListOption[]): void {
@@ -86,7 +87,7 @@ export class AnimalListComponent implements OnInit, OnDestroy {
 
   public onPage(pageEvent: PageEvent): void {
     this.store.dispatch(
-      new FetchAnimals(pageEvent.pageIndex, pageEvent.pageSize)
+      new FetchAnimalsAction(pageEvent.pageIndex, pageEvent.pageSize)
     );
   }
 

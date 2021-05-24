@@ -1,7 +1,7 @@
 <h1>Medical transactions</h1>
 <div class="medical-transaction-list mat-elevation-z1">
-  <mat-toolbar>
-    <app-animal-select-container></app-animal-select-container>
+  <mat-toolbar fxFill>
+    <app-animal-select-container fxFill></app-animal-select-container>
   </mat-toolbar>
   <table
     mat-table
@@ -66,6 +66,4 @@
     (page)="onPage($event)"
   ></mat-paginator>
 </div>
-<app-command-button
-  [routerLink]="[currentAnimal.id, 'new']"
-></app-command-button>
+<app-command-button (click)="onAdd()"></app-command-button>

@@ -1,5 +1,6 @@
 using LivestockTracker.Updater.Config;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,33 +15,35 @@ namespace LivestockTracker.Updater
 {
   public class ApiDonwloadService : BaseDonwloadService, IDownloadService
   {
-    private IApiConfig _apiConfig;
-    public ApiDonwloadService(ILogger logger, IApiConfig apiConfig) : base(logger)
+    private readonly ApiConfig _apiConfig;
+    public ApiDonwloadService(ILogger<ApiDonwloadService> logger, IOptions<ApiConfig> apiConfig) : base(logger)
     {
-      _apiConfig = apiConfig;
+      _apiConfig = apiConfig.Value;
     }
 
     public override async Task<DirectoryInfo> DownloadAsync(DownloadableVersionModel version, string savePath, IProgress<int> progress, CancellationToken cancellationToken)
     {
       _logger.LogDebug("{0}: Downloading {1} to {2}", nameof(ApiDonwloadService), version.DownloadPath, savePath);
 
-      int bytesRead = 0;
-      byte[] buffer = new byte[1024];
+      var bytesRead = 0;
+      var buffer = new byte[1024];
       var contentLength = await GetContentLength(version.DownloadPath);
 
       if (cancellationToken.IsCancellationRequested)
+      {
         CleanUpDownload(savePath);
+      }
 
       var progressValue = 0;
 
       using (var httpClient = new HttpClient())
       {
         httpClient.BaseAddress = new Uri(version.DownloadPath);
-        HttpResponseMessage response = await httpClient.GetAsync(version.DownloadPath);
+        var response = await httpClient.GetAsync(version.DownloadPath);
         if (response.IsSuccessStatusCode)
         {
           var responseStream = await response.Content.ReadAsStreamAsync();
-          using (FileStream fs = new FileStream(savePath, FileMode.CreateNew))
+          using (var fs = new FileStream(savePath, FileMode.CreateNew))
           {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -64,7 +67,9 @@ namespace LivestockTracker.Updater
       }
 
       if (cancellationToken.IsCancellationRequested)
+      {
         CleanUpDownload(savePath);
+      }
 
       return new DirectoryInfo(savePath);
     }
@@ -111,7 +116,7 @@ namespace LivestockTracker.Updater
       using (var httpClient = new HttpClient())
       {
         httpClient.BaseAddress = new Uri(downloadPath);
-        HttpResponseMessage response = await httpClient.GetAsync(downloadPath);
+        var response = await httpClient.GetAsync(downloadPath);
         if (response.IsSuccessStatusCode)
         {
           return response.Content.Headers.ContentLength ?? 0;
@@ -125,14 +130,20 @@ namespace LivestockTracker.Updater
     {
 
       if (string.IsNullOrWhiteSpace(_apiConfig.BaseUrl))
+      {
         throw new ConfigurationException("Conifiguration value not set: api:baseuri");
+      }
 
       var baseUrl = _apiConfig.BaseUrl;
       if (!baseUrl.EndsWith("/"))
+      {
         baseUrl += "/";
+      }
 
-      var httpClient = new HttpClient();
-      httpClient.BaseAddress = new Uri(baseUrl);
+      var httpClient = new HttpClient
+      {
+        BaseAddress = new Uri(baseUrl)
+      };
       httpClient.DefaultRequestHeaders.Clear();
       return httpClient;
     }

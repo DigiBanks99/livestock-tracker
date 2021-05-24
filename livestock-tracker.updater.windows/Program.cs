@@ -1,5 +1,7 @@
-using Autofac;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Events;
 using System;
 using System.Windows.Forms;
 
@@ -7,29 +9,50 @@ namespace LivestockTracker.Updater.Windows
 {
   internal static class Program
   {
-    public static IContainer Container { get; set; }
 
     /// <summary>
     /// The main entry point for the application.
     /// </summary>
     [STAThread]
-    private static void Main()
+    public static void Main(string[] args)
     {
-      ILogger logger = null;
+
+      Log.Logger = new LoggerConfiguration().MinimumLevel
+                                            .Override("Microsoft", LogEventLevel.Information)
+                                            .Enrich.FromLogContext()
+                                            .WriteTo.Console()
+                                            .CreateLogger();
       try
       {
-        Container = UpdaterContainerBuilder.RegisterComponents();
-        logger = Container.Resolve<ILogger>();
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
-        Application.Run(Container.Resolve<MainForm>());
+        var host = CreateHostBuilder(args).Build();
+
+        using var scope = host.Services.CreateScope();
+        Start(scope.ServiceProvider);
       }
       catch (Exception ex)
       {
-        if (logger != null)
-          logger.LogCritical(ex, "System crash.");
+        Log.Logger.Error(ex, "System crash.");
+
         MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
       }
+    }
+
+    private static IHostBuilder CreateHostBuilder(string[] args) =>
+      Host.CreateDefaultBuilder(args)
+          .ConfigureServices((hostBuilder, services) =>
+          {
+            var startup = new Startup(hostBuilder.Configuration);
+            startup.ConfigureServices(services);
+          })
+          .UseSerilog((hostingContext, loggerConfiguration) => loggerConfiguration.ReadFrom
+                                                                                  .Configuration(hostingContext.Configuration));
+
+    private static void Start(IServiceProvider serviceProvider)
+    {
+      Application.SetHighDpiMode(HighDpiMode.SystemAware);
+      Application.EnableVisualStyles();
+      Application.SetCompatibleTextRenderingDefault(false);
+      Application.Run(serviceProvider.GetService<MainForm>());
     }
   }
 }

@@ -102,7 +102,7 @@ namespace LivestockTracker.Logic.Services.Animals
         /// <param name="key">The identifying value of the animal.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The animal if it was found.</returns>
-        public virtual async Task<IAnimal?> GetOneAsync(int key, CancellationToken cancellationToken)
+        public virtual async Task<IAnimal?> GetOneAsync(long key, CancellationToken cancellationToken)
         {
             Logger.LogInformation($"Retrieving the animal with ID {key}...");
 
@@ -118,7 +118,7 @@ namespace LivestockTracker.Logic.Services.Animals
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The ID of the animal that was removed.</returns>
         /// <exception cref="EntityNotFoundException{AnimalModel}">When the animal with the given key is not found.</exception>
-        public virtual async Task<int> RemoveAsync(int key, CancellationToken cancellationToken)
+        public virtual async Task<long> RemoveAsync(long key, CancellationToken cancellationToken)
         {
             Logger.LogInformation($"Removing the animal with ID {key}...");
 

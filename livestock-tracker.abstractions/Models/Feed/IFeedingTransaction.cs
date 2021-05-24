@@ -10,12 +10,12 @@ namespace LivestockTracker.Abstractions.Models.Feed
         /// <summary>
         /// The number that uniquely identifies the feeding transaction.
         /// </summary>
-        int Id { get; }
+        long Id { get; }
 
         /// <summary>
         /// A linking ID to the animal that was fed.
         /// </summary>
-        int AnimalId { get; }
+        long AnimalId { get; }
 
         /// <summary>
         /// A linking ID to the type of feed.

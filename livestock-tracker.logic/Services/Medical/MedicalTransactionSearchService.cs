@@ -132,7 +132,7 @@ namespace LivestockTracker.Logic.Services.Medical
         ///         <item>Null if not found.</item>
         ///     </list>
         /// </returns>
-        public virtual async Task<IMedicalTransaction?> GetOneAsync(int key, CancellationToken cancellationToken)
+        public virtual async Task<IMedicalTransaction?> GetOneAsync(long key, CancellationToken cancellationToken)
         {
             Logger.LogInformation($"Finding a medical transaction that matches ID {key}...");
             var medicineType = await LivestockContext.MedicalTransactions

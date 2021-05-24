@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { Component, OnInit } from '@angular/core';
-import { Animal } from '@app/core/models';
+import { Animal } from '@core/models';
 import { AppState } from '@core/store';
 import { getAnimalCount, getAnimals } from '@core/store/selectors';
 import { select, Store } from '@ngrx/store';

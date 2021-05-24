@@ -1,16 +1,18 @@
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { Component, Input, OnInit } from '@angular/core';
-import { Livestock } from '@app/core/models/livestock.model';
+import { Component, Input, OnDestroy } from '@angular/core';
+import { SelectAnimalAction } from '@animal/store/animal.actions';
+import { Animal } from '@core/models';
 import { AppState } from '@core/store';
 import { getAnimals, getSelectedAnimal } from '@core/store/selectors';
-import { SelectAnimal } from '@animal/store/animal.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-animal-select-container',
   template: `
     <app-animal-select
+      fxFill
       [animal]="animal$ | async"
       [animals]="animals$ | async"
       (animalChanged)="onAnimalChanged($event)"
@@ -18,20 +20,31 @@ import { select, Store } from '@ngrx/store';
     ></app-animal-select>
   `
 })
-export class AnimalSelectContainerComponent implements OnInit {
-  public animal$: Observable<Livestock>;
-  public animals$: Observable<Livestock[]>;
+export class AnimalSelectContainer implements OnDestroy {
+  @Input() public disabled = false;
 
-  @Input() public disabled: boolean;
+  public animal$: Observable<Animal>;
+  public animals$: Observable<Animal[]>;
 
-  constructor(private store: Store<AppState>) {}
+  private destroyed$ = new Subject<void>();
 
-  public ngOnInit() {
-    this.animals$ = this.store.pipe(select(getAnimals));
-    this.animal$ = this.store.pipe(select(getSelectedAnimal));
+  constructor(private store: Store<AppState>) {
+    this.animals$ = this.store.pipe(
+      select(getAnimals),
+      takeUntil(this.destroyed$)
+    );
+    this.animal$ = this.store.pipe(
+      select(getSelectedAnimal),
+      takeUntil(this.destroyed$)
+    );
+  }
+
+  public ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
   }
 
   public onAnimalChanged(id: number) {
-    this.store.dispatch(new SelectAnimal(id));
+    this.store.dispatch(new SelectAnimalAction(id));
   }
 }

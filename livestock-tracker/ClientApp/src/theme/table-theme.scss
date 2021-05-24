@@ -1,5 +1,5 @@
-@import '~@angular/material/theming';
+@use '~@angular/material' as mat;
 
 .mat-table {
-  background-color: mat-color($mat-lime, 200);
+  background-color: mat.get-color-from-palette(mat.$lime-palette, 200);
 }

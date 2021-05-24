@@ -13,7 +13,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { Livestock } from '@core/models/livestock.model';
+import { Animal } from '@core/models/livestock.model';
 import { Unit } from '@core/models/unit.model';
 import { environment } from '@env/environment';
 
@@ -22,13 +22,11 @@ import { environment } from '@env/environment';
   templateUrl: './feeding-transaction.component.html',
   styleUrls: ['./feeding-transaction.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium },
-  ],
+    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
+  ]
 })
 export class FeedingTransactionComponent implements OnDestroy {
-  private destroyed$ = new Subject<void>();
-
-  @Input() public currentAnimal: Livestock;
+  @Input() public currentAnimal: Animal;
   @Input() public feedingTransactions: FeedingTransaction[];
   @Input() public feedTypes: FeedType[];
   @Input() public units: Unit[];
@@ -47,14 +45,16 @@ export class FeedingTransactionComponent implements OnDestroy {
     'date',
     'quantity',
     'unit',
-    'star',
+    'star'
   ];
+
+  private destroyed$ = new Subject<void>();
 
   constructor() {
     this.feedingTransactions = [];
   }
 
-  public getCurrentAnimal(): Livestock {
+  public getCurrentAnimal(): Animal {
     return this.currentAnimal;
   }
 

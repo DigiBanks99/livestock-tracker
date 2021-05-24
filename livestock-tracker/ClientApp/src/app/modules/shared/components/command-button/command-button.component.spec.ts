@@ -1,4 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
 
 import { CommandButtonComponent } from './command-button.component';
 
@@ -6,12 +7,14 @@ describe('CommandButtonComponent', () => {
   let component: CommandButtonComponent;
   let fixture: ComponentFixture<CommandButtonComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ CommandButtonComponent ]
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [CommandButtonComponent],
+        imports: [MatIconModule]
+      }).compileComponents();
     })
-    .compileComponents();
-  }));
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CommandButtonComponent);

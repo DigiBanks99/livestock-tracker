@@ -180,7 +180,7 @@ namespace LivestockTracker.Controllers
             try
             {
                 var removedId = await _feedingTransactionService.RemoveAsync(id, RequestAbortToken)
-                                                                    .ConfigureAwait(false);
+                                                                .ConfigureAwait(false);
                 return Ok(removedId);
             }
             catch (EntityNotFoundException<IFeedingTransaction> ex)

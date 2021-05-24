@@ -3,54 +3,55 @@ import { map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AnimalService } from '@animal/services/animal.service';
-import {
-  actions,
-  ActionTypes,
-  FetchAnimals,
-  SelectAnimal
-} from '@animal/store/animal.actions';
-import { Animal } from '@app/core/models/livestock.model';
-import { PagedData } from '@core/models/paged-data.model';
-import { PayloadAction } from '@core/store';
-import { CrudEffects } from '@core/store/crud.effects';
+import { AnimalProviderModule } from '@animal/animal-provider.module';
+import { AnimalService } from '@animal/services';
+import { Animal, PagedData } from '@core/models';
+import { CrudEffects, PayloadAction } from '@core/store';
 import { environment } from '@env/environment';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
+import { AnimalActionTypes } from './animal.action-types';
+import {
+  actions,
+  FetchAnimalsAction,
+  SelectAnimalAction
+} from './animal.actions';
 import { AnimalKey } from './constants';
 
-@Injectable()
+@Injectable({
+  providedIn: AnimalProviderModule
+})
 export class AnimalEffects extends CrudEffects<Animal, number, number> {
-  constructor(
-    protected actions$: Actions,
-    protected animalService: AnimalService,
-    snackBar: MatSnackBar
-  ) {
-    super(actions$, animalService, actions, AnimalKey, snackBar, true);
-  }
-
   public fetchSelectedAnimalDetail$: Observable<
     PayloadAction<number>
   > = createEffect(
     (): Observable<PayloadAction<number>> =>
       this.actions$.pipe(
-        ofType(ActionTypes.SELECT_ANIMAL),
+        ofType(AnimalActionTypes.SelectAnimal),
         map(
-          (action: SelectAnimal): PayloadAction<number> =>
+          (action: SelectAnimalAction): PayloadAction<number> =>
             actions.fetchSingle(action.key)
         )
       )
   );
 
   protected get defaultFetchAction(): Action {
-    return new FetchAnimals(0, environment.pageSize);
+    return new FetchAnimalsAction(0, environment.pageSize);
+  }
+
+  constructor(
+    protected actions$: Actions,
+    protected animalService: AnimalService,
+    snackBar: MatSnackBar
+  ) {
+    super(actions$, animalService, actions, AnimalKey, snackBar);
   }
 
   protected handleFetchAction$ = (
     action: Action
   ): Observable<PagedData<Animal>> => {
-    const fetchAction = <FetchAnimals>action;
+    const fetchAction = <FetchAnimalsAction>action;
     return this.animalService.getAll(
       fetchAction.pageSize,
       fetchAction.pageNumber

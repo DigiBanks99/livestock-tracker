@@ -1,3 +1,3 @@
-export interface KeyEntity<K> {
-  id: K;
+export interface KeyEntity<TKey> {
+  id: TKey;
 }

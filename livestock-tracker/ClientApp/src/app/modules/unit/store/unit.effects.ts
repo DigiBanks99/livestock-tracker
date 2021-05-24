@@ -2,15 +2,14 @@ import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PagedData } from '@core/models/paged-data.model';
-import { Unit } from '@core/models/unit.model';
-import { CrudEffects } from '@core/store/crud.effects';
+import { PagedData, Unit } from '@core/models';
+import { CrudEffects } from '@core/store';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { UnitService } from '@unit/services/unit.service';
-import { actions, FetchUnits } from '@unit/store/unit.actions';
 
 import { UnitKey } from './constants';
+import { actions, FetchUnitsAction } from './unit.actions';
 
 @Injectable()
 export class UnitEffects extends CrudEffects<Unit, number, number> {
@@ -23,13 +22,13 @@ export class UnitEffects extends CrudEffects<Unit, number, number> {
   }
 
   protected get defaultFetchAction(): Action {
-    return new FetchUnits();
+    return new FetchUnitsAction();
   }
 
   protected handleFetchAction$ = (
     action: Action
   ): Observable<PagedData<Unit>> => {
-    const fetchAction = <FetchUnits>action;
+    const fetchAction = <FetchUnitsAction>action;
     return this.unitService.getAll(
       fetchAction.pageNumber,
       fetchAction.pageSize,

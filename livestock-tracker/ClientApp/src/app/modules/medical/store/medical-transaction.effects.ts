@@ -2,17 +2,16 @@ import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MedicalTransaction } from '@core/models';
-import { PagedData } from '@core/models/paged-data.model';
-import { CrudEffects } from '@core/store/crud.effects';
-import { MedicalTransactionService } from '@medical/services/medical-transaction.service';
+import { MedicalTransaction, PagedData } from '@core/models';
+import { CrudEffects } from '@core/store';
+import { MedicalTransactionService } from '@medical/services';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 import {
   actions,
-  FetchMedicalTransactions,
+  FetchMedicalTransactionsAction,
   FetchSingleMedicalTransactionParams
 } from './medical-transaction.actions';
 
@@ -39,7 +38,7 @@ export class MedicalTransactionEffects extends CrudEffects<
   protected handleFetchAction$ = (
     action: Action
   ): Observable<PagedData<MedicalTransaction>> => {
-    const fetchAction = <FetchMedicalTransactions>action;
+    const fetchAction = <FetchMedicalTransactionsAction>action;
     return this.medicalTransactionService.getAll(
       fetchAction.animalId,
       fetchAction.pageNumber,

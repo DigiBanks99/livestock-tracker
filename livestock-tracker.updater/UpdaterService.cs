@@ -2,6 +2,7 @@ using LivestockTracker.Base;
 using LivestockTracker.ProcessManager;
 using LivestockTracker.Updater.Config;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,15 +17,19 @@ namespace LivestockTracker.Updater
   public class UpdaterService : IUpdaterService
   {
     private readonly ILogger _logger;
-    private readonly IApplicationConfig _appConfig;
+    private readonly ApplicationConfig _appConfig;
     private readonly IFileCopyService _fileCopyService;
     private readonly IDownloadService _downloadService;
     private readonly IProcessManager _processManager;
 
-    public UpdaterService(ILogger logger, IApplicationConfig appConfig, IFileCopyService fileCopyService, IDownloadService downloadService, IProcessManager processManager)
+    public UpdaterService(ILogger<UpdaterService> logger,
+                          IOptions<ApplicationConfig> appConfig,
+                          IFileCopyService fileCopyService,
+                          IDownloadService downloadService,
+                          IProcessManager processManager)
     {
       _logger = logger;
-      _appConfig = appConfig;
+      _appConfig = appConfig.Value;
       _fileCopyService = fileCopyService;
       _downloadService = downloadService;
       _processManager = processManager;
@@ -35,7 +40,9 @@ namespace LivestockTracker.Updater
       _logger.LogDebug("{0}: Determining Initial Update Information: {1}", nameof(UpdaterService), installPath);
       var installDir = string.IsNullOrEmpty(installPath) ? FindInstallPath() : new DirectoryInfo(installPath);
       if (!installDir.Exists)
+      {
         installDir.Create();
+      }
 
       var oldFiles = GetFiles(installDir);
 
@@ -48,11 +55,11 @@ namespace LivestockTracker.Updater
       {
         return new UpdaterModel
         {
-          NewVersionString = FileVersionInfo.GetVersionInfo(this.GetType().Assembly.CodeBase.Replace(Constants.FILE_URI_PREFIX, "")).FileVersion
+          NewVersionString = FileVersionInfo.GetVersionInfo(GetType().Assembly.CodeBase.Replace(Constants.FILE_URI_PREFIX, "")).FileVersion
         };
       }
 
-      DotnetCoreAppVersionChecker versionChecker = new DotnetCoreAppVersionChecker(startUpDllFileInfo);
+      var versionChecker = new DotnetCoreAppVersionChecker(startUpDllFileInfo);
       string version = null;
       try
       {
@@ -77,29 +84,33 @@ namespace LivestockTracker.Updater
     public DirectoryInfo FindInstallPath()
     {
       _logger.LogDebug("{0}: Finding installation path", nameof(UpdaterService));
-      string root = Path.GetPathRoot(Environment.SystemDirectory);
-      string solutionFolder = Constants.SOLUTION_ENTRYPOINT_NAME;
-      string[] entryPoints = new string[]
+      var root = Path.GetPathRoot(Environment.SystemDirectory);
+      var solutionFolder = Constants.SOLUTION_ENTRYPOINT_NAME;
+      var entryPoints = new string[]
       {
         Path.Combine(root, "Programs"),
         Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles).Replace(" (x86)", ""),
         Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86)
       };
 
-      DirectoryInfo installPath = new DirectoryInfo(entryPoints.First()).Null();
-      int index = 0;
+      var installPath = new DirectoryInfo(entryPoints.First()).Null();
+      var index = 0;
       do
       {
-        string currentEntryPoint = entryPoints[index++];
-        DirectoryInfo path = new DirectoryInfo(currentEntryPoint);
-        DirectoryInfo searchResult = DoSearch(path, solutionFolder);
+        var currentEntryPoint = entryPoints[index++];
+        var path = new DirectoryInfo(currentEntryPoint);
+        var searchResult = DoSearch(path, solutionFolder);
         if (!searchResult.IsNull())
+        {
           installPath = searchResult;
+        }
       }
       while (installPath.IsNull() && index < entryPoints.Length);
 
       if (installPath.IsNull())
+      {
         return new DirectoryInfo(_appConfig.DefaultInstallPath);
+      }
 
       return installPath;
     }
@@ -107,14 +118,19 @@ namespace LivestockTracker.Updater
     public DirectoryInfo DoSearch(DirectoryInfo path, string term)
     {
       _logger.LogDebug("{0}: Searching directory {1} for files in the pattern {2}", nameof(UpdaterService), path, term);
-      DirectoryInfo[] validPaths = path.GetDirectories(term);
+      var validPaths = path.GetDirectories(term);
       if (validPaths != null && validPaths.Any())
-        return validPaths.First();
-
-      foreach (DirectoryInfo subPath in path.GetDirectories())
       {
-        DirectoryInfo searchResult = DoSearch(subPath, term);
-        if (searchResult != null) return searchResult;
+        return validPaths.First();
+      }
+
+      foreach (var subPath in path.GetDirectories())
+      {
+        var searchResult = DoSearch(subPath, term);
+        if (searchResult != null)
+        {
+          return searchResult;
+        }
       }
 
       return path.Null();
@@ -167,11 +183,15 @@ namespace LivestockTracker.Updater
       var backupDbPath = Path.Combine(backupPath, dbFileInfo.Name);
 
       if (!Directory.Exists(backupPath))
+      {
         Directory.CreateDirectory(backupPath);
+      }
 
       _fileCopyService.CopyFilesFromToRecursively(updaterModel.InstallPath, tempPath);
       if (dbFileInfo.Exists)
+      {
         File.Copy(dbPath, backupDbPath, true);
+      }
 
       try
       {
@@ -182,7 +202,9 @@ namespace LivestockTracker.Updater
         _fileCopyService.CopyFilesFromToRecursively(newVersionPath, updaterModel.InstallPath);
 
         if (File.Exists(backupDbPath))
+        {
           File.Copy(backupDbPath, dbPath, true);
+        }
       }
       catch (Exception ex)
       {
@@ -204,7 +226,9 @@ namespace LivestockTracker.Updater
     {
       var listRef = files as IList<TreeItem<string>>;
       if (!directory.Exists || listRef == null)
+      {
         return;
+      }
 
       var dirs = directory.GetDirectories();
       if (dirs.Any())
@@ -220,7 +244,9 @@ namespace LivestockTracker.Updater
       if (dirFiles.Any())
       {
         foreach (var file in dirFiles)
+        {
           listRef.Add(new TreeItem<string>(file.FullName, directory.FullName));
+        }
       }
     }
 
@@ -230,7 +256,9 @@ namespace LivestockTracker.Updater
       {
         var status = _processManager.GetProcessStatus("dotnet");
         if (status != ProcessStatus.Running)
+        {
           return;
+        }
       }
       catch (ArgumentNullException)
       {
@@ -241,12 +269,14 @@ namespace LivestockTracker.Updater
       var dotnetProcess = _processManager.Processes.First(p => p.Name == "dotnet");
       _processManager.KillProcess(dotnetProcess);
 
-      int maxWait = 10000;
-      int currentWait = 0;
+      var maxWait = 10000;
+      var currentWait = 0;
       while (_processManager.GetProcessStatus("dotnet") == ProcessStatus.Running)
       {
         if (currentWait >= maxWait)
+        {
           throw new TimeoutException("Stopping dotnet failed");
+        }
 
         Thread.Sleep(50);
         currentWait = 50;

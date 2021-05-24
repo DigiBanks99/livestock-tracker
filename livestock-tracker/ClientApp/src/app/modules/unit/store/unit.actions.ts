@@ -1,17 +1,16 @@
-import { Unit } from '@core/models/unit.model';
-import { crudActionsFactory } from '@core/store';
-import { PaginationAction } from '@core/store/pagination-action.interface';
+import { Unit } from '@core/models';
+import { crudActionsFactory, PaginationAction } from '@core/store';
 import { Action } from '@ngrx/store';
 
 import { UnitKey } from './constants';
 
-export enum ActionTypes {
-  SELECT_UNIT = 'SELECT_UNIT',
-  FETCH_UNIT = 'FETCH_UNIT',
+export enum UnitActionTypes {
+  SelectUnit = 'SELECT_UNIT',
+  FetchUnit = 'FETCH_UNIT'
 }
 
-export class SelectUnit implements Action {
-  readonly type = ActionTypes.SELECT_UNIT;
+export class SelectUnitAction implements Action {
+  readonly type = UnitActionTypes.SelectUnit;
   typeCode: number;
 
   constructor(typeCode: number) {
@@ -19,8 +18,8 @@ export class SelectUnit implements Action {
   }
 }
 
-export class FetchUnits implements PaginationAction {
-  readonly type = ActionTypes.FETCH_UNIT;
+export class FetchUnitsAction implements PaginationAction {
+  readonly type = UnitActionTypes.FetchUnit;
   pageNumber: number;
   pageSize: number;
   includeDeleted: boolean;

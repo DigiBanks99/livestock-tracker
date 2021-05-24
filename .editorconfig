@@ -4,7 +4,7 @@ root = true
 [*]
 charset = utf-8
 end_of_line = lf
-indent_size = 4
+indent_size = 2
 indent_style = space
 insert_final_newline = true
 trim_trailing_whitespace = true
@@ -23,6 +23,7 @@ indent_size = 2
 # C# Preferences
 [*.cs]
 end_of_line = lf
+indent_size = 4
 csharp_style_deconstructed_variable_declaration = true:warning
 csharp_style_inlined_variable_declaration = true:warning
 csharp_style_var_elsewhere = true:warning

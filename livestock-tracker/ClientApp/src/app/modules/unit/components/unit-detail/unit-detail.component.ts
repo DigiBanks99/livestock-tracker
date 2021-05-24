@@ -5,7 +5,7 @@ import { Unit } from '@core/models/unit.model';
 @Component({
   selector: 'app-unit-detail',
   templateUrl: './unit-detail.component.html',
-  styleUrls: ['./unit-detail.component.scss'],
+  styleUrls: ['./unit-detail.component.scss']
 })
 export class UnitDetailComponent implements OnInit {
   @Input() unit: Unit;
@@ -17,23 +17,23 @@ export class UnitDetailComponent implements OnInit {
     this.unitForm = null;
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.initForm();
   }
 
-  private initForm() {
-    this.unitForm = new FormGroup({
-      id: new FormControl(this.unit.id),
-      description: new FormControl(this.unit.description, {
-        validators: [Validators.required],
-        updateOn: 'blur',
-      }),
-    });
-  }
-
-  public onUpdate() {
+  public onUpdate(): void {
     if (this.unitForm.valid) {
       this.save.emit(this.unitForm.value);
     }
+  }
+
+  private initForm(): void {
+    this.unitForm = new FormGroup({
+      id: new FormControl(this.unit?.id),
+      description: new FormControl(this.unit?.description, {
+        validators: [Validators.required],
+        updateOn: 'blur'
+      })
+    });
   }
 }

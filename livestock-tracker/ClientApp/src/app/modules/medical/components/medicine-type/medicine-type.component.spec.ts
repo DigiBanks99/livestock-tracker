@@ -1,39 +1,58 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MedicineTypeDetailComponent } from '@medical/components/medicine-type-detail/medicine-type-detail.component';
-import { MedicineTypeComponent } from '@medical/components/medicine-type/medicine-type.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MedicineTypeService,
   MockMedicineTypeService
-} from '@medical/services/medicine-type.service';
+} from '@medical/services';
+import { medicineTypeStore } from '@medical/store';
+import { provideMockStore } from '@ngrx/store/testing';
+import { CommandButtonTestingModule } from '@test/shared';
+
+import { MedicineTypeDetailComponent } from '../medicine-type-detail/medicine-type-detail.component';
+import { MedicineTypeComponent } from './medicine-type.component';
 
 describe('MedicineTypeComponent', () => {
   let component: MedicineTypeComponent;
   let fixture: ComponentFixture<MedicineTypeComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [MedicineTypeComponent, MedicineTypeDetailComponent],
-      providers: [
-        { provide: MedicineTypeService, useClass: MockMedicineTypeService }
-      ],
-      imports: [
-        ReactiveFormsModule,
-        MatToolbarModule,
-        MatListModule,
-        MatPaginatorModule,
-        MatIconModule,
-        MatDividerModule,
-        MatFormFieldModule
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [MedicineTypeComponent, MedicineTypeDetailComponent],
+        providers: [
+          { provide: MedicineTypeService, useClass: MockMedicineTypeService },
+          provideMockStore({
+            selectors: [
+              {
+                selector: medicineTypeStore.selectors.getMedicineTypes,
+                value: []
+              }
+            ]
+          })
+        ],
+        imports: [
+          CommandButtonTestingModule,
+          NoopAnimationsModule,
+          ReactiveFormsModule,
+          MatTableModule,
+          MatToolbarModule,
+          MatListModule,
+          MatPaginatorModule,
+          MatIconModule,
+          MatDividerModule,
+          MatFormFieldModule
+        ]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MedicineTypeComponent);

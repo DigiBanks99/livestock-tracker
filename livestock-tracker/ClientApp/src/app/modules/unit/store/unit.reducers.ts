@@ -1,15 +1,15 @@
-import { Unit } from '@core/models/unit.model';
-import { UnitState } from '@core/store';
-import { crudReducer } from '@core/store/crud.reducer';
+import { SaveState, Unit } from '@core/models';
+import { crudReducer, UnitState } from '@core/store';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
-import { ActionTypes, SelectUnit } from '@unit/store/unit.actions';
 
 import { UnitKey } from './constants';
+import { SelectUnitAction, UnitActionTypes } from './unit.actions';
 
 export const unitAdapter = createEntityAdapter<Unit>({
-  selectId: (unit) => unit.id,
-  sortComparer: (unit) => unit.description,
+  selectId: (unit: Unit) => unit.id,
+  sortComparer: (left: Unit, right: Unit) =>
+    left.description.localeCompare(right.description)
 });
 
 export const initialState: UnitState = unitAdapter.getInitialState({
@@ -20,6 +20,7 @@ export const initialState: UnitState = unitAdapter.getInitialState({
   pageSize: 0,
   pageNumber: 0,
   recordCount: 0,
+  saveState: SaveState.New
 });
 
 export function unitReducer(
@@ -27,10 +28,10 @@ export function unitReducer(
   action: Action
 ): UnitState {
   switch (action.type) {
-    case ActionTypes.SELECT_UNIT:
+    case UnitActionTypes.SelectUnit:
       return {
         ...state,
-        selectedId: (<SelectUnit>action).typeCode,
+        selectedId: (<SelectUnitAction>action).typeCode
       };
     default:
       return crudReducer(UnitKey, unitAdapter, state, action);

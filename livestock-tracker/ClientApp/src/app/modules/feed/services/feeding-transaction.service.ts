@@ -2,23 +2,16 @@ import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { CrudService } from '@core/models/crud-service.interface';
+import { BaseUrl } from '@core/di/base-url.injection-token';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { PagedData } from '@core/models/paged-data.model';
 import { FetchSingleFeedTransactionParams } from '@feed/store/feeding-transaction.actions';
 
-export interface IFeedingTransactionService
-  extends CrudService<
-    FeedingTransaction,
-    number,
-    FetchSingleFeedTransactionParams
-  > {}
-
 @Injectable()
-export class FeedingTransactionService implements IFeedingTransactionService {
+export class FeedingTransactionService {
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
     this.apiUrl = baseUrl + 'feedingTransaction';
   }
 
@@ -32,8 +25,8 @@ export class FeedingTransactionService implements IFeedingTransactionService {
       {
         params: {
           pageSize: pageSize.toString(),
-          pageNumber: pageNumber.toString(),
-        },
+          pageNumber: pageNumber.toString()
+        }
       }
     );
   }
@@ -78,8 +71,7 @@ export class FeedingTransactionService implements IFeedingTransactionService {
   }
 }
 
-export class MockFeedingTransactionService
-  implements IFeedingTransactionService {
+export class MockFeedingTransactionService {
   public get(): Observable<FeedingTransaction> {
     return of(null);
   }
@@ -90,7 +82,7 @@ export class MockFeedingTransactionService
       currentPage: 0,
       pageCount: 0,
       pageSize: 0,
-      totalRecordCount: 0,
+      totalRecordCount: 0
     });
   }
 

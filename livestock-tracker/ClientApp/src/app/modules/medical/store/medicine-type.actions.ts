@@ -4,12 +4,12 @@ import { Action } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 
-export enum ActionTypes {
-  FETCH_MEDICINE_TYPES = 'FETCH_MEDICINE_TYPE',
+export enum MedicineTypeActionTypes {
+  FetchMedicineTypes = 'FETCH_MEDICINE_TYPE'
 }
 
-export class FetchMedicineTypes implements Action {
-  readonly type = ActionTypes.FETCH_MEDICINE_TYPES;
+export class FetchMedicineTypesAction implements Action {
+  readonly type = MedicineTypeActionTypes.FetchMedicineTypes;
   pageNumber: number;
   pageSize: number;
   includeDeleted: boolean;

@@ -2,15 +2,14 @@ import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MedicineType } from '@core/models';
-import { PagedData } from '@core/models/paged-data.model';
-import { CrudEffects } from '@core/store/crud.effects';
-import { MedicineTypeService } from '@medical/services/medicine-type.service';
+import { MedicineType, PagedData } from '@core/models';
+import { CrudEffects } from '@core/store';
+import { MedicineTypeService } from '@medical/services';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
-import { actions, FetchMedicineTypes } from './medicine-type.actions';
+import { actions, FetchMedicineTypesAction } from './medicine-type.actions';
 
 @Injectable()
 export class MedicineTypeEffects extends CrudEffects<
@@ -35,7 +34,7 @@ export class MedicineTypeEffects extends CrudEffects<
   protected handleFetchAction$ = (
     action: Action
   ): Observable<PagedData<MedicineType>> => {
-    const fetchAction = <FetchMedicineTypes>action;
+    const fetchAction = <FetchMedicineTypesAction>action;
     return this.medicineTypeService.getAll(
       fetchAction.pageNumber,
       fetchAction.pageSize,

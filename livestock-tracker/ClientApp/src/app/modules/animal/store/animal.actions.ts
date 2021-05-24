@@ -2,18 +2,11 @@ import { Animal } from '@core/models';
 import { CrudActions, crudActionsFactory } from '@core/store';
 import { Action } from '@ngrx/store';
 
+import { AnimalActionTypes } from './animal.action-types';
 import { AnimalKey } from './constants';
 
-export enum ActionTypes {
-  SELECT_ANIMAL = 'SELECT_ANIMAL',
-  FETCH_ANIMALS = 'FETCH_ANIMAL',
-  FETCH_SINGLE_ANIMAL = 'FETCH_SINGLE_ANIMAL',
-  API_FETCH_ANIMAL = 'API_FETCH_ANIMAL',
-  SELECT_ANIMAL_PAGE = 'SELECT_ANIMAL_PAGE',
-}
-
-export class SelectAnimal implements Action {
-  readonly type = ActionTypes.SELECT_ANIMAL;
+export class SelectAnimalAction implements Action {
+  readonly type = AnimalActionTypes.SelectAnimal;
   key: number;
 
   constructor(id: number) {
@@ -21,8 +14,8 @@ export class SelectAnimal implements Action {
   }
 }
 
-export class FetchAnimals implements Action {
-  readonly type = ActionTypes.FETCH_ANIMALS;
+export class FetchAnimalsAction implements Action {
+  readonly type = AnimalActionTypes.FetchAnimals;
   pageNumber: number;
   pageSize: number;
 
@@ -32,8 +25,11 @@ export class FetchAnimals implements Action {
   }
 }
 
-const crudActions = crudActionsFactory<Animal, number>(AnimalKey);
+const crudActions: CrudActions<Animal, number> = crudActionsFactory<
+  Animal,
+  number
+>(AnimalKey);
 
 export const actions: CrudActions<Animal, number> = {
-  ...crudActions,
+  ...crudActions
 };

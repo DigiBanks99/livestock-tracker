@@ -19,10 +19,8 @@
  */
 // (window as any).__Zone_enable_cross_context_check = true;
 
-/***************************************************************************************************
- * Zone JS is required by default for Angular itself.
- */
-import 'zone.js/dist/zone'; // Included with Angular CLI.
+// import '@angular/localize/init'; // Load `$localize` - used if i18n tags appear in Angular templates.
+import 'zone.js'; // Included with Angular CLI. Zone JS is required by default for Angular itself.
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

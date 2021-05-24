@@ -3,7 +3,7 @@
   "compilerOptions": {
     "downlevelIteration": true,
     "importHelpers": true,
-    "module": "esnext",
+    "module": "es2020",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -27,12 +27,18 @@
       "@medical/*": ["app/modules/medical/*"],
       "@reports/*": ["app/modules/reports/*"],
       "@shared/*": ["app/modules/shared/*"],
+      "@svg/*": ["app/modules/svg/*"],
       "@unit/*": ["app/modules/unit/*"],
       "@unit-store/*": ["app/modules/unit/store/*"],
-      "@app/*": ["app/*"],
-      "@modules/*": ["app/modules/*"]
+      "@weight/*": ["app/modules/weight/*"],
+      "@test/*": ["test/modules/*"]
     },
     "newLine": "LF",
     "charset": "UTF-8"
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": true
   }
 }

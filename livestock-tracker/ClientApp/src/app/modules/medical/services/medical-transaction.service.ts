@@ -2,24 +2,17 @@ import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { CrudService } from '@core/models/crud-service.interface';
+import { BaseUrl } from '@core/di/base-url.injection-token';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { PagedData } from '@core/models/paged-data.model';
 import { environment } from '@env/environment';
 import { FetchSingleMedicalTransactionParams } from '@medical/store/medical-transaction.actions';
 
-export interface IMedicalTransactionService
-  extends CrudService<
-    MedicalTransaction,
-    number,
-    FetchSingleMedicalTransactionParams
-  > {}
-
 @Injectable()
-export class MedicalTransactionService implements IMedicalTransactionService {
+export class MedicalTransactionService {
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
+  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
     this.apiUrl = `${baseUrl}medicalTransactions`;
   }
 
@@ -33,8 +26,8 @@ export class MedicalTransactionService implements IMedicalTransactionService {
       {
         params: {
           pageNumber: pageNumber.toString(),
-          pageSize: pageSize.toString(),
-        },
+          pageSize: pageSize.toString()
+        }
       }
     );
   }
@@ -67,7 +60,7 @@ export class MedicalTransactionService implements IMedicalTransactionService {
   }
 }
 
-export class MockMedicalService implements IMedicalTransactionService {
+export class MockMedicalService {
   public getAll(
     animalId: number = 0
   ): Observable<PagedData<MedicalTransaction>> {
@@ -76,7 +69,7 @@ export class MockMedicalService implements IMedicalTransactionService {
       currentPage: 0,
       pageCount: 0,
       pageSize: 0,
-      totalRecordCount: 0,
+      totalRecordCount: 0
     });
   }
 
@@ -89,7 +82,7 @@ export class MockMedicalService implements IMedicalTransactionService {
       id: 0,
       medicineId: 0,
       transactionDate: new Date(),
-      unitId: 0,
+      unitId: 0
     });
   }
 

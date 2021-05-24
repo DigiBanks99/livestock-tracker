@@ -1,15 +1,15 @@
-import { ActionTypes, SelectAnimal } from '@animal/store/animal.actions';
-import { Animal } from '@app/core/models/livestock.model';
-import { AnimalState } from '@core/store/animal-state.interface';
-import { crudReducer } from '@core/store/crud.reducer';
+import { Animal, SaveState } from '@core/models';
+import { AnimalState, crudReducer } from '@core/store';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
+import { AnimalActionTypes } from './animal.action-types';
+import { SelectAnimalAction } from './animal.actions';
 import { AnimalKey } from './constants';
 
 export const animalsAdapter = createEntityAdapter<Animal>({
   selectId: (animal: Animal) => animal.id,
-  sortComparer: (animal: Animal) => animal.number,
+  sortComparer: (animal: Animal) => animal.number
 });
 
 export const initialState: AnimalState = animalsAdapter.getInitialState({
@@ -20,6 +20,7 @@ export const initialState: AnimalState = animalsAdapter.getInitialState({
   pageNumber: 0,
   pageSize: 10,
   recordCount: 0,
+  saveState: SaveState.New
 });
 
 export function animalsReducer(
@@ -27,20 +28,20 @@ export function animalsReducer(
   action: Action
 ): AnimalState {
   switch (action.type) {
-    case ActionTypes.SELECT_ANIMAL:
+    case AnimalActionTypes.SelectAnimal:
       return {
         ...state,
-        selectedId: selectAnimal(state.selectedId, <SelectAnimal>action),
+        selectedId: selectAnimal(state.selectedId, <SelectAnimalAction>action)
       };
     default:
       return {
         ...state,
-        ...crudReducer(AnimalKey, animalsAdapter, state, action),
+        ...crudReducer(AnimalKey, animalsAdapter, state, action)
       };
   }
 }
 
-function selectAnimal(key: number, action: SelectAnimal): number {
+function selectAnimal(key: number, action: SelectAnimalAction): number {
   if (action.key === undefined) return key;
   return action.key || 0;
 }

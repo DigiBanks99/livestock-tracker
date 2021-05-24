@@ -9,14 +9,14 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace LivestockTracker.Database.Models.Feed
 {
     [Table("FeedingTransactions", Schema = "feed")]
-    public class FeedingTransactionModel : IEntity<int>, IFeedingTransaction
+    public class FeedingTransactionModel : IEntity<long>, IFeedingTransaction, IAnimalTransaction
     {
         [Column("ID")]
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
         [Column("AnimalID")]
         [Required]
-        public int AnimalId { get; set; }
+        public long AnimalId { get; set; }
         [Column("FeedTypeID")]
         [ForeignKey(nameof(FeedType))]
         [Required]
@@ -33,7 +33,7 @@ namespace LivestockTracker.Database.Models.Feed
         public UnitModel UnitOfMeasurement { get; internal set; } = null!;
         public IFeedType FeedType { get; internal set; } = null!;
 
-        public int GetKey()
+        public long GetKey()
         {
             return Id;
         }

@@ -1,10 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import {
-  async,
   ComponentFixture,
   fakeAsync,
   TestBed,
-  tick
+  tick,
+  waitForAsync
 } from '@angular/core/testing';
 import {
   FormBuilder,
@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalType } from '@core/models';
+import { SvgService } from '@svg/services';
 
 import { AnimalTypeSelectComponent } from './animal-type-select.component';
 
@@ -36,9 +37,10 @@ import { AnimalTypeSelectComponent } from './animal-type-select.component';
   `
 })
 class TestComponent {
-  public form: FormGroup;
   @ViewChild(AnimalTypeSelectComponent, { static: false, read: false })
   public typeSelect: AnimalTypeSelectComponent;
+
+  public form: FormGroup;
 
   constructor(formBuilder: FormBuilder) {
     this.form = formBuilder.group({
@@ -47,24 +49,39 @@ class TestComponent {
   }
 }
 
+@Component({
+  selector: 'app-animal-type-select-display',
+  template: ''
+})
+class AnimalTypeSelectDisplayStubComponent {
+  @Input() public value: AnimalType | null = null;
+}
+
 describe('AnimalTypeSelectComponent', () => {
   let component: AnimalTypeSelectComponent;
   let fixture: ComponentFixture<AnimalTypeSelectComponent>;
   let hostComponent: TestComponent;
   let hostFixture: ComponentFixture<TestComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [AnimalTypeSelectComponent, TestComponent],
-      imports: [
-        NoopAnimationsModule,
-        FormsModule,
-        MatIconModule,
-        MatSelectModule,
-        ReactiveFormsModule
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          AnimalTypeSelectComponent,
+          AnimalTypeSelectDisplayStubComponent,
+          TestComponent
+        ],
+        providers: [SvgService],
+        imports: [
+          NoopAnimationsModule,
+          FormsModule,
+          MatIconModule,
+          MatSelectModule,
+          ReactiveFormsModule
+        ]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AnimalTypeSelectComponent);
@@ -132,11 +149,11 @@ describe('AnimalTypeSelectComponent', () => {
     it('should contain all the AnimalType number values', () => {
       const expectedKeys = Object.keys(AnimalType)
         .filter(Number)
-        .map(type => +type)
+        .map((type) => +type)
         .concat(0)
         .sort();
 
-      expectedKeys.forEach(expectedKey => {
+      expectedKeys.forEach((expectedKey) => {
         expect(component.keys.indexOf(+expectedKey)).toBeGreaterThan(-1);
       });
     });

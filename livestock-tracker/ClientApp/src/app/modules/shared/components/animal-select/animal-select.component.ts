@@ -1,47 +1,37 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
-  OnChanges,
-  OnInit,
   Output
 } from '@angular/core';
-import { MatSelectChange } from '@angular/material/select';
-import { Livestock } from '@app/core/models/livestock.model';
-import { LivestockService } from '@animal/services/livestock.service';
+import { Animal, NullAnimal } from '@core/models';
 
 @Component({
   selector: 'app-animal-select',
   templateUrl: './animal-select.component.html',
-  styleUrls: ['./animal-select.component.scss']
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AnimalSelectComponent implements OnInit, OnChanges {
-  @Input() public animal: Livestock;
-  @Input() public animals: Livestock[];
+export class AnimalSelectComponent {
+  @Input() public set animal(value: Animal) {
+    if (value != null) {
+      this._animal = value;
+    }
+  }
+  public get animal(): Animal {
+    return this._animal;
+  }
+  @Input() public animals: Animal[];
   @Input() public disabled: boolean;
   @Output() public animalChanged = new EventEmitter<number>();
 
-  public currentAnimal: Livestock;
+  private _animal: Animal = { ...NullAnimal.instance };
 
-  constructor(private livestockService: LivestockService) {}
-
-  public ngOnInit() {
-    this.updateAnimal();
-  }
-
-  public ngOnChanges() {
-    this.updateAnimal();
-  }
-
-  public getSvgIcon(animal: Livestock) {
-    return this.livestockService.getSvgIcon(animal);
-  }
-
-  public onChange($event: MatSelectChange) {
-    this.animalChanged.emit($event.value);
-  }
-
-  private updateAnimal() {
-    this.currentAnimal = this.animal;
+  public onChange(id: number): void {
+    this._animal =
+      this.animals.find(
+        (animalOption: Animal): boolean => +animalOption.id === id
+      ) ?? null;
+    this.animalChanged.emit(id);
   }
 }

@@ -1,20 +1,20 @@
-<mat-form-field class="animal-select-container" appearance="standard">
-  <span class="animal-select-svg">
-    <mat-icon svgIcon="{{ getSvgIcon(currentAnimal) }}"></mat-icon>
-  </span>
+<mat-form-field class="animal-select-container" appearance="standard" fxFlex>
   <mat-select
-    [value]="currentAnimal ? currentAnimal.id : 0"
+    [value]="animal?.id || null"
     #animalSelector
-    (selectionChange)="onChange($event)"
+    (selectionChange)="onChange($event.value)"
     [disabled]="disabled"
   >
+    <mat-select-trigger>
+      <app-animal-select-display [animal]="animal"></app-animal-select-display>
+    </mat-select-trigger>
     <mat-option
-      *ngFor="let animal of animals; let i = index"
-      [value]="animal.id"
+      *ngFor="let animalOption of animals; let i = index"
+      [value]="animalOption.id"
     >
-      <mat-icon svgIcon="{{ getSvgIcon(animal) }}"></mat-icon>
-      <span>{{ animal.number }}</span>
-      <span>{{ animal.subspecies ? ' - ' + animal.subspecies : '' }}</span>
+      <app-animal-select-display
+        [animal]="animalOption"
+      ></app-animal-select-display>
     </mat-option>
   </mat-select>
 </mat-form-field>
