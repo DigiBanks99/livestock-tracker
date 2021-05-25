@@ -1,0 +1,11 @@
+{
+  "baseUrl": "https://localhost:5001",
+  "downloadsFolder": "result/downloads",
+  "fixturesFolder": "src/fixtures",
+  "integrationFolder": "src/integration",
+  "pluginsFile": "src/plugins/index.js",
+  "screenshotsFolder": "result/screenshots",
+  "supportFile": "src/support/index.js",
+  "videosFolder": "result/videos",
+  "nodeVersion": "system"
+}

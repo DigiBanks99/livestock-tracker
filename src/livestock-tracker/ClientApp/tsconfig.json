@@ -1,0 +1,84 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "module": "es2020",
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es2015",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "dom"
+    ],
+    "baseUrl": "src",
+    "paths": {
+      "@env/*": [
+        "environments/*"
+      ],
+      "@core/*": [
+        "app/core/*"
+      ],
+      "@store": [
+        "app/core/store/*"
+      ],
+      "@feed-store": [
+        "app/modules/feed/store/index"
+      ],
+      "@animal/*": [
+        "app/modules/livestock/*",
+        "app/modules/animal/*"
+      ],
+      "@admin/*": [
+        "app/modules/admin/*"
+      ],
+      "@feed/*": [
+        "app/modules/feed/*"
+      ],
+      "@home/*": [
+        "app/modules/home/*"
+      ],
+      "@header/*": [
+        "app/modules/header/*"
+      ],
+      "@medical/*": [
+        "app/modules/medical/*"
+      ],
+      "@reports/*": [
+        "app/modules/reports/*"
+      ],
+      "@shared/*": [
+        "app/modules/shared/*"
+      ],
+      "@svg/*": [
+        "app/modules/svg/*"
+      ],
+      "@unit/*": [
+        "app/modules/unit/*"
+      ],
+      "@unit-store/*": [
+        "app/modules/unit/store/*"
+      ],
+      "@weight/*": [
+        "app/modules/weight/*"
+      ],
+      "@test/*": [
+        "test/modules/*"
+      ]
+    },
+    "newLine": "LF",
+    "charset": "UTF-8"
+  },
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "fullTemplateTypeCheck": true,
+    "strictTemplates": true
+  }
+}

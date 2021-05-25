@@ -1,0 +1,46 @@
+{
+  "version": "0.2",
+  "language": "en-GB",
+  "dictionaries": [
+    "softwareTerms",
+    "companies",
+    "misc",
+    "fonts"
+  ],
+  "enabledLanguageIds": [
+    "javascript",
+    "markdown",
+    "plaintext",
+    "typescript"
+  ],
+  "words": [
+    "ngrx",
+    "injectable",
+    "validators",
+    "datepicker",
+    "theming",
+    "snackbar",
+    "truthy",
+    "sidenav",
+    "paginator",
+    "toolbar",
+    "unsubscribe",
+    "checkbox",
+    "elem",
+    "ctrl",
+    "ctl",
+    "placeholder",
+    "describedby",
+    "matheo"
+  ],
+  "ignorePaths": [
+    "**/package-lock.json",
+    "**/node_modules/**",
+    "**/vscode-extension/**",
+    "**/.git/objects/**",
+    ".vscode",
+    "**/tslint.json",
+    "**/angular.json",
+    ".eslintrc.json"
+  ]
+}

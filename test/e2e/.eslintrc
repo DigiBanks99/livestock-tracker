@@ -1,0 +1,18 @@
+{
+  "root": true,
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "parser": "@typescript-eslint/parser",
+      "extends": [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:cypress/recommended"
+      ],
+      "rules": {
+        "@typescript-eslint/no-namespace": "off"
+      }
+    }
+  ],
+  "extends": ["plugin:cypress/recommended"]
+}
