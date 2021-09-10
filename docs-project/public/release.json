@@ -28,5 +28,17 @@
     "platform": "all",
     "link": "https://www.dropbox.com/s/5to4emk8ki6nxfe/all_0.0.3.zip?dl=1",
     "fileName": "all_0.0.3.zip"
+  },
+  {
+    "version": "0.0.5",
+    "platform": "all",
+    "link": "https://www.dropbox.com/s/x72bszjk3j9p3z2/all_0.0.5.zip?dl=1",
+    "fileName": "all_0.0.5.zip"
+  },
+  {
+    "version": "0.6.0",
+    "platform": "windows10-x64",
+    "link": "https://www.dropbox.com/s/039ax4ng8mdaeoi/win-x64_0.6.0.zip?dl=1",
+    "fileName": "win-x64_0.6.0.zip"
   }
 ]
