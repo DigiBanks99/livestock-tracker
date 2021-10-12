@@ -1,6 +1,14 @@
 import { Observable, of } from 'rxjs';
-import { concatMap, filter, map, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  concatMap,
+  filter,
+  map,
+  switchMap,
+  withLatestFrom
+} from 'rxjs/operators';
 
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
@@ -16,14 +24,19 @@ import { getSelectedAnimal } from '@core/store/selectors';
 import { environment } from '@env/environment';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
-  ROUTER_NAVIGATION,
+  ROUTER_NAVIGATED,
   RouterNavigatedAction,
   SerializedRouterStateSnapshot
 } from '@ngrx/router-store';
 import { Action, select, Store } from '@ngrx/store';
 
 import { AnimalActionTypes } from './animal.action-types';
-import { actions, FetchAnimalsAction } from './animal.actions';
+import {
+  actions,
+  ArchiveAnimals,
+  FetchAnimalsAction,
+  UnarchiveAnimals
+} from './animal.actions';
 import { AnimalKey } from './constants';
 
 @Injectable({
@@ -34,7 +47,7 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     PayloadAction<number> | Action
   > = createEffect(() =>
     this.actions$.pipe(
-      filter((action) => action.type === ROUTER_NAVIGATION),
+      filter((action) => action.type === ROUTER_NAVIGATED),
       filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
         /animal\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
       ),
@@ -70,6 +83,28 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     )
   );
 
+  public archiveAnimals$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AnimalActionTypes.ArchiveAnimals),
+      switchMap((action: ArchiveAnimals) =>
+        this.animalService.archiveAnimals(action.animalIds)
+      ),
+      map(() => ({ type: 'NOOP' })),
+      catchError((error: HttpErrorResponse) => this.handleError(error, actions))
+    )
+  );
+
+  public unarchiveAnimals$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AnimalActionTypes.UnarchiveAnimals),
+      switchMap((action: UnarchiveAnimals) =>
+        this.animalService.unarchiveAnimals(action.animalIds)
+      ),
+      map(() => ({ type: 'NOOP' })),
+      catchError((error: HttpErrorResponse) => this.handleError(error, actions))
+    )
+  );
+
   protected get defaultFetchAction(): Action {
     return new FetchAnimalsAction(0, environment.pageSize);
   }
@@ -89,7 +124,9 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     const fetchAction = <FetchAnimalsAction>action;
     return this.animalService.getAll(
       fetchAction.pageSize,
-      fetchAction.pageNumber
+      fetchAction.pageNumber,
+      fetchAction.orderOptions,
+      fetchAction.includeArchived
     );
   };
 }

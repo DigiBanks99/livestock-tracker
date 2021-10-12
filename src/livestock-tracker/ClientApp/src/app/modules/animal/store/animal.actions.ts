@@ -1,4 +1,5 @@
-import { Animal } from '@core/models';
+import { AnimalOrderType } from '@animal/enums';
+import { Animal, OrderOptions } from '@core/models';
 import { CrudActions, crudActionsFactory, PayloadAction } from '@core/store';
 import { Action } from '@ngrx/store';
 
@@ -17,14 +18,26 @@ export class SelectAnimalAction implements PayloadAction<number> {
 }
 
 export class FetchAnimalsAction implements Action {
-  readonly type = AnimalActionTypes.FetchAnimals;
-  pageNumber: number;
-  pageSize: number;
+  public readonly type = AnimalActionTypes.FetchAnimals;
 
-  constructor(pageNumber: number = 0, pageSize: number = 10) {
-    this.pageNumber = pageNumber;
-    this.pageSize = pageSize;
-  }
+  constructor(
+    public pageNumber: number = 0,
+    public pageSize: number = 10,
+    public orderOptions?: OrderOptions<AnimalOrderType>,
+    public includeArchived?: boolean
+  ) {}
+}
+
+export class ArchiveAnimals implements Action {
+  public readonly type = AnimalActionTypes.ArchiveAnimals;
+
+  constructor(public animalIds: number[]) {}
+}
+
+export class UnarchiveAnimals implements Action {
+  public readonly type = AnimalActionTypes.UnarchiveAnimals;
+
+  constructor(public animalIds: number[]) {}
 }
 
 const crudActions: CrudActions<Animal, number> = crudActionsFactory<

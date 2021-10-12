@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models.Animals;
 using LivestockTracker.Abstractions.Services.Animals;
+using LivestockTracker.Animals;
 using LivestockTracker.Database;
 using LivestockTracker.Database.Models.Animals;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +65,25 @@ namespace LivestockTracker.Logic.Services.Animals
                                   .ConfigureAwait(false);
 
             return AnimalMapper.Map(changes.Entity);
+        }
+
+        /// <inheritdoc/>
+        public void ArchiveAnimals(int[] animalIds)
+        {
+            Logger.LogInformation("Archiving animals...");
+
+            var animals = LivestockContext.Animals
+                                          .Where(animal => animalIds.Contains((int)animal.Id)
+                                                        && !animal.Archived)
+                                          .ToList();
+
+            Logger.LogDebug("Archiving {@Count} unarchived animals...", animals.Count);
+            foreach (var animal in animals)
+            {
+                animal.Archived = true;
+            }
+
+            LivestockContext.SaveChanges();
         }
 
         /// <summary>
@@ -132,6 +151,25 @@ namespace LivestockTracker.Logic.Services.Animals
                                   .ConfigureAwait(false);
 
             return changes.Entity.Id;
+        }
+
+        /// <inheritdoc/>
+        public void UnarchiveAnimals(int[] animalIds)
+        {
+            Logger.LogInformation("Unarchiving animals...");
+
+            var animals = LivestockContext.Animals
+                                          .Where(animal => animalIds.Contains((int)animal.Id)
+                                                        && animal.Archived)
+                                          .ToList();
+
+            Logger.LogDebug("Unarchiving {@Count} archived animals...", animals.Count);
+            foreach (var animal in animals)
+            {
+                animal.Archived = false;
+            }
+
+            LivestockContext.SaveChanges();
         }
 
         /// <summary>

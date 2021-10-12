@@ -1,5 +1,5 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models.Animals;
+using LivestockTracker.Animals;
 using LivestockTracker.Models.Animals;
 
 namespace LivestockTracker.Logic.Mappers.Animals

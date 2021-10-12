@@ -31,6 +31,31 @@ namespace LivestockTracker.Logic.Paging
         }
 
         /// <summary>
+        /// Creates a paged set of results of <typeparamref name="TData"/> items based on
+        /// the <paramref name="query"/> and <paramref name="options"/>.
+        /// </summary>
+        /// <typeparam name="TData">The type of the result set.</typeparam>
+        /// <param name="query">
+        /// The <see cref="IQueryable{T}"/> query of the <typeparamref name="TData"/> items.
+        /// </param>
+        /// <param name="options">
+        /// The pagination options.
+        /// </param>
+        /// <returns>
+        /// The paged result set of <typeparamref name="TData"/> items.
+        /// </returns>
+        public static IPagedData<TData> Paginate<TData>(this IQueryable<TData> query, IPagingOptions options)
+            where TData : class
+        {
+            return new PagedData<TData>(query.Skip(options.Offset)
+                                             .Take(options.PageSize)
+                                             .ToList(),
+                                        options.PageSize,
+                                        options.PageNumber,
+                                        query.Count());
+        }
+
+        /// <summary>
         /// Enumerates a <typeparamref name="TData"/> query according to the <paramref name="options"/>
         /// into a <see cref="IPagedData{TData}"/> result.
         /// </summary>

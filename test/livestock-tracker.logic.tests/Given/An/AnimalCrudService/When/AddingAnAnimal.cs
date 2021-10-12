@@ -1,5 +1,5 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models.Animals;
+using LivestockTracker.Animals;
 using LivestockTracker.Database.Models.Animals;
 using LivestockTracker.Logic.Services.Animals;
 using LivestockTracker.Logic.Tests.Factories;

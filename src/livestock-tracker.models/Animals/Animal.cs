@@ -1,12 +1,12 @@
 using LivestockTracker.Abstractions.Enums;
-using LivestockTracker.Abstractions.Models.Animals;
+using LivestockTracker.Animals;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 
 namespace LivestockTracker.Models.Animals
 {
-    [DebuggerDisplay("[{Id} - {Number}]: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
+    [DebuggerDisplay("[{Id} - {Number}]{Archived ? \" A\" : string.Empty}: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
     public class Animal : IAnimal
     {
         public long Id { get; set; }
@@ -33,5 +33,6 @@ namespace LivestockTracker.Models.Animals
         [Required]
         public bool Deceased { get; set; } = false;
         public DateTimeOffset? DateOfDeath { get; set; }
+        public bool Archived { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Enums;
-using LivestockTracker.Abstractions.Models.Animals;
+using LivestockTracker.Animals;
 using LivestockTracker.Database.Models.Feed;
 using LivestockTracker.Database.Models.Medical;
 using LivestockTracker.Database.Models.Weight;
@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace LivestockTracker.Database.Models.Animals
 {
-    [DebuggerDisplay("[{Id} - {Number}]: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
+    [DebuggerDisplay("[{Id} - {Number}]{Archived ? \" A\" : string.Empty}: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
     [Table("Animals", Schema = "animal")]
     public class AnimalModel : IEntity<long>, IAnimal
     {
@@ -42,6 +42,7 @@ namespace LivestockTracker.Database.Models.Animals
         [Required]
         public bool Deceased { get; set; } = false;
         public DateTimeOffset? DateOfDeath { get; set; }
+        public bool Archived { get; set; } = false;
 
         public ICollection<MedicalTransactionModel> MedicalTransactions { get; set; } = new List<MedicalTransactionModel>();
         public ICollection<FeedingTransactionModel> FeedingTransactions { get; } = new List<FeedingTransactionModel>();

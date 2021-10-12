@@ -1,15 +1,16 @@
+using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Abstractions.Services.Animals;
+using LivestockTracker.Controllers;
 using LivestockTracker.Models.Animals;
 using LivestockTracker.Models.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 
-namespace LivestockTracker.Controllers
+namespace LivestockTracker.Animals
 {
     /// <summary>
     /// Provides a set of endpoints for interacting with animal information.
@@ -37,31 +38,28 @@ namespace LivestockTracker.Controllers
         /// <summary>
         /// Requests a paged list of all animals sorted by number.
         /// </summary>
-        /// <param name="pageNumber">The number of the page.</param>
-        /// <param name="pageSize">The size of each page.</param>
+        /// <param name="pagingOptions">Options relating to paging the request results.</param>
+        /// <param name="orderingOptions">Options relating to ordering the request results.</param>
+        /// <param name="includeArchived">Include archived animals in the results.</param>
         /// <returns>A paged list of animals.</returns>
-        [HttpGet()]
+        [HttpGet]
         [ProducesResponseType(typeof(IPagedData<AnimalSummary>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAnimals([Required] int pageNumber = 0, [Required] int pageSize = 100)
+        public IActionResult GetAnimals([FromQuery] PagingOptions pagingOptions, [FromQuery] OrderingOptions<AnimalOrderType> orderingOptions, bool? includeArchived = false)
         {
-            Logger.LogInformation($"Requesting {pageSize} animals from page {pageNumber}...");
+            Logger.LogInformation($"Requesting {pagingOptions.PageSize} animals from page {pagingOptions.PageNumber}...");
 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var animals = await _animalSummaryService.FindAsync(animal => true,
-                                                                animal => animal.Number,
-                                                                ListSortDirection.Ascending,
-                                                                new PagingOptions
-                                                                {
-                                                                    PageNumber = pageNumber,
-                                                                    PageSize = pageSize
-                                                                },
-                                                                RequestAbortToken)
-                                                     .ConfigureAwait(false);
+            var filter = new AnimalSummaryFilter
+            {
+                IncludeArchived = includeArchived
+            };
+
+            var animals = _animalSummaryService.SearchPaged(filter, pagingOptions, orderingOptions);
             return Ok(animals);
         }
 
@@ -87,7 +85,6 @@ namespace LivestockTracker.Controllers
             return Ok(animal);
         }
 
-
         /// <summary>
         /// Requests the creation of a new animal with the supplied details.
         /// </summary>
@@ -96,7 +93,7 @@ namespace LivestockTracker.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Animal), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> AddAnimal([Required][FromBody]Animal animal)
+        public async Task<IActionResult> AddAnimal([Required][FromBody] Animal animal)
         {
             Logger.LogInformation($"Requesting the creation of a new animal {animal}...");
 
@@ -120,7 +117,7 @@ namespace LivestockTracker.Controllers
         [ProducesResponseType(typeof(Animal), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> UpdateAnimal([FromRoute] int id, [Required][FromBody]Animal animal)
+        public async Task<IActionResult> UpdateAnimal([FromRoute] int id, [Required][FromBody] Animal animal)
         {
             Logger.LogInformation($"Requesting updates to the animal with ID {id} with body {animal}...");
 
@@ -150,6 +147,52 @@ namespace LivestockTracker.Controllers
             {
                 return NotFound(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Requests a collection of animals be archived.
+        /// </summary>
+        /// <param name="animalIds">The identifiers of the animals to be archived.</param>
+        [HttpPost("Archive")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        public IActionResult ArchiveAnimals(int[] animalIds)
+        {
+            Logger.LogInformation("Requesting {@Count} animals to be archived...", animalIds.Length);
+
+            if (animalIds.Length == 0)
+            {
+                ModelState.AddModelError(nameof(animalIds), "At least one animal identifier should be supplied.");
+                return BadRequest(ModelState);
+            }
+
+            _animalCrudService.ArchiveAnimals(animalIds);
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Requests a collection of animals be unarchived.
+        /// </summary>
+        /// <param name="animalIds">The identifiers of the animals to be archived.</param>
+        [HttpPost("Unarchive")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+        public IActionResult UnarchiveAnimals(int[] animalIds)
+        {
+            Logger.LogInformation("Requesting {@Count} animals to be unarchived...", animalIds.Length);
+
+            if (animalIds.Length == 0)
+            {
+                ModelState.AddModelError(nameof(animalIds), "At least one animal identifier should be supplied.");
+                return BadRequest(ModelState);
+            }
+
+            _animalCrudService.UnarchiveAnimals(animalIds);
+
+            return Ok();
         }
     }
 }
