@@ -1,42 +1,60 @@
 import { Observable } from 'rxjs';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
+import { AnimalOrderType } from '@animal/enums';
 import { BaseUrl } from '@core/di';
-import { Animal, PagedData } from '@core/models';
+import { Animal, OrderOptions, PagedData } from '@core/models';
 import { CrudService } from '@core/models/services';
 
 @Injectable({
   providedIn: AnimalProviderModule
 })
 export class AnimalService implements CrudService<Animal, number, number> {
-  private apiUrl: string;
+  private readonly _apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
-    this.apiUrl = baseUrl + 'animal';
+  constructor(private _http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
+    this._apiUrl = baseUrl + 'animal';
   }
+
+  public archiveAnimals = (animalIds: number[]): Observable<void> =>
+    this._http.post<void>(`${this._apiUrl}/Archive`, animalIds);
 
   public getAll = (
     pageSize = 10,
-    pageNumber = 1
-  ): Observable<PagedData<Animal>> =>
-    this.http.get<PagedData<Animal>>(this.apiUrl, {
-      params: {
-        pageNumber: pageNumber.toString(),
-        pageSize: pageSize.toString()
-      }
+    pageNumber = 1,
+    orderOptions: OrderOptions<AnimalOrderType> = null,
+    includeArchived = false
+  ): Observable<PagedData<Animal>> => {
+    const paramMap = {
+      ['pagingOptions.pageSize']: pageSize,
+      ['pagingOptions.pageNumber']: pageNumber,
+      includeArchived
+    };
+    if (orderOptions != null) {
+      paramMap['orderingOptions.direction'] = orderOptions.direction;
+      paramMap['orderingOptions.property'] =
+        orderOptions.property ?? AnimalOrderType.Number;
+    }
+    const params = new HttpParams({ fromObject: paramMap });
+    return this._http.get<PagedData<Animal>>(this._apiUrl, {
+      params
     });
+  };
 
   public get = (key: number): Observable<Animal> =>
-    this.http.get<Animal>(`${this.apiUrl}/${key}`);
+    this._http.get<Animal>(`${this._apiUrl}/${key}`);
 
   public add = (item: Animal): Observable<Animal> =>
-    this.http.post<Animal>(this.apiUrl, item);
+    this._http.post<Animal>(this._apiUrl, item);
 
   public update = (item: Animal, key: number): Observable<Animal> =>
-    this.http.put<Animal>(`${this.apiUrl}/${key}`, item);
+    this._http.put<Animal>(`${this._apiUrl}/${key}`, item);
 
   public delete = (key: number): Observable<number> =>
-    this.http.delete<number>(`${this.apiUrl}/${key}`);
+    this._http.delete<number>(`${this._apiUrl}/${key}`);
+
+  public unarchiveAnimals = (animalIds: number[]): Observable<void> =>
+    this._http.post<void>(`${this._apiUrl}/Archive`, animalIds);
 }

@@ -19,10 +19,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { AnimalRoutingModule } from '@animal/animal-routing.module';
 import { AnimalFormComponent, AnimalListComponent } from '@animal/components';
@@ -63,7 +65,9 @@ import { SharedModule } from '@shared/shared.module';
     MatNativeDateModule,
     MatTableModule,
     MatToolbarModule,
+    MatTooltipModule,
     MatSelectModule,
+    MatSlideToggleModule,
     MatSnackBarModule,
     MatSortModule,
     ReactiveFormsModule,

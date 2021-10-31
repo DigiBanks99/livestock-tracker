@@ -1,11 +1,17 @@
 {
   "root": true,
-  "ignorePatterns": ["projects/**/*"],
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
   "overrides": [
     {
-      "files": ["*.ts"],
+      "files": [
+        "*.ts"
+      ],
       "parserOptions": {
-        "project": ["tsconfig.json"],
+        "project": [
+          "tsconfig.json"
+        ],
         "createDefaultProgram": true
       },
       "extends": [
@@ -17,7 +23,11 @@
         "@angular-eslint/component-class-suffix": [
           "error",
           {
-            "suffixes": ["Component", "Page", "Container"]
+            "suffixes": [
+              "Component",
+              "Page",
+              "Container"
+            ]
           }
         ],
         "@angular-eslint/component-selector": [
@@ -55,38 +65,84 @@
           "error",
           {
             "selector": "default",
-            "format": ["camelCase"]
+            "format": [
+              "camelCase"
+            ]
           },
           {
-            "selector": ["enum", "enumMember", "class", "interface"],
-            "format": ["StrictPascalCase"]
+            "selector": [
+              "enum",
+              "enumMember",
+              "class",
+              "interface"
+            ],
+            "format": [
+              "StrictPascalCase"
+            ]
           },
           {
-            "selector": ["property", "parameterProperty", "accessor"],
-            "modifiers": ["private"],
-            "format": ["camelCase"],
+            "selector": [
+              "property",
+              "parameterProperty",
+              "accessor"
+            ],
+            "modifiers": [
+              "private"
+            ],
+            "format": [
+              "camelCase"
+            ],
             "leadingUnderscore": "allow"
           },
           {
-            "selector": ["property", "parameterProperty", "accessor"],
-            "modifiers": ["public"],
-            "format": ["camelCase", "StrictPascalCase"],
+            "selector": [
+              "property",
+              "parameterProperty",
+              "accessor"
+            ],
+            "modifiers": [
+              "public"
+            ],
+            "format": [
+              "camelCase",
+              "StrictPascalCase"
+            ],
             "leadingUnderscore": "allow"
           },
           {
-            "selector": ["variable", "property"],
-            "modifiers": ["const"],
-            "format": ["StrictPascalCase", "camelCase"]
+            "selector": [
+              "variable",
+              "property"
+            ],
+            "modifiers": [
+              "const"
+            ],
+            "format": [
+              "StrictPascalCase",
+              "camelCase"
+            ]
           },
           {
             "selector": "typeParameter",
-            "format": ["StrictPascalCase"],
-            "prefix": ["T"]
+            "format": [
+              "StrictPascalCase"
+            ],
+            "prefix": [
+              "T"
+            ]
           }
         ],
-        "@typescript-eslint/no-empty-interface": ["off"],
+        "@typescript-eslint/no-empty-interface": [
+          "off"
+        ],
         "@typescript-eslint/no-shadow": "error",
-        "brace-style": ["error", "1tbs"],
+        "@typescript-eslint/no-namespace": [
+          "off"
+        ],
+        "brace-style": [
+          "error",
+          "1tbs"
+        ],
         "curly": "off",
         "id-blacklist": "off",
         "id-match": "off",
@@ -98,7 +154,12 @@
         ],
         "no-shadow": "off", // replaced by @typescript-eslint/no-shadow
         "no-underscore-dangle": "off",
-        "prefer-arrow-callback": ["warn", { "allowNamedFunctions": true }],
+        "prefer-arrow-callback": [
+          "warn",
+          {
+            "allowNamedFunctions": true
+          }
+        ],
         "prefer-arrow/prefer-arrow-functions": [
           "off",
           {
@@ -111,8 +172,12 @@
       }
     },
     {
-      "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
       "rules": {}
     }
   ]

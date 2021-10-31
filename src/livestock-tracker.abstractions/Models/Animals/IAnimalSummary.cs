@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions.Enums;
 using System;
 
-namespace LivestockTracker.Abstractions.Models.Animals
+namespace LivestockTracker.Animals
 {
     /// <summary>
     /// Defines the most basic properties that define an individual animal.

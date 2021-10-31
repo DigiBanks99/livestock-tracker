@@ -3,14 +3,16 @@ using System;
 using LivestockTracker.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LivestockTracker.Database.Migrations
 {
     [DbContext(typeof(LivestockContext))]
-    partial class LivestockContextModelSnapshot : ModelSnapshot
+    [Migration("20211005045416_ArchiveAnimal")]
+    partial class ArchiveAnimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
