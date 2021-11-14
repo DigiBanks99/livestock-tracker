@@ -6,7 +6,7 @@ import { environment } from '@env/environment';
 @Component({
   selector: 'app-feed-type',
   templateUrl: './feed-type.component.html',
-  styleUrls: ['./feed-type.component.scss'],
+  styleUrls: ['./feed-type.component.scss']
 })
 export class FeedTypeComponent {
   @Input() public feedTypes: FeedType[];
@@ -27,10 +27,11 @@ export class FeedTypeComponent {
     this.recordCount = 0;
   }
 
-  public onAdd() {
-    const newFeedType = new FeedType();
-    newFeedType.description = 'New';
-    this.add.emit(newFeedType);
+  public onAdd(): void {
+    this.add.emit({
+      id: 0,
+      description: 'New'
+    });
   }
 
   public onPage(pageEvent: PageEvent) {

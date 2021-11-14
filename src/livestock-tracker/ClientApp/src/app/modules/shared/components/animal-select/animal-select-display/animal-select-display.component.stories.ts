@@ -1,14 +1,16 @@
 import { TestData } from 'test/modules/animal';
 
-import { AnimalSelectModule } from '@shared/components';
-import { AnimalSelectDisplayComponent } from '@shared/components/animal-select/animal-select-display/animal-select-display.component';
 import { moduleMetadata, Story } from '@storybook/angular';
+import { SvgProviderModule } from '@svg/svg-provider.module';
+
+import { AnimalSelectDisplayComponent } from './animal-select-display.component';
 
 export default {
   title: 'Shared/Animal Select/Display',
   decorators: [
     moduleMetadata({
-      imports: [AnimalSelectModule]
+      declarations: [AnimalSelectDisplayComponent],
+      imports: [SvgProviderModule]
     })
   ]
 };

@@ -4,7 +4,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MedicineType } from '@core/models/medicine-type.model';
 import {
   MedicineTypeService,
   MockMedicineTypeService
@@ -16,28 +15,28 @@ describe('MedicineTypeDetailComponent', () => {
   let component: MedicineTypeDetailComponent;
   let fixture: ComponentFixture<MedicineTypeDetailComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [MedicineTypeDetailComponent],
-      providers: [
-        { provide: MedicineTypeService, useClass: MockMedicineTypeService },
-      ],
-      imports: [
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-      ],
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [MedicineTypeDetailComponent],
+        providers: [
+          { provide: MedicineTypeService, useClass: MockMedicineTypeService }
+        ],
+        imports: [
+          ReactiveFormsModule,
+          BrowserAnimationsModule,
+          MatFormFieldModule,
+          MatInputModule,
+          MatIconModule
+        ]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MedicineTypeDetailComponent);
     component = fixture.componentInstance;
-    component.medicineType = new MedicineType();
-    component.medicineType.id = 1;
-    component.medicineType.description = 'Some stuff';
+    component.medicineType = { id: 1, description: 'Some stuff' };
     fixture.detectChanges();
   });
 

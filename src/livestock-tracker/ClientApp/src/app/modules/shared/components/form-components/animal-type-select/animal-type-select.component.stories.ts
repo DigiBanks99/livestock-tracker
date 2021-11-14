@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalType } from '@core/models';
 import { AnimalTypeSelectModule } from '@shared/components';
 import { moduleMetadata, Story } from '@storybook/angular';
@@ -56,7 +57,12 @@ export default {
   decorators: [
     moduleMetadata({
       declarations: [HostComponent],
-      imports: [AnimalTypeSelectModule, MatFormFieldModule, MatInputModule]
+      imports: [
+        AnimalTypeSelectModule,
+        MatFormFieldModule,
+        MatInputModule,
+        NoopAnimationsModule
+      ]
     })
   ]
 };

@@ -40,7 +40,7 @@ export class CrudEffects<
       map((action: PayloadAction<TData>) => action.payload),
       switchMap((item: TData) => this.service.add(item)),
       tap(() =>
-        this.snackBar.open('Added successfully.', null, { duration: 2500 })
+        this.snackBar.open('Added successfully.', undefined, { duration: 2500 })
       ),
       map((item: TData) => this.typeActions.apiAddItem(item)),
       catchError((error) => this.handleError(error, this.typeActions))
@@ -55,7 +55,9 @@ export class CrudEffects<
         this.service.update(payload.value, payload.key)
       ),
       tap(() =>
-        this.snackBar.open('Updated successfully.', null, { duration: 2500 })
+        this.snackBar.open('Updated successfully.', undefined, {
+          duration: 2500
+        })
       ),
       map((item: TData) =>
         this.typeActions.apiUpdateItem(
@@ -73,7 +75,9 @@ export class CrudEffects<
       map((action: PayloadAction<TKey>) => action.payload),
       switchMap((id: TKey) => this.service.delete(id)),
       tap(() =>
-        this.snackBar.open('Deleted successfully.', null, { duration: 2500 })
+        this.snackBar.open('Deleted successfully.', undefined, {
+          duration: 2500
+        })
       ),
       map((id: TKey) => this.typeActions.apiDeleteItem(id)),
       catchError((error) => this.handleError(error, this.typeActions))
@@ -106,7 +110,7 @@ export class CrudEffects<
       const httpError = <HttpErrorResponse>err;
       error = new Error(httpError.error);
       error.name = httpError.name;
-      error.stack = httpError.url;
+      error.stack = httpError.url ?? undefined;
     } else error = new Error(err);
 
     this.snackBar.open(`Failed: ${error.message}`, null, { duration: 2500 });

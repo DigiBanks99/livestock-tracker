@@ -47,7 +47,7 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     PayloadAction<number> | Action
   > = createEffect(() =>
     this.actions$.pipe(
-      filter((action) => action.type === ROUTER_NAVIGATED),
+      ofType(ROUTER_NAVIGATED),
       filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
         /animal\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
       ),

@@ -41,7 +41,7 @@ function apiFetchAnimalTransactionsReducer<TData extends AnimalTransaction>(
     selectedIndex > -1
       ? newState.selectedId
       : ids.length > 0
-      ? newState.entities[ids[0]].id
+      ? (newState.entities[ids[0]] ?? { id: null }).id
       : null;
   return {
     ...newState,

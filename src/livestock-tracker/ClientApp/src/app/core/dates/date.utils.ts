@@ -62,11 +62,11 @@ export function parseLocaleDate(
   const formatParts = formatString.split(joinChar);
   const dateParts = dateString.split(joinChar);
 
-  let day: number;
-  let month: number;
-  let year: number;
-  let hours: number;
-  let minutes: number;
+  let day = 1;
+  let month = 1;
+  let year = 1970;
+  let hours = 0;
+  let minutes = 0;
   for (let index = 0; index < formatParts.length; index++) {
     const val = Number(dateParts[index]);
     switch (formatParts[index]) {

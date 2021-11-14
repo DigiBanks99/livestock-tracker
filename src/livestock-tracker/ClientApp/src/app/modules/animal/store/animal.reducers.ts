@@ -41,7 +41,10 @@ export function animalsReducer(
   }
 }
 
-function selectAnimal(key: number, action: SelectAnimalAction): number {
+function selectAnimal(
+  key: number | null,
+  action: SelectAnimalAction
+): number | null {
   if (action.key === undefined) return key;
   return action.key || 0;
 }

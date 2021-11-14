@@ -1,14 +1,15 @@
 import { KeyValue } from '@angular/common';
-import { SaveState } from '@core/models';
-import { KeyEntity } from '@core/models/key-entity.interface';
-import { PagedData } from '@core/models/paged-data.model';
+import { KeyEntity, PagedData, SaveState } from '@core/models';
 import { EntityAdapter, Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { PayloadAction } from './';
 import { CrudState } from './crud-state.interface';
 
-export function crudReducer<TData extends KeyEntity<TKey>, TKey>(
+export function crudReducer<
+  TData extends KeyEntity<TKey>,
+  TKey extends string | number
+>(
   typeName: string,
   adapter: EntityAdapter<TData>,
   state: CrudState<TData, TKey>,
@@ -115,7 +116,10 @@ function updateApiReducer<TData extends KeyEntity<TKey>, TKey>(
   };
 }
 
-function deleteApiReducer<TData extends KeyEntity<TKey>, TKey>(
+function deleteApiReducer<
+  TData extends KeyEntity<TKey>,
+  TKey extends string | number
+>(
   adapter: EntityAdapter<TData>,
   state: CrudState<TData, TKey>,
   action: PayloadAction<TKey>

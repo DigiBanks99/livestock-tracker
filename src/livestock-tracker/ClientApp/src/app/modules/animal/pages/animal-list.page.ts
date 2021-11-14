@@ -17,12 +17,12 @@ import { select, Store } from '@ngrx/store';
 @Component({
   template: ` <div class="title">
       <h1 class="mat-h1">Animals</h1>
-      <span
-        >Include Archived
+      <span>
+        Include Archived
         <mat-slide-toggle
           (toggleChange)="onIncludeArchived()"
-        ></mat-slide-toggle
-      ></span>
+        ></mat-slide-toggle>
+      </span>
     </div>
     <app-animal-list
       [animals]="animals$ | async"

@@ -19,9 +19,9 @@ export interface Animal {
 
 export class Livestock implements Animal {
   public sold: boolean;
-  public sellDate: Date;
-  public deceased: boolean;
-  public dateOfDeath: Date;
+  public sellDate: Date = null;
+  public deceased = false;
+  public dateOfDeath: Date = null;
 
   constructor(
     public id: number,
@@ -52,14 +52,14 @@ export class NullAnimal implements Animal {
   readonly type: AnimalType = AnimalType.Cattle;
   readonly subspecies = '';
   readonly number: number = Number.NaN;
-  readonly birthDate: Date = null;
-  readonly purchaseDate: Date = null;
-  readonly purchasePrice: number = null;
+  readonly birthDate = new Date(1970, 1, 1);
+  readonly purchaseDate = new Date(1970, 1, 1);
+  readonly purchasePrice = 0;
   readonly sold = false;
   readonly sellPrice: number = null;
   readonly sellDate: Date = null;
-  readonly arrivalWeight: number = null;
-  readonly batchNumber: number = null;
+  readonly arrivalWeight = 0;
+  readonly batchNumber = 0;
   readonly deceased = false;
   readonly dateOfDeath: Date = null;
 }

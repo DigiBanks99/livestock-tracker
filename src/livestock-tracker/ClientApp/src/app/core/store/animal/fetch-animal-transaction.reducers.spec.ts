@@ -1,6 +1,6 @@
 import { AnimalTransaction, SaveState } from '@core/models';
 import { CrudState } from '@core/store/crud';
-import { createEntityAdapter } from '@ngrx/entity';
+import { createEntityAdapter, Dictionary } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { fetchAnimalTransactionsActionFactory } from './fetch-animal-transaction.actions';
@@ -65,7 +65,7 @@ describe('animalTransactionReducer', () => {
       pageCount: items.length / 10,
       totalRecordCount: items.length
     });
-    const entities = {};
+    const entities: Dictionary<TestEntity> = {};
     items.forEach((item) => (entities[item.id] = item));
 
     expectedState = {

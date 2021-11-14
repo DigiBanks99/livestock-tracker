@@ -1,3 +1,3 @@
 export interface ErrorState {
-  error: Error;
+  error: Error | null;
 }

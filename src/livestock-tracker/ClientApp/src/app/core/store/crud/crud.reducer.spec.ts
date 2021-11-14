@@ -1,6 +1,6 @@
 import { SaveState } from '@core/models';
 import { KeyEntity } from '@core/models/key-entity.interface';
-import { createEntityAdapter, Update } from '@ngrx/entity';
+import { createEntityAdapter, Dictionary, Update } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { crudActionsFactory } from './';
@@ -106,7 +106,7 @@ describe('Crud Reducers', () => {
       pageCount: items.length / 10,
       totalRecordCount: items.length
     });
-    const entities = {};
+    const entities: Dictionary<TestEntity> = {};
     items.forEach((item) => (entities[item.id] = item));
 
     expectedState = {
