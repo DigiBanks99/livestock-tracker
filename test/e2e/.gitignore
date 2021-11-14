@@ -1,0 +1,9 @@
+# IDE and editor specifics
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Output
+result/*

@@ -1,0 +1,2 @@
+GET https://localhost:5001/api/animal?pagingOptions.pageSize=10&pagingOptions.pageNumber=0&includeArchived=false&orderingOptions.direction=Ascending&orderingOptions.property=2
+Content-Type: application/json

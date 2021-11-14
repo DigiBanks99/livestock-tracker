@@ -1,0 +1,185 @@
+{
+  "root": true,
+  "ignorePatterns": [
+    "projects/**/*"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "*.ts"
+      ],
+      "parserOptions": {
+        "project": [
+          "tsconfig.json"
+        ],
+        "createDefaultProgram": true
+      },
+      "extends": [
+        "plugin:@angular-eslint/ng-cli-compat",
+        "plugin:@angular-eslint/ng-cli-compat--formatting-add-on",
+        "plugin:@angular-eslint/template/process-inline-templates",
+        "plugin:storybook/recommended"
+      ],
+      "rules": {
+        "@angular-eslint/component-class-suffix": [
+          "error",
+          {
+            "suffixes": [
+              "Component",
+              "Page",
+              "Container"
+            ]
+          }
+        ],
+        "@angular-eslint/component-selector": [
+          "error",
+          {
+            "type": "element",
+            "prefix": "app",
+            "style": "kebab-case"
+          }
+        ],
+        "@angular-eslint/directive-selector": [
+          "error",
+          {
+            "type": "attribute",
+            "prefix": "app",
+            "style": "camelCase"
+          }
+        ],
+        "@typescript-eslint/consistent-type-assertions": [
+          "warn",
+          {
+            "assertionStyle": "angle-bracket",
+            "objectLiteralTypeAssertions": "allow"
+          }
+        ],
+        "@typescript-eslint/consistent-type-definitions": "error",
+        "@typescript-eslint/dot-notation": "off",
+        "@typescript-eslint/explicit-member-accessibility": [
+          "off",
+          {
+            "accessibility": "explicit"
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": [
+              "camelCase"
+            ]
+          },
+          {
+            "selector": [
+              "enum",
+              "enumMember",
+              "class",
+              "interface"
+            ],
+            "format": [
+              "StrictPascalCase"
+            ]
+          },
+          {
+            "selector": [
+              "property",
+              "parameterProperty",
+              "accessor"
+            ],
+            "modifiers": [
+              "private"
+            ],
+            "format": [
+              "camelCase"
+            ],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": [
+              "property",
+              "parameterProperty",
+              "accessor"
+            ],
+            "modifiers": [
+              "public"
+            ],
+            "format": [
+              "camelCase",
+              "StrictPascalCase"
+            ],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": [
+              "variable",
+              "property"
+            ],
+            "modifiers": [
+              "const"
+            ],
+            "format": [
+              "StrictPascalCase",
+              "camelCase"
+            ]
+          },
+          {
+            "selector": "typeParameter",
+            "format": [
+              "StrictPascalCase"
+            ],
+            "prefix": [
+              "T"
+            ]
+          }
+        ],
+        "@typescript-eslint/no-empty-interface": [
+          "off"
+        ],
+        "@typescript-eslint/no-shadow": "error",
+        "@typescript-eslint/no-namespace": [
+          "off"
+        ],
+        "brace-style": [
+          "error",
+          "1tbs"
+        ],
+        "curly": "off",
+        "id-blacklist": "off",
+        "id-match": "off",
+        "max-len": [
+          "off",
+          {
+            "code": 140
+          }
+        ],
+        "no-shadow": "off", // replaced by @typescript-eslint/no-shadow
+        "no-underscore-dangle": "off",
+        "prefer-arrow-callback": [
+          "warn",
+          {
+            "allowNamedFunctions": true
+          }
+        ],
+        "prefer-arrow/prefer-arrow-functions": [
+          "off",
+          {
+            "disallowPrototype": true,
+            "singleReturnOnly": false,
+            "classPropertiesAllowed": false,
+            "allowStandaloneDeclarations": true
+          }
+        ]
+      }
+    },
+    {
+      "files": [
+        "*.html"
+      ],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended"
+      ],
+      "rules": {}
+    }
+  ]
+}

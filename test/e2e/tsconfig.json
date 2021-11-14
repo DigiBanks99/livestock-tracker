@@ -1,0 +1,16 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["es5", "dom"],
+    "types": ["cypress"]
+  },
+  "include": [
+    "**/*.ts",
+    "src/support/index.js",
+    "src/plugins/index.js",
+    "src/support/commands/forms/mat-form-field.command.ts",
+    "src/support/commands/index.ts",
+    "src/support/commands/forms/index.ts"
+  ]
+}
