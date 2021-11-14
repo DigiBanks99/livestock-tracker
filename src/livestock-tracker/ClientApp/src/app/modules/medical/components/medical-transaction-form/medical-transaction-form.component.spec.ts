@@ -9,7 +9,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicalTransactionFormComponent } from '@medical/components/medical-transaction-form/medical-transaction-form.component';
 import {
   MedicalTransactionService,
@@ -57,13 +56,14 @@ describe('MedicalTransactionFormComponent', () => {
     waitForAsync(() => {
       fixture = TestBed.createComponent(MedicalTransactionFormComponent);
       component = fixture.componentInstance;
-      component.medicalTransaction = new MedicalTransaction();
-      component.medicalTransaction.animalId = 1;
-      component.medicalTransaction.dose = 1;
-      component.medicalTransaction.id = 1;
-      component.medicalTransaction.medicineId = 1;
-      component.medicalTransaction.transactionDate = new Date(Date.now());
-      component.medicalTransaction.unitId = 1;
+      component.medicalTransaction = {
+        animalId: 1,
+        dose: 1,
+        id: 1,
+        medicineId: 1,
+        transactionDate: new Date(Date.now()),
+        unitId: 1
+      };
       fixture.detectChanges();
     })
   );

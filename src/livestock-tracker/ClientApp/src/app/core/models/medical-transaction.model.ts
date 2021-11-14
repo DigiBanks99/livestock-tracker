@@ -1,10 +1,10 @@
 import { KeyEntity } from './key-entity.interface';
 
-export class MedicalTransaction implements KeyEntity<number> {
-  public id: number;
-  public animalId: number;
-  public medicineId: number;
-  public transactionDate: Date;
-  public dose: number;
-  public unitId: number;
+export interface MedicalTransaction extends KeyEntity<number> {
+  id: number;
+  animalId: number;
+  medicineId: number;
+  transactionDate: Date;
+  dose: number;
+  unitId: number;
 }

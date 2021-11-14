@@ -18,6 +18,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalListComponent } from '@animal/components';
 import { AnimalStore } from '@animal/store';
+import { AnimalType } from '@core/models';
 import { provideMockStore } from '@ngrx/store/testing';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 import { SvgService } from '@svg/services';
@@ -80,5 +81,78 @@ describe('Animal List Component', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should emit archive if onArchive is called', () => {
+    const archiveSpy = spyOn(component.archive, 'emit');
+    component.animalIdsArray.patchValue([1, 3]);
+    component.animals = [
+      {
+        id: 6,
+        type: AnimalType.Cattle,
+        arrivalWeight: 0,
+        batchNumber: 0,
+        birthDate: new Date(),
+        deceased: false,
+        number: 0,
+        purchaseDate: new Date(),
+        purchasePrice: 0,
+        sold: false,
+        subspecies: null,
+        dateOfDeath: null,
+        sellDate: null,
+        sellPrice: null
+      },
+      {
+        id: 55,
+        type: AnimalType.Cattle,
+        arrivalWeight: 0,
+        batchNumber: 0,
+        birthDate: new Date(),
+        deceased: false,
+        number: 0,
+        purchaseDate: new Date(),
+        purchasePrice: 0,
+        sold: false,
+        subspecies: null,
+        dateOfDeath: null,
+        sellDate: null,
+        sellPrice: null
+      },
+      {
+        id: 123,
+        type: AnimalType.Cattle,
+        arrivalWeight: 0,
+        batchNumber: 0,
+        birthDate: new Date(),
+        deceased: false,
+        number: 0,
+        purchaseDate: new Date(),
+        purchasePrice: 0,
+        sold: false,
+        subspecies: null,
+        dateOfDeath: null,
+        sellDate: null,
+        sellPrice: null
+      },
+      {
+        id: 7,
+        type: AnimalType.Cattle,
+        arrivalWeight: 0,
+        batchNumber: 0,
+        birthDate: new Date(),
+        deceased: false,
+        number: 0,
+        purchaseDate: new Date(),
+        purchasePrice: 0,
+        sold: false,
+        subspecies: null,
+        dateOfDeath: null,
+        sellDate: null,
+        sellPrice: null
+      }
+    ];
+    component.onArchive();
+    expect(archiveSpy).toHaveBeenCalledTimes(1);
   });
 });

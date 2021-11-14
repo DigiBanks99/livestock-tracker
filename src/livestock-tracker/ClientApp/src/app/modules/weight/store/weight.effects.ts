@@ -35,7 +35,7 @@ export class WeightEffects extends FetchAnimalTransactionEffects<WeightTransacti
     PayloadAction<number> | Action
   > = createEffect(() =>
     this.actions$.pipe(
-      filter((action) => action.type === ROUTER_NAVIGATION),
+      ofType(ROUTER_NAVIGATION),
       filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
         /weight\/[0-9]*\/edit/.test(action.payload.event.urlAfterRedirects)
       ),
@@ -57,7 +57,7 @@ export class WeightEffects extends FetchAnimalTransactionEffects<WeightTransacti
     PayloadAction<number> | Action
   > = createEffect(() =>
     this.actions$.pipe(
-      filter((action) => action.type === ROUTER_NAVIGATION),
+      ofType(ROUTER_NAVIGATION),
       filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
         /weight\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
       ),

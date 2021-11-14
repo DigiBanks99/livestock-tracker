@@ -1,6 +1,6 @@
 import { KeyEntity } from './key-entity.interface';
 
-export class Unit implements KeyEntity<number> {
-  public id: number;
-  public description: string;
+export interface Unit extends KeyEntity<number> {
+  id: number;
+  description: string;
 }

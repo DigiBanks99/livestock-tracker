@@ -1,12 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Unit } from '@core/models/unit.model';
-import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-unit',
   templateUrl: './unit.component.html',
-  styleUrls: ['./unit.component.scss'],
+  styleUrls: ['./unit.component.scss']
 })
 export class UnitComponent {
   @Input() public units: Unit[];
@@ -23,10 +22,11 @@ export class UnitComponent {
 
   public displayedColumns: string[] = ['description', 'star'];
 
-  public onAdd() {
-    const unit = new Unit();
-    unit.description = 'New';
-    this.add.emit(unit);
+  public onAdd(): void {
+    this.add.emit({
+      id: 0,
+      description: 'New'
+    });
   }
 
   public onSave(unit: Unit) {

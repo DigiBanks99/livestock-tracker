@@ -1,6 +1,6 @@
 import { KeyEntity } from './key-entity.interface';
 
-export class FeedingTransaction implements KeyEntity<number> {
+export interface FeedingTransaction extends KeyEntity<number> {
   animalId: number;
   feedTypeId: number;
   id: number;

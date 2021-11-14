@@ -21,9 +21,10 @@ export class MedicineTypeComponent {
   public displayedColumns: string[] = ['description', 'star'];
 
   public onAdd(): void {
-    const medicineType = new MedicineType();
-    medicineType.description = 'New';
-    this.add.emit(medicineType);
+    this.add.emit({
+      id: 0,
+      description: 'New'
+    });
   }
 
   public onPage(pageEvent: PageEvent): void {

@@ -1,6 +1,6 @@
 import { SaveState } from '@core/models';
 import { PagedData } from '@core/models/paged-data.model';
-import { Update } from '@ngrx/entity';
+import { Dictionary, Update } from '@ngrx/entity';
 import { WeightState, WeightTransaction } from '@weight/interfaces';
 import { WeightStore } from '@weight/store';
 import { initialState } from '@weight/store/weight.reducers';
@@ -409,8 +409,8 @@ describe('weightReducer', () => {
 
     it('should set the weight transaction in the store if it already exists', () => {
       // Arrange
-      const ids = [];
-      const entities = {};
+      const ids: number[] = [];
+      const entities: Dictionary<WeightTransaction> = {};
       pagedData.data.forEach((item: WeightTransaction) => {
         ids.push(item.id);
         entities[item.id] = { ...item, weight: 12 };
@@ -737,8 +737,8 @@ describe('weightReducer', () => {
 
     it('should set the weight transaction in the store if it already exists', () => {
       // Arrange
-      const ids = [];
-      const entities = {};
+      const ids: number[] = [];
+      const entities: Dictionary<WeightTransaction> = {};
       pagedData.data.forEach((item: WeightTransaction) => {
         ids.push(item.id);
         entities[item.id] = { ...item, weight: 12 };

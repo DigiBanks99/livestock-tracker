@@ -11,5 +11,5 @@ export interface CrudState<TType, TKey>
     ErrorState,
     EntityState<TType>,
     PaginationState {
-  selectedId: TKey;
+  selectedId: TKey | null;
 }

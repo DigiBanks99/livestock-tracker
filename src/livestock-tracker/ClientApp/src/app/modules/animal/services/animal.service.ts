@@ -7,6 +7,7 @@ import { AnimalOrderType } from '@animal/enums';
 import { BaseUrl } from '@core/di';
 import { Animal, OrderOptions, PagedData } from '@core/models';
 import { CrudService } from '@core/models/services';
+import { Dictionary } from '@ngrx/entity';
 
 @Injectable({
   providedIn: AnimalProviderModule
@@ -27,7 +28,7 @@ export class AnimalService implements CrudService<Animal, number, number> {
     orderOptions: OrderOptions<AnimalOrderType> = null,
     includeArchived = false
   ): Observable<PagedData<Animal>> => {
-    const paramMap = {
+    const paramMap: Dictionary<string | number | boolean> = {
       ['pagingOptions.pageSize']: pageSize,
       ['pagingOptions.pageNumber']: pageNumber,
       includeArchived

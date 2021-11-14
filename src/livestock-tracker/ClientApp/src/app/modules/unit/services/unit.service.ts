@@ -58,9 +58,10 @@ export class MockUnitService implements CrudService<Unit, number, number> {
     });
   }
   get(key: number): Observable<Unit> {
-    const unit = new Unit();
-    unit.id = key;
-    return of(unit);
+    return of({
+      id: key,
+      description: 'New'
+    });
   }
   add(unit: Unit): Observable<Unit> {
     throw new Error('Method not implemented.');

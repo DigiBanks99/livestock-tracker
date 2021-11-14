@@ -10,9 +10,8 @@
     "test:headless": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
     "postinstall": "ngcc",
-    "docs:json": "compodoc -p ./tsconfig.json -e json -d .",
-    "storybook": "npm run docs:json && start-storybook -p 6006 -s ./src/assets/",
-    "build-storybook": "npm run docs:json && build-storybook"
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "private": true,
   "dependencies": {
@@ -55,10 +54,12 @@
     "@angular/platform-server": "^12.2.4",
     "@babel/core": "^7.15.5",
     "@compodoc/compodoc": "^1.1.14",
-    "@storybook/addon-actions": "^6.3.8",
-    "@storybook/addon-essentials": "^6.3.8",
-    "@storybook/addon-links": "^6.3.8",
-    "@storybook/angular": "^6.3.8",
+    "@storybook/addon-actions": "^6.3.12",
+    "@storybook/addon-essentials": "^6.3.12",
+    "@storybook/addon-links": "^6.3.12",
+    "@storybook/angular": "^6.4.0-rc.1",
+    "@storybook/builder-webpack5": "^6.4.0-rc.1",
+    "@storybook/manager-webpack5": "^6.4.0-rc.1",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "^2.0.10",
     "@types/node": "^12.20.23",
@@ -69,6 +70,7 @@
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
     "eslint-plugin-prefer-arrow": "1.2.2",
+    "eslint-plugin-storybook": "^0.4.1",
     "jasmine-core": "^3.9.0",
     "jasmine-spec-reporter": "^7.0.0",
     "karma": "^6.3.4",
@@ -78,7 +80,9 @@
     "karma-jasmine": "^4.0.1",
     "karma-jasmine-html-reporter": "^1.7.0",
     "sass": "^1.39.0",
+    "storybook": "^6.4.0-rc.1",
     "ts-node": "~8.3.0",
-    "typescript": "~4.3.5"
+    "typescript": "~4.3.5",
+    "webpack": "^5.64.0"
   }
 }

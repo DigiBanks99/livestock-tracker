@@ -1,18 +1,26 @@
 import { LsGridColumnType } from '@shared/components/ls-grid/ls-grid-column-type.enum';
 
 export class LsGridColumnDef {
-  field: string;
-  description: string;
+  field: string | null = null;
+  description = '';
   pipe?: (...args: any) => string;
   sortable?: boolean;
-  width?: number;
-  widthUnits?: string;
+  width?: number | null;
   type?: LsGridColumnType;
   delete?: (item: any, key?: any) => void;
-  title?: string;
+  title?: string | null;
+
+  private _widthUnits: 'px' | 'rem' | 'em' | '%' = 'px';
+
+  public get widthUnits(): 'px' | 'rem' | 'em' | '%' {
+    return this._widthUnits;
+  }
+  public set widthUnits(value: 'px' | 'rem' | 'em' | '%') {
+    this._widthUnits = value;
+  }
 
   constructor() {
-    this.pipe = null;
+    this.pipe = (v) => v;
     this.sortable = true;
     this.width = null;
     this.widthUnits = 'px';

@@ -2,6 +2,8 @@
   input[type='number'] {
     text-align: right;
     -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    appearance: textfield;
   }
 
   span[matsuffix] {

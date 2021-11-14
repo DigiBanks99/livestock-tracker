@@ -1,6 +1,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "strictNullChecks": false,
     "downlevelIteration": true,
     "importHelpers": true,
     "module": "es2020",
