@@ -65,6 +65,7 @@ export class AnimalFormComponent {
   @Output() public archive = new EventEmitter<number>();
   @Output() public navigateBack = new EventEmitter();
   @Output() public save = new EventEmitter<Animal>();
+  @Output() public unarchive = new EventEmitter<number>();
 
   public form: FormGroup;
   public animalTypes = AnimalType;
@@ -154,7 +155,17 @@ export class AnimalFormComponent {
     this.form.markAsUntouched();
   }
 
-  public onArchive(): void {}
+  public onArchive(): void {
+    if (this.form.value != null) {
+      this.archive.emit(this.form.value.id);
+    }
+  }
+
+  public onUnarchive(): void {
+    if (this.form.value != null && this.currentAnimal?.archived) {
+      this.unarchive.emit(this.form.value.id);
+    }
+  }
 
   public updateSoldCtrl(value: boolean): void {
     this.enableControlAndMakeRequiredWhenTrue(

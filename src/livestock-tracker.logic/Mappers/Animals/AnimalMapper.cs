@@ -68,7 +68,8 @@ namespace LivestockTracker.Logic.Mappers.Animals
                 SellPrice = left.SellPrice,
                 Sold = left.Sold,
                 Subspecies = left.Subspecies,
-                Type = left.Type
+                Type = left.Type,
+                Archived = left.Archived
             };
         }
     }

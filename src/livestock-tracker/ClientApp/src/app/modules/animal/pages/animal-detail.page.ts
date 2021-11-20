@@ -3,6 +3,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { ArchiveAnimals, UnarchiveAnimals } from '@animal/store/animal.actions';
 import { AnimalStore } from '@animal/store/index';
 import { Animal, SaveState } from '@core/models';
 import { AppState } from '@core/store';
@@ -16,8 +17,10 @@ import { select, Store } from '@ngrx/store';
     [error]="error$ | async"
     header="Edit animal"
     successMessage="Animal saved."
+    (archive)="onArchive($event)"
     (navigateBack)="onNavigateBack()"
     (save)="onSave($event)"
+    (unarchive)="onUnarchive($event)"
   ></app-animal-form>`
 })
 export class AnimalDetailPage implements OnDestroy {
@@ -55,12 +58,20 @@ export class AnimalDetailPage implements OnDestroy {
     );
   }
 
+  public onArchive(id: number) {
+    this._store.dispatch(new ArchiveAnimals([id]));
+  }
+
   public onSave(animal: Animal): void {
     this._store.dispatch(AnimalStore.actions.updateItem(animal, animal.id));
   }
 
   public onNavigateBack(): void {
     this._router.navigate(['/animal']);
+  }
+
+  public onUnarchive(id: number) {
+    this._store.dispatch(new UnarchiveAnimals([id]));
   }
 
   public ngOnDestroy(): void {

@@ -23,7 +23,7 @@ namespace LivestockTracker.Updater.Windows
       services.Configure<ApiConfig>(_configuration.GetSection(ApiConfig.Key));
       services.Configure<FtpConfig>(_configuration.GetSection(FtpConfig.Key));
 
-      services.AddScoped<IDownloadService, ApiDonwloadService>();
+      services.AddScoped<IDownloadService, ApiDownloadService>();
       services.AddScoped<IFileService, FileService>();
       services.AddScoped<IFileCopyService, FileCopyService>();
       services.AddScoped<IUpdaterService, UpdaterService>();

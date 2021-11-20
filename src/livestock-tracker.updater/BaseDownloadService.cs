@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Updater
 {
-  public abstract class BaseDonwloadService : IDownloadService
+  public abstract class BaseDownloadService : IDownloadService
   {
     protected readonly ILogger _logger;
 
-    public BaseDonwloadService(ILogger logger)
+    public BaseDownloadService(ILogger logger)
     {
       _logger = logger;
     }
@@ -22,7 +22,7 @@ namespace LivestockTracker.Updater
 
     public virtual void CleanUpDownload(string savePath)
     {
-      _logger.LogDebug("{0}: Cleaning up download data at {1}", nameof(BaseDonwloadService), savePath);
+      _logger.LogDebug("{0}: Cleaning up download data at {1}", nameof(BaseDownloadService), savePath);
 
       bool retry = true;
       int maxRetry = 10;
@@ -46,7 +46,7 @@ namespace LivestockTracker.Updater
 
     public virtual async Task<DownloadableVersionModel> GetLatestVersionModel()
     {
-      _logger.LogDebug("{0}: Getting latest version model", nameof(BaseDonwloadService));
+      _logger.LogDebug("{0}: Getting latest version model", nameof(BaseDownloadService));
 
       var versions = await GetAllAvailableVersions();
       DownloadableVersionModel latestVersion = null;

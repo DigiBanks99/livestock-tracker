@@ -19,8 +19,8 @@ export class AnimalService implements CrudService<Animal, number, number> {
     this._apiUrl = baseUrl + 'animal';
   }
 
-  public archiveAnimals = (animalIds: number[]): Observable<void> =>
-    this._http.post<void>(`${this._apiUrl}/Archive`, animalIds);
+  public archiveAnimals = (animalIds: number[]): Observable<any> =>
+    this._http.post<any>(`${this._apiUrl}/Archive`, animalIds);
 
   public getAll = (
     pageSize = 10,
@@ -57,5 +57,5 @@ export class AnimalService implements CrudService<Animal, number, number> {
     this._http.delete<number>(`${this._apiUrl}/${key}`);
 
   public unarchiveAnimals = (animalIds: number[]): Observable<void> =>
-    this._http.post<void>(`${this._apiUrl}/Archive`, animalIds);
+    this._http.post<void>(`${this._apiUrl}/Unarchive`, animalIds);
 }

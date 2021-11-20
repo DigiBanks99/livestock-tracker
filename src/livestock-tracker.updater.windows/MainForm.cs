@@ -310,13 +310,13 @@ namespace LivestockTracker.Updater.Windows
     private async Task<UpdaterModel> ManageDownload()
     {
       progressBar.Value = 0;
-      UpdateStatus("Donwloading... 0%");
+      UpdateStatus("Downloading... 0%");
       var cancellationToken = _cancellationTokenSource.Token;
       var currentModel = this.updaterModelBindingSource.Current as UpdaterModel;
       var fileInfo = await DownloadNewFilesAsync(cancellationToken);
       if (!cancellationToken.IsCancellationRequested)
       {
-        UpdateStatus("Donwloaded");
+        UpdateStatus("Downloaded");
         return _updaterService.GetNewFiles(fileInfo, currentModel);
       }
 
@@ -341,7 +341,7 @@ namespace LivestockTracker.Updater.Windows
         downloadsDir.Create();
 
       var progress = new Progress<int>(value => {
-        UpdateStatus($"Donwloading... {value}%");
+        UpdateStatus($"Downloading... {value}%");
         progressBar.Value = value;
       });
 

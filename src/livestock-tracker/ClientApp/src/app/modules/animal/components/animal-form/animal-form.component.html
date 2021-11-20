@@ -2,18 +2,6 @@
 
 <ng-template #content>
   <mat-card>
-    <div class="flex-end" *ngIf="form.controls.id.value > 0">
-      <button
-        type="button"
-        mat-icon-button
-        color="primary"
-        aria-label="Archive the animal"
-        matTooltip="Archive the animal"
-        (click)="onArchive()"
-      >
-        <mat-icon>archive</mat-icon>
-      </button>
-    </div>
     <form [formGroup]="form" fxLayout="column" (ngSubmit)="onSave()">
       <div
         fxFill
@@ -245,9 +233,19 @@
         </div>
         <div fxFlex fxLayoutAlign="end start">
           <button
+            *ngIf="form.controls.id.value > 0"
             type="button"
             mat-button
-            title="Reset changes"
+            aria-label="Archive the animal"
+            matTooltip="Archive the animal"
+            (click)="currentAnimal.archived ? onUnarchive() : onArchive()"
+          >
+            {{ currentAnimal.archived ? 'Unarchive' : 'Archive' }}
+          </button>
+          <button
+            type="button"
+            mat-button
+            matTooltip="Reset changes"
             [disabled]="!form.dirty"
             (click)="reset(currentAnimal)"
           >
@@ -257,7 +255,7 @@
             type="submit"
             mat-raised-button
             color="primary"
-            title="Submit changes"
+            matTooltip="Submit changes"
           >
             Save
           </button>
