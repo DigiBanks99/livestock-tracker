@@ -78,7 +78,11 @@
         ></tr>
         <app-loader *ngIf="isFetching; else content"></app-loader>
         <ng-template #content>
-          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            [class.archived]="row.archived"
+          ></tr>
         </ng-template>
       </table>
     </ng-container>

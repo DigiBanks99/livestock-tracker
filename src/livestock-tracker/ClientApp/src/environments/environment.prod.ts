@@ -5,13 +5,25 @@ export const environment = {
   myFormats: {
     short: {
       parse: {
-        dateInput: 'LL'
+        dateInput: 'P',
+        datetimeInput: 'yyyy/MM/dd, HH:mm',
+        timeInput: 'H:mm',
+        monthInput: 'MMM',
+        yearInput: 'yyyy'
       },
       display: {
-        dateInput: 'DD MMMM YYYY',
-        monthYearLabel: 'MMM YYYY',
-        dateA11yLabel: 'LL',
-        monthYearA11yLabel: 'MMMM YYYY'
+        dateInput: 'P',
+        datetimeInput: 'Pp',
+        timeInput: 'p',
+        monthInput: 'MMM yyyy',
+        yearInput: 'yyyy',
+        dateA11yLabel: 'PP',
+        monthLabel: 'MMM',
+        monthDayLabel: 'MMM d',
+        monthDayA11yLabel: 'MMMM d',
+        monthYearLabel: 'MMM yyyy',
+        monthYearA11yLabel: 'MMMM yyyy',
+        timeLabel: 'p'
       }
     },
     medium: {
