@@ -13,17 +13,17 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Updater
 {
-  public class ApiDonwloadService : BaseDonwloadService, IDownloadService
+  public class ApiDownloadService : BaseDownloadService, IDownloadService
   {
     private readonly ApiConfig _apiConfig;
-    public ApiDonwloadService(ILogger<ApiDonwloadService> logger, IOptions<ApiConfig> apiConfig) : base(logger)
+    public ApiDownloadService(ILogger<ApiDownloadService> logger, IOptions<ApiConfig> apiConfig) : base(logger)
     {
       _apiConfig = apiConfig.Value;
     }
 
     public override async Task<DirectoryInfo> DownloadAsync(DownloadableVersionModel version, string savePath, IProgress<int> progress, CancellationToken cancellationToken)
     {
-      _logger.LogDebug("{0}: Downloading {1} to {2}", nameof(ApiDonwloadService), version.DownloadPath, savePath);
+      _logger.LogDebug("{0}: Downloading {1} to {2}", nameof(ApiDownloadService), version.DownloadPath, savePath);
 
       var bytesRead = 0;
       var buffer = new byte[1024];
@@ -76,7 +76,7 @@ namespace LivestockTracker.Updater
 
     public override async Task<IEnumerable<DownloadableVersionModel>> GetAllAvailableVersions()
     {
-      _logger.LogDebug("{0}: Getting all available versions at {1}", nameof(ApiDonwloadService), Path.Combine(_apiConfig.BaseUrl, _apiConfig.VersionRoute));
+      _logger.LogDebug("{0}: Getting all available versions at {1}", nameof(ApiDownloadService), Path.Combine(_apiConfig.BaseUrl, _apiConfig.VersionRoute));
       using (var httpClient = GetHttpClient())
       {
         try
@@ -103,7 +103,7 @@ namespace LivestockTracker.Updater
         }
         catch (HttpRequestException ex)
         {
-          _logger.LogCritical(ex, "{0}: Failed to fetch available versions", nameof(ApiDonwloadService));
+          _logger.LogCritical(ex, "{0}: Failed to fetch available versions", nameof(ApiDownloadService));
           throw new ApplicationException("The system failed to load the required data from the server.");
         }
       }
@@ -111,7 +111,7 @@ namespace LivestockTracker.Updater
 
     public override async Task<long> GetContentLength(string downloadPath)
     {
-      _logger.LogDebug("{0}: Getting length of content at ", nameof(ApiDonwloadService), downloadPath);
+      _logger.LogDebug("{0}: Getting length of content at ", nameof(ApiDownloadService), downloadPath);
 
       using (var httpClient = new HttpClient())
       {

@@ -30,6 +30,14 @@ export const getCurrentPage = createSelector(
   (state) => state.pageNumber
 );
 
+export const paginationParameters = createSelector(
+  getAnimalsState,
+  (state) => ({
+    pageNumber: state.pageNumber ?? 0,
+    pageSize: state.pageSize ?? 10
+  })
+);
+
 export const getRecordCount = createSelector(
   getAnimalsState,
   (state) => state.recordCount

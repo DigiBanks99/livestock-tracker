@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LivestockTracker.Updater
 {
-  public class FtpDownloadService : BaseDonwloadService, IDownloadService
+  public class FtpDownloadService : BaseDownloadService, IDownloadService
   {
     private readonly FtpConfig _ftpConfig;
 

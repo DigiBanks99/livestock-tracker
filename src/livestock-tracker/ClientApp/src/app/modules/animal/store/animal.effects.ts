@@ -5,6 +5,7 @@ import {
   filter,
   map,
   switchMap,
+  tap,
   withLatestFrom
 } from 'rxjs/operators';
 
@@ -37,6 +38,7 @@ import {
   FetchAnimalsAction,
   UnarchiveAnimals
 } from './animal.actions';
+import * as AnimalSelectors from './animal.store';
 import { AnimalKey } from './constants';
 
 @Injectable({
@@ -87,10 +89,22 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     this.actions$.pipe(
       ofType(AnimalActionTypes.ArchiveAnimals),
       switchMap((action: ArchiveAnimals) =>
-        this.animalService.archiveAnimals(action.animalIds)
-      ),
-      map(() => ({ type: 'NOOP' })),
-      catchError((error: HttpErrorResponse) => this.handleError(error, actions))
+        this.animalService.archiveAnimals(action.animalIds).pipe(
+          tap(() => this._snackBar.open('Animals archived')),
+          withLatestFrom(
+            this._store.select(AnimalSelectors.paginationParameters)
+          ),
+          map(
+            ([, params]: [
+              number[],
+              { pageNumber: number; pageSize: number }
+            ]) => new FetchAnimalsAction(params.pageNumber, params.pageSize)
+          ),
+          catchError((error: HttpErrorResponse) =>
+            this.handleError(error, actions)
+          )
+        )
+      )
     )
   );
 
@@ -98,10 +112,20 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     this.actions$.pipe(
       ofType(AnimalActionTypes.UnarchiveAnimals),
       switchMap((action: UnarchiveAnimals) =>
-        this.animalService.unarchiveAnimals(action.animalIds)
-      ),
-      map(() => ({ type: 'NOOP' })),
-      catchError((error: HttpErrorResponse) => this.handleError(error, actions))
+        this.animalService.unarchiveAnimals(action.animalIds).pipe(
+          tap(() => this._snackBar.open('Animals archived')),
+          withLatestFrom(
+            this._store.select(AnimalSelectors.paginationParameters)
+          ),
+          map(
+            ([, params]: [void, { pageNumber: number; pageSize: number }]) =>
+              new FetchAnimalsAction(params.pageNumber, params.pageSize)
+          ),
+          catchError((error: HttpErrorResponse) =>
+            this.handleError(error, actions)
+          )
+        )
+      )
     )
   );
 
@@ -113,9 +137,9 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     private readonly _store: Store<AnimalState>,
     protected readonly actions$: Actions,
     protected readonly animalService: AnimalService,
-    snackBar: MatSnackBar
+    private readonly _snackBar: MatSnackBar
   ) {
-    super(actions$, animalService, actions, AnimalKey, snackBar);
+    super(actions$, animalService, actions, AnimalKey, _snackBar);
   }
 
   protected handleFetchAction$ = (

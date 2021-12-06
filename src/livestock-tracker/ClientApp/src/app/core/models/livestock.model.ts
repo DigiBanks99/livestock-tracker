@@ -15,6 +15,7 @@ export interface Animal {
   batchNumber: number;
   deceased: boolean;
   dateOfDeath: Date;
+  archived: boolean;
 }
 
 export class Livestock implements Animal {
@@ -22,6 +23,7 @@ export class Livestock implements Animal {
   public sellDate: Date = null;
   public deceased = false;
   public dateOfDeath: Date = null;
+  public archived = false;
 
   constructor(
     public id: number,
@@ -62,4 +64,5 @@ export class NullAnimal implements Animal {
   readonly batchNumber = 0;
   readonly deceased = false;
   readonly dateOfDeath: Date = null;
+  readonly archived = false;
 }
