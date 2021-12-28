@@ -46,5 +46,11 @@
     "platform": "windows10-x64",
     "link": "https://www.dropbox.com/s/s43k4f268gh9ka4/win-x64_0.7.0.zip?dl=1",
     "fileName": "win-x64_0.7.0.zip"
+  },
+  {
+    "version": "0.7.1",
+    "platform": "windows10-x64",
+    "link": "https://www.dropbox.com/s/jkcp65hk83niu7r/win-x64_0.7.1.zip?dl=1",
+    "fileName": "win-x64_0.7.1.zip"
   }
 ]

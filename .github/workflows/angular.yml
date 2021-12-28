@@ -1,0 +1,50 @@
+name: Angular
+
+on:
+  push:
+    branches: ["**"]
+    paths-ignore:
+      - "**/**.md"
+      - "**/.gitignore"
+      - "**/.gitattributes"
+      - "**/.vs/**"
+      - "**/.vscode/**"
+      - "scripts/**"
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Node Environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: ./src/livestock-tracker/ClientApp
+      - name: Install packages
+        run: npm ci
+        working-directory: ./src/livestock-tracker/ClientApp
+      - name: Copy static files
+        run: ./copy-assets.sh
+        working-directory: ./src/livestock-tracker/ClientApp/scripts
+      - name: Lint
+        run: npm run lint --if-present
+        working-directory: ./src/livestock-tracker/ClientApp
+      - name: Build Angular
+        run: npm run build --if-present
+        working-directory: ./src/livestock-tracker/ClientApp
+      - name: Run tests
+        run: npm run test:headless --if-present
+        working-directory: ./src/livestock-tracker/ClientApp
+      - name: Build Storybook
+        run: npm run build-storybook --if-present
+        working-directory: ./src/livestock-tracker/ClientApp
