@@ -1,3 +1,5 @@
+import { NumberUtils } from '@core/utils';
+
 export function getLocaleDateFormat(
   locale: string[],
   joinChar: string = '/',
@@ -92,4 +94,35 @@ export function parseLocaleDate(
   }
 
   return new Date(year, month, day, hours ?? 0, minutes ?? 0);
+}
+
+export function coerceDate(value: string | number | Date | null): Date | null {
+  if (value === null) {
+    return null;
+  }
+
+  return new Date(value);
+}
+
+export function today(): Date {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+export function compare(
+  left: Date | string | number,
+  right: Date | string | number
+): number {
+  if (left == null || right == null) {
+    throw new Error('Both dates should have values');
+  }
+
+  try {
+    const firstDate = coerceDate(left);
+    const secondDate = coerceDate(right);
+
+    return NumberUtils.compare(firstDate.getTime(), secondDate.getTime());
+  } catch {
+    return Number.NaN;
+  }
 }

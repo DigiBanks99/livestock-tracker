@@ -18,7 +18,8 @@ export const LongSubspecies: Animal = {
   dateOfDeath: null,
   deceased: false,
   sellDate: null,
-  sold: false
+  sold: false,
+  archived: false
 };
 
 /**
@@ -38,7 +39,8 @@ export const ShortSubspecies: Animal = {
   dateOfDeath: null,
   deceased: false,
   sellDate: null,
-  sold: false
+  sold: false,
+  archived: false
 };
 
 /**
@@ -59,7 +61,8 @@ export const LongAnimalList: Animal[] = [
     dateOfDeath: null,
     deceased: false,
     sellDate: null,
-    sold: false
+    sold: false,
+    archived: false
   },
   {
     id: 2,
@@ -76,7 +79,8 @@ export const LongAnimalList: Animal[] = [
     dateOfDeath: null,
     deceased: false,
     sellDate: null,
-    sold: false
+    sold: false,
+    archived: false
   },
   {
     id: 3,
@@ -92,7 +96,8 @@ export const LongAnimalList: Animal[] = [
     dateOfDeath: null,
     deceased: false,
     sellDate: null,
-    sold: false
+    sold: false,
+    archived: false
   }
 ];
 
@@ -114,7 +119,8 @@ export const ShortAnimalList: Animal[] = [
     dateOfDeath: null,
     deceased: false,
     sellDate: null,
-    sold: false
+    sold: false,
+    archived: false
   },
   {
     id: 2,
@@ -130,7 +136,8 @@ export const ShortAnimalList: Animal[] = [
     dateOfDeath: null,
     deceased: false,
     sellDate: null,
-    sold: false
+    sold: false,
+    archived: false
   },
   {
     id: 3,
@@ -146,6 +153,7 @@ export const ShortAnimalList: Animal[] = [
     dateOfDeath: null,
     deceased: false,
     sellDate: null,
-    sold: false
+    sold: false,
+    archived: false
   }
 ];

@@ -1,12 +1,13 @@
 {
   "recommendations": [
     "Angular.ng-template",
+    "cyrilletuzi.angular-schematics",
     "EditorConfig.EditorConfig",
-    "ms-vscode.vscode-typescript-tslint-plugin",
     "esbenp.prettier-vscode",
-    "msjsdiag.debugger-for-chrome",
+    "dbaeumer.vscode-eslint",
     "streetsidesoftware.code-spell-checker",
     "christian-kohler.path-intellisense",
-    "mike-co.import-sorter"
+    "mike-co.import-sorter",
+    "eg2.vscode-npm-script"
   ]
 }

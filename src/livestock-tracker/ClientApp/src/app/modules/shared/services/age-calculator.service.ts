@@ -1,43 +1,40 @@
-import * as moment from 'moment';
-
 import { Injectable } from '@angular/core';
+import { DateUtils } from '@core/dates';
 
 @Injectable()
 export class AgeCalculatorService {
   public calculateAge(birthDate: Date, deceasedDate?: Date): string {
-    const today =
+    const deathDay =
       deceasedDate !== null && deceasedDate !== undefined
-        ? moment(deceasedDate)
-        : moment();
-    const birthDateMoment = moment(birthDate);
-    let year = today.year() - birthDateMoment.year();
-    let month = today.month() - birthDateMoment.month();
-    let day = today.date() - birthDateMoment.date();
-    if (
-      birthDateMoment.year() === today.year() &&
-      birthDateMoment.month() === today.month() &&
-      birthDateMoment.date() === today.date()
-    ) {
+        ? DateUtils.coerceDate(deceasedDate)
+        : DateUtils.today();
+    if (DateUtils.compare(deathDay, birthDate) <= 0) {
       return '0 days';
     }
 
-    const birthMonth = birthDateMoment.month() + 1; // add 1 because for some stupid reason month is 0 based
-    const birthYear = birthDateMoment.year();
-    const daysInMonth = this.daysInMonth(birthMonth, birthYear);
+    const daysInMonth = this.daysInMonth(
+      birthDate.getMonth(),
+      birthDate.getFullYear()
+    );
+    const yearDelta = deathDay.getFullYear() - birthDate.getFullYear();
+    const monthDelta = deathDay.getMonth() - birthDate.getMonth();
+    const dayDelta = deathDay.getDate() - birthDate.getDate();
+
+    let year = yearDelta;
+    let month = monthDelta;
+    let day = dayDelta;
 
     if (month > 0 && day < 0) {
       month--;
-      day = daysInMonth + day;
     }
 
     if (year > 0 && month < 0) {
       year--;
-      month = 12 + month;
+      month += 12;
     }
 
     if (day < 0) {
-      month--;
-      day = daysInMonth + day;
+      day += daysInMonth;
     }
 
     let displayAge = this.addAgeSection(year, 'year');
@@ -64,7 +61,6 @@ export class AgeCalculatorService {
   }
 
   private daysInMonth(month: number, year: number): number {
-    const date = moment(new Date(year, month, 0));
-    return date.date();
+    return new Date(year, month + 1, 0).getDate();
   }
 }
