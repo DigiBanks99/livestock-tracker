@@ -12,14 +12,38 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { Unit } from '@core/models/unit.model';
-import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-feeding-transaction-form',
   templateUrl: './feeding-transaction-form.component.html',
   styleUrls: ['./feeding-transaction-form.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'P',
+          datetimeInput: 'yyyy/MM/dd, HH:mm',
+          timeInput: 'H:mm',
+          monthInput: 'MMM',
+          yearInput: 'yyyy'
+        },
+        display: {
+          dateInput: 'P',
+          datetimeInput: 'Pp',
+          timeInput: 'p',
+          monthInput: 'MMM yyyy',
+          yearInput: 'yyyy',
+          dateA11yLabel: 'PP',
+          monthLabel: 'MMM',
+          monthDayLabel: 'MMM d',
+          monthDayA11yLabel: 'MMMM d',
+          monthYearLabel: 'MMM yyyy',
+          monthYearA11yLabel: 'MMMM yyyy',
+          timeLabel: 'p'
+        }
+      }
+    }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })

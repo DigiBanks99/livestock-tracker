@@ -1,5 +1,3 @@
-import { Subject } from 'rxjs';
-
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,14 +13,39 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicineType } from '@core/models/medicine-type.model';
 import { Unit } from '@core/models/unit.model';
-import { environment } from '@env/environment';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-medical-transaction-form',
   templateUrl: './medical-transaction-form.component.html',
   styleUrls: ['./medical-transaction-form.component.scss'],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: environment.myFormats.medium }
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'P',
+          datetimeInput: 'yyyy/MM/dd, HH:mm',
+          timeInput: 'H:mm',
+          monthInput: 'MMM',
+          yearInput: 'yyyy'
+        },
+        display: {
+          dateInput: 'P',
+          datetimeInput: 'Pp',
+          timeInput: 'p',
+          monthInput: 'MMM yyyy',
+          yearInput: 'yyyy',
+          dateA11yLabel: 'PP',
+          monthLabel: 'MMM',
+          monthDayLabel: 'MMM d',
+          monthDayA11yLabel: 'MMMM d',
+          monthYearLabel: 'MMM yyyy',
+          monthYearA11yLabel: 'MMMM yyyy',
+          timeLabel: 'p'
+        }
+      }
+    }
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
