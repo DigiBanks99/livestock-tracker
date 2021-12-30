@@ -10,7 +10,8 @@
     "test:headless": "ng test --watch=false --browsers=ChromeHeadless",
     "lint": "ng lint",
     "postinstall": "ngcc",
-    "storybook": "start-storybook -p 6006",
+    "docs": "npx compodoc -e json -d . -p tsconfig.json",
+    "storybook": "npm run docs && start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
   "private": true,
