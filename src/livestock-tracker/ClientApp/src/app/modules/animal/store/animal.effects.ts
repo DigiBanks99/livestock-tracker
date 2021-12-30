@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -100,11 +100,10 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
               { pageNumber: number; pageSize: number }
             ]) => new FetchAnimalsAction(params.pageNumber, params.pageSize)
           ),
-          catchError((error: HttpErrorResponse) =>
-            this.handleError(error, actions)
-          )
+          catchError((error: HttpErrorResponse) => throwError(error))
         )
-      )
+      ),
+      catchError((error: HttpErrorResponse) => this.handleError(error, actions))
     )
   );
 
@@ -121,11 +120,10 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
             ([, params]: [void, { pageNumber: number; pageSize: number }]) =>
               new FetchAnimalsAction(params.pageNumber, params.pageSize)
           ),
-          catchError((error: HttpErrorResponse) =>
-            this.handleError(error, actions)
-          )
+          catchError((error: HttpErrorResponse) => throwError(error))
         )
-      )
+      ),
+      catchError((error: HttpErrorResponse) => this.handleError(error, actions))
     )
   );
 

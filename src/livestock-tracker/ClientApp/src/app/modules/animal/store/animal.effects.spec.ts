@@ -11,13 +11,15 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalService } from '@animal/services';
 import { AnimalStore } from '@animal/store';
-import { AnimalEffects } from '@animal/store/animal.effects';
+import { FetchAnimalsAction } from '@animal/store/animal.actions';
 import { AnimalState } from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
 import { Actions } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+
+import { AnimalEffects } from './animal.effects';
 
 describe('AnimalEffects', () => {
   let effects: AnimalEffects;
@@ -42,7 +44,13 @@ describe('AnimalEffects', () => {
         AnimalEffects,
         provideMockActions(() => actions$),
         provideMockStore<AnimalState>({
-          selectors: [{ selector: getSelectedAnimalId, value: 1 }]
+          selectors: [
+            { selector: getSelectedAnimalId, value: 1 },
+            {
+              selector: AnimalStore.selectors.paginationParameters,
+              value: { pageNumber: 1, pageSize: 10 }
+            }
+          ]
         }),
         { provide: LocationStrategy, useClass: MockLocationStrategy }
       ],
@@ -67,11 +75,9 @@ describe('AnimalEffects', () => {
   });
 
   describe('archiveAnimals$', () => {
-    it('should return a NOOP action when successful', () => {
+    it('should return a FetchAnimals action when successful', () => {
       testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
-        const completion = {
-          type: 'NOOP'
-        };
+        const completion = new FetchAnimalsAction(1, 10);
 
         serviceSpy.archiveAnimals.and.returnValue(of(void 0));
 
@@ -111,11 +117,9 @@ describe('AnimalEffects', () => {
   });
 
   describe('unarchiveAnimals$', () => {
-    it('should return a NOOP action when successful', () => {
+    it('should return a FetchAnimals action when successful', () => {
       testScheduler.run(({ cold, expectObservable, flush }: RunHelpers) => {
-        const completion = {
-          type: 'NOOP'
-        };
+        const completion = new FetchAnimalsAction(1, 10);
 
         serviceSpy.unarchiveAnimals.and.returnValue(of(void 0));
 
