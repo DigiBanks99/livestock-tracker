@@ -4,8 +4,7 @@ import { MedicineType } from '@core/models/medicine-type.model';
 
 @Component({
   selector: 'app-medicine-type',
-  templateUrl: './medicine-type.component.html',
-  styleUrls: ['./medicine-type.component.scss']
+  templateUrl: './medicine-type.component.html'
 })
 export class MedicineTypeComponent {
   @Input() public medicineTypes: MedicineType[];

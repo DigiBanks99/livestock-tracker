@@ -53,20 +53,9 @@ describe('AgeCalculatorService', () => {
       expect(ageCalculatorService.calculateAge(model.birthDate)).toBe('1 day');
     });
 
-    it('#should return 27 days', () => {
-      const now = new Date();
-      const newYear = now.getFullYear();
-      const newMonth = now.getMonth();
-      const newDays = now.getDate() - 27;
-      const date = new Date(
-        newYear,
-        newMonth,
-        newDays,
-        now.getHours(),
-        now.getMinutes(),
-        now.getSeconds(),
-        now.getMilliseconds()
-      );
+    it('should return 27 days', () => {
+      const date = new Date(2020, 1, 11);
+      const now = new Date(2020, 2, 9);
       model = new Livestock(
         1,
         AnimalType.Cattle,
@@ -79,7 +68,7 @@ describe('AgeCalculatorService', () => {
         null,
         null
       );
-      expect(ageCalculatorService.calculateAge(model.birthDate)).toBe(
+      expect(ageCalculatorService.calculateAge(model.birthDate, now)).toBe(
         '27 days'
       );
     });
@@ -131,19 +120,8 @@ describe('AgeCalculatorService', () => {
     });
 
     it('should return 1 year 4 months 3 days', () => {
-      const now = new Date();
-      const newYear = now.getFullYear() - 1;
-      const newMonth = now.getMonth() - 4;
-      const newDays = now.getDate() - 3;
-      const date = new Date(
-        newYear,
-        newMonth,
-        newDays,
-        now.getHours(),
-        now.getMinutes(),
-        now.getSeconds(),
-        now.getMilliseconds()
-      );
+      const date = new Date(2099, 11, 11);
+      const now = new Date(2101, 3, 14);
       model = new Livestock(
         1,
         AnimalType.Cattle,
@@ -156,7 +134,7 @@ describe('AgeCalculatorService', () => {
         null,
         null
       );
-      expect(ageCalculatorService.calculateAge(model.birthDate)).toBe(
+      expect(ageCalculatorService.calculateAge(model.birthDate, now)).toBe(
         '1 year 4 months 3 days'
       );
     });

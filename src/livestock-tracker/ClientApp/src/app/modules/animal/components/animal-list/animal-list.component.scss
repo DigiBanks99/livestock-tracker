@@ -26,7 +26,6 @@
 }
 
 tr.archived {
-  @debug 'color: #{mat.get-color-from-palette(mat.$lime-palette, 200)}#';
   background-color: lighten(
     $color: mat.get-color-from-palette(mat.$lime-palette, 200),
     $amount: 20

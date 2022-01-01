@@ -18,8 +18,7 @@ import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-feeding-transaction-detail',
-  templateUrl: './feeding-transaction-detail.component.html',
-  styleUrls: ['./feeding-transaction-detail.component.scss']
+  templateUrl: './feeding-transaction-detail.component.html'
 })
 export class FeedingTransactionDetailComponent implements OnInit, OnDestroy {
   public selectedAnimalId$: Observable<number>;

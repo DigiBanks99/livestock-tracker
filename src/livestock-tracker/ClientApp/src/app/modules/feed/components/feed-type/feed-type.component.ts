@@ -5,8 +5,7 @@ import { environment } from '@env/environment';
 
 @Component({
   selector: 'app-feed-type',
-  templateUrl: './feed-type.component.html',
-  styleUrls: ['./feed-type.component.scss']
+  templateUrl: './feed-type.component.html'
 })
 export class FeedTypeComponent {
   @Input() public feedTypes: FeedType[];

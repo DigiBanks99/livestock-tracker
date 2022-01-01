@@ -16,7 +16,6 @@ import { Unit } from '@core/models/unit.model';
 @Component({
   selector: 'app-feeding-transaction-form',
   templateUrl: './feeding-transaction-form.component.html',
-  styleUrls: ['./feeding-transaction-form.component.scss'],
   providers: [
     {
       provide: MAT_DATE_FORMATS,

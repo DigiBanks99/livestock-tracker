@@ -4,8 +4,7 @@ import { FeedType } from '@core/models/feed-type.model';
 
 @Component({
   selector: 'app-feed-type-detail',
-  templateUrl: './feed-type-detail.component.html',
-  styleUrls: ['./feed-type-detail.component.scss'],
+  templateUrl: './feed-type-detail.component.html'
 })
 export class FeedTypeDetailComponent implements OnInit {
   @Input() feedType: FeedType;
@@ -32,8 +31,8 @@ export class FeedTypeDetailComponent implements OnInit {
       id: new FormControl(this.feedType.id),
       description: new FormControl(this.feedType.description, {
         updateOn: 'blur',
-        validators: Validators.required,
-      }),
+        validators: Validators.required
+      })
     });
   }
 }

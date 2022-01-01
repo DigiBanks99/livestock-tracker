@@ -7,6 +7,15 @@
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
+      "prefix": "app",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
+        "@schematics/angular:application": {
+          "strict": true
+        }
+      },
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
@@ -15,7 +24,7 @@
             "index": "src/index.html",
             "main": "src/main.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "progress": true,
+            "inlineStyleLanguage": "scss",
             "polyfills": "src/polyfills.ts",
             "assets": ["src/assets"],
             "styles": ["src/styles.scss"],
@@ -88,15 +97,6 @@
     }
   },
   "defaultProject": "livestock-tracker",
-  "schematics": {
-    "@schematics/angular:component": {
-      "prefix": "app",
-      "style": "scss"
-    },
-    "@schematics/angular:directive": {
-      "prefix": "app"
-    }
-  },
   "cli": {
     "analytics": false
   }
