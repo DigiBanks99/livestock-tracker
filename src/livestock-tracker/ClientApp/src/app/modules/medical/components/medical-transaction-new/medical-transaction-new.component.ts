@@ -12,8 +12,7 @@ import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
 import { select, Store } from '@ngrx/store';
 
 @Component({
-  templateUrl: './medical-transaction-new.component.html',
-  styleUrls: ['./medical-transaction-new.component.scss']
+  templateUrl: './medical-transaction-new.component.html'
 })
 export class MedicalTransactionNewComponent implements OnDestroy, OnInit {
   public selectedAnimalId$: Observable<number>;

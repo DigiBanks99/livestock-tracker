@@ -4,8 +4,7 @@ import { Unit } from '@core/models/unit.model';
 
 @Component({
   selector: 'app-unit',
-  templateUrl: './unit.component.html',
-  styleUrls: ['./unit.component.scss']
+  templateUrl: './unit.component.html'
 })
 export class UnitComponent {
   @Input() public units: Unit[];

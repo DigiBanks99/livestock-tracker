@@ -5,8 +5,7 @@ import { MedicineTypeService } from '@medical/services/medicine-type.service';
 
 @Component({
   selector: 'app-medicine-type-detail',
-  templateUrl: './medicine-type-detail.component.html',
-  styleUrls: ['./medicine-type-detail.component.scss'],
+  templateUrl: './medicine-type-detail.component.html'
 })
 export class MedicineTypeDetailComponent implements OnInit {
   @Input() medicineType: MedicineType;
@@ -33,8 +32,8 @@ export class MedicineTypeDetailComponent implements OnInit {
       id: new FormControl(this.medicineType.id),
       description: new FormControl(this.medicineType.description, {
         updateOn: 'blur',
-        validators: Validators.required,
-      }),
+        validators: Validators.required
+      })
     });
   }
 }
