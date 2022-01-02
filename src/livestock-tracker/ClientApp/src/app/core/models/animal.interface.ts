@@ -18,33 +18,6 @@ export interface Animal {
   archived: boolean;
 }
 
-export class Livestock implements Animal {
-  public sold: boolean;
-  public sellDate: Date = null;
-  public deceased = false;
-  public dateOfDeath: Date = null;
-  public archived = false;
-
-  constructor(
-    public id: number,
-    public type: AnimalType,
-    public subspecies: string,
-    public number: number,
-    public birthDate: Date,
-    public purchaseDate: Date,
-    public purchasePrice: number,
-    public sellPrice: number,
-    public arrivalWeight: number,
-    public batchNumber: number
-  ) {
-    if (!sellPrice) {
-      this.sold = true;
-    } else {
-      this.sold = false;
-    }
-  }
-}
-
 export class NullAnimal implements Animal {
   private static _instance: NullAnimal = new NullAnimal();
   static get instance(): NullAnimal {
