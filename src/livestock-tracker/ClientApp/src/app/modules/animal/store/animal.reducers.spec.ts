@@ -1,5 +1,5 @@
 import { actions, SelectAnimalAction } from '@animal/store/animal.actions';
-import { AnimalType, Livestock } from '@core/models';
+import { Animal, AnimalType } from '@core/models';
 import { AnimalState } from '@core/store';
 
 import {
@@ -20,18 +20,23 @@ describe('animals reducer', () => {
   });
 
   it('should add another animal to the list when action is of type ADD_ANIMAL', () => {
-    const animal1 = new Livestock(
-      1,
-      AnimalType.Cattle,
-      'fries',
-      1,
-      new Date(),
-      new Date(),
-      100,
-      0,
-      120,
-      1
-    );
+    const animal1: Animal = {
+      id: 1,
+      type: AnimalType.Cattle,
+      subspecies: 'fries',
+      number: 1,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 100,
+      sellPrice: 0,
+      arrivalWeight: 120,
+      batchNumber: 1,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const addAnimalTask1 = actions.apiAddItem(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
     expect(state1).not.toBe(null);
@@ -41,18 +46,23 @@ describe('animals reducer', () => {
     expect(state1.entities[1].arrivalWeight).toBe(animal1.arrivalWeight);
     expect(state1.entities[1].type).toBe(AnimalType.Cattle);
 
-    const animal2 = new Livestock(
-      2,
-      AnimalType.Chicken,
-      'black',
-      2,
-      new Date(),
-      new Date(),
-      20,
-      0,
-      1,
-      2
-    );
+    const animal2: Animal = {
+      id: 2,
+      type: AnimalType.Chicken,
+      subspecies: 'black',
+      number: 2,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 20,
+      sellPrice: 0,
+      arrivalWeight: 10,
+      batchNumber: 2,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const addAnimalTask2 = actions.apiAddItem(animal2);
 
     const state2 = animalsReducer(state1, addAnimalTask2);
@@ -69,18 +79,23 @@ describe('animals reducer', () => {
     expect(state2.entities[2].arrivalWeight).toBe(animal2.arrivalWeight);
     expect(state2.entities[2].type).toBe(AnimalType.Chicken);
 
-    const animal3 = new Livestock(
-      3,
-      AnimalType.Pig,
-      'fat',
-      3,
-      new Date(),
-      new Date(),
-      200,
-      0,
-      200,
-      3
-    );
+    const animal3: Animal = {
+      id: 3,
+      type: AnimalType.Pig,
+      subspecies: 'fat',
+      number: 3,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 200,
+      sellPrice: 0,
+      arrivalWeight: 200,
+      batchNumber: 3,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const addAnimalTask3 = actions.apiAddItem(animal3);
 
     const state3 = animalsReducer(state2, addAnimalTask3);
@@ -105,48 +120,63 @@ describe('animals reducer', () => {
   });
 
   it('should remove the animal with the provided key if the action is of type REMOVE_ANIMAL_SUCCESS', () => {
-    const animal1 = new Livestock(
-      1,
-      AnimalType.Cattle,
-      'fries',
-      1,
-      new Date(),
-      new Date(),
-      100,
-      0,
-      120,
-      1
-    );
+    const animal1: Animal = {
+      id: 1,
+      type: AnimalType.Cattle,
+      subspecies: 'fries',
+      number: 1,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 100,
+      sellPrice: 0,
+      arrivalWeight: 120,
+      batchNumber: 1,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const addAnimalTask1 = actions.apiAddItem(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
 
-    const animal2 = new Livestock(
-      2,
-      AnimalType.Chicken,
-      'black',
-      2,
-      new Date(),
-      new Date(),
-      20,
-      0,
-      1,
-      2
-    );
+    const animal2: Animal = {
+      id: 2,
+      type: AnimalType.Chicken,
+      subspecies: 'black',
+      number: 2,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 20,
+      sellPrice: 0,
+      arrivalWeight: 10,
+      batchNumber: 2,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const addAnimalTask2 = actions.apiAddItem(animal2);
     const state2 = animalsReducer(state1, addAnimalTask2);
 
-    const animal3 = new Livestock(
-      3,
-      AnimalType.Pig,
-      'fat',
-      3,
-      new Date(),
-      new Date(),
-      200,
-      0,
-      200,
-      3
-    );
+    const animal3: Animal = {
+      id: 3,
+      type: AnimalType.Pig,
+      subspecies: 'fat',
+      number: 3,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 200,
+      sellPrice: 0,
+      arrivalWeight: 200,
+      batchNumber: 3,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const addAnimalTask3 = actions.apiAddItem(animal3);
     const state3 = animalsReducer(state2, addAnimalTask3);
 
@@ -173,48 +203,63 @@ describe('animals reducer', () => {
   it('should set selectedAnimal equal to the key of the action object when the type is of SELECT_ANIMAL', () => {
     expect(initialState.selectedId).toEqual(null);
 
-    const animal1 = new Livestock(
-      1,
-      AnimalType.Cattle,
-      'fries',
-      1,
-      new Date(),
-      new Date(),
-      100,
-      0,
-      120,
-      1
-    );
+    const animal1: Animal = {
+      id: 1,
+      type: AnimalType.Cattle,
+      subspecies: 'fries',
+      number: 1,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 100,
+      sellPrice: 0,
+      arrivalWeight: 120,
+      batchNumber: 1,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const addAnimalTask1 = actions.apiAddItem(animal1);
     const state1 = animalsReducer(initialState, addAnimalTask1);
 
-    const animal2 = new Livestock(
-      2,
-      AnimalType.Chicken,
-      'black',
-      2,
-      new Date(),
-      new Date(),
-      20,
-      0,
-      1,
-      2
-    );
+    const animal2: Animal = {
+      id: 2,
+      type: AnimalType.Chicken,
+      subspecies: 'black',
+      number: 2,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 20,
+      sellPrice: 0,
+      arrivalWeight: 10,
+      batchNumber: 2,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const addAnimalTask2 = actions.apiAddItem(animal2);
     const state2 = animalsReducer(state1, addAnimalTask2);
 
-    const animal3 = new Livestock(
-      3,
-      AnimalType.Pig,
-      'fat',
-      3,
-      new Date(),
-      new Date(),
-      200,
-      0,
-      200,
-      3
-    );
+    const animal3: Animal = {
+      id: 3,
+      type: AnimalType.Pig,
+      subspecies: 'fat',
+      number: 3,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 200,
+      sellPrice: 0,
+      arrivalWeight: 200,
+      batchNumber: 3,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const addAnimalTask3 = actions.apiAddItem(animal3);
     const state3 = animalsReducer(state2, addAnimalTask3);
 
@@ -228,42 +273,57 @@ describe('animals reducer', () => {
   });
 
   it('should clear animals and set them to the key value object matching array passed in if the action type is SET_ANIMALS', () => {
-    const animal1 = new Livestock(
-      1,
-      AnimalType.Cattle,
-      'fries',
-      1,
-      new Date(),
-      new Date(),
-      100,
-      0,
-      120,
-      1
-    );
-    const animal2 = new Livestock(
-      2,
-      AnimalType.Chicken,
-      'black',
-      2,
-      new Date(),
-      new Date(),
-      20,
-      0,
-      1,
-      2
-    );
-    const animal3 = new Livestock(
-      3,
-      AnimalType.Pig,
-      'fat',
-      3,
-      new Date(),
-      new Date(),
-      200,
-      0,
-      200,
-      3
-    );
+    const animal1: Animal = {
+      id: 1,
+      type: AnimalType.Cattle,
+      subspecies: 'fries',
+      number: 1,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 100,
+      sellPrice: 0,
+      arrivalWeight: 120,
+      batchNumber: 1,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
+    const animal2: Animal = {
+      id: 2,
+      type: AnimalType.Chicken,
+      subspecies: 'black',
+      number: 2,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 20,
+      sellPrice: 0,
+      arrivalWeight: 10,
+      batchNumber: 2,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
+    const animal3: Animal = {
+      id: 3,
+      type: AnimalType.Pig,
+      subspecies: 'fat',
+      number: 3,
+      birthDate: new Date(),
+      purchaseDate: new Date(),
+      purchasePrice: 200,
+      sellPrice: 0,
+      arrivalWeight: 200,
+      batchNumber: 3,
+      archived: false,
+      dateOfDeath: null,
+      deceased: false,
+      sellDate: null,
+      sold: false
+    };
     const setAnimals1 = actions.apiFetchItems({
       data: [animal1, animal2, animal3],
       pageSize: 10,

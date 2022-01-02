@@ -11,10 +11,7 @@ import {
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSelect } from '@angular/material/select';
-import { FeedType } from '@core/models/feed-type.model';
-import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { Animal } from '@core/models/livestock.model';
-import { Unit } from '@core/models/unit.model';
+import { Animal, FeedingTransaction, FeedType, Unit } from '@core/models';
 import { environment } from '@env/environment';
 
 @Component({
