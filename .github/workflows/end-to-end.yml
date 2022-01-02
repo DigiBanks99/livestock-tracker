@@ -1,0 +1,25 @@
+name: e2e tests
+
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - src/**/*.stories.ts
+      - src/**/*.stories.spec.ts
+      - test/**/*.cs
+      - docs
+      - docs-project
+      - scripts
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        working-directory: test/e2e
