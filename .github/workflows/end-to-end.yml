@@ -16,6 +16,12 @@ on:
 jobs:
   cypress-run:
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,6 +29,20 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
+      - name: Setup local certificate
+        run: ./scripts/generate-local-cert.sh
+      - name: Setup Node Environment
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+          cache-dependency-path: ./src/livestock-tracker/ClientApp
+      - name: Install packages
+        run: npm ci
+        working-directory: ./src/livestock-tracker/ClientApp
+      - name: Copy static files
+        run: ./copy-assets.sh
+        working-directory: ./src/livestock-tracker/ClientApp/scripts
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
