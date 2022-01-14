@@ -47,10 +47,11 @@ describe('Weight Transaction Update', () => {
       .should('have.value', '63.5');
 
     cy.contains('button', 'Save').should('be.enabled').click();
-
     cy.location('pathname').should('equal', '/weight/1');
     cy.contains('span', 'Updated successfully.').should('be.visible');
-    cy.contains('a', '15 March 2021, 12:22').click();
+    cy.contains('a', '15 March 2021, 12:22').should('be.visible');
+
+    cy.visit('/weight/1/edit/1');
 
     // reset for other integration tests
     cy.location('pathname').should('equal', '/weight/1/edit/1');

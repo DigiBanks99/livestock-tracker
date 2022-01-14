@@ -1,45 +1,42 @@
-function createAnimal(
-  species: string,
-  subspecies: string,
-  birthDateDay: number,
-  purchaseDateDay: number,
-  purchaseDateIsPreviousMonth = false
-): void {
-  cy.visit('/animal/new');
-
-  cy.findFormField('Animal Type', 'app-animal-type-select').click();
-  cy.contains('mat-option', species).click();
-  cy.findFormField('Subspecies', 'input').type(subspecies);
-  cy.findFormField('Number', 'input').type('1');
-  cy.findFormField('Batch Number', 'input').type('1');
-  cy.contains('label', 'Birth Date')
-    .parents('mat-form-field')
-    .find('mat-datepicker-toggle')
-    .click();
-  cy.get('.mat-calendar-previous-button').click();
-  cy.contains(
-    '.mat-calendar-body-cell-content',
-    birthDateDay.toString()
-  ).click();
-  cy.findFormField('Age', 'input').should('have.value', '1 month');
-  cy.contains('label', 'Purchase Date')
-    .parents('mat-form-field')
-    .find('mat-datepicker-toggle')
-    .click();
-  if (purchaseDateIsPreviousMonth) {
-    cy.get('.mat-calendar-previous-button').click();
-  }
-  cy.contains(
-    '.mat-calendar-body-cell-content',
-    purchaseDateDay.toString()
-  ).click();
-  cy.findFormField('Purchase Price', 'input').type('35');
-  cy.findFormField('Arrival Weight', 'input').type('12');
-}
-
-beforeEach(() => cy.visit('/animal/new'));
-
 describe('Animal Creation', () => {
+  function createAnimal(
+    species: string,
+    subspecies: string,
+    birthDateDay: number,
+    purchaseDateDay: number,
+    purchaseDateIsPreviousMonth = false
+  ): void {
+    cy.findFormField('Animal Type', 'app-animal-type-select').click();
+    cy.contains('mat-option', species).click();
+    cy.findFormField('Subspecies', 'input').type(subspecies);
+    cy.findFormField('Number', 'input').type('1');
+    cy.findFormField('Batch Number', 'input').type('1');
+    cy.contains('label', 'Birth Date')
+      .parents('mat-form-field')
+      .find('mat-datepicker-toggle')
+      .click();
+    cy.get('.mat-calendar-previous-button').click();
+    cy.contains(
+      '.mat-calendar-body-cell-content',
+      birthDateDay.toString()
+    ).click();
+    cy.contains('label', 'Purchase Date')
+      .parents('mat-form-field')
+      .find('mat-datepicker-toggle')
+      .click();
+    if (purchaseDateIsPreviousMonth) {
+      cy.get('.mat-calendar-previous-button').click();
+    }
+    cy.contains(
+      '.mat-calendar-body-cell-content',
+      purchaseDateDay.toString()
+    ).click();
+    cy.findFormField('Purchase Price', 'input').type('35');
+    cy.findFormField('Arrival Weight', 'input').type('12');
+  }
+
+  beforeEach(() => cy.visit('/animal/new'));
+
   it.only('should have the necessary fields', () => {
     cy.findFormField('Animal Type', 'app-animal-type-select').should('exist');
     cy.findFormField('Subspecies', 'input').should('exist');
@@ -72,7 +69,7 @@ describe('Animal Creation', () => {
       .should('be.disabled');
     cy.contains('button', 'Back').should('exist').should('be.enabled');
     cy.contains('button', 'Cancel').should('exist').should('be.disabled');
-    cy.contains('button', 'Save').should('exist').should('be.disabled');
+    cy.contains('button', 'Save').should('exist');
   });
 
   it.only('should make sold fields available when marked sold', () => {
@@ -135,7 +132,7 @@ describe('Animal Creation', () => {
       .should('be.disabled');
     cy.contains('button', 'Back').should('exist').should('be.enabled');
     cy.contains('button', 'Cancel').should('exist').should('be.disabled');
-    cy.contains('button', 'Save').should('exist').should('be.disabled');
+    cy.contains('button', 'Save').should('exist');
   });
 
   it.only('should navigate back to the animal list when clicking Back', () => {

@@ -5,8 +5,8 @@ export interface Animal {
   type: AnimalType;
   subspecies: string;
   number: number;
-  birthDate: Date;
-  purchaseDate: Date;
+  birthDate: Date | null;
+  purchaseDate: Date | null;
   purchasePrice: number;
   sold: boolean;
   sellPrice: number;
@@ -27,8 +27,8 @@ export class NullAnimal implements Animal {
   readonly type: AnimalType = AnimalType.Cattle;
   readonly subspecies = '';
   readonly number: number = Number.NaN;
-  readonly birthDate = new Date(1970, 1, 1);
-  readonly purchaseDate = new Date(1970, 1, 1);
+  readonly birthDate: Date | null = null;
+  readonly purchaseDate: Date | null = null;
   readonly purchasePrice = 0;
   readonly sold = false;
   readonly sellPrice: number = null;
