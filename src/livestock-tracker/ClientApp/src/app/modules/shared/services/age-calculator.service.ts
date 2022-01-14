@@ -3,22 +3,27 @@ import { DateUtils } from '@core/dates';
 
 @Injectable()
 export class AgeCalculatorService {
-  public calculateAge(birthDate: Date, deceasedDate?: Date): string {
+  public calculateAge(
+    birthDate: Date | null,
+    deceasedDate?: Date | null | undefined
+  ): string {
+    const dayOfBirth = DateUtils.coerceDate(birthDate) ?? DateUtils.today();
+
     const deathDay =
       deceasedDate !== null && deceasedDate !== undefined
         ? DateUtils.coerceDate(deceasedDate)
         : DateUtils.today();
-    if (DateUtils.compare(deathDay, birthDate) <= 0) {
+    if (DateUtils.compare(deathDay, dayOfBirth) <= 0) {
       return '0 days';
     }
 
     const daysInMonth = this.daysInMonth(
-      birthDate.getMonth(),
-      birthDate.getFullYear()
+      dayOfBirth.getMonth(),
+      dayOfBirth.getFullYear()
     );
-    const yearDelta = deathDay.getFullYear() - birthDate.getFullYear();
-    const monthDelta = deathDay.getMonth() - birthDate.getMonth();
-    const dayDelta = deathDay.getDate() - birthDate.getDate();
+    const yearDelta = deathDay.getFullYear() - dayOfBirth.getFullYear();
+    const monthDelta = deathDay.getMonth() - dayOfBirth.getMonth();
+    const dayDelta = deathDay.getDate() - dayOfBirth.getDate();
 
     let year = yearDelta;
     let month = monthDelta;
@@ -30,7 +35,7 @@ export class AgeCalculatorService {
 
     if (year > 0 && month < 0) {
       year--;
-      month += 12;
+      month += 11;
     }
 
     if (day < 0) {

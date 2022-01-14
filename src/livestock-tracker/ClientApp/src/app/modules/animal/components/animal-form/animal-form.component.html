@@ -255,6 +255,7 @@
             type="submit"
             mat-raised-button
             color="primary"
+            [disabled]="!form.dirty"
             matTooltip="Submit changes"
           >
             Save

@@ -2,9 +2,9 @@
   "name": "e2e",
   "version": "0.0.1",
   "scripts": {
-    "headless": "npx cypress run",
-    "lint": "npx eslint .",
-    "start": "npx cypress open",
+    "headless": "cypress run",
+    "lint": "eslint .",
+    "start": "cypress open",
     "serve": "dotnet run --project ../../src/livestock-tracker/livestock-tracker.csproj -c Debug --launch-profile E2E",
     "cy:run": "cypress run",
     "cy:start": "wait-on https-get://localhost:5001/ && cypress open",

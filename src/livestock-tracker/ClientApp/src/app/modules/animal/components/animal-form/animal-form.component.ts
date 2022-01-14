@@ -1,4 +1,4 @@
-import { merge, Subject } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
@@ -9,8 +9,8 @@ import {
   Output
 } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
+  FormControl,
   FormGroup,
   Validators
 } from '@angular/forms';
@@ -76,23 +76,26 @@ export class AnimalFormComponent {
   public gapSize = '16px';
 
   private _currentAnimal: Animal = null;
-  private destroyed$ = new Subject();
-  private calcAge$ = new Subject();
+  private readonly _destroyed$ = new Subject<void>();
 
-  public get birthDateCtrl(): AbstractControl {
-    return this.form.get(Constants.controls.birthDate);
+  public get birthDateCtrl(): FormControl {
+    return <FormControl>this.form.get(Constants.controls.birthDate);
   }
 
-  public get dateOfDeathCtrl(): AbstractControl {
-    return this.form.get(Constants.controls.dateOfDeath);
+  public get dateOfDeathCtrl(): FormControl {
+    return <FormControl>this.form.get(Constants.controls.dateOfDeath);
   }
 
-  public get purchasePriceCtrl(): AbstractControl {
-    return this.form.get(Constants.controls.purchasePrice);
+  public get purchasePriceCtrl(): FormControl {
+    return <FormControl>this.form.get(Constants.controls.purchasePrice);
   }
 
-  public get sellPriceCtrl(): AbstractControl {
-    return this.form.get(Constants.controls.sellPrice);
+  public get sellPriceCtrl(): FormControl {
+    return <FormControl>this.form.get(Constants.controls.sellPrice);
+  }
+
+  public get sellDateCtrl(): FormControl {
+    return <FormControl>this.form.get(Constants.controls.sellDate);
   }
 
   constructor(
@@ -100,7 +103,6 @@ export class AnimalFormComponent {
     private ageCalculatorService: AgeCalculatorService
   ) {
     this.initForm();
-    this.calcAge$.next();
   }
 
   public onNavigateBack() {
@@ -124,6 +126,14 @@ export class AnimalFormComponent {
 
     this.form.reset();
     this.updateForm(animal);
+
+    this.setControlValue(
+      this.ageCalculatorService.calculateAge(
+        animal.birthDate,
+        animal.dateOfDeath ?? animal.sellDate ?? null
+      ),
+      Constants.controls.age
+    );
   }
 
   public updateForm(animal: Animal): void {
@@ -186,6 +196,7 @@ export class AnimalFormComponent {
   }
 
   private initForm(): void {
+    const now = new Date();
     this.form = this.formBuilder.group({
       id: 0,
       type: [null, [Validators.required]],
@@ -201,7 +212,7 @@ export class AnimalFormComponent {
       sellDate: [{ value: null, disabled: true }],
       age: [
         {
-          value: this.ageCalculatorService.calculateAge(new Date()),
+          value: this.ageCalculatorService.calculateAge(now),
           disabled: true
         }
       ],
@@ -209,19 +220,21 @@ export class AnimalFormComponent {
       dateOfDeath: [{ value: null, disabled: true }, []]
     });
 
-    merge(this.birthDateCtrl?.valueChanges, this.dateOfDeathCtrl?.valueChanges)
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(() => this.calcAge$.next());
-
-    this.calcAge$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      this.setControlValue(
-        this.ageCalculatorService.calculateAge(
-          this.birthDateCtrl?.value ?? new Date(),
-          this.dateOfDeathCtrl?.value
-        ),
-        Constants.controls.age
-      );
-    });
+    combineLatest([
+      this.birthDateCtrl.valueChanges,
+      this.dateOfDeathCtrl.valueChanges,
+      this.sellDateCtrl.valueChanges
+    ])
+      .pipe(takeUntil(this._destroyed$))
+      .subscribe(([birthDate, dateOfDeath, sellDate]) => {
+        this.setControlValue(
+          this.ageCalculatorService.calculateAge(
+            birthDate,
+            dateOfDeath ?? sellDate ?? null
+          ),
+          Constants.controls.age
+        );
+      });
   }
 
   private enableControlAndMakeRequiredWhenTrue(
@@ -244,7 +257,7 @@ export class AnimalFormComponent {
     control.markAsTouched();
   }
 
-  private setControlValue<T>(value: T, controlName: string): void {
+  private setControlValue<TValue>(value: TValue, controlName: string): void {
     const control = this.form.get(controlName);
     control.setValue(value);
     control.updateValueAndValidity();

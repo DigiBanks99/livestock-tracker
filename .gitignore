@@ -246,3 +246,9 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 livestock-tracker/package-lock.json
+
+# e2e certs
+localhost.conf
+localhost.crt
+localhost.key
+localhost.pfx

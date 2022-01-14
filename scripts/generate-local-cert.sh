@@ -1,6 +1,9 @@
 #! /bin/bash
 
-password=`echo $RANDOM | md5sum | head -c 20 | awk '{print "a"$1"z"}'`
+rm -f -- localhost.conf
+rm -f -- localhost.crt
+rm -f -- localhost.key
+rm -f -- localhost.pfx
 
 echo "Creating cert config..."
 touch localhost.conf
