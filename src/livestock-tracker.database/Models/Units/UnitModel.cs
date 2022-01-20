@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Models.Units;
 using LivestockTracker.Database.Models.Feed;
-using LivestockTracker.Database.Models.Medical;
+using LivestockTracker.Medicine;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 

@@ -9,24 +9,28 @@ import { MedicineTypeContainerComponent } from './components/medicine-type/medic
 const routes: Routes = [
   {
     path: '',
-    component: MedicalTransactionContainerComponent,
+    component: MedicalTransactionContainerComponent
+  },
+  {
+    path: ':animalId',
+    component: MedicalTransactionContainerComponent
   },
   {
     path: 'medicine-type',
-    component: MedicineTypeContainerComponent,
+    component: MedicineTypeContainerComponent
   },
   {
     path: ':animalId/new',
-    component: MedicalTransactionNewComponent,
+    component: MedicalTransactionNewComponent
   },
   {
-    path: ':animalId/:id/edit',
-    component: MedicalTransactionDetailComponent,
-  },
+    path: ':animalId/edit/:id',
+    component: MedicalTransactionDetailComponent
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class MedicalRoutingModule {}

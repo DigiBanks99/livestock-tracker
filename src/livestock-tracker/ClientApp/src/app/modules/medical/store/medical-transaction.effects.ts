@@ -1,48 +1,93 @@
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MedicalTransaction, PagedData } from '@core/models';
-import { CrudEffects } from '@core/store';
+import { Router } from '@angular/router';
+import { AnimalStore } from '@animal/store';
+import { MedicalTransaction } from '@core/models';
+import {
+  AnimalState,
+  FetchAnimalTransactionEffects,
+  NoopAction,
+  PayloadAction
+} from '@core/store';
 import { MedicalTransactionService } from '@medical/services';
-import { Actions } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {
+  ROUTER_NAVIGATION,
+  RouterNavigatedAction,
+  SerializedRouterStateSnapshot
+} from '@ngrx/router-store';
+import { Action, Store } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
-import {
-  actions,
-  FetchMedicalTransactionsAction,
-  FetchSingleMedicalTransactionParams
-} from './medical-transaction.actions';
+import { actions } from './medical-transaction.actions';
 
 @Injectable()
-export class MedicalTransactionEffects extends CrudEffects<
-  MedicalTransaction,
-  number,
-  FetchSingleMedicalTransactionParams
-> {
+export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<MedicalTransaction> {
+  public transactionSelectedInRoute$: Observable<
+    PayloadAction<number> | Action
+  > = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ROUTER_NAVIGATION),
+      filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
+        /medical\/[0-9]*\/edit/.test(action.payload.event.urlAfterRedirects)
+      ),
+      map(
+        (
+          action: RouterNavigatedAction<SerializedRouterStateSnapshot>
+        ): PayloadAction<number> | Action => {
+          const id = Number(
+            action.payload.routerState.root.firstChild.firstChild.params.id
+          );
+          if (Number.isNaN(id)) {
+            return NoopAction;
+          }
+          return this.transactionActions.selectItem(id);
+        }
+      )
+    )
+  );
+
+  public animalSelectedInRoute$: Observable<PayloadAction<number> | Action> =
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(ROUTER_NAVIGATION),
+        filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
+          /medical\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
+        ),
+        map(
+          (
+            action: RouterNavigatedAction<SerializedRouterStateSnapshot>
+          ): PayloadAction<number> | Action => {
+            const id = Number(
+              action.payload.routerState.root.firstChild.firstChild.params
+                .animalId
+            );
+            if (Number.isNaN(id)) {
+              return NoopAction;
+            }
+            return AnimalStore.actions.selectItem(id);
+          }
+        )
+      )
+    );
+
   constructor(
     actions$: Actions,
-    private medicalTransactionService: MedicalTransactionService,
-    snackBar: MatSnackBar
+    animalStore: Store<AnimalState>,
+    medicalTransactionService: MedicalTransactionService,
+    snackBar: MatSnackBar,
+    private readonly router: Router
   ) {
     super(
       actions$,
+      animalStore,
       medicalTransactionService,
       actions,
       MedicalStoreConstants.MedicalTransactionKey,
       snackBar
     );
   }
-
-  protected handleFetchAction$ = (
-    action: Action
-  ): Observable<PagedData<MedicalTransaction>> => {
-    const fetchAction = <FetchMedicalTransactionsAction>action;
-    return this.medicalTransactionService.getAll(
-      fetchAction.animalId,
-      fetchAction.pageNumber,
-      fetchAction.pageSize
-    );
-  };
 }

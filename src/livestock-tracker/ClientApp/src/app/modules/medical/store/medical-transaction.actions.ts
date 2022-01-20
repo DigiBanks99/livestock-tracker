@@ -1,5 +1,8 @@
 import { MedicalTransaction } from '@core/models';
-import { crudActionsFactory, PayloadAction } from '@core/store';
+import {
+  fetchAnimalTransactionsActionFactory,
+  PayloadAction
+} from '@core/store';
 import { Action } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
@@ -28,7 +31,8 @@ export class FetchMedicalTransactionsAction implements Action {
 }
 
 export class FetchSingleMedicalTransactionAction
-  implements PayloadAction<FetchSingleMedicalTransactionParams> {
+  implements PayloadAction<FetchSingleMedicalTransactionParams>
+{
   readonly type = MedicalActionTypes.FetchSingleMedicalTransaction;
   payload: FetchSingleMedicalTransactionParams;
 
@@ -40,6 +44,8 @@ export class FetchSingleMedicalTransactionAction
   }
 }
 
-export const actions = crudActionsFactory<MedicalTransaction, number>(
-  MedicalStoreConstants.MedicalTransactionKey
-);
+export const actions = {
+  ...fetchAnimalTransactionsActionFactory<MedicalTransaction>(
+    MedicalStoreConstants.MedicalTransactionKey
+  )
+};

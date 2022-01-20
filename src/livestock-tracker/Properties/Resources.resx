@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="RequestAnimalMedicalTransactions" xml:space="preserve">
-    <value>Requesting the medical transaction for animal with ID {0}...</value>
+    <value>Requesting {@PageSize} medical transaction for {@AnimalIds} from page {@PageNumber}...</value>
   </data>
   <data name="RequestMedicalTransactionDetail" xml:space="preserve">
     <value>Requesting the medical transaction detail with ID {1} for animal with ID {0}...</value>

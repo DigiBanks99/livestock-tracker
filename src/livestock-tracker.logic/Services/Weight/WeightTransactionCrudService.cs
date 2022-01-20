@@ -132,7 +132,7 @@ namespace LivestockTracker.Logic.Services.Weight
                                               .MapToWeightTransaction()
                                               .FilterOnObject(filter)
                                               .SortByCriteria(t => t.TransactionDate, sortDirection)
-                                              .ToPagedDataAsync(pagingOptions);
+                                              .PaginateAsync(pagingOptions);
         }
 
         private void ValidateAddAsyncParameters(WeightTransaction item)

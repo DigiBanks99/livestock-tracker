@@ -3,6 +3,7 @@ using LivestockTracker.Database.Models.Feed;
 using LivestockTracker.Database.Models.Medical;
 using LivestockTracker.Database.Models.Units;
 using LivestockTracker.Database.Models.Weight;
+using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 
 namespace LivestockTracker.Database

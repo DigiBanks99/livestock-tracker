@@ -2,18 +2,25 @@ import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { BaseUrl } from '@core/di/base-url.injection-token';
-import { MedicalTransaction } from '@core/models/medical-transaction.model';
+import { MedicalTransaction } from '@core/models';
 import { PagedData } from '@core/models/paged-data.model';
+import { AnimalTransactionService } from '@core/models/services';
 import { environment } from '@env/environment';
 import { FetchSingleMedicalTransactionParams } from '@medical/store/medical-transaction.actions';
 
 @Injectable()
-export class MedicalTransactionService {
-  private readonly apiUrl: string;
+export class MedicalTransactionService
+  implements AnimalTransactionService<MedicalTransaction>
+{
+  private readonly _url: string;
 
-  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
-    this.apiUrl = `${baseUrl}medicalTransactions`;
+  constructor(
+    private readonly _http: HttpClient,
+    @Inject(BaseUrl) baseUrl: string
+  ) {
+    this._url = `${baseUrl}MedicalTransactions`;
   }
 
   public getAll(
@@ -21,8 +28,8 @@ export class MedicalTransactionService {
     pageNumber: number = 0,
     pageSize: number = environment.pageSize
   ): Observable<PagedData<MedicalTransaction>> {
-    return this.http.get<PagedData<MedicalTransaction>>(
-      `${this.apiUrl}/${animalId}`,
+    return this._http.get<PagedData<MedicalTransaction>>(
+      `${this._url}/${animalId}`,
       {
         params: {
           pageNumber: pageNumber.toString(),
@@ -32,31 +39,51 @@ export class MedicalTransactionService {
     );
   }
 
+  /**
+   * Fetches a paged collection of the weight transactions for the specified animal.
+   *
+   * @param animalId The animal for which the transactions should be returned.
+   * @param paginationParameters The parameters for retrieving the correct pagination data.
+   * @returns A paged collection of weight transactions.
+   */
+  public getAnimalTransactions(
+    animalId: number,
+    paginationParameters: PageEvent
+  ): Observable<PagedData<MedicalTransaction>> {
+    return this._http.get<PagedData<MedicalTransaction>>(`${this._url}`, {
+      params: {
+        animalIds: [String(animalId)],
+        pageSize: paginationParameters.pageSize.toString(),
+        pageNumber: paginationParameters.pageIndex.toString()
+      }
+    });
+  }
+
   public get(
     payload: FetchSingleMedicalTransactionParams
   ): Observable<MedicalTransaction> {
-    return this.http.get<MedicalTransaction>(
-      `${this.apiUrl}/${payload.animalId}/${payload.id}`
+    return this._http.get<MedicalTransaction>(
+      `${this._url}/${payload.animalId}/${payload.id}`
     );
   }
 
   public add(
     medicalTransaction: MedicalTransaction
   ): Observable<MedicalTransaction> {
-    return this.http.post<MedicalTransaction>(this.apiUrl, medicalTransaction);
+    return this._http.post<MedicalTransaction>(this._url, medicalTransaction);
   }
 
   public update(
     medicalTransaction: MedicalTransaction
   ): Observable<MedicalTransaction> {
-    return this.http.put<MedicalTransaction>(
-      `${this.apiUrl}/${medicalTransaction.id}`,
+    return this._http.put<MedicalTransaction>(
+      `${this._url}/${medicalTransaction.id}`,
       medicalTransaction
     );
   }
 
   public delete(id: number): Observable<number> {
-    return this.http.delete<number>(`${this.apiUrl}/${id}`);
+    return this._http.delete<number>(`${this._url}/${id}`);
   }
 }
 

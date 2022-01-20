@@ -2,8 +2,8 @@ using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Enums;
 using LivestockTracker.Database.Models.Animals;
 using LivestockTracker.Database.Models.Feed;
-using LivestockTracker.Database.Models.Medical;
 using LivestockTracker.Database.Models.Weight;
+using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -67,7 +67,7 @@ namespace LivestockTracker.Database.Sqlite
                 {
                     AnimalId = animal.Id,
                     MedicineId = context.MedicineTypes.OrderBy(m => m.Description).First().Id,
-                    TransactionDate = DateTimeOffset.UtcNow,
+                    TransactionDate = DateTimeOffset.Parse("2021-01-13T16:00:00Z"),
                     UnitId = context.Units.OrderBy(u => u.Description).First().Id,
                     Dose = 0.5m
                 });
@@ -95,7 +95,7 @@ namespace LivestockTracker.Database.Sqlite
                     AnimalId = animal.Id,
                     FeedTypeId = livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id,
                     Quantity = 0.5m,
-                    TransactionDate = DateTimeOffset.UtcNow,
+                    TransactionDate = DateTimeOffset.Parse("2021-01-13T16:00:00Z"),
                     UnitId = livestockContext.Units.OrderBy(u => u.Description).First().Id
                 },
                 new FeedingTransactionModel()
@@ -103,7 +103,7 @@ namespace LivestockTracker.Database.Sqlite
                     AnimalId = animal.Id,
                     FeedTypeId = livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id,
                     Quantity = 1,
-                    TransactionDate = DateTimeOffset.UtcNow.AddDays(-1),
+                    TransactionDate = DateTimeOffset.Parse("2021-01-12T16:00:00Z"),
                     UnitId = livestockContext.Units.OrderBy(u => u.Description).First().Id
                 });
 

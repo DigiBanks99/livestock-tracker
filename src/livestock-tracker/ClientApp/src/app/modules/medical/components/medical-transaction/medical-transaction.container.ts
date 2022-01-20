@@ -1,5 +1,5 @@
-import { combineLatest, EMPTY, Observable, Subject } from 'rxjs';
-import { filter, takeUntil, tap } from 'rxjs/operators';
+import { EMPTY, Observable, Subject } from 'rxjs';
+import { filter, takeUntil } from 'rxjs/operators';
 
 import { Component, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
@@ -7,13 +7,11 @@ import { Router } from '@angular/router';
 import { Animal, MedicalTransaction, MedicineType, Unit } from '@core/models';
 import { AppState } from '@core/store';
 import { getSelectedAnimal, getUnits } from '@core/store/selectors';
-import { environment } from '@env/environment';
 import {
   medicalTransactionActions,
   medicalTransactionStore,
   medicineTypeStore
 } from '@medical/store';
-import { FetchMedicalTransactionsAction } from '@medical/store/medical-transaction.actions';
 import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
 import { select, Store } from '@ngrx/store';
 
@@ -54,11 +52,6 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
     this.selectedAnimal$ = this._store.pipe(
       select(getSelectedAnimal),
       filter((animal: Animal) => animal != null),
-      tap((animal: Animal) => {
-        this._store.dispatch(
-          new FetchMedicalTransactionsAction(animal.id, 0, environment.pageSize)
-        );
-      }),
       takeUntil(this.destroyed$)
     );
     this.medicalTransactions$ = this._store.pipe(
@@ -87,7 +80,7 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
       takeUntil(this.destroyed$)
     );
 
-    combineLatest([this.selectedAnimal$, this.page$])
+    /*combineLatest([this.selectedAnimal$, this.page$])
       .pipe(takeUntil(this.destroyed$))
       .subscribe(([animal, pageEvent]: [Animal, PageEvent]) => {
         this._store.dispatch(
@@ -97,7 +90,7 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
             pageEvent.pageSize
           )
         );
-      });
+      });*/
   }
 
   public ngOnDestroy(): void {
