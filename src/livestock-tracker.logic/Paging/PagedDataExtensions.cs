@@ -69,7 +69,7 @@ namespace LivestockTracker.Logic.Paging
         /// <returns>
         /// The paged result set of <typeparamref name="TData"/> items.
         /// </returns>
-        public static async Task<IPagedData<TData>> ToPagedDataAsync<TData>(this IQueryable<TData> query, IPagingOptions options)
+        public static async Task<IPagedData<TData>> PaginateAsync<TData>(this IQueryable<TData> query, IPagingOptions options)
             where TData : class
         {
             var pagedQuery = query.Skip(options.Offset)

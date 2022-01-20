@@ -140,10 +140,7 @@
         "@typescript-eslint/no-namespace": [
           "off"
         ],
-        "brace-style": [
-          "error",
-          "1tbs"
-        ],
+        "brace-style": "off",
         "curly": "off",
         "id-blacklist": "off",
         "id-match": "off",

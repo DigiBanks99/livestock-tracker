@@ -20,6 +20,7 @@ using LivestockTracker.Logic.Services.Feed;
 using LivestockTracker.Logic.Services.Medical;
 using LivestockTracker.Logic.Services.Units;
 using LivestockTracker.Logic.Services.Weight;
+using LivestockTracker.Medicine;
 using LivestockTracker.Models.Feed;
 using LivestockTracker.Models.Medical;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,7 +44,6 @@ namespace LivestockTracker
                     .AddSingleton<IMapper<IFeedType, FeedType>, FeedTypeMapper>()
                     .AddSingleton<IMapper<FeedTypeModel, IFeedType>, FeedTypeEntityMapper>()
                     .AddSingleton<IMapper<FeedingTransactionModel, IFeedingTransaction>, FeedingTransactionEntityMapper>()
-                    .AddSingleton<IMapper<IMedicalTransaction, MedicalTransaction>, MedicalTransactionMapper>()
                     .AddSingleton<IMapper<IMedicineType, MedicineType>, MedicineTypeMapper>()
                     .AddSingleton<IMapper<UnitModel, IUnit>, UnitMapper>()
                     .AddScoped<IAnimalCrudService, AnimalCrudService>()

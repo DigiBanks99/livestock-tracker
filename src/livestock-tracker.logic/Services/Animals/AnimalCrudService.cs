@@ -123,10 +123,10 @@ namespace LivestockTracker.Logic.Services.Animals
         /// <returns>The animal if it was found.</returns>
         public virtual async Task<IAnimal?> GetOneAsync(long key, CancellationToken cancellationToken)
         {
-            Logger.LogInformation($"Retrieving the animal with ID {key}...");
+            Logger.LogInformation("Retrieving the animal with ID {@AnimalId}...", key);
 
-            var entity = await LivestockContext.Animals.FindAsync(new object[] { key }, cancellationToken)
-                                                      .ConfigureAwait(false);
+            var entity = await LivestockContext.Animals.FirstOrDefaultAsync(animal => animal.Id == key, cancellationToken)
+                                                       .ConfigureAwait(false);
             return AnimalMapper.Map(entity);
         }
 

@@ -1,12 +1,15 @@
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Models.Medical;
+using LivestockTracker.Database.Models;
 using LivestockTracker.Database.Models.Animals;
+using LivestockTracker.Database.Models.Medical;
 using LivestockTracker.Database.Models.Units;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
-namespace LivestockTracker.Database.Models.Medical
+namespace LivestockTracker.Medicine
 {
     [Table("MedicalTransactions", Schema = "medical")]
     public class MedicalTransactionModel : IEntity<long>, IMedicalTransaction, IAnimalTransaction
@@ -36,5 +39,39 @@ namespace LivestockTracker.Database.Models.Medical
         {
             return Id;
         }
+
+        public void UpdateTransaction(MedicalTransaction transaction)
+        {
+            MedicineId = transaction.MedicineId;
+            Dose = transaction.Dose;
+            TransactionDate = transaction.TransactionDate;
+            UnitId = transaction.UnitId;
+        }
+    }
+
+    public static class MedicalTransactionExtensions
+    {
+        public static IQueryable<MedicalTransaction> MapToMedicalTransactions(this IQueryable<MedicalTransactionModel> query)
+        {
+            return query.Select(transaction => new MedicalTransaction
+            {
+                AnimalId = transaction.AnimalId,
+                Dose = transaction.Dose,
+                Id = transaction.Id,
+                MedicineId = transaction.MedicineId,
+                TransactionDate = transaction.TransactionDate,
+                UnitId = transaction.UnitId
+            });
+        }
+
+        public static MedicalTransaction MapToMedicalTransaction(this MedicalTransactionModel transaction) => new()
+        {
+            AnimalId = transaction.AnimalId,
+            Dose = transaction.Dose,
+            Id = transaction.Id,
+            MedicineId = transaction.MedicineId,
+            TransactionDate = transaction.TransactionDate,
+            UnitId = transaction.UnitId
+        };
     }
 }

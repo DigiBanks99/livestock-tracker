@@ -1,7 +1,6 @@
 using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Abstractions.Models.Medical;
-using LivestockTracker.Abstractions.Services.Medical;
-using LivestockTracker.Models.Medical;
+using LivestockTracker.Medicine;
 using LivestockTracker.Models.Paging;
 using LivestockTracker.Properties;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LivestockTracker.Controllers
@@ -39,26 +39,35 @@ namespace LivestockTracker.Controllers
         /// <summary>
         /// Gets the medical transactions for an animal.
         /// </summary>
-        /// <param name="animalId">The unique identifier that links the medical transactions.</param>
+        /// <param name="animalIds">The animals that either need to be included or excluded.</param>
+        /// <param name="medicineType">The type of medicine to be included or excluded.</param>
+        /// <param name="exclude">Whether the criteria should be used to include or exclude.</param>
         /// <param name="pageNumber">The number of the page.</param>
         /// <param name="pageSize">The size of each page.</param>
         /// <returns>A paged list of medical transactions for the animal.</returns>
-        [HttpGet("{animalId}")]
+        [HttpGet]
         [ProducesResponseType(typeof(IPagedData<MedicalTransaction>), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async ValueTask<IActionResult> GetAll([FromRoute] int animalId, int pageNumber = 0, int pageSize = 100)
+        public IActionResult GetAll([FromQuery] int pageNumber,
+                                    [FromQuery] int pageSize,
+                                    [FromQuery] long[]? animalIds,
+                                    [FromQuery] long? medicineType,
+                                    [FromQuery] bool? exclude = false)
         {
-            Logger.LogInformation(Resources.RequestAnimalMedicalTransactions, animalId);
-            var items = await _medicalTransactionSearchService.FindAsync(medicalTransaction => medicalTransaction.AnimalId == animalId,
-                                                                         medicalTransaction => medicalTransaction.TransactionDate,
-                                                                         ListSortDirection.Descending,
-                                                                         new PagingOptions
-                                                                         {
-                                                                             PageNumber = pageNumber,
-                                                                             PageSize = pageSize
-                                                                         },
-                                                                         Request.HttpContext.RequestAborted)
-                                             .ConfigureAwait(false);
+            Logger.LogInformation(Resources.RequestAnimalMedicalTransactions,
+                                  pageSize,
+                                  animalIds ?? Enumerable.Empty<long>(),
+                                  pageNumber);
+
+            var pagingOptions = new PagingOptions
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize == 0 ? 10 : pageSize
+            };
+
+            var filter = new MedicalTransactionFilter(animalIds, medicineType, exclude);
+
+            var items = _medicalTransactionSearchService.Find(filter, ListSortDirection.Descending, pagingOptions);
             return Ok(items);
         }
 
@@ -72,7 +81,7 @@ namespace LivestockTracker.Controllers
         [ProducesResponseType(typeof(MedicalTransaction), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async ValueTask<IActionResult> Get([FromRoute] int animalId, [FromRoute] int id)
+        public IActionResult Get(int animalId, int id)
         {
             Logger.LogInformation(Resources.RequestMedicalTransactionDetail, animalId, id);
             if (!ModelState.IsValid)
@@ -80,26 +89,18 @@ namespace LivestockTracker.Controllers
                 return BadRequest(ModelState);
             }
 
-            try
+            var medicalTransaction = _medicalTransactionSearchService.GetOne(id);
+            if (medicalTransaction == null)
             {
-                var medicalTransaction = await _medicalTransactionCrudService.GetOneAsync(id, Request.HttpContext.RequestAborted)
-                                                                             .ConfigureAwait(false);
-                if (medicalTransaction == null)
-                {
-                    return NotFound();
-                }
-
-                if (medicalTransaction.AnimalId != animalId)
-                {
-                    return BadRequest();
-                }
-
-                return Ok(medicalTransaction);
+                return NotFound();
             }
-            catch (EntityNotFoundException<IMedicalTransaction> ex)
+
+            if (medicalTransaction.AnimalId != animalId)
             {
-                return NotFound(ex.Message);
+                return BadRequest();
             }
+
+            return Ok(medicalTransaction);
         }
 
         /// <summary>
@@ -152,7 +153,7 @@ namespace LivestockTracker.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(MedicalTransaction), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add([FromBody] MedicalTransaction medicalTransaction)
+        public async Task<IActionResult> AddAsync([FromBody] MedicalTransaction medicalTransaction)
         {
             Logger.LogInformation($"Requesting the creation of medical transaction {medicalTransaction}");
             if (!ModelState.IsValid)

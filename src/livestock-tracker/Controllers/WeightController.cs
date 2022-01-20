@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace LivestockTracker.Controllers
@@ -54,7 +55,10 @@ namespace LivestockTracker.Controllers
                                                      decimal? weightLower,
                                                      bool? exclude = false)
         {
-            Logger.LogInformation("Requesting {@PageSize} feed types from page {@PageNumber}...", pageSize, pageNumber);
+            Logger.LogInformation("Requesting {@PageSize} weight transactions for {@AnimalIds} from page {@PageNumber}...",
+                                  pageSize,
+                                  animalIds ?? Enumerable.Empty<long>(),
+                                  pageNumber);
 
             if (!ModelState.IsValid)
             {
