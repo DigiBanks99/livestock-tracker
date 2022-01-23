@@ -45,13 +45,6 @@ namespace LivestockTracker.Medicine
         {
             Logger.LogInformation("Finding {@PageSize} medical transaction for page {@PageNumber}...", pagingOptions.PageSize, pagingOptions.PageNumber);
 
-            var x = LivestockContext.MedicalTransactions
-                                   .AsNoTracking()
-                                   .SortByCriteria(t => t.TransactionDate, sortDirection)
-                                   .MapToMedicalTransactions()
-                                   .FilterOnObject(filter)
-                                   .ToList();
-
             return LivestockContext.MedicalTransactions
                                    .AsNoTracking()
                                    .SortByCriteria(t => t.TransactionDate, sortDirection)

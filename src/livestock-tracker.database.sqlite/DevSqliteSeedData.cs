@@ -43,6 +43,27 @@ namespace LivestockTracker.Database.Sqlite
                     Sold = false,
                     SellPrice = null,
                     Deceased = false
+                },
+                new AnimalModel()
+                {
+                    Type = AnimalType.Cattle,
+                    Archived = true,
+                    ArrivalWeight= 35,
+                    BatchNumber = 1,
+                    BirthDate = new DateTimeOffset(2021, 1, 13, 16, 22, 0, TimeSpan.FromHours(+2)),
+                    PurchaseDate = new DateTimeOffset(2021, 1, 15, 9, 35, 0, TimeSpan.FromHours(+2)),
+                    Number = 2,
+                    PurchasePrice = 200m
+                },
+                new AnimalModel()
+                {
+                    Type = AnimalType.Cattle,
+                    ArrivalWeight = 30,
+                    BatchNumber = 1,
+                    BirthDate = new DateTimeOffset(2021, 1, 13, 14, 10, 0, TimeSpan.FromHours(+2)),
+                    PurchaseDate = new DateTimeOffset(2021, 1, 15, 9, 35, 0, TimeSpan.FromHours(+2)),
+                    Number = 3,
+                    PurchasePrice = 200m
                 });
 
             context.SaveChanges();
@@ -59,18 +80,23 @@ namespace LivestockTracker.Database.Sqlite
             if (animal == null)
             {
                 SeedAnimals(context);
-                animal = context.Animals.OrderBy(a => a.Number).First();
             }
 
-            context.MedicalTransactions.AddRange(
-                new MedicalTransactionModel()
+            foreach (var animalEntity in context.Animals)
+            {
+                for (var i = 0; i < 15; i++)
                 {
-                    AnimalId = animal.Id,
-                    MedicineId = context.MedicineTypes.OrderBy(m => m.Description).First().Id,
-                    TransactionDate = DateTimeOffset.Parse("2021-01-13T16:00:00Z"),
-                    UnitId = context.Units.OrderBy(u => u.Description).First().Id,
-                    Dose = 0.5m
-                });
+                    var medicineTypeId = i % 2 == 0 ? 2 : 1;
+                    animalEntity.MedicalTransactions.Add(
+                        new MedicalTransactionModel()
+                        {
+                            MedicineId = medicineTypeId,
+                            TransactionDate = animalEntity.PurchaseDate.AddDays(i),
+                            UnitId = 1,
+                            Dose = 0.5m
+                        });
+                }
+            }
 
             context.SaveChanges();
         }
