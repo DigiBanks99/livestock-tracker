@@ -2,9 +2,6 @@ name: e2e tests
 
 on:
   push:
-    branches:
-      - master
-      - e2e-*
     paths-ignore:
       - src/**/*.stories.ts
       - src/**/*.stories.spec.ts
@@ -28,7 +25,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 6.0.x
       - name: Setup local certificate
         run: ./scripts/generate-local-cert.sh
       - name: Setup Node Environment

@@ -8,95 +8,94 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Linq;
 
-namespace LivestockTracker.Database.Sqlite
+namespace LivestockTracker.Database.Sqlite;
+
+public class SqliteSeedData : ISeedData
 {
-    public class SqliteSeedData : ISeedData
+    private readonly IHostEnvironment _env;
+
+    public SqliteSeedData(IHostEnvironment env)
     {
-        private readonly IHostEnvironment _env;
+        _env = env;
+    }
 
-        public SqliteSeedData(IHostEnvironment env)
+    public void Seed(IServiceProvider serviceProvider)
+    {
+        var options = serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>();
+        using var context = new LivestockContext(options);
+        if (_env.IsE2E())
         {
-            _env = env;
+            context.Database.EnsureCreated();
+        }
+        else
+        {
+            context.Database.Migrate();
         }
 
-        public void Seed(IServiceProvider serviceProvider)
+        SeedFeedTypes(context);
+        SeedUnits(context);
+        SeedMedicine(context);
+
+        context.SaveChanges();
+    }
+
+    private static void SeedUnits(LivestockContext context)
+    {
+        if (context.Units == null || context.Units.Any())
         {
-            var options = serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>();
-            using var context = new LivestockContext(options);
-            if (_env.IsE2E())
-            {
-                context.Database.EnsureCreated();
-            }
-            else
-            {
-                context.Database.Migrate();
-            }
-
-            SeedFeedTypes(context);
-            SeedUnits(context);
-            SeedMedicine(context);
-
-            context.SaveChanges();
+            return;
         }
 
-        private static void SeedUnits(LivestockContext context)
+        context.Units.AddRange(
+        new UnitModel()
         {
-            if (context.Units == null || context.Units.Any())
-            {
-                return;
-            }
+            Id = 1,
+            Description = "ℓ"
+        },
+        new UnitModel()
+        {
+            Id = 2,
+            Description = "kg"
+        });
+    }
 
-            context.Units.AddRange(
-            new UnitModel()
-            {
-                Id = 1,
-                Description = "ℓ"
-            },
-            new UnitModel()
-            {
-                Id = 2,
-                Description = "kg"
-            });
+    private static void SeedMedicine(LivestockContext context)
+    {
+        if (context.MedicineTypes == null || context.MedicineTypes.Any())
+        {
+            return;
         }
 
-        private static void SeedMedicine(LivestockContext context)
+        context.MedicineTypes.AddRange(
+        new MedicineTypeModel()
         {
-            if (context.MedicineTypes == null || context.MedicineTypes.Any())
-            {
-                return;
-            }
+            Id = 1,
+            Description = "Antibiotics"
+        },
+        new MedicineTypeModel()
+        {
+            Id = 2,
+            Description = "Painkillers"
+        });
+    }
 
-            context.MedicineTypes.AddRange(
-            new MedicineTypeModel()
-            {
-                Id = 1,
-                Description = "Antibiotics"
-            },
-            new MedicineTypeModel()
-            {
-                Id = 2,
-                Description = "Painkillers"
-            });
+    private static void SeedFeedTypes(LivestockContext livestockContext)
+    {
+        if (livestockContext.FeedTypes.Any())
+        {
+            return;
         }
 
-        private static void SeedFeedTypes(LivestockContext livestockContext)
+        livestockContext.FeedTypes.AddRange(
+        new FeedTypeModel()
         {
-            if (livestockContext.FeedTypes.Any())
-            {
-                return;
-            }
-
-            livestockContext.FeedTypes.AddRange(
-            new FeedTypeModel()
-            {
-                Id = 1,
-                Description = "Wheat"
-            },
-            new FeedTypeModel()
-            {
-                Id = 2,
-                Description = "Maze"
-            });
-        }
+            Id = 1,
+            Description = "Wheat"
+        },
+        new FeedTypeModel()
+        {
+            Id = 2,
+            Description = "Maze"
+        });
     }
 }

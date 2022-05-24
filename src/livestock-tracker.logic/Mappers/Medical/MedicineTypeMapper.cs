@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models.Medical;
 using LivestockTracker.Database.Models.Medical;
-using LivestockTracker.Models.Medical;
+using LivestockTracker.Medicine;
 
 namespace LivestockTracker.Logic.Mappers.Medical
 {

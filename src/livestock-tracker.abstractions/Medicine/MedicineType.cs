@@ -1,18 +1,24 @@
 using LivestockTracker.Abstractions.Models.Medical;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
-using System.Text.Json.Serialization;
 
-namespace LivestockTracker.Models.Medical
+namespace LivestockTracker.Medicine;
+
+/// <summary>
+/// The type of medicines that can be administered to an animal.
+/// </summary>
+[DebuggerDisplay("{Id} - {Description} [Deleted: {Deleted}]")]
+public class MedicineType : IMedicineType
 {
-    [DebuggerDisplay("{Id} - {Description} [Deleted: {Deleted}]")]
-    public class MedicineType : IMedicineType
-    {
-        [Key]
-        public int Id { get; set; }
-        [Required]
-        public string Description { get; set; } = string.Empty;
-        [JsonIgnore]
-        public bool Deleted { get; set; } = false;
-    }
+    /// <summary>
+    /// The unique identifier of the medicine type.
+    /// </summary>
+    public int Id { get; set; }
+    /// <summary>
+    /// The friendly name of the medicine type.
+    /// </summary>
+    public string Description { get; set; } = string.Empty;
+    /// <summary>
+    /// Whether the medicine type is considered deleted and nolonger available for selection.
+    /// </summary>
+    public bool Deleted { get; set; } = false;
 }
