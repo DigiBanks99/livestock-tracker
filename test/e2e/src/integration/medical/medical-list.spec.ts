@@ -32,6 +32,6 @@ describe('Medical Transaction List', () => {
 
   it.only('should navigate to the medical transaction detail view when clicking on an item link', () => {
     cy.contains('a', 'Antibiotics').click();
-    cy.location('pathname').should('equal', '/medical/1/edit/1');
+    cy.location('pathname').should('match', /medical\/1\/edit\/[0-9]*/);
   });
 });

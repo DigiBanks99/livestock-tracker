@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Abstractions.Models.Medical;
 using LivestockTracker.Abstractions.Services.Medical;
-using LivestockTracker.Models.Medical;
+using LivestockTracker.Medicine;
 using LivestockTracker.Models.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29409.12
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{12DD062C-CB85-41D7-8FF7-3A4969F0F1E5}"
 	ProjectSection(SolutionItems) = preProject
@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker", "src\li
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.database.sqlite", "src\livestock-tracker.database.sqlite\livestock-tracker.database.sqlite.csproj", "{42CC84FA-30B9-4F18-A081-314B30934764}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.logic.tests", "test\livestock-tracker.logic.tests\livestock-tracker.logic.tests.csproj", "{E99FACE8-D907-4584-B81A-295EAD67DB68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivestockTracker.Logic.UnitTests", "test\LivestockTracker.Logic.UnitTests\LivestockTracker.Logic.UnitTests.csproj", "{E99FACE8-D907-4584-B81A-295EAD67DB68}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.abstractions", "src\livestock-tracker.abstractions\livestock-tracker.abstractions.csproj", "{4589A780-8BB8-48CB-BF8B-E9CF21894CF7}"
 EndProject
@@ -35,7 +35,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{0C03D32C-9
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8C5E55CE-4187-4B34-AFC2-6A20FC1DCCE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LivestockTracker.Medicine.IntegrationTests", "test\LivestockTracker.Medicine.IntegrationTests\LivestockTracker.Medicine.IntegrationTests.csproj", "{825EAB1E-4D9B-4D77-B3A6-F13C6CF90186}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LivestockTracker.Medicine.IntegrationTests", "test\LivestockTracker.Medicine.IntegrationTests\LivestockTracker.Medicine.IntegrationTests.csproj", "{825EAB1E-4D9B-4D77-B3A6-F13C6CF90186}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

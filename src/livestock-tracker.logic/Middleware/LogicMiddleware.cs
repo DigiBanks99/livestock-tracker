@@ -22,7 +22,6 @@ using LivestockTracker.Logic.Services.Units;
 using LivestockTracker.Logic.Services.Weight;
 using LivestockTracker.Medicine;
 using LivestockTracker.Models.Feed;
-using LivestockTracker.Models.Medical;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LivestockTracker

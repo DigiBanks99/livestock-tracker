@@ -9,62 +9,51 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace LivestockTracker.Medicine
+namespace LivestockTracker.Medicine;
+
+[Table("MedicalTransactions", Schema = "medical")]
+public class MedicalTransactionModel : IEntity<long>, IMedicalTransaction, IAnimalTransaction
 {
-    [Table("MedicalTransactions", Schema = "medical")]
-    public class MedicalTransactionModel : IEntity<long>, IMedicalTransaction, IAnimalTransaction
+    [Column("ID")]
+    [Key]
+    public long Id { get; set; }
+    [Column("AnimalID")]
+    [Required]
+    public long AnimalId { get; set; }
+    [Column("MedicineID")]
+    [Required]
+    public int MedicineId { get; set; }
+    [Required]
+    public DateTimeOffset TransactionDate { get; set; }
+    [Required]
+    public decimal Dose { get; set; }
+    [Column("UnitID")]
+    [Required]
+    public int UnitId { get; set; }
+
+    public AnimalModel Animal { get; internal set; } = null!;
+    public UnitModel UnitOfMeasurement { get; internal set; } = null!;
+    public MedicineTypeModel Medicine { get; internal set; } = null!;
+
+    public long GetKey()
     {
-        [Column("ID")]
-        [Key]
-        public long Id { get; set; }
-        [Column("AnimalID")]
-        [Required]
-        public long AnimalId { get; set; }
-        [Column("MedicineID")]
-        [Required]
-        public int MedicineId { get; set; }
-        [Required]
-        public DateTimeOffset TransactionDate { get; set; }
-        [Required]
-        public decimal Dose { get; set; }
-        [Column("UnitID")]
-        [Required]
-        public int UnitId { get; set; }
-
-        public AnimalModel Animal { get; internal set; } = null!;
-        public UnitModel UnitOfMeasurement { get; internal set; } = null!;
-        public MedicineTypeModel Medicine { get; internal set; } = null!;
-
-        public long GetKey()
-        {
-            return Id;
-        }
-
-        public void UpdateTransaction(MedicalTransaction transaction)
-        {
-            MedicineId = transaction.MedicineId;
-            Dose = transaction.Dose;
-            TransactionDate = transaction.TransactionDate;
-            UnitId = transaction.UnitId;
-        }
+        return Id;
     }
 
-    public static class MedicalTransactionExtensions
+    public void UpdateTransaction(MedicalTransaction transaction)
     {
-        public static IQueryable<MedicalTransaction> MapToMedicalTransactions(this IQueryable<MedicalTransactionModel> query)
-        {
-            return query.Select(transaction => new MedicalTransaction
-            {
-                AnimalId = transaction.AnimalId,
-                Dose = transaction.Dose,
-                Id = transaction.Id,
-                MedicineId = transaction.MedicineId,
-                TransactionDate = transaction.TransactionDate,
-                UnitId = transaction.UnitId
-            });
-        }
+        MedicineId = transaction.MedicineId;
+        Dose = transaction.Dose;
+        TransactionDate = transaction.TransactionDate;
+        UnitId = transaction.UnitId;
+    }
+}
 
-        public static MedicalTransaction MapToMedicalTransaction(this MedicalTransactionModel transaction) => new()
+public static class MedicalTransactionExtensions
+{
+    public static IQueryable<MedicalTransaction> MapToMedicalTransactions(this IQueryable<MedicalTransactionModel> query)
+    {
+        return query.Select(transaction => new MedicalTransaction
         {
             AnimalId = transaction.AnimalId,
             Dose = transaction.Dose,
@@ -72,6 +61,16 @@ namespace LivestockTracker.Medicine
             MedicineId = transaction.MedicineId,
             TransactionDate = transaction.TransactionDate,
             UnitId = transaction.UnitId
-        };
+        });
     }
+
+    public static MedicalTransaction MapToMedicalTransaction(this MedicalTransactionModel transaction) => new()
+    {
+        AnimalId = transaction.AnimalId,
+        Dose = transaction.Dose,
+        Id = transaction.Id,
+        MedicineId = transaction.MedicineId,
+        TransactionDate = transaction.TransactionDate,
+        UnitId = transaction.UnitId
+    };
 }
