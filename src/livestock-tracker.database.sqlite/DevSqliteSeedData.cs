@@ -30,7 +30,7 @@ public class DevSqliteSeedData : ISeedData
         }
 
         context.Animals.AddRange(
-            new AnimalModel()
+            new()
             {
                 Type = AnimalType.Cattle,
                 Subspecies = "Brahman",
@@ -44,7 +44,7 @@ public class DevSqliteSeedData : ISeedData
                 SellPrice = null,
                 Deceased = false
             },
-            new AnimalModel()
+            new()
             {
                 Type = AnimalType.Cattle,
                 Archived = true,
@@ -55,7 +55,7 @@ public class DevSqliteSeedData : ISeedData
                 Number = 2,
                 PurchasePrice = 200m
             },
-            new AnimalModel()
+            new()
             {
                 Type = AnimalType.Cattle,
                 ArrivalWeight = 30,
@@ -88,7 +88,7 @@ public class DevSqliteSeedData : ISeedData
             {
                 var medicineTypeId = i % 2 == 0 ? 2 : 1;
                 animalEntity.MedicalTransactions.Add(
-                    new MedicalTransactionModel()
+                    new()
                     {
                         MedicineId = medicineTypeId,
                         TransactionDate = animalEntity.PurchaseDate.AddDays(i),
@@ -116,7 +116,7 @@ public class DevSqliteSeedData : ISeedData
         }
 
         livestockContext.FeedingTransactions.AddRange(
-            new FeedingTransactionModel()
+            new()
             {
                 AnimalId = animal.Id,
                 FeedTypeId = livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id,
@@ -124,7 +124,7 @@ public class DevSqliteSeedData : ISeedData
                 TransactionDate = DateTimeOffset.Parse("2021-01-13T16:00:00Z"),
                 UnitId = livestockContext.Units.OrderBy(u => u.Description).First().Id
             },
-            new FeedingTransactionModel()
+            new()
             {
                 AnimalId = animal.Id,
                 FeedTypeId = livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id,
@@ -151,7 +151,7 @@ public class DevSqliteSeedData : ISeedData
         }
 
         livestockContext.WeightTransactions.AddRange(
-            new WeightTransactionModel
+            new WeightTransactionModel()
             {
                 AnimalId = animal.Id,
                 TransactionDate = DateTimeOffset.Parse("2021-01-13T16:00:00Z"),
