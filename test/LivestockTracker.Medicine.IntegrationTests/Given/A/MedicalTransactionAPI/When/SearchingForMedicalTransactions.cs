@@ -1,22 +1,18 @@
 using LivestockTracker.Logic.Paging;
-using LivestockTracker.Medicine;
 using Shouldly;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text;
-using System.Threading.Tasks;
-using Xunit;
 
-namespace Given.A.MedicalTransactionService.When;
+namespace IntegrationTests.Given.A.MedicalTransactionAPI.When;
 
+[Collection(IntegrationTestFixture.CollectionName)]
 public class SearchingForMedicalTransactions
 {
     private readonly HttpClient _client;
 
-    public SearchingForMedicalTransactions()
+    public SearchingForMedicalTransactions(IntegrationTestFixture fixture)
     {
-        _client = TestHelpers.CreateTestClient();
+        _client = fixture.Client;
     }
 
     // Seed data:
@@ -24,11 +20,11 @@ public class SearchingForMedicalTransactions
     // └── 15x medical transactions each
     //      ├── 7x Medicine Type ID 1
     //      └── 8x Medicine Type ID 2
-    const int AnimalCount = 3;
-    const int MedicineTypeId1Count = 7;
-    const int MedicineTypeId2Count = 8;
-    const int AnimalMedicalTransactionCount = MedicineTypeId1Count + MedicineTypeId2Count;
-    const int AllRecordsCount = AnimalCount * AnimalMedicalTransactionCount;
+    private const int AnimalCount = 3;
+    private const int MedicineTypeId1Count = 7;
+    private const int MedicineTypeId2Count = 8;
+    private const int AnimalMedicalTransactionCount = MedicineTypeId1Count + MedicineTypeId2Count;
+    private const int AllRecordsCount = AnimalCount * AnimalMedicalTransactionCount;
 
     [Fact]
     public async Task WithNoQueryParametersItShouldReturnAllMedicalTransactions()
@@ -38,15 +34,15 @@ public class SearchingForMedicalTransactions
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
-        Assert.NotNull(response.Content.Headers.ContentType);
-        Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType!.ToString());
+        response.Content.Headers.ContentType.ShouldNotBeNull();
+        response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
         var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
-        Assert.NotNull(transactions);
-        Assert.Equal(10, transactions!.Data.Count());
-        Assert.Equal(AllRecordsCount, transactions.TotalRecordCount);
-        Assert.Equal(10, transactions.PageSize);
-        Assert.Equal(5, transactions.PageCount);
+        transactions.ShouldNotBeNull();
+        transactions.Data.Count().ShouldBe(10);
+        transactions.TotalRecordCount.ShouldBe(AllRecordsCount);
+        transactions.PageSize.ShouldBe(10);
+        transactions.PageCount.ShouldBe(5);
     }
 
     [Theory]
@@ -59,13 +55,13 @@ public class SearchingForMedicalTransactions
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
-        Assert.NotNull(response.Content.Headers.ContentType);
-        Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType!.ToString());
+        response.Content.Headers.ContentType.ShouldNotBeNull();
+        response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
         var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
-        Assert.NotNull(transactions);
-        Assert.Equal(totalRecords, transactions!.TotalRecordCount);
-        Assert.All(transactions.Data, transaction => Assert.Equal(medicineTypeId, transaction.MedicineId));
+        transactions.ShouldNotBeNull();
+        transactions.TotalRecordCount.ShouldBe(totalRecords);
+        transactions.Data.ShouldAllBe(transaction => medicineTypeId == transaction.MedicineId);
     }
 
     [Theory]
@@ -78,13 +74,13 @@ public class SearchingForMedicalTransactions
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
-        Assert.NotNull(response.Content.Headers.ContentType);
-        Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType!.ToString());
+        response.Content.Headers.ContentType.ShouldNotBeNull();
+        response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
         var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
-        Assert.NotNull(transactions);
-        Assert.Equal(totalRecords, transactions!.TotalRecordCount);
-        Assert.All(transactions.Data, transaction => Assert.NotEqual(medicineTypeId, transaction.MedicineId));
+        transactions.ShouldNotBeNull();
+        transactions.TotalRecordCount.ShouldBe(totalRecords);
+        transactions.Data.ShouldAllBe(transaction => medicineTypeId != transaction.MedicineId);
     }
 
     [Theory]
@@ -111,8 +107,8 @@ public class SearchingForMedicalTransactions
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
-        Assert.NotNull(response.Content.Headers.ContentType);
-        Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType!.ToString());
+        response.Content.Headers.ContentType.ShouldNotBeNull();
+        response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
         var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
         transactions.ShouldNotBeNull();
@@ -146,8 +142,8 @@ public class SearchingForMedicalTransactions
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
-        Assert.NotNull(response.Content.Headers.ContentType);
-        Assert.Equal("application/json; charset=utf-8", response.Content.Headers.ContentType!.ToString());
+        response.Content.Headers.ContentType.ShouldNotBeNull();
+        response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
         var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
         transactions.ShouldNotBeNull();

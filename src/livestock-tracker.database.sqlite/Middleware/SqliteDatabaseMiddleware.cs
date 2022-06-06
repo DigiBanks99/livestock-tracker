@@ -11,95 +11,94 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace LivestockTracker
+namespace LivestockTracker;
+
+/// <summary>
+/// Provides extension methods for Livestock Tracker Database middleware.
+/// </summary>
+public static class SqliteDatabaseMiddleware
 {
+    private const long UnixEpochSeconds = 621355968000000;
+    private const int DateTimeOffsetBitwiseShiftBitCount = 11;
+
     /// <summary>
-    /// Provides extension methods for Livestock Tracker Database middleware.
+    /// Adds the Livestock Tracker SQLite Database provider to the specified <see cref="IServiceCollection"/>.
     /// </summary>
-    public static class SqliteDatabaseMiddleware
+    /// <param name="services">The service collection for dependency injection.</param>
+    /// <param name="config">The configuration values.</param>
+    /// <param name="env">The current hosting environment information.</param>
+    /// <returns>The extended service collection.</returns>
+    public static IServiceCollection AddLivestockTrackerSqliteDatabase(this IServiceCollection services, IConfiguration config, IHostEnvironment env)
     {
-        private const long UnixEpochSeconds = 621355968000000;
-        private const int DateTimeOffsetBitwiseShiftBitCount = 11;
+        var connectionString = config.GetConnectionString("DefaultConnection");
+        var connection = OpenConnection(connectionString);
 
-        /// <summary>
-        /// Adds the Livestock Tracker SQLite Database provider to the specified <see cref="IServiceCollection"/>.
-        /// </summary>
-        /// <param name="services">The service collection for dependency injection.</param>
-        /// <param name="config"></param>
-        /// <param name="env"></param>
-        /// <returns>The extended service collection.</returns>
-        public static IServiceCollection AddLivestockTrackerSqliteDatabase(this IServiceCollection services, IConfiguration config, IHostEnvironment env)
+        services.AddDbContext<LivestockContext>(options => ConfigureSqlite(options, connection))
+                .AddScoped<ISeedData, SqliteSeedData>();
+        if (env.IsDev())
         {
-            var connectionString = config.GetConnectionString("DefaultConnection");
-            var connection = OpenConnection(connectionString);
+            services.AddScoped<ISeedData, DevSqliteSeedData>();
+        }
+        return services;
+    }
 
-            services.AddDbContext<LivestockContext>(options => ConfigureSqlite(options, connection))
-                    .AddScoped<ISeedData, SqliteSeedData>();
-            if (env.IsDev())
+    internal static MigrationBuilder AlterColumnDataTypeDateTimeOffsetToLong(this MigrationBuilder migrationBuilder, IEnumerable<string> propertyNames, string tableName)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine($"UPDATE \"{tableName}\"");
+        sb.Append("SET ");
+
+        var index = 0;
+        foreach (var propertyName in propertyNames)
+        {
+            sb.Append($"\"{propertyName}\" = (strftime('%s', \"{propertyName}\") * 10000 + {UnixEpochSeconds}) << {DateTimeOffsetBitwiseShiftBitCount}");
+            if (++index < propertyNames.Count())
             {
-                services.AddScoped<ISeedData, DevSqliteSeedData>();
+                sb.AppendLine(",");
             }
-            return services;
         }
 
-        internal static MigrationBuilder AlterColumnDataTypeDateTimeOffsetToLong(this MigrationBuilder migrationBuilder, IEnumerable<string> propertyNames, string tableName)
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine($"UPDATE \"{tableName}\"");
-            sb.Append("SET ");
+        sb.Append(";");
 
-            var index = 0;
-            foreach (var propertyName in propertyNames)
+        migrationBuilder.Sql(sql: sb.ToString());
+
+        return migrationBuilder;
+    }
+
+    internal static MigrationBuilder AlterColumnDataTypeLongToDateTimeOffset(this MigrationBuilder migrationBuilder, IEnumerable<string> propertyNames, string tableName)
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine($"UPDATE \"{tableName}\"");
+        sb.Append("SET ");
+
+        var index = 0;
+        foreach (var propertyName in propertyNames)
+        {
+            sb.Append($"\"{propertyName}\" = datetime(((\"{propertyName}\" >> {DateTimeOffsetBitwiseShiftBitCount}) - {UnixEpochSeconds}) / 10000, 'unixepoch')");
+            if (++index < propertyNames.Count())
             {
-                sb.Append($"\"{propertyName}\" = (strftime('%s', \"{propertyName}\") * 10000 + {UnixEpochSeconds}) << {DateTimeOffsetBitwiseShiftBitCount}");
-                if (++index < propertyNames.Count())
-                {
-                    sb.AppendLine(",");
-                }
+                sb.AppendLine(",");
             }
-
-            sb.Append(";");
-
-            migrationBuilder.Sql(sql: sb.ToString());
-
-            return migrationBuilder;
         }
 
-        internal static MigrationBuilder AlterColumnDataTypeLongToDateTimeOffset(this MigrationBuilder migrationBuilder, IEnumerable<string> propertyNames, string tableName)
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine($"UPDATE \"{tableName}\"");
-            sb.Append("SET ");
+        sb.Append(";");
 
-            var index = 0;
-            foreach (var propertyName in propertyNames)
-            {
-                sb.Append($"\"{propertyName}\" = datetime(((\"{propertyName}\" >> {DateTimeOffsetBitwiseShiftBitCount}) - {UnixEpochSeconds}) / 10000, 'unixepoch')");
-                if (++index < propertyNames.Count())
-                {
-                    sb.AppendLine(",");
-                }
-            }
+        migrationBuilder.Sql(sql: sb.ToString());
 
-            sb.Append(";");
+        return migrationBuilder;
+    }
 
-            migrationBuilder.Sql(sql: sb.ToString());
+    private static SqliteConnection OpenConnection(string connectionString)
+    {
+        var connection = new SqliteConnection(connectionString);
+        connection.Open();
+        connection.EnableExtensions();
+        return connection;
+    }
 
-            return migrationBuilder;
-        }
-
-        private static SqliteConnection OpenConnection(string connectionString)
-        {
-            var connection = new SqliteConnection(connectionString);
-            connection.Open();
-            connection.EnableExtensions();
-            return connection;
-        }
-
-        private static DbContextOptionsBuilder ConfigureSqlite(DbContextOptionsBuilder options, SqliteConnection connection)
-        {
-            return options.UseSqlite(connection, builder => builder.MigrationsAssembly("livestock-tracker.database.sqlite")
-                                                                   .UseRelationalNulls());
-        }
+    private static DbContextOptionsBuilder ConfigureSqlite(DbContextOptionsBuilder options, SqliteConnection connection)
+    {
+        return options.UseSqlite(connection, builder => builder.MigrationsAssembly("livestock-tracker.database.sqlite")
+                                                               .UseRelationalNulls());
     }
 }
