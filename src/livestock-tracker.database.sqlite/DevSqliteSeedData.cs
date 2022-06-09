@@ -1,15 +1,13 @@
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Enums;
 using LivestockTracker.Database.Models.Animals;
-using LivestockTracker.Database.Models.Feed;
 using LivestockTracker.Database.Models.Weight;
-using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
-namespace LivestockTracker.Database.Sqlite;
+namespace LivestockTracker.Database;
 
 public class DevSqliteSeedData : ISeedData
 {
@@ -48,7 +46,7 @@ public class DevSqliteSeedData : ISeedData
             {
                 Type = AnimalType.Cattle,
                 Archived = true,
-                ArrivalWeight= 35,
+                ArrivalWeight = 35,
                 BatchNumber = 1,
                 BirthDate = new DateTimeOffset(2021, 1, 13, 16, 22, 0, TimeSpan.FromHours(+2)),
                 PurchaseDate = new DateTimeOffset(2021, 1, 15, 9, 35, 0, TimeSpan.FromHours(+2)),
@@ -76,17 +74,17 @@ public class DevSqliteSeedData : ISeedData
             return;
         }
 
-        var animal = context.Animals.OrderBy(a => a.Number).First();
+        AnimalModel? animal = context.Animals.OrderBy(a => a.Number).First();
         if (animal == null)
         {
             SeedAnimals(context);
         }
 
-        foreach (var animalEntity in context.Animals)
+        foreach (AnimalModel? animalEntity in context.Animals)
         {
-            for (var i = 0; i < 15; i++)
+            for (int i = 0; i < 15; i++)
             {
-                var medicineTypeId = i % 2 == 0 ? 2 : 1;
+                int medicineTypeId = i % 2 == 0 ? 2 : 1;
                 animalEntity.MedicalTransactions.Add(
                     new()
                     {
@@ -108,7 +106,7 @@ public class DevSqliteSeedData : ISeedData
             return;
         }
 
-        var animal = livestockContext.Animals.OrderBy(a => a.Number).First();
+        AnimalModel? animal = livestockContext.Animals.OrderBy(a => a.Number).First();
         if (animal == null)
         {
             SeedAnimals(livestockContext);
@@ -143,7 +141,7 @@ public class DevSqliteSeedData : ISeedData
             return;
         }
 
-        var animal = livestockContext.Animals.OrderBy(a => a.Number).First();
+        AnimalModel? animal = livestockContext.Animals.OrderBy(a => a.Number).First();
         if (animal == null)
         {
             SeedAnimals(livestockContext);

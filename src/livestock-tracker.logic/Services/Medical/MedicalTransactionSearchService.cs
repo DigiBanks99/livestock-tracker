@@ -4,12 +4,13 @@ using LivestockTracker.Database;
 using LivestockTracker.Logic.Filters;
 using LivestockTracker.Logic.Paging;
 using LivestockTracker.Logic.Sorting;
+using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 using System.Linq;
 
-namespace LivestockTracker.Medicine;
+namespace LivestockTracker.Logic.Services.Medical;
 
 /// <summary>
 /// Provides fetch and pagination services for medical transaction.
@@ -65,8 +66,10 @@ public class MedicalTransactionSearchService : IMedicalTransactionSearchService
     public virtual MedicalTransaction? GetOne(long key)
     {
         Logger.LogInformation("Finding a medical transaction that matches ID {@TransactionId}...", key);
-        var transaction = LivestockContext.MedicalTransactions.MapToMedicalTransactions()
-                                                              .FirstOrDefault(t => t.Id == key);
+        MedicalTransaction? transaction = LivestockContext.MedicalTransactions
+                                                          .AsNoTracking()
+                                                          .MapToMedicalTransactions()
+                                                          .FirstOrDefault(t => t.Id == key);
         if (transaction == null)
         {
             return null;

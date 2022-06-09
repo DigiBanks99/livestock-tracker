@@ -17,13 +17,14 @@ public class IntegrationTestFixture : IAsyncLifetime
     {
         Factory = new WebApplicationFactory<Startup>();
 
-        var configBuilder = new ConfigurationBuilder().AddInMemoryCollection()
-                                                      .AddEnvironmentVariables()
-                                                      .AddJsonFile("appsettings.json")
-                                                      .AddJsonFile("appsettings.Test.json");
+        IConfigurationBuilder? configBuilder = new ConfigurationBuilder()
+            .AddInMemoryCollection()
+            .AddEnvironmentVariables()
+            .AddJsonFile("appsettings.json")
+            .AddJsonFile("appsettings.Test.json");
 
         IConfiguration config = configBuilder.Build();
-        var connectionString = config.GetConnectionString("DefaultConnection");
+        string? connectionString = config.GetConnectionString("DefaultConnection");
         SqliteConnectionStringBuilder connectionStringBuilder;
         try
         {
@@ -35,23 +36,12 @@ public class IntegrationTestFixture : IAsyncLifetime
             throw;
         }
 
-        DatabaseConnection = new SqlConnection(connectionStringBuilder.ConnectionString);
+        DatabaseConnection = new SqliteConnection(connectionStringBuilder.ConnectionString);
         _httpClient = null;
     }
 
-    public SqlConnection DatabaseConnection { get; private set; }
-    public HttpClient Client
-    {
-        get
-        {
-            if (_httpClient == null)
-            {
-                throw new InvalidOperationException($"The Host has not been initialized yet. Please ensure {nameof(InitializeAsync)} has been called.");
-            }
-
-            return _httpClient;
-        }
-    }
+    public SqliteConnection DatabaseConnection { get; private set; }
+    public HttpClient Client => _httpClient ?? throw new InvalidOperationException($"The Host has not been initialized yet. Please ensure {nameof(InitializeAsync)} has been called.");
 
     public WebApplicationFactory<Startup> Factory { get; }
 

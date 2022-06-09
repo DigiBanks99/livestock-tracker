@@ -30,14 +30,14 @@ public class SearchingForMedicalTransactions
     public async Task WithNoQueryParametersItShouldReturnAllMedicalTransactions()
     {
         // Act
-        var response = await _client.GetAsync("api/MedicalTransactions");
+        HttpResponseMessage? response = await _client.GetAsync("api/MedicalTransactions");
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransaction>? transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
         transactions.ShouldNotBeNull();
         transactions.Data.Count().ShouldBe(10);
         transactions.TotalRecordCount.ShouldBe(AllRecordsCount);
@@ -51,14 +51,14 @@ public class SearchingForMedicalTransactions
     public async Task ItShouldOnlyReturnTheMedicalTransactionsWithTheMedicineTypeIdentifiedByTheFilter(int medicineTypeId, int totalRecords)
     {
         // Act
-        var response = await _client.GetAsync($"api/MedicalTransactions?medicineType={medicineTypeId}");
+        HttpResponseMessage? response = await _client.GetAsync($"api/MedicalTransactions?medicineType={medicineTypeId}");
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransaction>? transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
         transactions.ShouldNotBeNull();
         transactions.TotalRecordCount.ShouldBe(totalRecords);
         transactions.Data.ShouldAllBe(transaction => medicineTypeId == transaction.MedicineId);
@@ -70,14 +70,14 @@ public class SearchingForMedicalTransactions
     public async Task AndExcludeIsTrueThenItShouldExcludeMedicalTransactionsWithMedicineTypesNorIdentifiedByTheFilter(int medicineTypeId, int totalRecords)
     {
         // Act
-        var response = await _client.GetAsync($"api/MedicalTransactions?medicineType={medicineTypeId}&exclude=true");
+        HttpResponseMessage? response = await _client.GetAsync($"api/MedicalTransactions?medicineType={medicineTypeId}&exclude=true");
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransaction>? transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
         transactions.ShouldNotBeNull();
         transactions.TotalRecordCount.ShouldBe(totalRecords);
         transactions.Data.ShouldAllBe(transaction => medicineTypeId != transaction.MedicineId);
@@ -91,8 +91,8 @@ public class SearchingForMedicalTransactions
     public async Task ItShouldOnlyReturnTheMedicalTransactionsOfTheAnimalsIdentifiedInTheFilter(int[] animalIds)
     {
         // Arrange
-        var query = new StringBuilder("api/MedicalTransactions?");
-        for (var i = 0; i < animalIds.Length; i++)
+        StringBuilder query = new("api/MedicalTransactions?");
+        for (int i = 0; i < animalIds.Length; i++)
         {
             if (i > 0)
             {
@@ -103,14 +103,14 @@ public class SearchingForMedicalTransactions
         }
 
         // Act
-        var response = await _client.GetAsync(query.ToString());
+        HttpResponseMessage? response = await _client.GetAsync(query.ToString());
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransaction>? transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
         transactions.ShouldNotBeNull();
         transactions!.TotalRecordCount.ShouldBe(animalIds.Length * AnimalMedicalTransactionCount);
         transactions.Data.ShouldAllBe(transaction => animalIds.Contains((int)transaction.AnimalId));
@@ -124,8 +124,8 @@ public class SearchingForMedicalTransactions
     public async Task AndExcludeIsTrueThenItShouldReturnAllMedicalTransactionForAnimalsNotIdentifiedInTheFilter(int[] animalIds)
     {
         // Arrange
-        var query = new StringBuilder("api/MedicalTransactions?");
-        for (var i = 0; i < animalIds.Length; i++)
+        StringBuilder query = new("api/MedicalTransactions?");
+        for (int i = 0; i < animalIds.Length; i++)
         {
             if (i > 0)
             {
@@ -138,16 +138,16 @@ public class SearchingForMedicalTransactions
         query.Append("&exclude=true");
 
         // Act
-        var response = await _client.GetAsync(query.ToString());
+        HttpResponseMessage? response = await _client.GetAsync(query.ToString());
 
         // Assert
         response.EnsureSuccessStatusCode(); // Status Code 200-299
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        var transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransaction>? transactions = await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
         transactions.ShouldNotBeNull();
-        transactions!.TotalRecordCount.ShouldBe(AllRecordsCount - animalIds.Length * AnimalMedicalTransactionCount);
+        transactions!.TotalRecordCount.ShouldBe(AllRecordsCount - (animalIds.Length * AnimalMedicalTransactionCount));
         transactions.Data.ShouldAllBe(transaction => !animalIds.Contains((int)transaction.AnimalId));
     }
 }
