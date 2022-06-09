@@ -1,5 +1,6 @@
-using LivestockTracker.Logic.Paging;
+using Microsoft.AspNetCore.Http;
 using Shouldly;
+using System.Net;
 using System.Net.Http.Json;
 
 namespace IntegrationTests.Given.A.MedicalTransactionAPI.When;
@@ -14,13 +15,12 @@ public class RetrievingMedicalTransactionsForAnAnimal
         _client = fixture.Client;
     }
 
-    [Fact]
-    public async Task ItShouldOnlyReturnMedicalTransactionsForTheGivenAnimal()
+    [Theory]
+    [InlineData(1, 1)]
+    [InlineData(1, 8)]
+    [InlineData(3, 15 * 3 - 3)]
+    public async Task ItShouldOnlyReturnMedicalTransactionsForTheGivenAnimal(int animalId, int transactionId)
     {
-        // Arrange
-        int animalId = 1;
-        int transactionId = 1;
-
         // Act
         HttpResponseMessage response = await _client.GetAsync($"/api/MedicalTransactions/{animalId}/{transactionId}");
 
@@ -33,5 +33,15 @@ public class RetrievingMedicalTransactionsForAnAnimal
         transaction.ShouldNotBeNull();
         transaction.AnimalId.ShouldBe(animalId);
         transaction.Id.ShouldBe(transactionId);
+    }
+
+    [Fact]
+    public async Task AndTheTransactionDoesNotExistThenItShouldReturnNotFound()
+    {
+        // Act
+        HttpResponseMessage response = await _client.GetAsync($"/api/MedicalTransactions/1/9999999");
+
+        // Assert
+        response.StatusCode.ShouldBe((HttpStatusCode)StatusCodes.Status404NotFound);
     }
 }

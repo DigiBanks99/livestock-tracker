@@ -67,7 +67,7 @@ public class MedicalTransactionsController : LivestockApiController
 
         var filter = new MedicalTransactionFilter(animalIds, medicineType, exclude);
 
-        var items = _medicalTransactionSearchService.Find(filter, ListSortDirection.Descending, pagingOptions);
+        IPagedData<MedicalTransaction>? items = _medicalTransactionSearchService.Find(filter, ListSortDirection.Descending, pagingOptions);
         return Ok(items);
     }
 
@@ -89,18 +89,12 @@ public class MedicalTransactionsController : LivestockApiController
             return BadRequest(ModelState);
         }
 
-        var medicalTransaction = _medicalTransactionSearchService.GetOne(id);
-        if (medicalTransaction == null)
-        {
-            return NotFound();
-        }
-
-        if (medicalTransaction.AnimalId != animalId)
-        {
-            return BadRequest();
-        }
-
-        return Ok(medicalTransaction);
+        MedicalTransaction? medicalTransaction = _medicalTransactionSearchService.GetOne(id);
+        return medicalTransaction == null
+            ? NotFound()
+            : medicalTransaction.AnimalId != animalId
+            ? StatusCode(StatusCodes.Status500InternalServerError, "The data retrieval service did not respond as expected.")
+            : Ok(medicalTransaction);
     }
 
     /// <summary>
@@ -135,8 +129,8 @@ public class MedicalTransactionsController : LivestockApiController
 
         try
         {
-            var updatedTransaction = await _medicalTransactionCrudService.UpdateAsync(medicalTransaction, RequestAbortToken)
-                                                                         .ConfigureAwait(false);
+            MedicalTransaction? updatedTransaction = await _medicalTransactionCrudService.UpdateAsync(medicalTransaction, RequestAbortToken)
+                                                                                         .ConfigureAwait(false);
             return Ok(updatedTransaction);
         }
         catch (EntityNotFoundException<IMedicalTransaction> ex)
@@ -161,10 +155,17 @@ public class MedicalTransactionsController : LivestockApiController
             return BadRequest(ModelState);
         }
 
-        var addedTransaction = await _medicalTransactionCrudService.AddAsync(medicalTransaction, RequestAbortToken)
-                                                                   .ConfigureAwait(false);
+        try
+        {
+            MedicalTransaction? addedTransaction = await _medicalTransactionCrudService.AddAsync(medicalTransaction, RequestAbortToken)
+                                                                                       .ConfigureAwait(false);
 
-        return CreatedAtAction(nameof(Get), new { id = addedTransaction.Id, animalId = addedTransaction.AnimalId }, addedTransaction);
+            return CreatedAtAction(nameof(Get), new { id = addedTransaction.Id, animalId = addedTransaction.AnimalId }, addedTransaction);
+        }
+        catch (ItemAlreadyExistsException<long> ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     /// <summary>
@@ -187,7 +188,7 @@ public class MedicalTransactionsController : LivestockApiController
 
         try
         {
-            var removedId = await _medicalTransactionCrudService.RemoveAsync(id, RequestAbortToken)
+            long removedId = await _medicalTransactionCrudService.RemoveAsync(id, RequestAbortToken)
                                                                 .ConfigureAwait(false);
             return Ok(removedId);
         }
