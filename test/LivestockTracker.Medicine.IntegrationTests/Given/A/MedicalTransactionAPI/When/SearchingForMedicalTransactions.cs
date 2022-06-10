@@ -1,9 +1,7 @@
 using LivestockTracker.Logic.Paging;
-using Shouldly;
-using System.Net.Http.Json;
 using System.Text;
 
-namespace IntegrationTests.Given.A.MedicalTransactionAPI.When;
+namespace Given.A.MedicalTransactionAPI.When;
 
 [Collection(IntegrationTestFixture.CollectionName)]
 public class SearchingForMedicalTransactions

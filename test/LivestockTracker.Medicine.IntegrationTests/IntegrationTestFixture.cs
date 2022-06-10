@@ -2,9 +2,8 @@ using LivestockTracker;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
-using System.Data.SqlClient;
 
-namespace IntegrationTests;
+namespace Given;
 
 public class IntegrationTestFixture : IAsyncLifetime
 {

@@ -2,7 +2,7 @@ using LivestockTracker;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 
-namespace IntegrationTests;
+namespace Given;
 
 internal static class TestHelpers
 {
@@ -17,7 +17,7 @@ internal static class TestHelpers
 
         return factory.WithWebHostBuilder(builder =>
         {
-            _ = builder.UseEnvironment("Test");
+            builder.UseEnvironment("Test");
         }).CreateClient();
     }
 }
