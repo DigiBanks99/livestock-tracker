@@ -1,10 +1,4 @@
-using Microsoft.AspNetCore.Http;
-using Microsoft.Data.Sqlite;
-using Shouldly;
-using System.Net;
-using System.Net.Http.Json;
-
-namespace IntegrationTests.Given.A.MedicalTransactionAPI.When;
+namespace Given.A.MedicalTransactionAPI.When;
 
 [Collection(IntegrationTestFixture.CollectionName)]
 public class CreatingAMedicalTransaction
@@ -36,7 +30,6 @@ public class CreatingAMedicalTransaction
         response.EnsureSuccessStatusCode();
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
-        // Test location header
 
         MedicalTransaction? createdTransaction = await response.Content.ReadFromJsonAsync<MedicalTransaction>();
         createdTransaction.ShouldNotBeNull();

@@ -1,9 +1,4 @@
-using Microsoft.AspNetCore.Http;
-using Shouldly;
-using System.Net;
-using System.Net.Http.Json;
-
-namespace IntegrationTests.Given.A.MedicalTransactionAPI.When;
+namespace Given.A.MedicalTransactionAPI.When;
 
 [Collection(IntegrationTestFixture.CollectionName)]
 public class RetrievingMedicalTransactionsForAnAnimal
