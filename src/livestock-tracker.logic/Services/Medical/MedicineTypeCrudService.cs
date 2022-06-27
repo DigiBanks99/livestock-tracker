@@ -1,8 +1,5 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models.Medical;
-using LivestockTracker.Abstractions.Services.Medical;
 using LivestockTracker.Database;
-using LivestockTracker.Database.Models.Medical;
 using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,41 +10,31 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace LivestockTracker.Logic.Services.Medical
+namespace LivestockTracker.Medicine
 {
     /// <summary>
     /// Provides create, read, update and delete operations for medicine types.
     /// </summary>
     internal class MedicineTypeCrudService : IMedicineTypeCrudService
     {
+        private readonly ILogger _logger;
+        private readonly IMapper<IMedicineType, MedicineType> _mapper;
+        private readonly LivestockContext _dbContext;
+
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="logger">The logger.</param>
         /// <param name="mapper">The mapper.</param>
-        /// <param name="livestockContext">The database context that contains the medicine types.</param>
-        public MedicineTypeCrudService(ILogger<MedicineTypeCrudService> logger, IMapper<IMedicineType, MedicineType> mapper, LivestockContext livestockContext)
+        /// <param name="dbContext">The database context that contains the medicine types.</param>
+        public MedicineTypeCrudService(ILogger<MedicineTypeCrudService> logger, IMapper<IMedicineType, MedicineType> mapper, LivestockContext dbContext)
         {
-            Logger = logger;
-            Mapper = mapper;
-            LivestockContext = livestockContext;
+            _logger = logger;
+            _mapper = mapper;
+            _dbContext = dbContext;
         }
-
-        /// <summary>
-        /// The logger.
-        /// </summary>
-        protected ILogger Logger { get; }
-
-        /// <summary>
-        /// The mapper.
-        /// </summary>
-        protected IMapper<IMedicineType, MedicineType> Mapper { get; }
-
-        /// <summary>
-        /// The database context that contains the medicine types.
-        /// </summary>
-        protected LivestockContext LivestockContext { get; }
 
         /// <summary>
         /// Attempts to add a new medicine type to the persisted store.
@@ -55,21 +42,30 @@ namespace LivestockTracker.Logic.Services.Medical
         /// <param name="item">The medicine type that should be added.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The added medicine type.</returns>
-        public virtual async Task<IMedicineType> AddAsync(IMedicineType item, CancellationToken cancellationToken)
+        public async Task<MedicineType> AddAsync(MedicineType item, CancellationToken cancellationToken)
         {
-            Logger.LogInformation("Adding a medicine type...");
+            _logger.LogInformation("Adding a medicine type...");
 
-            var entity = new MedicineTypeModel
+            MedicineTypeModel entity = new()
             {
                 Description = item.Description
             };
-            var changes = await LivestockContext.AddAsync(entity, cancellationToken)
-                                                .ConfigureAwait(false);
-            await LivestockContext.SaveChangesAsync(cancellationToken)
-                                  .ConfigureAwait(false);
 
-            Logger.LogDebug($"Medicine type added with detail {changes.Entity}");
-            return Mapper.Map(changes.Entity);
+            if (_dbContext.MedicineTypes.Any(medicine => medicine.Id == item.Id))
+            {
+                throw new ItemAlreadyExistsException<int>(item.Id, "A Medicine Type");
+            }
+
+            EntityEntry<MedicineTypeModel> changes = await _dbContext.AddAsync(entity, cancellationToken).ConfigureAwait(false);
+            await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+            _logger.LogDebug("Medicine type '{Description}' added with detail", changes.Entity.Description);
+            return changes.Entity.MapToMedicineType();
+        }
+
+        public Task<IMedicineType> AddAsync(IMedicineType item, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -81,16 +77,16 @@ namespace LivestockTracker.Logic.Services.Medical
         /// <param name="sortDirection">Either ascending or descending.</param>
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The enumerable collection of medicine types that match the criteria.</returns>
-        public virtual async Task<IEnumerable<IMedicineType>> FindAsync<TSortProperty>(Expression<Func<IMedicineType, bool>> filter,
-                                                                                       Expression<Func<IMedicineType, TSortProperty>> sort,
-                                                                                       ListSortDirection sortDirection,
-                                                                                       CancellationToken cancellationToken)
+        public async Task<IEnumerable<IMedicineType>> FindAsync<TSortProperty>(Expression<Func<IMedicineType, bool>> filter,
+                                                                               Expression<Func<IMedicineType, TSortProperty>> sort,
+                                                                               ListSortDirection sortDirection,
+                                                                               CancellationToken cancellationToken)
             where TSortProperty : IComparable
         {
-            Logger.LogInformation("Finding the medicine types...");
-            return await LivestockContext.MedicineTypes
+            _logger.LogInformation("Finding the medicine types...");
+            return await _dbContext.MedicineTypes
                                          .ConstrainedFind(filter, sort, sortDirection)
-                                         .Select(medicineType => Mapper.Map(medicineType))
+                                         .Select(medicineType => _mapper.Map(medicineType))
                                          .ToListAsync(cancellationToken)
                                          .ConfigureAwait(false);
         }
@@ -108,13 +104,13 @@ namespace LivestockTracker.Logic.Services.Medical
         /// </returns>
         public virtual async Task<IMedicineType?> GetOneAsync(int key, CancellationToken cancellationToken)
         {
-            Logger.LogInformation($"Finding a medicine type that matches ID {key}...");
-            var medicineType = await LivestockContext.MedicineTypes
+            _logger.LogInformation($"Finding a medicine type that matches ID {key}...");
+            var medicineType = await _dbContext.MedicineTypes
                                                      .FindAsync(new object[] { key }, cancellationToken)
                                                      .ConfigureAwait(false);
 
-            Logger.LogDebug($"Find medicine type of ID {key} result: {medicineType}");
-            return Mapper.Map(medicineType);
+            _logger.LogDebug($"Find medicine type of ID {key} result: {medicineType}");
+            return _mapper.Map(medicineType);
         }
 
         /// <summary>
@@ -126,20 +122,20 @@ namespace LivestockTracker.Logic.Services.Medical
         /// <returns>The ID of the medicine type that was marked as Deleted.</returns>
         public virtual async Task<int> RemoveAsync(int key, CancellationToken cancellationToken)
         {
-            Logger.LogInformation($"Marking the medicine type with ID {key} as deleted...");
+            _logger.LogInformation($"Marking the medicine type with ID {key} as deleted...");
 
-            var entity = await LivestockContext.MedicineTypes
+            var entity = await _dbContext.MedicineTypes
                                                .FindAsync(new object[] { key }, cancellationToken)
                                                .ConfigureAwait(false);
             if (entity == null)
                 throw new EntityNotFoundException<MedicineTypeModel>(key);
 
             entity.Deleted = true;
-            var changes = LivestockContext.Update(entity);
-            await LivestockContext.SaveChangesAsync(cancellationToken)
+            var changes = _dbContext.Update(entity);
+            await _dbContext.SaveChangesAsync(cancellationToken)
                                   .ConfigureAwait(false);
 
-            Logger.LogDebug($"Medicine type with ID {key} marked as deleted...");
+            _logger.LogDebug($"Medicine type with ID {key} marked as deleted...");
             return changes.Entity.Id;
         }
 
@@ -152,9 +148,9 @@ namespace LivestockTracker.Logic.Services.Medical
         /// <exception cref="EntityNotFoundException{IMedicineType}">When the medicine type with the given key is not found.</exception>
         public virtual async Task<IMedicineType> UpdateAsync(IMedicineType item, CancellationToken cancellationToken)
         {
-            Logger.LogInformation($"Updating the medicine type with ID {item.Id}...");
+            _logger.LogInformation($"Updating the medicine type with ID {item.Id}...");
 
-            var entity = await LivestockContext.MedicineTypes
+            var entity = await _dbContext.MedicineTypes
                                                .FindAsync(new object[] { item.Id }, cancellationToken)
                                                .ConfigureAwait(false);
             if (entity == null)
@@ -162,11 +158,11 @@ namespace LivestockTracker.Logic.Services.Medical
 
             entity.Description = item.Description;
 
-            var changes = LivestockContext.MedicineTypes.Update(entity);
-            await LivestockContext.SaveChangesAsync(cancellationToken)
+            var changes = _dbContext.MedicineTypes.Update(entity);
+            await _dbContext.SaveChangesAsync(cancellationToken)
                                   .ConfigureAwait(false);
 
-            return Mapper.Map(changes.Entity);
+            return _mapper.Map(changes.Entity);
         }
     }
 }

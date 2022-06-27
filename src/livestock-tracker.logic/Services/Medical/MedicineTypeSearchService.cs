@@ -1,10 +1,7 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Abstractions.Models.Medical;
-using LivestockTracker.Abstractions.Services.Medical;
 using LivestockTracker.Database;
 using LivestockTracker.Logic.Utilities;
-using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -15,7 +12,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LivestockTracker.Logic.Services.Medical;
+namespace LivestockTracker.Medicine;
 
 /// <summary>
 /// Provides fetch and pagination services for medicine types.

@@ -1,4 +1,3 @@
-using LivestockTracker.Abstractions.Models.Medical;
 using LivestockTracker.Database;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;

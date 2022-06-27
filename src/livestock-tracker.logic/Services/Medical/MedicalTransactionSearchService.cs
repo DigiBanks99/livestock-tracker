@@ -4,13 +4,12 @@ using LivestockTracker.Database;
 using LivestockTracker.Logic.Filters;
 using LivestockTracker.Logic.Paging;
 using LivestockTracker.Logic.Sorting;
-using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 using System.Linq;
 
-namespace LivestockTracker.Logic.Services.Medical;
+namespace LivestockTracker.Medicine;
 
 /// <summary>
 /// Provides fetch and pagination services for medical transaction.

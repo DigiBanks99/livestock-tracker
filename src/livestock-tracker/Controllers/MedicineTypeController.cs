@@ -1,6 +1,4 @@
 using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Abstractions.Models.Medical;
-using LivestockTracker.Abstractions.Services.Medical;
 using LivestockTracker.Medicine;
 using LivestockTracker.Models.Paging;
 using Microsoft.AspNetCore.Http;
@@ -49,8 +47,11 @@ namespace LivestockTracker.Controllers
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int pageNumber = 0, int pageSize = 100, bool includeDeleted = false)
         {
-            var includeDeletedMessage = includeDeleted ? " including deleted items" : string.Empty;
-            Logger.LogInformation($"Requesting {pageSize} medicine types from page {pageNumber}{includeDeletedMessage}...");
+            Logger.LogInformation("Requesting {PageSize} medicine types from page {PageNumber}...", pageSize, pageNumber);
+            if (includeDeleted)
+            {
+                Logger.LogDebug("Including deleted medicine types...");
+            }
 
             if (!ModelState.IsValid)
             {
@@ -58,7 +59,7 @@ namespace LivestockTracker.Controllers
             }
 
             Expression<Func<IMedicineType, bool>> filter = medicineType => !medicineType.Deleted;
-            var pagingOptions = new PagingOptions
+            PagingOptions pagingOptions = new()
             {
                 PageNumber = pageNumber,
                 PageSize = pageSize
@@ -84,15 +85,15 @@ namespace LivestockTracker.Controllers
         /// </summary>
         /// <param name="id">The unique identifier for the medicine type.</param>
         /// <returns>The medicine type if found.</returns>
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(MedicineType), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> GetMedicineType(int id)
         {
             try
             {
-                var medicineType = await _medicineTypeCrudService.GetOneAsync(id, RequestAbortToken)
-                                                                 .ConfigureAwait(false);
+                var medicineType = await _medicineTypeSearchService.GetOneAsync(id, RequestAbortToken)
+                                                                   .ConfigureAwait(false);
 
                 return Ok(medicineType);
             }
@@ -112,16 +113,23 @@ namespace LivestockTracker.Controllers
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Add([Required][FromBody] MedicineType medicineType)
         {
-            Logger.LogInformation($"Requesting the creation of a new medicine type with details {medicineType}...");
+            Logger.LogInformation("Requesting the creation of a new medicine type with details {@MedicineType}...", medicineType);
 
-            if (!ModelState.IsValid || medicineType == null)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var addedItem = await _medicineTypeCrudService.AddAsync(medicineType, RequestAbortToken).ConfigureAwait(false);
+            try
+            {
+                MedicineType addedItem = await _medicineTypeCrudService.AddAsync(medicineType, RequestAbortToken).ConfigureAwait(false);
 
-            return CreatedAtAction(nameof(Get), new { id = addedItem.Id }, medicineType);
+                return CreatedAtAction(nameof(GetMedicineType), new { id = addedItem.Id }, addedItem);
+            }
+            catch (ItemAlreadyExistsException<int> ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         /// <summary>

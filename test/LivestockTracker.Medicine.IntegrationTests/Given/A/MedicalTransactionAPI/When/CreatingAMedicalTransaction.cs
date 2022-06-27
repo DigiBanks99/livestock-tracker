@@ -74,7 +74,7 @@ public class CreatingAMedicalTransaction
         HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("/api/MedicalTransactions", request);
 
         // Assert
-        response.StatusCode.ShouldBe((HttpStatusCode)StatusCodes.Status400BadRequest);
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
@@ -82,7 +82,7 @@ public class CreatingAMedicalTransaction
         responseMessage.ShouldBe("\"A Medical Transaction with key 1 already exists.\"");
 
         _fixture.DatabaseConnection.Open();
-        using SqliteCommand cmd = new($"SELECT COUNT(ID) FROM MedicalTransactions", _fixture.DatabaseConnection);
+        await using SqliteCommand cmd = new($"SELECT COUNT(ID) FROM MedicalTransactions", _fixture.DatabaseConnection);
         try
         {
             object? count = cmd.ExecuteScalar();

@@ -1,9 +1,6 @@
 using LivestockTracker.Abstractions;
-using LivestockTracker.Abstractions.Models.Medical;
-using LivestockTracker.Database.Models.Medical;
-using LivestockTracker.Medicine;
 
-namespace LivestockTracker.Logic.Mappers.Medical
+namespace LivestockTracker.Medicine
 {
     /// <summary>
     /// Provides mapping operations between a medicine type DTO and a medicine type Entity.
