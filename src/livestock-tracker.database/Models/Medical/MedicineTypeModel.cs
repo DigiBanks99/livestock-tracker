@@ -1,14 +1,35 @@
 using LivestockTracker.Abstractions.Data;
-using LivestockTracker.Abstractions.Models.Medical;
-using LivestockTracker.Medicine;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
-namespace LivestockTracker.Database.Models.Medical
+namespace LivestockTracker.Medicine;
+
+[Table("MedicineTypes", Schema = "medical")]
+public class MedicineTypeModel : LookupValueEntity<int>, IMedicineType
 {
-    [Table("MedicineTypes", Schema = "medical")]
-    public class MedicineTypeModel : LookupValueEntity<int>, IMedicineType
+    public List<MedicalTransactionModel> MedicalTransactions { get; internal set; } = null!;
+}
+
+public static class MedicineTypeModelExtensions
+{
+    public static IQueryable<MedicineType> MapToMedicineTypes(this IQueryable<MedicineTypeModel> query)
     {
-        public List<MedicalTransactionModel> MedicalTransactions { get; internal set; } = null!;
+        return query.Select(medicine => new MedicineType()
+        {
+            Id = medicine.Id,
+            Deleted = medicine.Deleted,
+            Description = medicine.Description
+        });
+    }
+
+    public static MedicineType MapToMedicineType(this MedicineTypeModel medicine)
+    {
+        return new()
+        {
+            Id = medicine.Id,
+            Deleted = medicine.Deleted,
+            Description = medicine.Description
+        };
     }
 }

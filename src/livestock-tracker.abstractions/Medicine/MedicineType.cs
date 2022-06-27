@@ -1,4 +1,3 @@
-using LivestockTracker.Abstractions.Models.Medical;
 using System.Diagnostics;
 
 namespace LivestockTracker.Medicine;

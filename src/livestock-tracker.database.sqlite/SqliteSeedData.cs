@@ -1,7 +1,7 @@
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Database.Models.Feed;
-using LivestockTracker.Database.Models.Medical;
 using LivestockTracker.Database.Models.Units;
+using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;

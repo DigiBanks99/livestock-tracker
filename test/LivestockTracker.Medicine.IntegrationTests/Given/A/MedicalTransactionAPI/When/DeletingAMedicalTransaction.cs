@@ -1,5 +1,4 @@
 ﻿using System.Globalization;
-using System.Text;
 
 namespace Given.A.MedicalTransactionAPI.When;
 
@@ -35,23 +34,17 @@ WHERE Id = 1", _fixture.DatabaseConnection);
             .ShouldBeAssignableTo<long>()
             .ShouldBe(0);
 
-        const char comma = ',';
-        StringBuilder addQueryBuilder = new();
-        addQueryBuilder.AppendLine("INSERT INTO MedicalTransactions (Id, AnimalId, TransactionDate, Dose, UnitId, MedicineId)");
-        addQueryBuilder.AppendLine("VALUES (");
-        addQueryBuilder.Append(transaction!.Id);
-        addQueryBuilder.Append(comma);
-        addQueryBuilder.Append(transaction.AnimalId);
-        addQueryBuilder.Append(comma);
-        addQueryBuilder.Append(transaction.TransactionDate.Ticks);
-        addQueryBuilder.Append(comma);
-        addQueryBuilder.Append(transaction.Dose.ToString(CultureInfo.InvariantCulture));
-        addQueryBuilder.Append(comma);
-        addQueryBuilder.Append(transaction.UnitId);
-        addQueryBuilder.Append(comma);
-        addQueryBuilder.Append(transaction.MedicineId);
-        addQueryBuilder.Append(')');
-        await using SqliteCommand addCmd = new(addQueryBuilder.ToString(), _fixture.DatabaseConnection);
+        string query = $@"
+INSERT INTO MedicalTransactions (Id, AnimalId, TransactionDate, Dose, UnitId, MedicineId)
+VALUES (
+ {transaction!.Id}
+,{transaction.AnimalId}
+,{transaction.TransactionDate.Ticks}
+,{transaction.Dose.ToString(CultureInfo.InvariantCulture)}
+,{transaction.UnitId}
+,{transaction.MedicineId}
+)";
+        await using SqliteCommand addCmd = new(query, _fixture.DatabaseConnection);
 
         await addCmd.ExecuteNonQueryAsync(CancellationToken.None).ConfigureAwait(false);
 

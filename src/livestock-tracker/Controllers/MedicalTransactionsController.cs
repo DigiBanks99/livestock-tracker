@@ -1,5 +1,4 @@
 using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Abstractions.Models.Medical;
 using LivestockTracker.Medicine;
 using LivestockTracker.Models.Paging;
 using LivestockTracker.Properties;

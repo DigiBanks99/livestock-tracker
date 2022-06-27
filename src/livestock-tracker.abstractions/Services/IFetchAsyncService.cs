@@ -40,9 +40,9 @@ namespace LivestockTracker.Abstractions.Services
         /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
         /// <returns>The items that match the search criteria.</returns>
         Task<IEnumerable<TData>> FindAsync<TSortProperty>(Expression<Func<TData, bool>> filter,
-                                                         Expression<Func<TData, TSortProperty>> sort,
-                                                         ListSortDirection sortDirection,
-                                                         CancellationToken cancellationToken)
+                                                          Expression<Func<TData, TSortProperty>> sort,
+                                                          ListSortDirection sortDirection,
+                                                          CancellationToken cancellationToken)
             where TSortProperty : IComparable;
     }
 }
