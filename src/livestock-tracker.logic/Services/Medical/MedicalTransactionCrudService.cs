@@ -41,7 +41,7 @@ internal class MedicalTransactionCrudService : IMedicalTransactionCrudService
     /// <param name="item">The object that contains the information for the new medical transaction.</param>
     /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
     /// <returns>The added medical transaction.</returns>
-    public virtual async Task<MedicalTransaction> AddAsync(MedicalTransaction item, CancellationToken cancellationToken)
+    public async Task<MedicalTransaction> AddAsync(MedicalTransaction item, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Adding a medical transaction...");
 
@@ -73,19 +73,19 @@ internal class MedicalTransactionCrudService : IMedicalTransactionCrudService
     /// <param name="key">The unique identifier value for the medical transaction.</param>
     /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
     /// <returns>The ID of the removed medical transaction.</returns>
-    public virtual async Task<long> RemoveAsync(long key, CancellationToken cancellationToken)
+    public async Task<long> RemoveAsync(long key, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Deleting medical transaction with ID {transactionId}...", key);
+        _logger.LogInformation("Deleting medical transaction with ID {TransactionId}...", key);
         MedicalTransactionModel? medicalTransaction = _dbContext.MedicalTransactions.FirstOrDefault(t => t.Id == key);
         if (medicalTransaction == null)
         {
-            _logger.LogWarning("Attempted to delete non-existing medical transaction with ID {transactionId}.", key);
-            throw new EntityNotFoundException<IMedicalTransaction>(key);
+            _logger.LogWarning("Attempted to delete non-existing medical transaction with ID {TransactionId}", key);
+            throw new EntityNotFoundException<MedicalTransaction>(key);
         }
 
         EntityEntry<MedicalTransactionModel> changes = _dbContext.Remove(medicalTransaction);
         await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-        _logger.LogDebug("Deleted medical transaction with ID {transactionId}.", changes.Entity.Id);
+        _logger.LogDebug("Deleted medical transaction with ID {TransactionId}", changes.Entity.Id);
         return changes.Entity.Id;
     }
 
@@ -95,14 +95,14 @@ internal class MedicalTransactionCrudService : IMedicalTransactionCrudService
     /// <param name="item">The property values with which to update the medical transaction.</param>
     /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
     /// <returns>The updated medical transaction.</returns>
-    public virtual async Task<MedicalTransaction> UpdateAsync(MedicalTransaction item, CancellationToken cancellationToken)
+    public async Task<MedicalTransaction> UpdateAsync(MedicalTransaction item, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Updating medical transaction with ID {transactionId}...", item.Id);
-        MedicalTransactionModel medicalTransaction = _dbContext.MedicalTransactions.FirstOrDefault(t => t.Id == item.Id);
+        _logger.LogInformation("Updating medical transaction with ID {TransactionId}...", item.Id);
+        MedicalTransactionModel? medicalTransaction = _dbContext.MedicalTransactions.FirstOrDefault(t => t.Id == item.Id);
         if (medicalTransaction == null)
         {
-            _logger.LogWarning("Attempted to update a non-existing medical transaction with ID {transactionId}.", item.Id);
-            throw new EntityNotFoundException<IMedicalTransaction>(item.Id);
+            _logger.LogWarning("Attempted to update a non-existing medical transaction with ID {TransactionId}", item.Id);
+            throw new EntityNotFoundException<MedicalTransaction>(item.Id);
         }
 
         medicalTransaction.UpdateTransaction(item);

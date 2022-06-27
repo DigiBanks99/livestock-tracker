@@ -17,6 +17,9 @@ namespace LivestockTracker.Logic.Services.Medical;
 /// </summary>
 public class MedicalTransactionSearchService : IMedicalTransactionSearchService
 {
+    private readonly ILogger _logger;
+    private readonly LivestockContext _livestockContext;
+
     /// <summary>
     /// Constructor.
     /// </summary>
@@ -24,28 +27,18 @@ public class MedicalTransactionSearchService : IMedicalTransactionSearchService
     ///<param name="livestockContext">The context that contains medical transaction.</param>
     public MedicalTransactionSearchService(ILogger<MedicalTransactionSearchService> logger, LivestockContext livestockContext)
     {
-        Logger = logger;
-        LivestockContext = livestockContext;
+        _logger = logger;
+        _livestockContext = livestockContext;
     }
 
-    /// <summary>
-    /// The logger.
-    /// </summary>
-    protected ILogger Logger { get; }
-
-    /// <summary>
-    /// The context that contains medical transaction.
-    /// </summary>
-    protected LivestockContext LivestockContext { get; }
-
     /// <inheritdoc/>
-    public virtual IPagedData<MedicalTransaction> Find(IQueryableFilter<MedicalTransaction> filter,
+    public IPagedData<MedicalTransaction> Find(IQueryableFilter<MedicalTransaction> filter,
                                                        ListSortDirection sortDirection,
                                                        IPagingOptions pagingOptions)
     {
-        Logger.LogInformation("Finding {@PageSize} medical transaction for page {@PageNumber}...", pagingOptions.PageSize, pagingOptions.PageNumber);
+        _logger.LogInformation("Finding {PageSize} medical transaction for page {PageNumber}...", pagingOptions.PageSize, pagingOptions.PageNumber);
 
-        return LivestockContext.MedicalTransactions
+        return _livestockContext.MedicalTransactions
                                .AsNoTracking()
                                .SortByCriteria(t => t.TransactionDate, sortDirection)
                                .MapToMedicalTransactions()
@@ -63,10 +56,10 @@ public class MedicalTransactionSearchService : IMedicalTransactionSearchService
     ///         <item>Null if not found.</item>
     ///     </list>
     /// </returns>
-    public virtual MedicalTransaction? GetOne(long key)
+    public MedicalTransaction? GetOne(long key)
     {
-        Logger.LogInformation("Finding a medical transaction that matches ID {@TransactionId}...", key);
-        MedicalTransaction? transaction = LivestockContext.MedicalTransactions
+        _logger.LogInformation("Finding a medical transaction that matches ID {TransactionId}...", key);
+        MedicalTransaction? transaction = _livestockContext.MedicalTransactions
                                                           .AsNoTracking()
                                                           .MapToMedicalTransactions()
                                                           .FirstOrDefault(t => t.Id == key);
@@ -75,7 +68,7 @@ public class MedicalTransactionSearchService : IMedicalTransactionSearchService
             return null;
         }
 
-        Logger.LogDebug("Found medical transaction of ID {@TransactionId} result: {@Transaction}", key, transaction);
+        _logger.LogDebug("Found medical transaction of ID {TransactionId} result: {@Transaction}", key, transaction);
         return transaction;
     }
 }

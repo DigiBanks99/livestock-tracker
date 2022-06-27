@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using NuGet.Protocol;
+
 namespace Given.A.MedicalTransactionAPI.When;
 
 [Collection(IntegrationTestFixture.CollectionName)]
@@ -46,6 +50,79 @@ public class UpdatingAMedicalTransaction
 
         // Clean-up
         await _fixture.Client.PutAsJsonAsync(url, savedTransaction);
+    }
+
+    [Fact]
+    public async Task ItShouldReturnBadRequestWhenAttemptingToChangeTheAnimal()
+    {
+        // Arrange
+        MedicalTransaction updateRequest = new()
+        {
+            Id = 1,
+            AnimalId = 2,
+            Dose = 77,
+            MedicineId = 2,
+            TransactionDate = new DateTimeOffset(),
+            UnitId = 2
+        };
+        string url = $"/api/MedicalTransactions/{updateRequest.Id}";
+
+        // Act
+        HttpResponseMessage response = await _fixture.Client.PutAsJsonAsync(url, updateRequest);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        string content = await response.Content.ReadAsStringAsync();
+        Dictionary<string, string[]>? keyValues = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(content);
+        keyValues.ShouldNotBeNull();
+        keyValues["AnimalId"][0].ShouldBe("A transaction cannot be moved to a different animal. Capture a new transaction for that animal and delete this one.");
+    }
+
+    [Fact]
+    public async Task ItShouldReturnBadRequestWhenTheRouteAndBodyIdsDoNotMatch()
+    {
+        // Arrange
+        MedicalTransaction updateRequest = new()
+        {
+            Id = 2,
+            AnimalId = 2,
+            Dose = 77,
+            MedicineId = 2,
+            TransactionDate = new DateTimeOffset(),
+            UnitId = 2
+        };
+        const string url = "/api/MedicalTransactions/1";
+
+        // Act
+        HttpResponseMessage response = await _fixture.Client.PutAsJsonAsync(url, updateRequest);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        string content = await response.Content.ReadAsStringAsync();
+        Dictionary<string, string[]>? keyValues = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(content);
+        keyValues.ShouldNotBeNull();
+        keyValues["id"][0].ShouldBe("The id in the transaction body does match the id in the route.");
+    }
+
+    [Fact]
+    public async Task ItShouldReturnBadRequestWhenTheBodyIsNull()
+    {
+        // Arrange
+        const string url = "/api/MedicalTransactions/1";
+        MedicalTransaction? updateRequest = null;
+
+        // Act
+        HttpResponseMessage response = await _fixture.Client.PutAsJsonAsync(url, updateRequest);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+        string content = await response.Content.ReadAsStringAsync();
+
+        // It returns a problem descriptor. Need to try and see how I will handle that
+        SerializableError? error = JsonConvert.DeserializeObject<SerializableError>(content);
+        error.ShouldNotBeNull();
+        string? message = error["errors"].ToJToken()["medicalTransaction"]?.Value<string>(0);
+        message.ShouldBe("The medicalTransaction field is required.");
     }
 
     private static MedicalTransaction GetMedicalTransactionFromConnection(long id, SqliteConnection databaseConnection)
