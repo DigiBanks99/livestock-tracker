@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 
@@ -16,7 +17,7 @@ namespace LivestockTracker;
 /// <summary>
 /// Provides extension methods for Livestock Tracker Database middleware.
 /// </summary>
-public static class SqliteDatabaseMiddleware
+public static class SqliteDatabaseExtensions
 {
     private const long UnixEpochSeconds = 621355968000000;
     private const int DateTimeOffsetBitwiseShiftBitCount = 11;
@@ -30,8 +31,8 @@ public static class SqliteDatabaseMiddleware
     /// <returns>The extended service collection.</returns>
     public static IServiceCollection AddLivestockTrackerSqliteDatabase(this IServiceCollection services, IConfiguration config, IHostEnvironment env)
     {
-        var connectionString = config.GetConnectionString("DefaultConnection");
-        var connection = OpenConnection(connectionString);
+        string? connectionString = config.GetConnectionString("DefaultConnection");
+        SqliteConnection connection = OpenConnection(connectionString);
 
         services.AddDbContext<LivestockContext>(options => ConfigureSqlite(options, connection))
                 .AddScoped<ISeedData, SqliteSeedData>();
@@ -44,21 +45,22 @@ public static class SqliteDatabaseMiddleware
 
     internal static MigrationBuilder AlterColumnDataTypeDateTimeOffsetToLong(this MigrationBuilder migrationBuilder, IEnumerable<string> propertyNames, string tableName)
     {
-        var sb = new StringBuilder();
+        StringBuilder sb = new();
         sb.AppendLine($"UPDATE \"{tableName}\"");
         sb.Append("SET ");
 
-        var index = 0;
-        foreach (var propertyName in propertyNames)
+        int index = 0;
+        IEnumerable<string> propNamesArray = propertyNames as string[] ?? propertyNames.ToArray();
+        foreach (string propertyName in propNamesArray)
         {
             sb.Append($"\"{propertyName}\" = (strftime('%s', \"{propertyName}\") * 10000 + {UnixEpochSeconds}) << {DateTimeOffsetBitwiseShiftBitCount}");
-            if (++index < propertyNames.Count())
+            if (++index < propNamesArray.Count())
             {
                 sb.AppendLine(",");
             }
         }
 
-        sb.Append(";");
+        sb.Append(';');
 
         migrationBuilder.Sql(sql: sb.ToString());
 
@@ -67,21 +69,22 @@ public static class SqliteDatabaseMiddleware
 
     internal static MigrationBuilder AlterColumnDataTypeLongToDateTimeOffset(this MigrationBuilder migrationBuilder, IEnumerable<string> propertyNames, string tableName)
     {
-        var sb = new StringBuilder();
+        StringBuilder sb = new();
         sb.AppendLine($"UPDATE \"{tableName}\"");
         sb.Append("SET ");
 
-        var index = 0;
-        foreach (var propertyName in propertyNames)
+        int index = 0;
+        IEnumerable<string> propNamesArray = propertyNames as string[] ?? propertyNames.ToArray();
+        foreach (string propertyName in propNamesArray)
         {
             sb.Append($"\"{propertyName}\" = datetime(((\"{propertyName}\" >> {DateTimeOffsetBitwiseShiftBitCount}) - {UnixEpochSeconds}) / 10000, 'unixepoch')");
-            if (++index < propertyNames.Count())
+            if (++index < propNamesArray.Count())
             {
                 sb.AppendLine(",");
             }
         }
 
-        sb.Append(";");
+        sb.Append(';');
 
         migrationBuilder.Sql(sql: sb.ToString());
 
@@ -90,13 +93,13 @@ public static class SqliteDatabaseMiddleware
 
     private static SqliteConnection OpenConnection(string connectionString)
     {
-        var connection = new SqliteConnection(connectionString);
+        SqliteConnection connection = new(connectionString);
         connection.Open();
         connection.EnableExtensions();
         return connection;
     }
 
-    private static DbContextOptionsBuilder ConfigureSqlite(DbContextOptionsBuilder options, SqliteConnection connection)
+    private static DbContextOptionsBuilder ConfigureSqlite(DbContextOptionsBuilder options, DbConnection connection)
     {
         return options.UseSqlite(connection, builder => builder.MigrationsAssembly("livestock-tracker.database.sqlite")
                                                                .UseRelationalNulls());

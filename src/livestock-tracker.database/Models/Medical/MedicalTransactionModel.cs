@@ -1,5 +1,4 @@
 using LivestockTracker.Abstractions.Data;
-using LivestockTracker.Abstractions.Models.Medical;
 using LivestockTracker.Database.Models;
 using LivestockTracker.Database.Models.Animals;
 using LivestockTracker.Database.Models.Medical;
@@ -12,7 +11,7 @@ using System.Linq;
 namespace LivestockTracker.Medicine;
 
 [Table("MedicalTransactions", Schema = "medical")]
-public class MedicalTransactionModel : IEntity<long>, IMedicalTransaction, IAnimalTransaction
+public class MedicalTransactionModel : IEntity<long>, IAnimalTransaction
 {
     [Column("ID")]
     [Key]
@@ -42,6 +41,11 @@ public class MedicalTransactionModel : IEntity<long>, IMedicalTransaction, IAnim
 
     public void UpdateTransaction(MedicalTransaction transaction)
     {
+        if (AnimalId != transaction.AnimalId)
+        {
+            throw new ArgumentException("A transaction cannot be moved to a different animal. Capture a new transaction for that animal and delete this one.");
+        }
+
         MedicineId = transaction.MedicineId;
         Dose = transaction.Dose;
         TransactionDate = transaction.TransactionDate;

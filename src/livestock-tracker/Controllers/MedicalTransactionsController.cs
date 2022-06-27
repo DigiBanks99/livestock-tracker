@@ -6,6 +6,7 @@ using LivestockTracker.Properties;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -48,7 +49,7 @@ public class MedicalTransactionsController : LivestockApiController
     [HttpGet]
     [ProducesResponseType(typeof(IPagedData<MedicalTransaction>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-    public IActionResult GetAll([FromQuery] long[]? animalIds = null,
+    public IActionResult GetAllAsync([FromQuery] long[]? animalIds = null,
                                 [FromQuery] long? medicineType = null,
                                 [FromQuery] int pageNumber = 0,
                                 [FromQuery] int pageSize = 0,
@@ -59,15 +60,15 @@ public class MedicalTransactionsController : LivestockApiController
                               animalIds ?? Enumerable.Empty<long>(),
                               pageNumber);
 
-        var pagingOptions = new PagingOptions
+        PagingOptions pagingOptions = new()
         {
             PageNumber = pageNumber,
             PageSize = pageSize == 0 ? 10 : pageSize
         };
 
-        var filter = new MedicalTransactionFilter(animalIds, medicineType, exclude);
+        MedicalTransactionFilter filter = new(animalIds, medicineType, exclude);
 
-        IPagedData<MedicalTransaction>? items = _medicalTransactionSearchService.Find(filter, ListSortDirection.Descending, pagingOptions);
+        IPagedData<MedicalTransaction> items = _medicalTransactionSearchService.Find(filter, ListSortDirection.Descending, pagingOptions);
         return Ok(items);
     }
 
@@ -77,11 +78,11 @@ public class MedicalTransactionsController : LivestockApiController
     /// <param name="animalId">The unique identifier of the animal.</param>
     /// <param name="id">The unique identifier of the medical transaction.</param>
     /// <returns>The detail of the medical transaction.</returns>
-    [HttpGet("{animalId}/{id}")]
+    [HttpGet("{animalId:long}/{id:long}")]
     [ProducesResponseType(typeof(MedicalTransaction), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public IActionResult Get(int animalId, int id)
+    public IActionResult GetTransaction(long animalId, long id)
     {
         Logger.LogInformation(Resources.RequestMedicalTransactionDetail, animalId, id);
         if (!ModelState.IsValid)
@@ -103,19 +104,13 @@ public class MedicalTransactionsController : LivestockApiController
     /// <param name="id">The unique identifier of the medical transaction.</param>
     /// <param name="medicalTransaction">The detail with which the medical transaction must be updated.</param>
     /// <returns>The updated medical transaction.</returns>
-    [HttpPut("{id}")]
+    [HttpPut("{id:long}")]
     [ProducesResponseType(typeof(MedicalTransaction), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(int id, [Required] MedicalTransaction medicalTransaction)
+    public async Task<IActionResult> UpdateAsync(long id, [Required] MedicalTransaction medicalTransaction)
     {
-        Logger.LogInformation("Requesting the updating of medical transaction with ID {transactionId} with values {medicalTransaction}...", id, medicalTransaction);
-
-        if (medicalTransaction == null)
-        {
-            ModelState.AddModelError(nameof(medicalTransaction), $"{nameof(medicalTransaction)} is required.");
-            return BadRequest(ModelState);
-        }
+        Logger.LogInformation("Requesting the updating of medical transaction with ID {TransactionId} with values {@MedicalTransaction}...", id, medicalTransaction);
 
         if (id != medicalTransaction.Id)
         {
@@ -124,16 +119,21 @@ public class MedicalTransactionsController : LivestockApiController
 
         if (!ModelState.IsValid)
         {
-            return BadRequest();
+            return BadRequest(ModelState);
         }
 
         try
         {
-            MedicalTransaction? updatedTransaction = await _medicalTransactionCrudService.UpdateAsync(medicalTransaction, RequestAbortToken)
-                                                                                         .ConfigureAwait(false);
+            MedicalTransaction updatedTransaction = await _medicalTransactionCrudService.UpdateAsync(medicalTransaction, RequestAbortToken)
+                                                                                        .ConfigureAwait(false);
             return Ok(updatedTransaction);
         }
-        catch (EntityNotFoundException<IMedicalTransaction> ex)
+        catch (ArgumentException ex)
+        {
+            ModelState.AddModelError(nameof(medicalTransaction.AnimalId), ex.Message);
+            return BadRequest(ModelState);
+        }
+        catch (EntityNotFoundException<MedicalTransaction> ex)
         {
             return NotFound(ex.Message);
         }
@@ -149,7 +149,7 @@ public class MedicalTransactionsController : LivestockApiController
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> AddAsync(MedicalTransaction medicalTransaction)
     {
-        Logger.LogInformation("Requesting the creation of medical transaction {medicalTransaction}", medicalTransaction);
+        Logger.LogInformation("Requesting the creation of medical transaction {@MedicalTransaction}", medicalTransaction);
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -157,10 +157,10 @@ public class MedicalTransactionsController : LivestockApiController
 
         try
         {
-            MedicalTransaction? addedTransaction = await _medicalTransactionCrudService.AddAsync(medicalTransaction, RequestAbortToken)
-                                                                                       .ConfigureAwait(false);
+            MedicalTransaction addedTransaction = await _medicalTransactionCrudService.AddAsync(medicalTransaction, RequestAbortToken)
+                                                                                      .ConfigureAwait(false);
 
-            return CreatedAtAction(nameof(Get), new { id = addedTransaction.Id, animalId = addedTransaction.AnimalId }, addedTransaction);
+            return CreatedAtAction(nameof(GetTransaction), new { id = addedTransaction.Id, animalId = addedTransaction.AnimalId }, addedTransaction);
         }
         catch (ItemAlreadyExistsException<long> ex)
         {
@@ -173,13 +173,13 @@ public class MedicalTransactionsController : LivestockApiController
     /// </summary>
     /// <param name="id">The unique identifier of the medical transaction.</param>
     /// <returns>The ID of the removed medical transaction.</returns>
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:int}")]
     [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-    public async ValueTask<IActionResult> Delete(int id)
+    public async ValueTask<IActionResult> DeleteAsync(int id)
     {
-        Logger.LogInformation("Requesting the deletion of medical transaction with ID {transactionId}...", id);
+        Logger.LogInformation("Requesting the deletion of medical transaction with ID {TransactionId}...", id);
 
         if (!ModelState.IsValid)
         {
@@ -189,10 +189,10 @@ public class MedicalTransactionsController : LivestockApiController
         try
         {
             long removedId = await _medicalTransactionCrudService.RemoveAsync(id, RequestAbortToken)
-                                                                .ConfigureAwait(false);
+                                                                 .ConfigureAwait(false);
             return Ok(removedId);
         }
-        catch (EntityNotFoundException<IMedicalTransaction> ex)
+        catch (EntityNotFoundException<MedicalTransaction> ex)
         {
             return NotFound(ex.Message);
         }
