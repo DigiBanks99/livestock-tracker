@@ -13,7 +13,15 @@ public interface IMedicineTypeCrudService: ICrudAsyncService<IMedicineType, int>
     /// Adds a medicine type if it doesn't exist yet.
     /// </summary>
     /// <param name="medicineType">The request to create a medicine type.</param>
-    /// <param name="cancellationToken">A token that can be used to cancel a request to create a medicine type.</param>
+    /// <param name="cancellationToken">A token that can be used to cancel the request to create a medicine type.</param>
     /// <returns>The created medicine type.</returns>
     Task<MedicineType> AddAsync(MedicineType medicineType, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Updates a medicine type if it exists.
+    /// </summary>
+    /// <param name="medicineType">The details of the updated properties of the medicine type.</param>
+    /// <param name="cancellationToken">A token that can be used to cancel the request to update a medicine type.</param>
+    /// <returns>The updated medicine type.</returns>
+    Task<MedicineType> UpdateAsync(MedicineType medicineType, CancellationToken cancellationToken);
 }

@@ -138,18 +138,13 @@ namespace LivestockTracker.Controllers
         /// <param name="id">The id of the medicine type that should be updated.</param>
         /// <param name="medicineType">The updates for the medicine type.</param>
         /// <returns>The updated medicine type.</returns>
-        [HttpPut("{id}")]
+        [HttpPut("{id:int}")]
         [ProducesResponseType(typeof(MedicineType), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] MedicineType? medicineType)
+        public async Task<IActionResult> Update([FromRoute] int id, [Required] MedicineType medicineType)
         {
-            Logger.LogInformation($"Requesting updates to the medicine type with ID {id}...");
-
-            if (medicineType == null)
-            {
-                return BadRequest(ModelState);
-            }
+            Logger.LogInformation("Requesting updates to the medicine type with ID {Id}...", id);
 
             if (id != medicineType.Id)
             {
@@ -163,7 +158,7 @@ namespace LivestockTracker.Controllers
 
             try
             {
-                var updated = await _medicineTypeCrudService.UpdateAsync(medicineType, RequestAbortToken).ConfigureAwait(false);
+                MedicineType updated = await _medicineTypeCrudService.UpdateAsync(medicineType, RequestAbortToken).ConfigureAwait(false);
 
                 return Ok(updated);
             }
