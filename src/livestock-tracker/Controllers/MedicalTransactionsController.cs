@@ -48,7 +48,7 @@ public class MedicalTransactionsController : LivestockApiController
     [HttpGet]
     [ProducesResponseType(typeof(IPagedData<MedicalTransaction>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-    public IActionResult GetAllAsync([FromQuery] long[]? animalIds = null,
+    public IActionResult GetAll([FromQuery] long[]? animalIds = null,
                                 [FromQuery] long? medicineType = null,
                                 [FromQuery] int pageNumber = 0,
                                 [FromQuery] int pageSize = 0,

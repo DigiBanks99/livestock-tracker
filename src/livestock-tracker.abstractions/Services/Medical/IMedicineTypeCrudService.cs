@@ -1,13 +1,12 @@
 using System.Threading;
 using System.Threading.Tasks;
-using LivestockTracker.Abstractions.Services;
 
 namespace LivestockTracker.Medicine;
 
 /// <summary>
 /// Provides create, read and update and deletion services for medicine types.
 /// </summary>
-public interface IMedicineTypeCrudService: ICrudAsyncService<IMedicineType, int>
+public interface IMedicineTypeCrudService
 {
     /// <summary>
     /// Adds a medicine type if it doesn't exist yet.
@@ -24,4 +23,13 @@ public interface IMedicineTypeCrudService: ICrudAsyncService<IMedicineType, int>
     /// <param name="cancellationToken">A token that can be used to cancel the request to update a medicine type.</param>
     /// <returns>The updated medicine type.</returns>
     Task<MedicineType> UpdateAsync(MedicineType medicineType, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Flags the record in the persisted store as Deleted. It does not physically delete the record
+    /// to ensure relationships for history items are kept intact.
+    /// </summary>
+    /// <param name="id">The ID for the medicine type.</param>
+    /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
+    /// <returns>The ID of the medicine type that was marked as Deleted.</returns>
+    Task<int> RemoveAsync(int id, CancellationToken cancellationToken);
 }

@@ -18,6 +18,11 @@ public class MedicineTypeModel : LookupValueEntity<int>, IMedicineType
         }
         Deleted = item.Deleted;
     }
+
+    public void Delete()
+    {
+        Deleted = true;
+    }
 }
 
 public static class MedicineTypeModelExtensions

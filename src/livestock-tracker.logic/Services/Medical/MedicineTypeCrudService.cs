@@ -1,11 +1,9 @@
-using LivestockTracker.Abstractions;
 using LivestockTracker.Database;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace LivestockTracker.Medicine
 {
@@ -55,40 +53,19 @@ namespace LivestockTracker.Medicine
             return changes.Entity.MapToMedicineType();
         }
 
-        public Task<IMedicineType> AddAsync(IMedicineType item, CancellationToken cancellationToken)
+        /// <inheritdoc/>
+        public async Task<int> RemoveAsync(int id, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
-        }
+            _logger.LogInformation("Marking the medicine type with ID {Id} as deleted...", id);
 
-        public Task<IMedicineType> UpdateAsync(IMedicineType item, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+            MedicineTypeModel entity = _dbContext.MedicineTypes.FirstOrDefault(medicine => medicine.Id == id) ??
+                throw new EntityNotFoundException<MedicineType>(id);
 
-        /// <summary>
-        /// Flags the record in the persisted store as Deleted. It does not physically delete the record
-        /// to ensure relationships for history items are kept intact.
-        /// </summary>
-        /// <param name="key">The ID for the medicine type.</param>
-        /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
-        /// <returns>The ID of the medicine type that was marked as Deleted.</returns>
-        public virtual async Task<int> RemoveAsync(int key, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"Marking the medicine type with ID {key} as deleted...");
+            entity.Delete();
+            await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            var entity = await _dbContext.MedicineTypes
-                                               .FindAsync(new object[] { key }, cancellationToken)
-                                               .ConfigureAwait(false);
-            if (entity == null)
-                throw new EntityNotFoundException<MedicineTypeModel>(key);
-
-            entity.Deleted = true;
-            var changes = _dbContext.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken)
-                                  .ConfigureAwait(false);
-
-            _logger.LogDebug($"Medicine type with ID {key} marked as deleted...");
-            return changes.Entity.Id;
+            _logger.LogDebug("Medicine type with ID {Id} marked as deleted...", id);
+            return id;
         }
 
         /// <inheritdoc/>
@@ -102,7 +79,7 @@ namespace LivestockTracker.Medicine
             if (entity == null)
             {
                 _logger.LogWarning("An attempt was made to update a non-existing medicine {@Request}", item);
-                throw new EntityNotFoundException<MedicineTypeModel>(item.Id);
+                throw new EntityNotFoundException<MedicineType>(item.Id);
             }
 
             entity.Update(item);
