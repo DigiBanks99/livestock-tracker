@@ -1,13 +1,8 @@
 using LivestockTracker.Abstractions;
 using LivestockTracker.Database;
-using LivestockTracker.Medicine;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -20,19 +15,16 @@ namespace LivestockTracker.Medicine
     internal class MedicineTypeCrudService : IMedicineTypeCrudService
     {
         private readonly ILogger _logger;
-        private readonly IMapper<IMedicineType, MedicineType> _mapper;
         private readonly LivestockContext _dbContext;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="logger">The logger.</param>
-        /// <param name="mapper">The mapper.</param>
         /// <param name="dbContext">The database context that contains the medicine types.</param>
-        public MedicineTypeCrudService(ILogger<MedicineTypeCrudService> logger, IMapper<IMedicineType, MedicineType> mapper, LivestockContext dbContext)
+        public MedicineTypeCrudService(ILogger<MedicineTypeCrudService> logger, LivestockContext dbContext)
         {
             _logger = logger;
-            _mapper = mapper;
             _dbContext = dbContext;
         }
 
@@ -53,7 +45,7 @@ namespace LivestockTracker.Medicine
 
             if (_dbContext.MedicineTypes.Any(medicine => medicine.Id == item.Id))
             {
-                throw new ItemAlreadyExistsException<int>(item.Id, "A Medicine Type");
+                throw new ItemAlreadyExistsException<int>(item.Id, "A Medicine");
             }
 
             EntityEntry<MedicineTypeModel> changes = await _dbContext.AddAsync(entity, cancellationToken).ConfigureAwait(false);
@@ -68,49 +60,9 @@ namespace LivestockTracker.Medicine
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Finds the medicine types that match a provided filter predicate from the persisted data store and sorts them as specified.
-        /// </summary>
-        /// <typeparam name="TSortProperty">The type of the property on the object that is the sort key.</typeparam>
-        /// <param name="filter">The filter predicate which specifies the conditions to include a medicine type.</param>
-        /// <param name="sort">The function that returns the sort property on the medicine type.</param>
-        /// <param name="sortDirection">Either ascending or descending.</param>
-        /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
-        /// <returns>The enumerable collection of medicine types that match the criteria.</returns>
-        public async Task<IEnumerable<IMedicineType>> FindAsync<TSortProperty>(Expression<Func<IMedicineType, bool>> filter,
-                                                                               Expression<Func<IMedicineType, TSortProperty>> sort,
-                                                                               ListSortDirection sortDirection,
-                                                                               CancellationToken cancellationToken)
-            where TSortProperty : IComparable
+        public Task<IMedicineType> UpdateAsync(IMedicineType item, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Finding the medicine types...");
-            return await _dbContext.MedicineTypes
-                                         .ConstrainedFind(filter, sort, sortDirection)
-                                         .Select(medicineType => _mapper.Map(medicineType))
-                                         .ToListAsync(cancellationToken)
-                                         .ConfigureAwait(false);
-        }
-
-        /// <summary>
-        /// Finds a medicine type that matches a given key.
-        /// </summary>
-        /// <param name="key">The medicine type's ID.</param>
-        /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
-        /// <returns>
-        ///     <list type="bullet">
-        ///         <item>A medicine type if found.</item>
-        ///         <item>Null if not found.</item>
-        ///     </list>
-        /// </returns>
-        public virtual async Task<IMedicineType?> GetOneAsync(int key, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation($"Finding a medicine type that matches ID {key}...");
-            var medicineType = await _dbContext.MedicineTypes
-                                                     .FindAsync(new object[] { key }, cancellationToken)
-                                                     .ConfigureAwait(false);
-
-            _logger.LogDebug($"Find medicine type of ID {key} result: {medicineType}");
-            return _mapper.Map(medicineType);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -139,30 +91,24 @@ namespace LivestockTracker.Medicine
             return changes.Entity.Id;
         }
 
-        /// <summary>
-        /// Updates the properties of an medicine type in the persisted store.
-        /// </summary>
-        /// <param name="item">The medicine type with its desired values.</param>
-        /// <param name="cancellationToken">A token that can be used to signal operation cancellation.</param>
-        /// <returns>The updated medicine type.</returns>
+        /// <inheritdoc/>
         /// <exception cref="EntityNotFoundException{IMedicineType}">When the medicine type with the given key is not found.</exception>
-        public virtual async Task<IMedicineType> UpdateAsync(IMedicineType item, CancellationToken cancellationToken)
+        public async Task<MedicineType> UpdateAsync(MedicineType item, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Updating the medicine type with ID {item.Id}...");
+            _logger.LogInformation("Updating the medicine type with ID {Id}...", item.Id);
 
-            var entity = await _dbContext.MedicineTypes
-                                               .FindAsync(new object[] { item.Id }, cancellationToken)
-                                               .ConfigureAwait(false);
+            MedicineTypeModel? entity = _dbContext.MedicineTypes
+                                                  .FirstOrDefault(medicine => medicine.Id == item.Id);
             if (entity == null)
+            {
+                _logger.LogWarning("An attempt was made to update a non-existing medicine {@Request}", item);
                 throw new EntityNotFoundException<MedicineTypeModel>(item.Id);
+            }
 
-            entity.Description = item.Description;
+            entity.Update(item);
+            await _dbContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            var changes = _dbContext.MedicineTypes.Update(entity);
-            await _dbContext.SaveChangesAsync(cancellationToken)
-                                  .ConfigureAwait(false);
-
-            return _mapper.Map(changes.Entity);
+            return entity.MapToMedicineType();
         }
     }
 }

@@ -74,7 +74,7 @@ public class CreatingAMedicine
         try
         {
             object? count = cmd.ExecuteScalar();
-            count.ShouldNotBeNull().ShouldBeAssignableTo<int>().ShouldBe(2);
+            count.ShouldNotBeNull().ShouldBeAssignableTo<long>().ShouldBe(2);
         }
         finally
         {

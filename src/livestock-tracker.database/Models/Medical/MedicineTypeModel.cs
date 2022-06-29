@@ -9,6 +9,15 @@ namespace LivestockTracker.Medicine;
 public class MedicineTypeModel : LookupValueEntity<int>, IMedicineType
 {
     public List<MedicalTransactionModel> MedicalTransactions { get; internal set; } = null!;
+
+    public void Update(MedicineType item)
+    {
+        if (!Deleted)
+        {
+            Description = item.Description;
+        }
+        Deleted = item.Deleted;
+    }
 }
 
 public static class MedicineTypeModelExtensions

@@ -1,7 +1,4 @@
 using LivestockTracker.Abstractions.Data;
-using LivestockTracker.Database.Models.Feed;
-using LivestockTracker.Database.Models.Units;
-using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -21,8 +18,9 @@ public class SqliteSeedData : ISeedData
 
     public void Seed(IServiceProvider serviceProvider)
     {
-        var options = serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>();
-        using var context = new LivestockContext(options);
+        DbContextOptions<LivestockContext> options =
+            serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>();
+        using LivestockContext context = new(options);
         if (_env.IsE2E())
         {
             context.Database.EnsureCreated();
@@ -41,42 +39,42 @@ public class SqliteSeedData : ISeedData
 
     private static void SeedUnits(LivestockContext context)
     {
-        if (context.Units == null || context.Units.Any())
+        if (context.Units.Any())
         {
             return;
         }
 
         context.Units.AddRange(
-        new UnitModel()
-        {
-            Id = 1,
-            Description = "ℓ"
-        },
-        new UnitModel()
-        {
-            Id = 2,
-            Description = "kg"
-        });
+            new()
+            {
+                Id = 1,
+                Description = "ℓ"
+            },
+            new()
+            {
+                Id = 2,
+                Description = "kg"
+            });
     }
 
     private static void SeedMedicine(LivestockContext context)
     {
-        if (context.MedicineTypes == null || context.MedicineTypes.Any())
+        if (context.MedicineTypes.Any())
         {
             return;
         }
 
         context.MedicineTypes.AddRange(
-        new MedicineTypeModel()
-        {
-            Id = 1,
-            Description = "Antibiotics"
-        },
-        new MedicineTypeModel()
-        {
-            Id = 2,
-            Description = "Painkillers"
-        });
+            new()
+            {
+                Id = 1,
+                Description = "Antibiotics"
+            },
+            new()
+            {
+                Id = 2,
+                Description = "Painkillers"
+            });
     }
 
     private static void SeedFeedTypes(LivestockContext livestockContext)
@@ -87,15 +85,15 @@ public class SqliteSeedData : ISeedData
         }
 
         livestockContext.FeedTypes.AddRange(
-        new FeedTypeModel()
-        {
-            Id = 1,
-            Description = "Wheat"
-        },
-        new FeedTypeModel()
-        {
-            Id = 2,
-            Description = "Maze"
-        });
+            new()
+            {
+                Id = 1,
+                Description = "Wheat"
+            },
+            new()
+            {
+                Id = 2,
+                Description = "Maze"
+            });
     }
 }
