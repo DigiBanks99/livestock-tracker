@@ -87,4 +87,22 @@ public class UpdatingAMedicine
         Dictionary<string, string[]>? keyValues = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(content);
         keyValues.ShouldNotBeNull()["id"][0].ShouldBe("The id in the body and in the URL do not match.");
     }
+
+    [Fact]
+    public async Task ItShouldReturnANotFoundResultIfAMedicineWithTheGivenIdDoesNotExist()
+    {
+        // Arrange
+        MedicineType updateRequest = new()
+        {
+            Id = -1,
+            Description = "Fail"
+        };
+        const string url = "/api/MedicineType/-1";
+
+        // Act
+        HttpResponseMessage response = await _fixture.Client.PutAsJsonAsync(url, updateRequest);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.NotFound);
+    }
 }
