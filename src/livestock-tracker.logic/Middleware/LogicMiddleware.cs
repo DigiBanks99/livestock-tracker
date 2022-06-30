@@ -39,7 +39,6 @@ namespace LivestockTracker
                     .AddSingleton<IMapper<IFeedType, FeedType>, FeedTypeMapper>()
                     .AddSingleton<IMapper<FeedTypeModel, IFeedType>, FeedTypeEntityMapper>()
                     .AddSingleton<IMapper<FeedingTransactionModel, IFeedingTransaction>, FeedingTransactionEntityMapper>()
-                    .AddSingleton<IMapper<IMedicineType, MedicineType>, MedicineTypeMapper>()
                     .AddSingleton<IMapper<UnitModel, IUnit>, UnitMapper>()
                     .AddScoped<IAnimalCrudService, AnimalCrudService>()
                     .AddScoped<IAnimalSearchService, AnimalSearchService>()

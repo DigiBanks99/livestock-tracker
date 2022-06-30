@@ -18,12 +18,7 @@ public class UpdatingAMedicine
     public async Task ItShouldSaveTheMedicineWithTheUpdatedValues()
     {
         // Arrange
-        MedicineType medicineType = new()
-        {
-            Id = 1,
-            Deleted = true,
-            Description = "Changed"
-        };
+        UpdateMedicineViewModel medicineType = new(1, "Changed", true);
         const string url = "/api/MedicineType/1";
 
         // Act
@@ -33,7 +28,7 @@ public class UpdatingAMedicine
         response.EnsureSuccessStatusCode();
         response.Content.Headers.ContentType.ShouldNotBeNull().ToString().ShouldBe("application/json; charset=utf-8");
 
-        MedicineType? updatedMedicine = await response.Content.ReadFromJsonAsync<MedicineType>();
+        MedicineViewModel? updatedMedicine = await response.Content.ReadFromJsonAsync<MedicineViewModel>();
         updatedMedicine.ShouldNotBeNull();
 
         updatedMedicine.Id.ShouldBe(medicineType.Id);
@@ -41,8 +36,7 @@ public class UpdatingAMedicine
         updatedMedicine.Deleted.ShouldBe(medicineType.Deleted);
 
         // Clean-up
-        medicineType.Deleted = false;
-        medicineType.Description = "Antibiotics";
+        UpdateMedicineViewModel cleanup = new(1, "Antibiotics");
         await _fixture.Client.PutAsJsonAsync(url, medicineType);
     }
 
@@ -51,7 +45,7 @@ public class UpdatingAMedicine
     {
         // Arrange
         const string url = "/api/MedicineType/1";
-        MedicineType? updateRequest = null;
+        UpdateMedicineViewModel? updateRequest = null;
 
         // Act
         HttpResponseMessage response = await _fixture.Client.PutAsJsonAsync(url, updateRequest);
@@ -71,11 +65,7 @@ public class UpdatingAMedicine
     public async Task ItShouldReturnBadRequestWhenTheRouteAndBodyIdsDoNotMatch()
     {
         // Arrange
-        MedicineType updateRequest = new()
-        {
-            Id = 2,
-            Description = "Fail"
-        };
+        UpdateMedicineViewModel updateRequest = new(2, "Fail");
         const string url = "/api/MedicineType/1";
 
         // Act
@@ -92,11 +82,7 @@ public class UpdatingAMedicine
     public async Task ItShouldReturnANotFoundResultIfAMedicineWithTheGivenIdDoesNotExist()
     {
         // Arrange
-        MedicineType updateRequest = new()
-        {
-            Id = -1,
-            Description = "Fail"
-        };
+        UpdateMedicineViewModel updateRequest = new(-1, "Fail");
         const string url = "/api/MedicineType/-1";
 
         // Act

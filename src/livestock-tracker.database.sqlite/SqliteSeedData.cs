@@ -74,6 +74,12 @@ public class SqliteSeedData : ISeedData
             {
                 Id = 2,
                 Description = "Painkillers"
+            },
+            new()
+            {
+                Id = 3,
+                Description = "Paracetamol",
+                Deleted = true
             });
     }
 
