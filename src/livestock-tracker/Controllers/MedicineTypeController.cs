@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
+using LivestockTracker.Logic.Paging;
 
 namespace LivestockTracker.Controllers;
 
@@ -24,8 +26,8 @@ public class MedicineTypeController : LivestockApiController
     /// <param name="medicineTypeCrudService">A service for medicine type CRUD operations.</param>
     /// <param name="medicineTypeSearchService">A service for performing search operations on medicine types.</param>
     public MedicineTypeController(ILogger<MedicineTypeController> logger,
-                                  IMedicineTypeCrudService medicineTypeCrudService,
-                                  IMedicineTypeSearchService medicineTypeSearchService)
+        IMedicineTypeCrudService medicineTypeCrudService,
+        IMedicineTypeSearchService medicineTypeSearchService)
         : base(logger)
     {
         _medicineTypeCrudService = medicineTypeCrudService;
@@ -41,9 +43,9 @@ public class MedicineTypeController : LivestockApiController
     /// <param name="includeDeleted">Whether to include deleted items.</param>
     /// <returns>A sorted and paged list of medicine types.</returns>
     [HttpGet]
-    [ProducesResponseType(typeof(IPagedData<MedicineType>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PagedData<MedicineViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-    public IActionResult GetAll(string? query, int pageNumber = 0, int pageSize = 100, bool includeDeleted = false)
+    public IActionResult Search(string? query, int pageNumber = 0, int pageSize = 100, bool includeDeleted = false)
     {
         Logger.LogInformation("Requesting {PageSize} medicine types from page {PageNumber}...", pageSize, pageNumber);
         if (includeDeleted)
@@ -54,7 +56,10 @@ public class MedicineTypeController : LivestockApiController
         MedicineTypeFilter filter = new(query, includeDeleted);
         PagingOptions pagingOptions = new(pageNumber, pageSize);
 
-        return Ok(_medicineTypeSearchService.Search(filter, pagingOptions));
+        IPagedData<MedicineType> result = _medicineTypeSearchService.Search(filter, pagingOptions);
+        PagedData<MedicineViewModel> response = new(result.Data.Select(medicine => medicine.ToMedicineViewModel()),
+            result.PageSize, result.CurrentPage, result.TotalRecordCount);
+        return Ok(response);
     }
 
     /// <summary>
@@ -63,7 +68,7 @@ public class MedicineTypeController : LivestockApiController
     /// <param name="id">The unique identifier for the medicine type.</param>
     /// <returns>The medicine type if found.</returns>
     [HttpGet("{id:int}")]
-    [ProducesResponseType(typeof(MedicineType), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(MedicineViewModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
     public IActionResult GetMedicineType(int id)
     {
@@ -72,7 +77,7 @@ public class MedicineTypeController : LivestockApiController
 
         return medicineType == null
             ? NotFound()
-            : Ok(medicineType);
+            : Ok(medicineType.ToMedicineViewModel());
     }
 
     /// <summary>
@@ -81,11 +86,12 @@ public class MedicineTypeController : LivestockApiController
     /// <param name="medicineType">The details of the medicine type to be created.</param>
     /// <returns>The created medicine type with it's unique identifier.</returns>
     [HttpPost]
-    [ProducesResponseType(typeof(MedicineType), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(MedicineViewModel), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Add([Required][FromBody] MedicineType medicineType)
+    public async Task<IActionResult> AddAsync([Required] CreateMedicineViewModel medicineType)
     {
-        Logger.LogInformation("Requesting the creation of a new medicine type with details {@MedicineType}...", medicineType);
+        Logger.LogInformation("Requesting the creation of a new medicine type with details {@MedicineType}...",
+            medicineType);
 
         if (!ModelState.IsValid)
         {
@@ -94,9 +100,10 @@ public class MedicineTypeController : LivestockApiController
 
         try
         {
-            MedicineType addedItem = await _medicineTypeCrudService.AddAsync(medicineType, RequestAbortToken).ConfigureAwait(false);
+            MedicineType addedItem = await _medicineTypeCrudService
+                .AddAsync(medicineType.ToMedicineType(), RequestAbortToken).ConfigureAwait(false);
 
-            return CreatedAtAction(nameof(GetMedicineType), new { id = addedItem.Id }, addedItem);
+            return CreatedAtAction(nameof(GetMedicineType), new { id = addedItem.Id }, addedItem.ToMedicineViewModel());
         }
         catch (ItemAlreadyExistsException<int> ex)
         {
@@ -111,10 +118,10 @@ public class MedicineTypeController : LivestockApiController
     /// <param name="medicineType">The updates for the medicine type.</param>
     /// <returns>The updated medicine type.</returns>
     [HttpPut("{id:int}")]
-    [ProducesResponseType(typeof(MedicineType), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(MedicineViewModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update([FromRoute] int id, [Required] MedicineType medicineType)
+    public async Task<IActionResult> Update([FromRoute] int id, [Required] UpdateMedicineViewModel medicineType)
     {
         Logger.LogInformation("Requesting updates to the medicine type with ID {Id}...", id);
 
@@ -130,9 +137,10 @@ public class MedicineTypeController : LivestockApiController
 
         try
         {
-            MedicineType updated = await _medicineTypeCrudService.UpdateAsync(medicineType, RequestAbortToken).ConfigureAwait(false);
+            MedicineType updated = await _medicineTypeCrudService
+                .UpdateAsync(medicineType.ToMedicineType(), RequestAbortToken).ConfigureAwait(false);
 
-            return Ok(updated);
+            return Ok(updated.ToMedicineViewModel());
         }
         catch (EntityNotFoundException<MedicineType> ex)
         {
@@ -161,7 +169,8 @@ public class MedicineTypeController : LivestockApiController
 
         try
         {
-            int removedMedicineTypeId = await _medicineTypeCrudService.RemoveAsync(id, RequestAbortToken).ConfigureAwait(false);
+            int removedMedicineTypeId =
+                await _medicineTypeCrudService.RemoveAsync(id, RequestAbortToken).ConfigureAwait(false);
 
             return Ok(removedMedicineTypeId);
         }

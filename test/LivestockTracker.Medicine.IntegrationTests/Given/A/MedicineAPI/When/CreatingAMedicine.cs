@@ -14,10 +14,7 @@ public class CreatingAMedicine
     public async Task ItShouldCreateANewMedicine()
     {
         // Arrange
-        MedicineType medicine = new()
-        {
-            Description = "New medication"
-        };
+        CreateMedicineViewModel medicine = new("New Medication");
 
         // Act
         HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("/api/MedicineType", medicine).ConfigureAwait(false);
@@ -27,7 +24,7 @@ public class CreatingAMedicine
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        MedicineType? createdMedicine = await response.Content.ReadFromJsonAsync<MedicineType>();
+        MedicineViewModel? createdMedicine = await response.Content.ReadFromJsonAsync<MedicineViewModel>();
         createdMedicine.ShouldNotBeNull();
         response.Headers.Location.ShouldNotBeNull();
         Uri expectedUri = new($"http://localhost/api/MedicineType/{createdMedicine.Id}");
@@ -41,40 +38,6 @@ public class CreatingAMedicine
         try
         {
             cmd.ExecuteNonQuery();
-        }
-        finally
-        {
-            _fixture.DatabaseConnection.Close();
-        }
-    }
-
-    [Fact]
-    public async Task ThenItShouldReturnBadRequestIfAMedicineWithTheSameIdExists()
-    {
-        // Arrange
-        MedicineType medicine = new()
-        {
-            Id = 1,
-            Description = "New medication"
-        };
-
-        // Act
-        HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("/api/MedicineType", medicine).ConfigureAwait(false);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        response.Content.Headers.ContentType.ShouldNotBeNull();
-        response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
-
-        string responseMessage = await response.Content.ReadAsStringAsync();
-        responseMessage.ShouldBe("\"A Medicine with key 1 already exists.\"");
-
-        _fixture.DatabaseConnection.Open();
-        await using SqliteCommand cmd = new("SELECT COUNT(ID) FROM MedicineTypes", _fixture.DatabaseConnection);
-        try
-        {
-            object? count = cmd.ExecuteScalar();
-            count.ShouldNotBeNull().ShouldBeAssignableTo<long>().ShouldBe(2);
         }
         finally
         {

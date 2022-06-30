@@ -17,7 +17,7 @@ public class RetrievingAMedicine
         const string url = "/api/MedicineType/1";
 
         // Act
-        MedicineType? medicineType = await _fixture.Client.GetFromJsonAsync<MedicineType>(url).ConfigureAwait(false);
+        MedicineViewModel? medicineType = await _fixture.Client.GetFromJsonAsync<MedicineViewModel>(url).ConfigureAwait(false);
 
         // Assert
         medicineType.ShouldNotBeNull();
