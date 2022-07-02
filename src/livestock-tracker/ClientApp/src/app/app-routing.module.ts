@@ -29,7 +29,7 @@ const routes: Routes = [
     component: FeedingTransactionDetailComponent
   },
   {
-    path: 'medical',
+    path: 'medicine',
     loadChildren: () =>
       import('./modules/medical/medical.module').then(
         (module) => module.MedicalModule
@@ -43,7 +43,12 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [
+    RouterModule.forRoot(routes, {
+      relativeLinkResolution: 'legacy',
+      enableTracing: true
+    })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

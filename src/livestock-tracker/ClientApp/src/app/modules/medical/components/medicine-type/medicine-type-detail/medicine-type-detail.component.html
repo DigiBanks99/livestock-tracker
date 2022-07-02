@@ -1,9 +1,11 @@
 <form [formGroup]="medicineTypeForm">
   <mat-form-field class="description">
+    <label for="description" hidden>Description</label>
     <input
       matInput
       type="text"
       id="description"
+      name="description"
       formControlName="description"
       (ngModelChange)="onUpdate()"
     />

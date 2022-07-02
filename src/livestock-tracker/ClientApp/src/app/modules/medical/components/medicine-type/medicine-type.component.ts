@@ -1,13 +1,24 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgModule,
+  Output
+} from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { MedicineType } from '@core/models/medicine-type.model';
+import { MedicineTypeDetailComponentModule } from '@medical/components/medicine-type/medicine-type-detail/medicine-type-detail.component';
+import { CommandButtonComponentModule } from '@shared/components';
 
 @Component({
   selector: 'app-medicine-type',
   templateUrl: './medicine-type.component.html'
 })
 export class MedicineTypeComponent {
-  @Input() public medicineTypes: MedicineType[];
+  @Input() public medicineTypes: MedicineType[] = [];
   @Input() public pageSize: number;
   @Input() public pageNumber: number;
   @Input() public recordCount: number;
@@ -38,3 +49,17 @@ export class MedicineTypeComponent {
     this.remove.emit(id);
   }
 }
+
+@NgModule({
+  declarations: [MedicineTypeComponent],
+  exports: [MedicineTypeComponent],
+  imports: [
+    CommandButtonComponentModule,
+    MedicineTypeDetailComponentModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTableModule
+  ]
+})
+export class MedicineTypeComponentModule {}

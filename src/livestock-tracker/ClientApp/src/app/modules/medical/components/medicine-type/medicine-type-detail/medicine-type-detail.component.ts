@@ -1,7 +1,20 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgModule,
+  OnInit,
+  Output
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MedicineType } from '@core/models/medicine-type.model';
-import { MedicineTypeService } from '@medical/services/medicine-type.service';
 
 @Component({
   selector: 'app-medicine-type-detail',
@@ -13,7 +26,7 @@ export class MedicineTypeDetailComponent implements OnInit {
 
   public medicineTypeForm: FormGroup;
 
-  constructor(private medicineTypeService: MedicineTypeService) {
+  constructor() {
     this.medicineTypeForm = null;
   }
 
@@ -37,3 +50,10 @@ export class MedicineTypeDetailComponent implements OnInit {
     });
   }
 }
+
+@NgModule({
+  declarations: [MedicineTypeDetailComponent],
+  exports: [MedicineTypeDetailComponent],
+  imports: [ReactiveFormsModule, MatFormFieldModule, MatInputModule]
+})
+export class MedicineTypeDetailComponentModule {}

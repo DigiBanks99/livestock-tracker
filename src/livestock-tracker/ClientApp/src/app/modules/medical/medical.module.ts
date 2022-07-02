@@ -20,8 +20,6 @@ import { RouterModule } from '@angular/router';
 import { MedicalTransactionFormComponent } from '@medical/components/medical-transaction-form/medical-transaction-form.component';
 import { MedicalTransactionComponent } from '@medical/components/medical-transaction/medical-transaction.component';
 import { MedicalTransactionContainerComponent } from '@medical/components/medical-transaction/medical-transaction.container';
-import { MedicineTypeDetailComponent } from '@medical/components/medicine-type-detail/medicine-type-detail.component';
-import { MedicineTypeComponent } from '@medical/components/medicine-type/medicine-type.component';
 import { MedicalTransactionService } from '@medical/services';
 import { MedicineTypeService } from '@medical/services/medicine-type.service';
 import { EffectsModule } from '@ngrx/effects';
@@ -30,13 +28,11 @@ import { SharedModule } from '@shared/shared.module';
 
 import { MedicalTransactionDetailComponent } from './components/medical-transaction-detail/medical-transaction-detail.component';
 import { MedicalTransactionNewComponent } from './components/medical-transaction-new/medical-transaction-new.component';
-import { MedicineTypeContainerComponent } from './components/medicine-type/medicine-type.container';
 import { MedicalRoutingModule } from './medical-routing.module';
 import {
   medicalTransactionEffects,
   medicalTransactionReducer,
-  medicineTypeEffects,
-  medicineTypeReducer
+  medicineTypeEffects
 } from './store';
 import { MedicalStoreConstants } from './store/constants';
 
@@ -45,9 +41,6 @@ import { MedicalStoreConstants } from './store/constants';
     MedicalTransactionContainerComponent,
     MedicalTransactionComponent,
     MedicalTransactionFormComponent,
-    MedicineTypeContainerComponent,
-    MedicineTypeComponent,
-    MedicineTypeDetailComponent,
     MedicalTransactionDetailComponent,
     MedicalTransactionNewComponent
   ],
@@ -80,16 +73,9 @@ import { MedicalStoreConstants } from './store/constants';
     StoreModule.forFeature(
       MedicalStoreConstants.MedicalTransactionStoreKey,
       medicalTransactionReducer.medicalTransactionReducer
-    ),
-    StoreModule.forFeature(
-      MedicalStoreConstants.MedicineTypeStoreKey,
-      medicineTypeReducer.medicineTypeReducer
     )
   ],
   providers: [MedicalTransactionService, MedicineTypeService],
-  exports: [
-    MedicineTypeContainerComponent,
-    MedicalTransactionContainerComponent
-  ]
+  exports: [MedicalTransactionContainerComponent]
 })
 export class MedicalModule {}

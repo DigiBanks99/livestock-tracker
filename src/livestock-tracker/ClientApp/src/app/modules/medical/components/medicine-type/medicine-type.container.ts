@@ -1,13 +1,23 @@
-import { EMPTY, Observable, Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MedicineType } from '@core/models';
 import { MedicineTypeState } from '@core/store/medicine-type-state.interface';
-import { medicineTypeActions, medicineTypeStore } from '@medical/store';
+import { MedicineTypeComponentModule } from '@medical/components/medicine-type/medicine-type.component';
+import { MedicineTypeService } from '@medical/services';
+import {
+  medicineTypeActions,
+  medicineTypeEffects,
+  medicineTypeReducer,
+  medicineTypeStore
+} from '@medical/store';
+import { MedicalStoreConstants } from '@medical/store/constants';
 import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
-import { select, Store } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { select, Store, StoreModule } from '@ngrx/store';
 
 @Component({
   selector: 'app-medicine-type-container',
@@ -25,12 +35,12 @@ import { select, Store } from '@ngrx/store';
   `
 })
 export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
-  public medicineTypes$: Observable<MedicineType[]> = EMPTY;
-  public isPending$: Observable<boolean> = EMPTY;
-  public error$: Observable<Error> = EMPTY;
-  public pageNumber$: Observable<number> = EMPTY;
-  public pageSize$: Observable<number> = EMPTY;
-  public recordCount$: Observable<number> = EMPTY;
+  public medicineTypes$: Observable<MedicineType[]>;
+  public isPending$: Observable<boolean>;
+  public error$: Observable<Error>;
+  public pageNumber$: Observable<number>;
+  public pageSize$: Observable<number>;
+  public recordCount$: Observable<number>;
 
   private destroyed$ = new Subject<void>();
 
@@ -91,3 +101,19 @@ export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
     );
   }
 }
+
+@NgModule({
+  declarations: [MedicineTypeContainerComponent],
+  exports: [MedicineTypeContainerComponent],
+  imports: [
+    CommonModule,
+    EffectsModule.forFeature([medicineTypeEffects.MedicineTypeEffects]),
+    MedicineTypeComponentModule,
+    StoreModule.forFeature(
+      MedicalStoreConstants.MedicineTypeStoreKey,
+      medicineTypeReducer.medicineTypeReducer
+    )
+  ],
+  providers: [MedicineTypeService]
+})
+export class MedicineTypeContainerComponentModule {}

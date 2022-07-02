@@ -16,7 +16,7 @@ import { medicineTypeStore } from '@medical/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CommandButtonTestingModule } from '@test/shared';
 
-import { MedicineTypeDetailComponent } from '../medicine-type-detail/medicine-type-detail.component';
+import { MedicineTypeDetailComponent } from './medicine-type-detail/medicine-type-detail.component';
 import { MedicineTypeComponent } from './medicine-type.component';
 
 describe('MedicineTypeComponent', () => {

@@ -5,7 +5,6 @@ import {
   filter,
   map,
   switchMap,
-  tap,
   withLatestFrom
 } from 'rxjs/operators';
 
@@ -58,15 +57,11 @@ export class FetchAnimalTransactionEffects<
   > &
     CreateEffectMetadata = createEffect(() =>
     this.actions$.pipe(
-      tap((a) => console.log(a, this.typeName)),
       ofType(`FETCH_ANIMAL_TRANSACTIONS_${this.typeName}`),
       concatMap((action: PayloadAction<PageEvent>) =>
         of(action).pipe(
           withLatestFrom(this.animalStore.select(getSelectedAnimalId)),
-          filter(([, animalId]) => {
-            console.log(animalId);
-            return animalId != null;
-          }),
+          filter(([, animalId]) => animalId != null),
           switchMap(([, animalId]: [PayloadAction<PageEvent>, number]) =>
             this.transactionService
               .getAnimalTransactions(animalId, action.payload)
