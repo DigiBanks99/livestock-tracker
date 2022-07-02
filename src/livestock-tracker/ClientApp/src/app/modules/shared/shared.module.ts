@@ -12,11 +12,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { LivestockFormsModule } from '@shared/components/form-components/livestock-forms.module';
 import { AgeCalculatorService } from '@shared/services';
 
-import { AnimalSelectModule, CommandButtonComponent } from './components';
+import { AnimalSelectModule, CommandButtonComponentModule } from './components';
 import { LookupPipe } from './pipes/lookup.pipe';
 
 @NgModule({
-  declarations: [CommandButtonComponent, LookupPipe],
+  declarations: [LookupPipe],
   imports: [
     AnimalSelectModule,
     CommonModule,
@@ -34,7 +34,7 @@ import { LookupPipe } from './pipes/lookup.pipe';
   providers: [AgeCalculatorService],
   exports: [
     AnimalSelectModule,
-    CommandButtonComponent,
+    CommandButtonComponentModule,
     LivestockFormsModule,
     LookupPipe
   ]

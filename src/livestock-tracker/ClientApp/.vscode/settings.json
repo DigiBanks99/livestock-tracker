@@ -8,7 +8,7 @@
   "javascript.preferences.quoteStyle": "single",
   "importSorter.generalConfiguration.sortOnBeforeSave": true,
   "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.type": "newLineEachExpressionAfterCountLimitExceptIfOnlyOne",
-  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 80,
+  "importSorter.importStringConfiguration.maximumNumberOfImportExpressionsPerLine.count": 3,
   "importSorter.importStringConfiguration.trailingComma": "none",
   "importSorter.importStringConfiguration.tabSize": 2,
   "importSorter.sortConfiguration.customOrderingRules.defaultNumberOfEmptyLinesAfterGroup": 1,
