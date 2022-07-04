@@ -5,27 +5,27 @@ import {
 } from '@angular/router';
 
 import {
-  MedicalTransactionDetailComponent,
-  MedicalTransactionDetailComponentModule
-} from './components/medical-transaction-detail/medical-transaction-detail.component';
-import {
-  MedicalTransactionNewComponent,
-  MedicalTransactionNewComponentModule
-} from './components/medical-transaction-new/medical-transaction-new.component';
-import {
-  MedicalTransactionContainerComponent,
-  MedicalTransactionContainerComponentModule
-} from './components/medical-transaction/medical-transaction.container';
-import {
   MedicineTypeContainerComponent,
   MedicineTypeContainerComponentModule
 } from './components/medicine-type/medicine-type.container';
+import {
+  MedicalTransactionDetailComponent,
+  MedicalTransactionDetailComponentModule
+} from './pages/medical-transaction-detail/medical-transaction-detail.component';
+import {
+  MedicalTransactionNewPage,
+  MedicalTransactionNewPageModule
+} from './pages/medical-transaction-new/medical-transaction-new.page';
+import {
+  MedicalTransactionPage,
+  MedicalTransactionPageModule
+} from './pages/medical-transactions/medical-transaction.page';
 
 const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: MedicineTypeContainerComponent
+    redirectTo: '1'
   },
   {
     path: 'type',
@@ -35,12 +35,12 @@ const routes: Routes = [
   {
     path: ':animalId',
     pathMatch: 'full',
-    component: MedicalTransactionContainerComponent
+    component: MedicalTransactionPage
   },
   {
     path: ':animalId/new',
     pathMatch: 'full',
-    component: MedicalTransactionNewComponent
+    component: MedicalTransactionNewPage
   },
   {
     path: ':animalId/edit/:id',
@@ -53,8 +53,8 @@ const routes: Routes = [
   imports: [
     RouterModule.forChild(routes),
     MedicineTypeContainerComponentModule,
-    MedicalTransactionContainerComponentModule,
-    MedicalTransactionNewComponentModule,
+    MedicalTransactionPageModule,
+    MedicalTransactionNewPageModule,
     MedicalTransactionDetailComponentModule
   ],
   exports: [RouterModule]

@@ -57,7 +57,10 @@ describe('WeightTransactionPage', () => {
   ];
 
   beforeEach(async () => {
-    routerSpy = jasmine.createSpyObj<Router>(Router.name, ['navigateByUrl']);
+    routerSpy = jasmine.createSpyObj<Router>(Router.name, [
+      'navigateByUrl',
+      'navigate'
+    ]);
     await TestBed.configureTestingModule({
       declarations: [
         WeightTransactionsPage,
@@ -197,9 +200,11 @@ describe('WeightTransactionPage', () => {
   it(`should navigate to 'new' when onAddTransaction is called`, () => {
     component.onAddTransaction();
 
-    expect(routerSpy.navigateByUrl).toHaveBeenCalledOnceWith(
-      `weight/${animalId}/new`
-    );
+    expect(routerSpy.navigate).toHaveBeenCalledOnceWith([
+      'weight',
+      animalId,
+      'new'
+    ]);
   });
 
   it(`should dispatch a delete action when onDeleteTransaction is called`, () => {

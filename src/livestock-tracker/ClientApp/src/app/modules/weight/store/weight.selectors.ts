@@ -1,8 +1,14 @@
 import { SaveState } from '@core/models';
 import { PaginationState } from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { WeightState, WeightTransaction } from '@weight/interfaces';
+import {
+  createFeatureSelector,
+  createSelector
+} from '@ngrx/store';
+import {
+  WeightState,
+  WeightTransaction
+} from '@weight/interfaces';
 
 import { weightTransactionAdapter } from './weight.adapter';
 import { Constants } from './weight.constants';
@@ -51,9 +57,24 @@ export const selectedWeightTransaction = createSelector(
 
 export const paginationData = createSelector(
   weightState,
-  ({ pageNumber, pageSize, recordCount }: WeightState): PaginationState => ({
-    pageNumber,
-    pageSize,
-    recordCount
+  (state: WeightState): PaginationState => ({
+    pageNumber: state.pageNumber,
+    pageSize: state.pageSize,
+    recordCount: state.recordCount
   })
+);
+
+export const pageSize = createSelector(
+  paginationData,
+  (state: PaginationState) => state.pageSize
+);
+
+export const currentPage = createSelector(
+  paginationData,
+  (state: PaginationState) => state.pageNumber
+);
+
+export const recordCount = createSelector(
+  paginationData,
+  (state: PaginationState) => state.recordCount
 );

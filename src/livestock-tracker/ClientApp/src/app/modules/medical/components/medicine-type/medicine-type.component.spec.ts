@@ -12,47 +12,45 @@ import {
   MedicineTypeService,
   MockMedicineTypeService
 } from '@medical/services';
-import { medicineTypeStore } from '@medical/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { CommandButtonTestingModule } from '@test/shared';
 
 import { MedicineTypeDetailComponent } from './medicine-type-detail/medicine-type-detail.component';
 import { MedicineTypeComponent } from './medicine-type.component';
+import { MedicineStore } from '@medical/store';
 
 describe('MedicineTypeComponent', () => {
   let component: MedicineTypeComponent;
   let fixture: ComponentFixture<MedicineTypeComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [MedicineTypeComponent, MedicineTypeDetailComponent],
-        providers: [
-          { provide: MedicineTypeService, useClass: MockMedicineTypeService },
-          provideMockStore({
-            selectors: [
-              {
-                selector: medicineTypeStore.selectors.getMedicineTypes,
-                value: []
-              }
-            ]
-          })
-        ],
-        imports: [
-          CommandButtonTestingModule,
-          NoopAnimationsModule,
-          ReactiveFormsModule,
-          MatTableModule,
-          MatToolbarModule,
-          MatListModule,
-          MatPaginatorModule,
-          MatIconModule,
-          MatDividerModule,
-          MatFormFieldModule
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [MedicineTypeComponent, MedicineTypeDetailComponent],
+      providers: [
+        { provide: MedicineTypeService, useClass: MockMedicineTypeService },
+        provideMockStore({
+          selectors: [
+            {
+              selector: MedicineStore.Medicine.selectors.medicineTypes,
+              value: []
+            }
+          ]
+        })
+      ],
+      imports: [
+        CommandButtonTestingModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatToolbarModule,
+        MatListModule,
+        MatPaginatorModule,
+        MatIconModule,
+        MatDividerModule,
+        MatFormFieldModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MedicineTypeComponent);

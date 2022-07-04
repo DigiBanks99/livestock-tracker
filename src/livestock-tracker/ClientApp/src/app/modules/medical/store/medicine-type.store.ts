@@ -1,24 +1,27 @@
 import { MedicineType } from '@core/models';
 import { MedicineTypeState } from '@core/store/medicine-type-state.interface';
 import { Dictionary } from '@ngrx/entity';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector
+} from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 import { medicineTypeAdapter } from './medicine-type.reducer';
 
-const getMedicineTypeState = createFeatureSelector<MedicineTypeState>(
-  MedicalStoreConstants.MedicineTypeStoreKey
+const medicineTypeState = createFeatureSelector<MedicineTypeState>(
+  MedicalStoreConstants.Medicine.StoreKey
 );
 
-const {
-  selectEntities: getMedicineTypeEntities,
-  selectIds: getMedicineTypeIds,
-  selectTotal: getMedicineTypeCount,
-} = medicineTypeAdapter.getSelectors(getMedicineTypeState);
+export const {
+  selectEntities: medicineTypeEntities,
+  selectIds: medicineTypeIds,
+  selectTotal: medicineTypeCount
+} = medicineTypeAdapter.getSelectors(medicineTypeState);
 
-const getMedicineTypes = createSelector(
-  getMedicineTypeEntities,
-  getMedicineTypeIds,
+export const medicineTypes = createSelector(
+  medicineTypeEntities,
+  medicineTypeIds,
   (entities: Dictionary<MedicineType>, ids: (string | number)[]) =>
     ids
       .map((id: string | number) => entities[id])
@@ -27,52 +30,38 @@ const getMedicineTypes = createSelector(
       )
 );
 
-const getSelectedMedicineTypeId = createSelector(
-  getMedicineTypeState,
+export const selectedMedicineTypeId = createSelector(
+  medicineTypeState,
   (state: MedicineTypeState) => state.selectedId
 );
 
-const getSelectedMedicineType = createSelector(
-  getMedicineTypeEntities,
-  getSelectedMedicineTypeId,
+export const selectedMedicineType = createSelector(
+  medicineTypeEntities,
+  selectedMedicineTypeId,
   (entities: Dictionary<MedicineType>, id: number) => entities[id]
 );
 
-const getPending = createSelector(
-  getMedicineTypeState,
+export const isPending = createSelector(
+  medicineTypeState,
   (state: MedicineTypeState) => state.isPending
 );
 
-const getError = createSelector(
-  getMedicineTypeState,
+export const error = createSelector(
+  medicineTypeState,
   (state: MedicineTypeState) => state.error
 );
 
-const getPageSize = createSelector(
-  getMedicineTypeState,
+export const pageSize = createSelector(
+  medicineTypeState,
   (state: MedicineTypeState) => state.pageSize
 );
 
-const getCurrentPage = createSelector(
-  getMedicineTypeState,
+export const currentPage = createSelector(
+  medicineTypeState,
   (state: MedicineTypeState) => state.pageNumber
 );
 
-const getRecordCount = createSelector(
-  getMedicineTypeState,
+export const recordCount = createSelector(
+  medicineTypeState,
   (state: MedicineTypeState) => state.recordCount
 );
-
-export const selectors = {
-  getMedicineTypeCount,
-  getMedicineTypeEntities,
-  getMedicineTypeIds,
-  getMedicineTypes,
-  getSelectedMedicineTypeId,
-  getSelectedMedicineType,
-  getPending,
-  getError,
-  getPageSize,
-  getCurrentPage,
-  getRecordCount,
-};

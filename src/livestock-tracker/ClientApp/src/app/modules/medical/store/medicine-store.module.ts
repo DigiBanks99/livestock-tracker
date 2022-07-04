@@ -1,35 +1,32 @@
 import { NgModule } from '@angular/core';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { RouterModule } from '@angular/router';
 import {
   MedicalTransactionService,
   MedicineTypeService
 } from '@medical/services';
-import {
-  medicalTransactionEffects,
-  medicalTransactionReducer,
-  medicineTypeEffects,
-  medicineTypeReducer
-} from '@medical/store';
 import { MedicalStoreConstants } from '@medical/store/constants';
+import { MedicalTransactionEffects } from '@medical/store/medical-transaction.effects';
+import { medicalTransactionReducer } from '@medical/store/medical-transaction.reducer';
+import { MedicineTypeEffects } from '@medical/store/medicine-type.effects';
+import { medicineTypeReducer } from '@medical/store/medicine-type.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   imports: [
-    EffectsModule.forFeature([
-      medicineTypeEffects.MedicineTypeEffects,
-      medicalTransactionEffects.MedicalTransactionEffects
-    ]),
+    EffectsModule.forFeature([MedicalTransactionEffects, MedicineTypeEffects]),
     MatSnackBarModule,
+    RouterModule,
     StoreModule.forFeature(
-      MedicalStoreConstants.MedicalTransactionStoreKey,
-      medicalTransactionReducer.medicalTransactionReducer
+      MedicalStoreConstants.Transactions.StoreKey,
+      medicalTransactionReducer
     ),
     StoreModule.forFeature(
-      MedicalStoreConstants.MedicineTypeStoreKey,
-      medicineTypeReducer.medicineTypeReducer
+      MedicalStoreConstants.Medicine.StoreKey,
+      medicineTypeReducer
     )
   ],
-  providers: [MedicineTypeService, MedicalTransactionService]
+  providers: [MedicalTransactionService, MedicineTypeService]
 })
 export class MedicineStoreModule {}

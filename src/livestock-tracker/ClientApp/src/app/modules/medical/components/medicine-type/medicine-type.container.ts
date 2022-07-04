@@ -15,10 +15,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MedicineType } from '@core/models';
 import { MedicineTypeState } from '@core/store/medicine-type-state.interface';
 import { MedicineTypeComponentModule } from '@medical/components/medicine-type/medicine-type.component';
-import {
-  medicineTypeActions,
-  medicineTypeStore
-} from '@medical/store';
+import { MedicineStore } from '@medical/store';
 import { MedicineStoreModule } from '@medical/store/medicine-store.module';
 import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
 import {
@@ -53,28 +50,28 @@ export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
 
   constructor(private store: Store<MedicineTypeState>) {
     this.medicineTypes$ = this.store.pipe(
-      select(medicineTypeStore.selectors.getMedicineTypes),
+      select(MedicineStore.Medicine.selectors.medicineTypes),
       takeUntil(this.destroyed$)
     );
     this.isPending$ = this.store.pipe(
-      select(medicineTypeStore.selectors.getPending),
+      select(MedicineStore.Medicine.selectors.isPending),
       takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(
-      select(medicineTypeStore.selectors.getError),
+      select(MedicineStore.Medicine.selectors.error),
       takeUntil(this.destroyed$)
     );
 
     this.pageNumber$ = this.store.pipe(
-      select(medicineTypeStore.selectors.getCurrentPage),
+      select(MedicineStore.Medicine.selectors.currentPage),
       takeUntil(this.destroyed$)
     );
     this.pageSize$ = this.store.pipe(
-      select(medicineTypeStore.selectors.getPageSize),
+      select(MedicineStore.Medicine.selectors.pageSize),
       takeUntil(this.destroyed$)
     );
     this.recordCount$ = this.store.pipe(
-      select(medicineTypeStore.selectors.getRecordCount),
+      select(MedicineStore.Medicine.selectors.recordCount),
       takeUntil(this.destroyed$)
     );
   }
@@ -89,7 +86,7 @@ export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
   }
 
   public onAdd(medicineType: MedicineType): void {
-    this.store.dispatch(medicineTypeActions.actions.addItem(medicineType));
+    this.store.dispatch(MedicineStore.Medicine.actions.addItem(medicineType));
   }
 
   public onPage(pageEvent: PageEvent): void {
@@ -99,12 +96,12 @@ export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
   }
 
   public onRemove(id: number): void {
-    this.store.dispatch(medicineTypeActions.actions.deleteItem(id));
+    this.store.dispatch(MedicineStore.Medicine.actions.deleteItem(id));
   }
 
   public onSave(medicineType: MedicineType): void {
     this.store.dispatch(
-      medicineTypeActions.actions.updateItem(medicineType, medicineType.id)
+      MedicineStore.Medicine.actions.updateItem(medicineType, medicineType.id)
     );
   }
 }

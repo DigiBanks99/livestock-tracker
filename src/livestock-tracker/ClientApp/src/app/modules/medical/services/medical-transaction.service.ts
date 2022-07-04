@@ -1,7 +1,13 @@
-import { Observable, of } from 'rxjs';
+import {
+  Observable,
+  of
+} from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import {
+  Inject,
+  Injectable
+} from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { BaseUrl } from '@core/di/base-url.injection-token';
 import { MedicalTransaction } from '@core/models';

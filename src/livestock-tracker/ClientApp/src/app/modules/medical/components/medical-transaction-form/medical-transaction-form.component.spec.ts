@@ -25,48 +25,44 @@ describe('MedicalTransactionFormComponent', () => {
   let component: MedicalTransactionFormComponent;
   let fixture: ComponentFixture<MedicalTransactionFormComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [MedicalTransactionFormComponent],
-        providers: [
-          { provide: MedicalTransactionService, useClass: MockMedicalService },
-          { provide: UnitService, useClass: MockUnitService },
-          { provide: MedicineTypeService, useClass: MockMedicineTypeService }
-        ],
-        imports: [
-          AnimalSelectTestingModule,
-          ReactiveFormsModule,
-          BrowserAnimationsModule,
-          MatCardModule,
-          MatOptionModule,
-          MatSelectModule,
-          MatFormFieldModule,
-          MatDatepickerModule,
-          MatInputModule,
-          MatIconModule,
-          HttpClientTestingModule,
-          NativeDateModule
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [MedicalTransactionFormComponent],
+      providers: [
+        { provide: MedicalTransactionService, useClass: MockMedicalService },
+        { provide: UnitService, useClass: MockUnitService },
+        { provide: MedicineTypeService, useClass: MockMedicineTypeService }
+      ],
+      imports: [
+        AnimalSelectTestingModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatCardModule,
+        MatOptionModule,
+        MatSelectModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatInputModule,
+        MatIconModule,
+        HttpClientTestingModule,
+        NativeDateModule
+      ]
+    }).compileComponents();
+  }));
 
-  beforeEach(
-    waitForAsync(() => {
-      fixture = TestBed.createComponent(MedicalTransactionFormComponent);
-      component = fixture.componentInstance;
-      component.medicalTransaction = {
-        animalId: 1,
-        dose: 1,
-        id: 1,
-        medicineId: 1,
-        transactionDate: new Date(Date.now()),
-        unitId: 1
-      };
-      fixture.detectChanges();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    fixture = TestBed.createComponent(MedicalTransactionFormComponent);
+    component = fixture.componentInstance;
+    component.transaction = {
+      animalId: 1,
+      dose: 1,
+      id: 1,
+      medicineId: 1,
+      transactionDate: new Date(Date.now()),
+      unitId: 1
+    };
+    fixture.detectChanges();
+  }));
 
   it('should create', () => {
     expect(component).toBeTruthy();

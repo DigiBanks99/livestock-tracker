@@ -23,28 +23,28 @@ import { select, Store } from '@ngrx/store';
 export class AnimalSelectContainer implements OnDestroy {
   @Input() public disabled = false;
 
-  public animal$: Observable<Animal>;
-  public animals$: Observable<Animal[]>;
+  public readonly animal$: Observable<Animal>;
+  public readonly animals$: Observable<Animal[]>;
 
-  private destroyed$ = new Subject<void>();
+  private readonly _destroyed$ = new Subject<void>();
 
   constructor(private store: Store<AppState>) {
     this.animals$ = this.store.pipe(
       select(getAnimals),
-      takeUntil(this.destroyed$)
+      takeUntil(this._destroyed$)
     );
     this.animal$ = this.store.pipe(
       select(getSelectedAnimal),
-      takeUntil(this.destroyed$)
+      takeUntil(this._destroyed$)
     );
   }
 
   public ngOnDestroy() {
-    this.destroyed$.next();
-    this.destroyed$.complete();
+    this._destroyed$.next();
+    this._destroyed$.complete();
   }
 
-  public onAnimalChanged(id: number) {
+  public onAnimalChanged(id: number): void {
     this.store.dispatch(new SelectAnimalAction(id));
   }
 }

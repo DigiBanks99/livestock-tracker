@@ -29,16 +29,16 @@ export class WeightTransactionListComponent {
     return environment.myFormats.medium.display.datetimeInput;
   }
 
+  public get displayedColumns(): string[] {
+    return this._displayColumns;
+  }
+
   private readonly _displayColumns: string[] = [
     'date',
     'weight',
     'unit',
     'star'
   ];
-
-  public get displayedColumns(): string[] {
-    return this._displayColumns;
-  }
 
   public onAdd(): void {
     this.addTransaction.emit();

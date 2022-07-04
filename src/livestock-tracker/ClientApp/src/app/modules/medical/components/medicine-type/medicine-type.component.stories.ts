@@ -5,6 +5,7 @@ import {
   MedicineTypeComponentModule
 } from '@medical/components/medicine-type/medicine-type.component';
 import { Meta, moduleMetadata, StoryFn } from '@storybook/angular';
+import { MedicineTestData } from '@test/medical';
 
 export default <Meta>{
   title: 'Medicine/Type/List',
@@ -26,15 +27,9 @@ export const Default: StoryFn<MedicineTypeComponent> = (
   args: MedicineTypeComponent
 ) => ({
   props: <MedicineTypeComponent>{
-    medicineTypes: [
-      {
-        description: 'Painkillers',
-        id: 1
-      },
-      {
-        description: 'Antibiotics',
-        id: 2
-      }
-    ]
+    medicineTypes: MedicineTestData.Medicine.LongList.slice(0, 10),
+    pageSize: 10,
+    pageNumber: 0,
+    recordCount: MedicineTestData.Medicine.LongList.length
   }
 });

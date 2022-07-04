@@ -9,23 +9,17 @@ import {
 } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule } from '@angular/material/icon';
-import {
-  MatPaginatorModule,
-  PageEvent
-} from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import {
-  Animal,
-  MedicineType,
-  NullAnimal,
-  Unit
-} from '@core/models';
+import { MedicineType, Unit } from '@core/models';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
+import { environment } from '@env/environment';
 import {
   AnimalSelectModule,
-  CommandButtonComponentModule
+  CommandButtonComponentModule,
+  LoaderModule
 } from '@shared/components';
 import { LookupPipeModule } from '@shared/pipes/lookup.pipe';
 
@@ -36,26 +30,28 @@ import { LookupPipeModule } from '@shared/pipes/lookup.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MedicalTransactionComponent {
-  @Input() public set currentAnimal(value: Animal) {
-    if (value != null) {
-      this._currentAnimal = value;
-    }
-  }
-  public get currentAnimal(): Animal {
-    return this._currentAnimal;
-  }
-  @Input() public medicalTransactions: MedicalTransaction[];
-  @Input() public medicineTypes: MedicineType[];
-  @Input() public units: Unit[];
-  @Input() public pageNumber: number;
-  @Input() public pageSize: number;
-  @Input() public recordCount: number;
+  @Input() public transactions: MedicalTransaction[] = [];
+  @Input() public medicineTypes: MedicineType[] = [];
+  @Input() public units: Unit[] = [];
+  @Input() public isLoadingTransactions = false;
+  @Input() public pageNumber = 0;
+  @Input() public pageSize = environment.pageSize;
+  @Input() public recordCount = 0;
 
-  @Output() public add = new EventEmitter<number>();
-  @Output() public page = new EventEmitter<PageEvent>();
-  @Output() public remove = new EventEmitter<number>();
+  @Output() public readonly addTransaction = new EventEmitter<void>();
+  @Output() public readonly deleteTransaction = new EventEmitter<number>();
+  @Output() public readonly pageChanged = new EventEmitter<PageEvent>();
 
-  public displayedColumns: string[] = [
+  public get dateFormat(): string {
+    return this._dateFormat;
+  }
+  public get displayedColumns(): string[] {
+    return this._displayedColumns;
+  }
+
+  private readonly _dateFormat: string =
+    environment.myFormats.medium.display.datetimeInput;
+  private readonly _displayedColumns: string[] = [
     'medicineType',
     'date',
     'dose',
@@ -63,18 +59,16 @@ export class MedicalTransactionComponent {
     'star'
   ];
 
-  private _currentAnimal: Animal = NullAnimal.instance;
-
   public onAdd() {
-    this.add.emit(this.currentAnimal.id);
+    this.addTransaction.emit();
   }
 
   public onPage(pageEvent: PageEvent) {
-    this.page.emit(pageEvent);
+    this.pageChanged.emit(pageEvent);
   }
 
-  public onRemove(id: number) {
-    this.remove.emit(id);
+  public onDelete(id: number) {
+    this.deleteTransaction.emit(id);
   }
 }
 
@@ -86,6 +80,7 @@ export class MedicalTransactionComponent {
     CommonModule,
     CommandButtonComponentModule,
     FlexLayoutModule,
+    LoaderModule,
     LookupPipeModule,
     MatIconModule,
     MatPaginatorModule,

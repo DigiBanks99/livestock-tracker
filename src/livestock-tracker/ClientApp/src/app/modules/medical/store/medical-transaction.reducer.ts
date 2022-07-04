@@ -1,5 +1,11 @@
-import { MedicalTransaction, SaveState } from '@core/models';
-import { animalTransactionReducer, MedicalTransactionState } from '@core/store';
+import {
+  MedicalTransaction,
+  SaveState
+} from '@core/models';
+import {
+  animalTransactionReducer,
+  MedicalTransactionState
+} from '@core/store';
 import { environment } from '@env/environment';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
@@ -30,7 +36,7 @@ export function medicalTransactionReducer(
   action: Action
 ): MedicalTransactionState {
   return animalTransactionReducer(
-    MedicalStoreConstants.MedicalTransactionKey,
+    MedicalStoreConstants.Transactions.ActionKey,
     medicalTransactionAdapter,
     state,
     action

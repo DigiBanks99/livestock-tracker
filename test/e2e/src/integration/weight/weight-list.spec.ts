@@ -32,6 +32,6 @@ describe('Weight Transaction List', () => {
 
   it.only('should navigate to the weight transaction detail view when clicking on an item link', () => {
     cy.contains('a', '13 January 2021, 18:00').click();
-    cy.location('pathname').should('match', /weight\/1\/edit\/[0-9]*/);
+    cy.location('pathname').should('match', /weight\/1\/edit\/\d+/);
   });
 });

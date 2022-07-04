@@ -23,12 +23,12 @@ export class AnimalSelectComponent {
   }
   @Input() public animals: Animal[];
   @Input() public disabled: boolean;
-  @Output() public animalChanged = new EventEmitter<number>();
+  @Output() public readonly animalChanged = new EventEmitter<number>();
 
-  private _animal: Animal = { ...NullAnimal.instance };
+  private _animal: Animal = NullAnimal.instance;
 
-  public onChange(id: number): void {
-    this._animal =
+  public onSelectionChanged(id: number): void {
+    this.animal =
       this.animals.find(
         (animalOption: Animal): boolean => +animalOption.id === id
       ) ?? null;

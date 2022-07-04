@@ -3,7 +3,6 @@ import {
   fetchAnimalTransactionsActionFactory,
   PayloadAction
 } from '@core/store';
-import { Action } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 
@@ -15,19 +14,6 @@ export enum MedicalActionTypes {
 export interface FetchSingleMedicalTransactionParams {
   animalId: number;
   id: number;
-}
-
-export class FetchMedicalTransactionsAction implements Action {
-  readonly type = MedicalActionTypes.FetchMedicalTransactions;
-  animalId: number;
-  pageNumber: number;
-  pageSize: number;
-
-  constructor(animalId = 0, pageNumber: number = 0, pageSize: number = 10) {
-    this.animalId = animalId;
-    this.pageNumber = pageNumber;
-    this.pageSize = pageSize;
-  }
 }
 
 export class FetchSingleMedicalTransactionAction
@@ -46,6 +32,6 @@ export class FetchSingleMedicalTransactionAction
 
 export const actions = {
   ...fetchAnimalTransactionsActionFactory<MedicalTransaction>(
-    MedicalStoreConstants.MedicalTransactionKey
+    MedicalStoreConstants.Transactions.ActionKey
   )
 };

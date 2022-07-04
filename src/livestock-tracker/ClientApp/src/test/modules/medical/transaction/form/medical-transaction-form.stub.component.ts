@@ -6,9 +6,9 @@ import { MedicalTransaction, MedicineType, Unit } from '@core/models';
   template: ''
 })
 export class MedicalTransactionFormStubComponent {
-  @Input() public selectedAnimalId = 0;
-  @Input() public medicalTransaction: MedicalTransaction = {
-    animalId: this.selectedAnimalId,
+  @Input() public animalId = 0;
+  @Input() public transaction: MedicalTransaction = {
+    animalId: this.animalId,
     dose: null,
     id: 0,
     medicineId: null,

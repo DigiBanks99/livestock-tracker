@@ -7,7 +7,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalSelectModule, LoaderModule } from '@shared/components';
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { LongAnimalList } from '@test/animal/test-data';
@@ -23,6 +23,7 @@ export default <Meta>{
       declarations: [WeightTransactionFormComponent],
       imports: [
         AnimalSelectModule,
+        BrowserAnimationsModule,
         CommonModule,
         FlexLayoutModule,
         LoaderModule,
@@ -32,7 +33,6 @@ export default <Meta>{
         MatFormFieldModule,
         MatInputModule,
         MatNativeDateModule,
-        NoopAnimationsModule,
         ReactiveFormsModule
       ],
       providers: [provideAnimalSelectMockStore()]

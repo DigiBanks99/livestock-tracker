@@ -11,37 +11,35 @@
       fxFill
     ></app-animal-select-container>
     <mat-form-field fxFill>
-      <mat-label>Medicine type</mat-label>
-      <mat-select
-        [value]="medicalTransaction.medicineId"
-        formControlName="medicineId"
-      >
+      <mat-label>Medicine Type</mat-label>
+      <mat-select formControlName="medicineId">
         <mat-option *ngFor="let medType of medicineTypes" [value]="medType.id">
           {{ medType.description }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field fxFill>
-      <mat-label>Transaction date</mat-label>
+      <mat-label>Transaction Date</mat-label>
       <input
         id="transactionDate"
+        formControlName="transactionDate"
         matInput
         [matDatepicker]="td"
-        formControlName="transactionDate"
-        required
+        placeholder="The date the medicine was administered"
       />
       <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
-      <mat-datepicker #td disabled="false"></mat-datepicker>
+      <mat-datepicker #td type="datetime"></mat-datepicker>
     </mat-form-field>
     <mat-form-field fxFill>
       <mat-label>Dosage</mat-label>
       <input
         id="dose"
+        name="dose"
         type="number"
         matInput
         formControlName="dose"
         class="currency-input"
-        required
+        placeholder="The dose of the medication administered"
       />
     </mat-form-field>
     <mat-form-field fxFill>
@@ -52,14 +50,40 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button
-      mat-raised-button
-      type="submit"
-      color="primary"
-      title="Submit changes"
-      [disabled]="form.invalid || !form.dirty || isPending"
-    >
-      Save
-    </button>
+
+    <div fxFill fxLayout="row" fxLayoutAlign="flex-start start">
+      <div fxFlex fxLayoutAlign="start start">
+        <button
+          type="button"
+          id="back"
+          mat-stroked-button
+          title="Back to the medical transaction list"
+          [disabled]="isSaving"
+          (click)="onNavigateBack()"
+        >
+          Back
+        </button>
+      </div>
+      <div fxFlex fxLayoutAlign="end start">
+        <button
+          type="button"
+          mat-button
+          title="Reset changes"
+          [disabled]="!form.dirty"
+          (click)="onReset()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          mat-raised-button
+          color="primary"
+          title="Submit changes"
+          [disabled]="form.invalid || !form.dirty || isSaving"
+        >
+          Save
+        </button>
+      </div>
+    </div>
   </form>
 </mat-card>

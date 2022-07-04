@@ -1,23 +1,30 @@
 import { LocationStrategy } from '@angular/common';
 import { MockLocationStrategy } from '@angular/common/testing';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  TestBed,
+  waitForAsync
+} from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
-import { medicineTypeStore } from '@medical/store';
+import {
+  getSelectedAnimalId,
+  getUnits
+} from '@core/store/selectors';
+import { MedicineStore } from '@medical/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { MedicalTransactionFormStubComponent } from '@test/medical';
 
-import { MedicalTransactionNewComponent } from './medical-transaction-new.component';
+import { MedicalTransactionNewPage } from './medical-transaction-new.page';
 
-describe('MedicalTransactionNewComponent', () => {
-  let component: MedicalTransactionNewComponent;
-  let fixture: ComponentFixture<MedicalTransactionNewComponent>;
+describe('MedicalTransactionNewPage', () => {
+  let component: MedicalTransactionNewPage;
+  let fixture: ComponentFixture<MedicalTransactionNewPage>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [
-          MedicalTransactionNewComponent,
+          MedicalTransactionNewPage,
           MedicalTransactionFormStubComponent
         ],
         providers: [
@@ -25,7 +32,7 @@ describe('MedicalTransactionNewComponent', () => {
             selectors: [
               { selector: getSelectedAnimalId, value: -1 },
               {
-                selector: medicineTypeStore.selectors.getMedicineTypes,
+                selector: MedicineStore.Medicine.selectors.medicineTypes,
                 value: []
               },
               {
@@ -42,7 +49,7 @@ describe('MedicalTransactionNewComponent', () => {
   );
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MedicalTransactionNewComponent);
+    fixture = TestBed.createComponent(MedicalTransactionNewPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

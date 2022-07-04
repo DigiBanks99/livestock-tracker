@@ -1,6 +1,10 @@
 export const MedicalStoreConstants = {
-  MedicineTypeKey: 'MEDICINE_TYPE',
-  MedicineTypeStoreKey: 'medicineTypes',
-  MedicalTransactionKey: 'MEDICAL_TRANSACTION',
-  MedicalTransactionStoreKey: 'medicalTransactions',
+  Medicine: {
+    StoreKey: 'medicineTypes',
+    ActionKey: 'MEDICINE_TYPE'
+  },
+  Transactions: {
+    ActionKey: 'MEDICAL_TRANSACTION',
+    StoreKey: 'medicalTransactions'
+  }
 };

@@ -5,7 +5,6 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{12DD062C-CB85-41D7-8FF7-3A4969F0F1E5}"
 	ProjectSection(SolutionItems) = preProject
-		.angulardoc.json = .angulardoc.json
 		.editorconfig = .editorconfig
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
