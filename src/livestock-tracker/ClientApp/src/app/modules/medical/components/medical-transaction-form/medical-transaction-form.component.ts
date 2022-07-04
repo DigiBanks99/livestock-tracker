@@ -1,20 +1,34 @@
 import { Subject } from 'rxjs';
 
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
+  NgModule,
   OnChanges,
   OnDestroy,
   Output,
   SimpleChanges
 } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicineType } from '@core/models/medicine-type.model';
 import { Unit } from '@core/models/unit.model';
+import { MatDatepickerModule } from '@matheo/datepicker';
+import { AnimalSelectModule } from '@shared/components';
 
 @Component({
   selector: 'app-medical-transaction-form',
@@ -123,3 +137,20 @@ export class MedicalTransactionFormComponent implements OnDestroy, OnChanges {
     });
   }
 }
+
+@NgModule({
+  declarations: [MedicalTransactionFormComponent],
+  exports: [MedicalTransactionFormComponent],
+  imports: [
+    AnimalSelectModule,
+    CommonModule,
+    FlexLayoutModule,
+    MatCardModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    ReactiveFormsModule
+  ]
+})
+export class MedicalTransactionFormComponentModule {}

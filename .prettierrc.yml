@@ -1,0 +1,14 @@
+endOfLine: lf
+singleQuote: true
+tabWidth: 4
+useTabs: false
+printWidth: 80
+semi: true
+jsxBracketSameLine: true
+trailingComma: none
+overrides:
+  - files:
+      - '*.yml'
+      - '*.yaml'
+    options:
+      tabWidth: 2

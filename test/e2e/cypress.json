@@ -7,5 +7,6 @@
   "screenshotsFolder": "result/screenshots",
   "supportFile": "src/support/index.js",
   "videosFolder": "result/videos",
-  "nodeVersion": "system"
+  "nodeVersion": "system",
+  "projectId": "trfftf"
 }

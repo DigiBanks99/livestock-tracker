@@ -1,7 +1,11 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {
+  NgModule,
+  Pipe,
+  PipeTransform
+} from '@angular/core';
 
 @Pipe({
-  name: 'lookup',
+  name: 'lookup'
 })
 export class LookupPipe implements PipeTransform {
   public transform(
@@ -20,3 +24,9 @@ export class LookupPipe implements PipeTransform {
     return lookupInstance[valuePropertyName];
   }
 }
+
+@NgModule({
+  declarations: [LookupPipe],
+  exports: [LookupPipe]
+})
+export class LookupPipeModule {}
