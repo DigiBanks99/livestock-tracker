@@ -2,14 +2,20 @@ import { Observable } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MedicineType, PagedData } from '@core/models';
+import {
+  MedicineType,
+  PagedData
+} from '@core/models';
 import { CrudEffects } from '@core/store';
 import { MedicineTypeService } from '@medical/services';
 import { Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
-import { actions, FetchMedicineTypesAction } from './medicine-type.actions';
+import {
+  actions,
+  FetchMedicineTypesAction
+} from './medicine-type.actions';
 
 @Injectable()
 export class MedicineTypeEffects extends CrudEffects<
@@ -26,7 +32,7 @@ export class MedicineTypeEffects extends CrudEffects<
       actions$,
       medicineTypeService,
       actions,
-      MedicalStoreConstants.MedicineTypeKey,
+      MedicalStoreConstants.Medicine.ActionKey,
       snackBar
     );
   }

@@ -26,5 +26,5 @@ export class FetchMedicineTypesAction implements Action {
 }
 
 export const actions = crudActionsFactory<MedicineType, number>(
-  MedicalStoreConstants.MedicineTypeKey
+  MedicalStoreConstants.Medicine.ActionKey
 );

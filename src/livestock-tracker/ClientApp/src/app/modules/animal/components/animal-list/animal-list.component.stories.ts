@@ -21,6 +21,7 @@ import { AgeCalculatorService } from '@shared/services';
 import { SharedModule } from '@shared/shared.module';
 import { moduleMetadata, Story } from '@storybook/angular';
 import { SvgService } from '@svg/services';
+import { MatButtonModule } from '@angular/material/button';
 
 export default {
   title: 'Animal/List',
@@ -34,6 +35,7 @@ export default {
         FlexLayoutModule,
         HttpClientModule,
         LoaderModule,
+        MatButtonModule,
         MatCheckboxModule,
         MatIconModule,
         MatTableModule,

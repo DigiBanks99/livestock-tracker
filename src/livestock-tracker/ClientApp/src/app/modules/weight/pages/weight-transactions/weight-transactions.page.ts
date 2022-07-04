@@ -1,14 +1,27 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject
+} from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
-import { Component, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnDestroy
+} from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import { AnimalState, PaginationState } from '@core/store';
+import { AnimalState } from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
 import { environment } from '@env/environment';
-import { select, Store } from '@ngrx/store';
-import { WeightState, WeightTransaction } from '@weight/interfaces';
+import {
+  select,
+  Store
+} from '@ngrx/store';
+import {
+  WeightState,
+  WeightTransaction
+} from '@weight/interfaces';
 import { WeightStore } from '@weight/store';
 
 @Component({
@@ -24,11 +37,11 @@ import { WeightStore } from '@weight/store';
   ></app-weight-transaction-list>`
 })
 export class WeightTransactionsPage implements OnDestroy {
-  public isLoadingTransactions$: Observable<boolean>;
-  public pageNumber$: Observable<number>;
-  public pageSize$: Observable<number>;
-  public recordCount$: Observable<number>;
-  public transactions$: Observable<WeightTransaction[]>;
+  public readonly isLoadingTransactions$: Observable<boolean>;
+  public readonly pageNumber$: Observable<number>;
+  public readonly pageSize$: Observable<number>;
+  public readonly recordCount$: Observable<number>;
+  public readonly transactions$: Observable<WeightTransaction[]>;
 
   private _animalId: number | null = null;
   private readonly _pageChanged$ = new BehaviorSubject<PageEvent>({
@@ -43,18 +56,19 @@ export class WeightTransactionsPage implements OnDestroy {
     private readonly _weightStore: Store<WeightState>,
     private readonly _router: Router
   ) {
-    this.setUpLoaderStates();
-    this.setUpPaginationState();
-    this.setUpTransactionFetch();
-    this.setUpTransactions();
+    this.isLoadingTransactions$ = this.setupLoaderStates();
+    this.transactions$ = this.setupTransactions();
 
-    this._animalStore
-      .pipe(select(getSelectedAnimalId), takeUntil(this._destroyed$))
-      .subscribe((animalId: number) => (this._animalId = animalId));
+    this.pageNumber$ = this.setupPageNumber();
+    this.pageSize$ = this.setupPageSize();
+    this.recordCount$ = this.setupRecordCount();
+
+    this.setupTransactionFetch();
+    this.setupAnimalId();
   }
 
   public onAddTransaction(): void {
-    this._router.navigateByUrl(`weight/${this._animalId}/new`);
+    this._router.navigate(['weight', this._animalId, 'new']);
   }
 
   public onDeleteTransaction(transactionId: number): void {
@@ -70,38 +84,20 @@ export class WeightTransactionsPage implements OnDestroy {
     this._destroyed$.complete();
   }
 
-  private setUpLoaderStates(): void {
-    this.isLoadingTransactions$ = this._weightStore.pipe(
+  private setupLoaderStates(): Observable<boolean> {
+    return this._weightStore.pipe(
       select(WeightStore.selectors.isFetching),
       takeUntil(this._destroyed$)
     );
   }
 
-  private setUpPaginationState(): void {
-    const paginationState$ = this._weightStore.pipe(
-      select(WeightStore.selectors.paginationData),
-      takeUntil(this._destroyed$)
-    );
-
-    this.pageNumber$ = paginationState$.pipe(
-      map(
-        (paginationState: PaginationState): number => paginationState.pageNumber
-      )
-    );
-    this.pageSize$ = paginationState$.pipe(
-      map(
-        (paginationState: PaginationState): number => paginationState.pageSize
-      )
-    );
-    this.recordCount$ = paginationState$.pipe(
-      map(
-        (paginationState: PaginationState): number =>
-          paginationState.recordCount
-      )
-    );
+  private setupAnimalId(): void {
+    this._animalStore
+      .pipe(select(getSelectedAnimalId), takeUntil(this._destroyed$))
+      .subscribe((animalId: number) => (this._animalId = animalId));
   }
 
-  private setUpTransactionFetch(): void {
+  private setupTransactionFetch(): void {
     this._pageChanged$
       .asObservable()
       .pipe(takeUntil(this._destroyed$))
@@ -115,9 +111,30 @@ export class WeightTransactionsPage implements OnDestroy {
       });
   }
 
-  private setUpTransactions(): void {
-    this.transactions$ = this._weightStore.pipe(
+  private setupTransactions(): Observable<WeightTransaction[]> {
+    return this._weightStore.pipe(
       select(WeightStore.selectors.weightTransactionsForAnimal),
+      takeUntil(this._destroyed$)
+    );
+  }
+
+  private setupRecordCount(): Observable<number> {
+    return this._weightStore.pipe(
+      select(WeightStore.selectors.recordCount),
+      takeUntil(this._destroyed$)
+    );
+  }
+
+  private setupPageSize(): Observable<number> {
+    return this._weightStore.pipe(
+      select(WeightStore.selectors.pageSize),
+      takeUntil(this._destroyed$)
+    );
+  }
+
+  private setupPageNumber(): Observable<number> {
+    return this._weightStore.pipe(
+      select(WeightStore.selectors.currentPage),
       takeUntil(this._destroyed$)
     );
   }

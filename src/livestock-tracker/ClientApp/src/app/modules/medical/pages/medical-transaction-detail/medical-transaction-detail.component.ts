@@ -28,11 +28,7 @@ import {
   getUnits
 } from '@core/store/selectors';
 import { MedicalTransactionFormComponentModule } from '@medical/components/medical-transaction-form/medical-transaction-form.component';
-import {
-  medicalTransactionActions,
-  medicalTransactionStore,
-  medicineTypeStore
-} from '@medical/store';
+import { MedicineStore } from '@medical/store';
 import { FetchSingleMedicalTransactionAction } from '@medical/store/medical-transaction.actions';
 import { MedicineStoreModule } from '@medical/store/medicine-store.module';
 import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
@@ -71,7 +67,7 @@ export class MedicalTransactionDetailComponent implements OnDestroy, OnInit {
     this.store.dispatch(new FetchMedicineTypesAction(0, 100, false));
 
     this.selectedMedicalTransaction$ = this.store.pipe(
-      select(medicalTransactionStore.selectors.getSelectedMedicalTransaction),
+      select(MedicineStore.Transactions.selectors.selectedMedicalTransaction),
       takeUntil(this.destroyed$)
     );
     this.selectedAnimalId$ = this.store.pipe(
@@ -79,15 +75,15 @@ export class MedicalTransactionDetailComponent implements OnDestroy, OnInit {
       takeUntil(this.destroyed$)
     );
     this.isPending$ = this.store.pipe(
-      select(medicalTransactionStore.selectors.getPending),
+      select(MedicineStore.Transactions.selectors.isFetching),
       takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(
-      select(medicalTransactionStore.selectors.getError),
+      select(MedicineStore.Transactions.selectors.error),
       takeUntil(this.destroyed$)
     );
     this.medicineTypes$ = this.store.pipe(
-      select(medicineTypeStore.selectors.getMedicineTypes),
+      select(MedicineStore.Medicine.selectors.medicineTypes),
       takeUntil(this.destroyed$)
     );
     this.units$ = this.store.pipe(select(getUnits), takeUntil(this.destroyed$));
@@ -100,7 +96,7 @@ export class MedicalTransactionDetailComponent implements OnDestroy, OnInit {
 
   public onSave(medicalTransaction: MedicalTransaction): void {
     this.store.dispatch(
-      medicalTransactionActions.actions.updateItem(
+      MedicineStore.Transactions.actions.updateItem(
         medicalTransaction,
         medicalTransaction.id
       )

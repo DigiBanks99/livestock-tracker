@@ -1,11 +1,14 @@
 import { Observable } from 'rxjs';
 import {
   filter,
-  map
+  map,
+  tap
 } from 'rxjs/operators';
 
+import { KeyValue } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { AnimalStore } from '@animal/store';
 import { MedicalTransaction } from '@core/models';
 import {
@@ -20,6 +23,7 @@ import {
   createEffect,
   ofType
 } from '@ngrx/effects';
+import { Update } from '@ngrx/entity';
 import {
   ROUTER_NAVIGATION,
   RouterNavigatedAction,
@@ -79,18 +83,43 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
       )
     );
 
+  public transactionAdded$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(`API_ADD_${MedicalStoreConstants.Transactions.StoreKey}`),
+      tap((action: PayloadAction<MedicalTransaction>) =>
+        this.router.navigate(['/medicine', action.payload.animalId])
+      ),
+      map(() => actions.resetSaveState())
+    )
+  );
+
+  public transactionUpdated$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(`API_UPDATE_${MedicalStoreConstants.Transactions.StoreKey}`),
+      tap(
+        (action: PayloadAction<KeyValue<number, Update<MedicalTransaction>>>) =>
+          this.router.navigate([
+            '/medicine',
+            action.payload.value.changes.animalId
+          ])
+      ),
+      map(() => actions.resetSaveState())
+    )
+  );
+
   constructor(
     actions$: Actions,
     animalStore: Store<AnimalState>,
     medicalTransactionService: MedicalTransactionService,
-    snackBar: MatSnackBar
+    snackBar: MatSnackBar,
+    private readonly router: Router
   ) {
     super(
       actions$,
       animalStore,
       medicalTransactionService,
       actions,
-      MedicalStoreConstants.MedicalTransactionKey,
+      MedicalStoreConstants.Transactions.ActionKey,
       snackBar
     );
   }

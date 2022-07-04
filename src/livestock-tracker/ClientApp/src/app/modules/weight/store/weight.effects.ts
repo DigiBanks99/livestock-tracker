@@ -1,5 +1,9 @@
 import { Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import {
+  filter,
+  map,
+  tap
+} from 'rxjs/operators';
 
 import { KeyValue } from '@angular/common';
 import { Injectable } from '@angular/core';
@@ -12,14 +16,21 @@ import {
   NoopAction,
   PayloadAction
 } from '@core/store';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {
+  Actions,
+  createEffect,
+  ofType
+} from '@ngrx/effects';
 import { Update } from '@ngrx/entity';
 import {
   ROUTER_NAVIGATION,
   RouterNavigatedAction,
   SerializedRouterStateSnapshot
 } from '@ngrx/router-store';
-import { Action, Store } from '@ngrx/store';
+import {
+  Action,
+  Store
+} from '@ngrx/store';
 import { WeightTransaction } from '@weight/interfaces';
 import { WeightService } from '@weight/services';
 import { WeightProviderModule } from '@weight/weight-provider.module';
@@ -53,27 +64,27 @@ export class WeightEffects extends FetchAnimalTransactionEffects<WeightTransacti
     )
   );
 
-  public animalSelectedInRoute$: Observable<
-    PayloadAction<number> | Action
-  > = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ROUTER_NAVIGATION),
-      filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
-        /weight\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
-      ),
-      map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
-        | PayloadAction<number>
-        | Action => {
-        const id = Number(
-          action.payload.routerState.root.firstChild.firstChild.params.animalId
-        );
-        if (Number.isNaN(id)) {
-          return NoopAction;
-        }
-        return AnimalStore.actions.selectItem(id);
-      })
-    )
-  );
+  public animalSelectedInRoute$: Observable<PayloadAction<number> | Action> =
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(ROUTER_NAVIGATION),
+        filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
+          /weight\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
+        ),
+        map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
+          | PayloadAction<number>
+          | Action => {
+          const id = Number(
+            action.payload.routerState.root.firstChild.firstChild.params
+              .animalId
+          );
+          if (Number.isNaN(id)) {
+            return NoopAction;
+          }
+          return AnimalStore.actions.selectItem(id);
+        })
+      )
+    );
 
   public transactionAdded$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(

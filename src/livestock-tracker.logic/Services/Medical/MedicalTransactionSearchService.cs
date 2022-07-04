@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Linq;
 using LivestockTracker.Abstractions.Filters;
 using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Database;
@@ -6,47 +8,48 @@ using LivestockTracker.Logic.Paging;
 using LivestockTracker.Logic.Sorting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.ComponentModel;
-using System.Linq;
 
 namespace LivestockTracker.Medicine;
 
 /// <summary>
-/// Provides fetch and pagination services for medical transaction.
+///     Provides fetch and pagination services for medical transaction.
 /// </summary>
 public class MedicalTransactionSearchService : IMedicalTransactionSearchService
 {
-    private readonly ILogger _logger;
     private readonly LivestockContext _livestockContext;
+    private readonly ILogger _logger;
 
     /// <summary>
-    /// Constructor.
+    ///     Constructor.
     /// </summary>
-    ///<param name="logger">The logger.</param>
-    ///<param name="livestockContext">The context that contains medical transaction.</param>
-    public MedicalTransactionSearchService(ILogger<MedicalTransactionSearchService> logger, LivestockContext livestockContext)
+    /// <param name="logger">The logger.</param>
+    /// <param name="livestockContext">The context that contains medical transaction.</param>
+    public MedicalTransactionSearchService(ILogger<MedicalTransactionSearchService> logger,
+        LivestockContext livestockContext)
     {
         _logger = logger;
         _livestockContext = livestockContext;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IPagedData<MedicalTransaction> Find(IQueryableFilter<MedicalTransaction> filter,
-                                                       ListSortDirection sortDirection,
-                                                       IPagingOptions pagingOptions)
+        ListSortDirection sortDirection,
+        IPagingOptions pagingOptions)
     {
-        _logger.LogInformation("Finding {PageSize} medical transaction for page {PageNumber}...", pagingOptions.PageSize, pagingOptions.PageNumber);
+        _logger.LogInformation("Finding {PageSize} medical transaction for page {PageNumber}...",
+            pagingOptions.PageSize, pagingOptions.PageNumber);
 
         return _livestockContext.MedicalTransactions
-                               .AsNoTracking()
-                               .SortByCriteria(t => t.TransactionDate, sortDirection)
-                               .MapToMedicalTransactions()
-                               .FilterOnObject(filter)
-                               .Paginate(pagingOptions);
+            .AsNoTracking()
+            .SortByCriteria(t => t.TransactionDate, sortDirection)
+            .MapToMedicalTransactions()
+            .FilterOnObject(filter)
+            .OrderByDescending(transaction => transaction.TransactionDate)
+            .Paginate(pagingOptions);
     }
 
     /// <summary>
-    /// Finds a medical transaction that matches a given key.
+    ///     Finds a medical transaction that matches a given key.
     /// </summary>
     /// <param name="key">The medical transaction's ID.</param>
     /// <returns>
@@ -58,12 +61,13 @@ public class MedicalTransactionSearchService : IMedicalTransactionSearchService
     public MedicalTransaction? GetOne(long key)
     {
         _logger.LogInformation("Finding a medical transaction that matches ID {TransactionId}...", key);
-        MedicalTransaction? transaction = _livestockContext.MedicalTransactions
-                                                          .AsNoTracking()
-                                                          .MapToMedicalTransactions()
-                                                          .FirstOrDefault(t => t.Id == key);
+        MedicalTransaction? transaction = _livestockContext.MedicalTransactions.AsNoTracking()
+            .MapToMedicalTransactions()
+            .FirstOrDefault(transaction => transaction.Id == key);
+
         if (transaction == null)
         {
+            _logger.LogWarning("An attempt was made to access a medical transaction that doesn't exist");
             return null;
         }
 

@@ -1,7 +1,7 @@
 <h1>Edit medical transaction</h1>
 <app-medical-transaction-form
-  [medicalTransaction]="selectedMedicalTransaction$ | async"
-  [selectedAnimalId]="selectedAnimalId$ | async"
+  [transaction]="selectedMedicalTransaction$ | async"
+  [animalId]="selectedAnimalId$ | async"
   [medicineTypes]="medicineTypes$ | async"
   [units]="units$ | async"
   (save)="onSave($event)"

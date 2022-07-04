@@ -1,5 +1,11 @@
-import { MedicineType, SaveState } from '@core/models';
-import { crudReducer, MedicineTypeState } from '@core/store';
+import {
+  MedicineType,
+  SaveState
+} from '@core/models';
+import {
+  crudReducer,
+  MedicineTypeState
+} from '@core/store';
 import { environment } from '@env/environment';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
@@ -33,7 +39,7 @@ export function medicineTypeReducer(
       return {
         ...state,
         ...crudReducer(
-          MedicalStoreConstants.MedicineTypeKey,
+          MedicalStoreConstants.Medicine.ActionKey,
           medicineTypeAdapter,
           state,
           action

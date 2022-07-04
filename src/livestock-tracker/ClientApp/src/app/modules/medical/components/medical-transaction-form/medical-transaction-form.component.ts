@@ -1,5 +1,3 @@
-import { Subject } from 'rxjs';
-
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -7,10 +5,8 @@ import {
   EventEmitter,
   Input,
   NgModule,
-  OnChanges,
-  OnDestroy,
   Output,
-  SimpleChanges
+  SecurityContext
 } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
@@ -19,15 +15,22 @@ import {
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import {
+  DomSanitizer,
+  SafeHtml
+} from '@angular/platform-browser';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicineType } from '@core/models/medicine-type.model';
 import { Unit } from '@core/models/unit.model';
+import { environment } from '@env/environment';
 import { MatDatepickerModule } from '@matheo/datepicker';
+import { MatDateFnsModule } from '@matheo/datepicker/date-fns';
 import { AnimalSelectModule } from '@shared/components';
 
 @Component({
@@ -63,78 +66,77 @@ import { AnimalSelectModule } from '@shared/components';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MedicalTransactionFormComponent implements OnDestroy, OnChanges {
-  @Input() public selectedAnimalId = 0;
-  @Input() public medicalTransaction: MedicalTransaction = {
-    animalId: this.selectedAnimalId,
-    dose: null,
-    id: 0,
-    medicineId: null,
-    transactionDate: new Date(),
-    unitId: null
-  };
+export class MedicalTransactionFormComponent {
+  @Input() public set animalId(value: number) {
+    if (value == null) {
+      return;
+    }
+
+    this.form.patchValue({
+      animalId: value
+    });
+  }
+  @Input() public set transaction(value: MedicalTransaction) {
+    if (value == null) {
+      return;
+    }
+
+    this.form.patchValue(value);
+  }
   @Input() public medicineTypes: MedicineType[] = [];
   @Input() public units: Unit[] = [];
-  @Input() isPending = false;
+  @Input() public isLoading = false;
+  @Input() public isSaving = false;
 
-  @Output() public save = new EventEmitter<MedicalTransaction>();
+  @Output() public readonly navigateBack = new EventEmitter();
+  @Output() public readonly save = new EventEmitter<MedicalTransaction>();
 
-  public form: FormGroup;
-  public medicineTypeControl: FormControl;
-  public transactionDateControl: FormControl;
-  public doseControl: FormControl;
-  public unitControl: FormControl;
+  public readonly form = new FormGroup({
+    id: new FormControl(0),
+    animalId: new FormControl(0),
+    medicineId: new FormControl(null, Validators.required),
+    transactionDate: new FormControl(null, Validators.required),
+    dose: new FormControl(null, [Validators.required]),
+    unitId: new FormControl(null, [Validators.required])
+  });
 
-  private destroyed$ = new Subject<void>();
-
-  constructor() {
-    this.initForm();
+  public get transactionDateCtrl(): FormControl {
+    return <FormControl>this.form.controls.transactionDate;
   }
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    if (null != changes.medicalTransaction) {
-      this.form.patchValue({
-        ...changes.medicalTransaction.currentValue,
-        animalId: this.selectedAnimalId
-      });
+  public get dateErrorMessage(): SafeHtml {
+    let sb = '';
+    const append = (appendage: string) =>
+      sb.length > 0 ? `${sb}<li>${appendage}</li>` : `<li>${appendage}</li>`;
+
+    if (this.transactionDateCtrl.errors.required) {
+      sb = append('Required');
     }
 
-    if (null != changes.selectedAnimalId) {
-      this.form.patchValue({
-        animalId: changes.selectedAnimalId.currentValue
-      });
+    if (this.transactionDateCtrl.errors.matDatepickerParse) {
+      const format = environment.myFormats.medium;
+      sb = append(
+        `The date is not in a known format. Expected format is: ${format}`
+      );
     }
+
+    return this._sanitizer.sanitize(SecurityContext.HTML, `<ul>${sb}</ul>`);
   }
 
-  public ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
+  constructor(private readonly _sanitizer: DomSanitizer) {}
+
+  public onNavigateBack(): void {
+    this.navigateBack.emit();
+  }
+
+  public onReset(): void {
+    this.form.reset();
   }
 
   public onSave(): void {
     if (this.form.valid) {
       this.save.next(this.form.value);
     }
-  }
-
-  private initForm(): void {
-    this.form = new FormGroup({
-      id: new FormControl(this.medicalTransaction.id),
-      animalId: new FormControl(this.selectedAnimalId),
-      medicineId: new FormControl(this.medicalTransaction.medicineId, [
-        Validators.required
-      ]),
-      transactionDate: new FormControl(
-        this.medicalTransaction.transactionDate,
-        [Validators.required]
-      ),
-      dose: new FormControl(this.medicalTransaction.dose, [
-        Validators.required
-      ]),
-      unitId: new FormControl(this.medicalTransaction.unitId, [
-        Validators.required
-      ])
-    });
   }
 }
 
@@ -145,8 +147,10 @@ export class MedicalTransactionFormComponent implements OnDestroy, OnChanges {
     AnimalSelectModule,
     CommonModule,
     FlexLayoutModule,
+    MatButtonModule,
     MatCardModule,
     MatDatepickerModule,
+    MatDateFnsModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,

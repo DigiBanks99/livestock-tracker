@@ -28,7 +28,11 @@ export class MedicineTypeComponent {
   @Output() public remove = new EventEmitter<number>();
   @Output() public save = new EventEmitter<MedicineType>();
 
-  public displayedColumns: string[] = ['description', 'star'];
+  private _displayedColumns: string[] = ['description', 'star'];
+
+  public get displayedColumns(): string[] {
+    return this._displayedColumns;
+  }
 
   public onAdd(): void {
     this.add.emit({

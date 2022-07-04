@@ -1,20 +1,17 @@
-<mat-form-field class="animal-select-container" appearance="standard" fxFlex>
-  <mat-select
-    [value]="animal?.id || null"
-    #animalSelector
-    (selectionChange)="onChange($event.value)"
-    [disabled]="disabled"
-  >
+<mat-form-field appearance="standard" class="animal-select-container" fxFlex>
+  <mat-select (selectionChange)="onSelectionChanged($event.value)" [value]="animal.id">
     <mat-select-trigger>
-      <app-animal-select-display [animal]="animal"></app-animal-select-display>
+      <app-animal-select-display [animal]="animal">
+      </app-animal-select-display>
     </mat-select-trigger>
     <mat-option
+      #option
       *ngFor="let animalOption of animals; let i = index"
       [value]="animalOption.id"
     >
-      <app-animal-select-display
-        [animal]="animalOption"
-      ></app-animal-select-display>
+      {{option.value}}
+      <app-animal-select-display [animal]="animalOption">
+      </app-animal-select-display>
     </mat-option>
   </mat-select>
 </mat-form-field>

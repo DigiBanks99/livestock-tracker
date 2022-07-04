@@ -14,7 +14,7 @@ import { SvgService } from '@svg/services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AnimalSelectDisplayComponent {
-  @Input() public set animal(value: Animal) {
+  @Input() public set animal(value: Animal | null) {
     if (value != null) {
       this._animal = value;
     }
@@ -23,7 +23,7 @@ export class AnimalSelectDisplayComponent {
     return this._animal;
   }
 
-  private _animal: Animal = { ...new NullAnimal() };
+  private _animal: Animal = NullAnimal.instance;
 
   constructor(private svgService: SvgService) {}
 

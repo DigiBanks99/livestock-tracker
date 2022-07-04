@@ -4,13 +4,20 @@ declare namespace Cypress {
     /**
      * Finds a mat-form-field backing field.
      *
-     * @param label The label for the mat form field
+     * @param label The label for the mat-form-field
      * @param backingElement The backing element type
      */
     findFormField(
       label: string,
       backingElement: string
     ): Chainable<JQuery<HTMLElement>>;
+    /**
+     * Selects an options in a mat-select form field.
+     *
+     * @param label The label for the mat-form-field
+     * @param option The option to be selected when the select opens
+     */
+    selectOption(label: string, option: string): Chainable<JQuery<HTMLElement>>;
     /**
      * Picks a date on a form with the given label.
      *

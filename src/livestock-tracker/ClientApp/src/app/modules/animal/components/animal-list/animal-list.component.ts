@@ -51,17 +51,6 @@ export class AnimalListComponent implements OnDestroy {
   @Output() public readonly showDetail = new EventEmitter<number>();
   @Output() public readonly pageChange = new EventEmitter<PageEvent>();
 
-  public readonly displayedColumns: string[] = [
-    'archive',
-    'type',
-    'number',
-    'age',
-    'sold'
-  ];
-  public readonly form = new FormGroup({
-    archiveIds: new FormArray([])
-  });
-
   public readonly currentPage$: Observable<number>;
   public readonly pageSize$: Observable<number>;
   public readonly recordCount$: Observable<number>;
@@ -72,9 +61,25 @@ export class AnimalListComponent implements OnDestroy {
 
   private _animals: Animal[] = [];
   private _idArrayMap = new Map();
+  private readonly _displayedColumns: string[] = [
+    'archive',
+    'type',
+    'number',
+    'age',
+    'sold'
+  ];
+  private readonly _form = new FormGroup({
+    archiveIds: new FormArray([])
+  });
 
   public get animalIdsArray(): FormArray {
     return <FormArray>this.form.controls.archiveIds;
+  }
+  public get displayedColumns(): string[] {
+    return this._displayedColumns;
+  }
+  public get form(): FormGroup {
+    return this._form;
   }
 
   constructor(
