@@ -1,13 +1,33 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
+  NgModule,
   Output
 } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
-import { Animal, MedicineType, NullAnimal, Unit } from '@core/models';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatIconModule } from '@angular/material/icon';
+import {
+  MatPaginatorModule,
+  PageEvent
+} from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { RouterModule } from '@angular/router';
+import {
+  Animal,
+  MedicineType,
+  NullAnimal,
+  Unit
+} from '@core/models';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
+import {
+  AnimalSelectModule,
+  CommandButtonComponentModule
+} from '@shared/components';
+import { LookupPipeModule } from '@shared/pipes/lookup.pipe';
 
 @Component({
   selector: 'app-medical-transaction',
@@ -57,3 +77,21 @@ export class MedicalTransactionComponent {
     this.remove.emit(id);
   }
 }
+
+@NgModule({
+  declarations: [MedicalTransactionComponent],
+  exports: [MedicalTransactionComponent],
+  imports: [
+    AnimalSelectModule,
+    CommonModule,
+    CommandButtonComponentModule,
+    FlexLayoutModule,
+    LookupPipeModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatToolbarModule,
+    RouterModule
+  ]
+})
+export class MedicalTransactionComponentModule {}

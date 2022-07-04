@@ -1,19 +1,45 @@
-import { Observable, Subject } from 'rxjs';
+import {
+  Observable,
+  Subject
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { MedicalTransaction, MedicineType, Unit } from '@core/models';
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  NgModule,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
+import {
+  ActivatedRoute,
+  Params,
+  Router,
+  RouterModule
+} from '@angular/router';
+import {
+  MedicalTransaction,
+  MedicineType,
+  Unit
+} from '@core/models';
 import { AppState } from '@core/store';
-import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
+import {
+  getSelectedAnimalId,
+  getUnits
+} from '@core/store/selectors';
+import { MedicalTransactionFormComponentModule } from '@medical/components/medical-transaction-form/medical-transaction-form.component';
 import {
   medicalTransactionActions,
   medicalTransactionStore,
   medicineTypeStore
 } from '@medical/store';
 import { FetchSingleMedicalTransactionAction } from '@medical/store/medical-transaction.actions';
+import { MedicineStoreModule } from '@medical/store/medicine-store.module';
 import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
-import { select, Store } from '@ngrx/store';
+import {
+  select,
+  Store
+} from '@ngrx/store';
 
 @Component({
   templateUrl: './medical-transaction-detail.component.html'
@@ -82,3 +108,15 @@ export class MedicalTransactionDetailComponent implements OnDestroy, OnInit {
     this.router.navigate(['medical']);
   }
 }
+
+@NgModule({
+  declarations: [MedicalTransactionDetailComponent],
+  exports: [MedicalTransactionDetailComponent],
+  imports: [
+    CommonModule,
+    MedicineStoreModule,
+    RouterModule,
+    MedicalTransactionFormComponentModule
+  ]
+})
+export class MedicalTransactionDetailComponentModule {}

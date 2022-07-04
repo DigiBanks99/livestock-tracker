@@ -1,19 +1,47 @@
-import { EMPTY, Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import {
+  EMPTY,
+  Observable,
+  Subject
+} from 'rxjs';
+import {
+  filter,
+  takeUntil
+} from 'rxjs/operators';
 
-import { Component, OnDestroy } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  Component,
+  NgModule,
+  OnDestroy
+} from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Router } from '@angular/router';
-import { Animal, MedicalTransaction, MedicineType, Unit } from '@core/models';
+import {
+  Router,
+  RouterModule
+} from '@angular/router';
+import {
+  Animal,
+  MedicalTransaction,
+  MedicineType,
+  Unit
+} from '@core/models';
 import { AppState } from '@core/store';
-import { getSelectedAnimal, getUnits } from '@core/store/selectors';
+import {
+  getSelectedAnimal,
+  getUnits
+} from '@core/store/selectors';
+import { MedicalTransactionComponentModule } from '@medical/components/medical-transaction/medical-transaction.component';
 import {
   medicalTransactionActions,
   medicalTransactionStore,
   medicineTypeStore
 } from '@medical/store';
+import { MedicineStoreModule } from '@medical/store/medicine-store.module';
 import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
-import { select, Store } from '@ngrx/store';
+import {
+  select,
+  Store
+} from '@ngrx/store';
 
 @Component({
   selector: 'app-medical-container',
@@ -79,18 +107,6 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
       select(medicalTransactionStore.selectors.getRecordCount),
       takeUntil(this.destroyed$)
     );
-
-    /*combineLatest([this.selectedAnimal$, this.page$])
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe(([animal, pageEvent]: [Animal, PageEvent]) => {
-        this._store.dispatch(
-          new FetchMedicalTransactionsAction(
-            animal.id,
-            pageEvent.pageIndex,
-            pageEvent.pageSize
-          )
-        );
-      });*/
   }
 
   public ngOnDestroy(): void {
@@ -99,7 +115,7 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
   }
 
   public onAdd(animalId: number): void {
-    this._router.navigate(['medical', animalId, 'new']);
+    this._router.navigate(['medicine', animalId, 'new']);
   }
 
   public onRemove(id: number): void {
@@ -110,3 +126,15 @@ export class MedicalTransactionContainerComponent implements OnDestroy {
     this.page$.next(pageEvent);
   }
 }
+
+@NgModule({
+  declarations: [MedicalTransactionContainerComponent],
+  exports: [MedicalTransactionContainerComponent],
+  imports: [
+    CommonModule,
+    MedicalTransactionComponentModule,
+    MedicineStoreModule,
+    RouterModule
+  ]
+})
+export class MedicalTransactionContainerComponentModule {}

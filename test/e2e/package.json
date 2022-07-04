@@ -7,8 +7,10 @@
     "start": "cypress open",
     "serve": "dotnet run --project ../../src/livestock-tracker/livestock-tracker.csproj -c Debug --launch-profile E2E",
     "cy:run": "cypress run",
+    "cy:ci": "cypress run --record --key 86474830-7e99-43f2-a767-1833407d02d1",
     "cy:start": "wait-on https-get://localhost:5001/ && cypress open",
     "cy:open": "npm-run-all --parallel serve cy:start",
+    "ci": "env-cmd start-server-and-test serve https-get://localhost:5001/ cy:ci",
     "test": "env-cmd start-server-and-test serve https-get://localhost:5001/ cy:run"
   },
   "repository": {

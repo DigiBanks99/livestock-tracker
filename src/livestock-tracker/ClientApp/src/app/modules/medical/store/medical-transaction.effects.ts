@@ -1,9 +1,11 @@
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import {
+  filter,
+  map
+} from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { AnimalStore } from '@animal/store';
 import { MedicalTransaction } from '@core/models';
 import {
@@ -13,13 +15,20 @@ import {
   PayloadAction
 } from '@core/store';
 import { MedicalTransactionService } from '@medical/services';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {
+  Actions,
+  createEffect,
+  ofType
+} from '@ngrx/effects';
 import {
   ROUTER_NAVIGATION,
   RouterNavigatedAction,
   SerializedRouterStateSnapshot
 } from '@ngrx/router-store';
-import { Action, Store } from '@ngrx/store';
+import {
+  Action,
+  Store
+} from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 import { actions } from './medical-transaction.actions';
@@ -32,21 +41,19 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
     this.actions$.pipe(
       ofType(ROUTER_NAVIGATION),
       filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
-        /medical\/[0-9]*\/edit/.test(action.payload.event.urlAfterRedirects)
+        /medicine\/[0-9]*\/edit/.test(action.payload.event.urlAfterRedirects)
       ),
-      map(
-        (
-          action: RouterNavigatedAction<SerializedRouterStateSnapshot>
-        ): PayloadAction<number> | Action => {
-          const id = Number(
-            action.payload.routerState.root.firstChild.firstChild.params.id
-          );
-          if (Number.isNaN(id)) {
-            return NoopAction;
-          }
-          return this.transactionActions.selectItem(id);
+      map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
+        | PayloadAction<number>
+        | Action => {
+        const id = Number(
+          action.payload.routerState.root.firstChild.firstChild.params.id
+        );
+        if (Number.isNaN(id)) {
+          return NoopAction;
         }
-      )
+        return this.transactionActions.selectItem(id);
+      })
     )
   );
 
@@ -55,22 +62,20 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
       this.actions$.pipe(
         ofType(ROUTER_NAVIGATION),
         filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
-          /medical\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
+          /medicine\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
         ),
-        map(
-          (
-            action: RouterNavigatedAction<SerializedRouterStateSnapshot>
-          ): PayloadAction<number> | Action => {
-            const id = Number(
-              action.payload.routerState.root.firstChild.firstChild.params
-                .animalId
-            );
-            if (Number.isNaN(id)) {
-              return NoopAction;
-            }
-            return AnimalStore.actions.selectItem(id);
+        map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
+          | PayloadAction<number>
+          | Action => {
+          const id = Number(
+            action.payload.routerState.root.firstChild.firstChild.params
+              .animalId
+          );
+          if (Number.isNaN(id)) {
+            return NoopAction;
           }
-        )
+          return AnimalStore.actions.selectItem(id);
+        })
       )
     );
 
@@ -78,8 +83,7 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
     actions$: Actions,
     animalStore: Store<AnimalState>,
     medicalTransactionService: MedicalTransactionService,
-    snackBar: MatSnackBar,
-    private readonly router: Router
+    snackBar: MatSnackBar
   ) {
     super(
       actions$,

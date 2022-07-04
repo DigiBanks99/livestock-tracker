@@ -1,23 +1,30 @@
-import { Observable, Subject } from 'rxjs';
+import {
+  Observable,
+  Subject
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  NgModule,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MedicineType } from '@core/models';
 import { MedicineTypeState } from '@core/store/medicine-type-state.interface';
 import { MedicineTypeComponentModule } from '@medical/components/medicine-type/medicine-type.component';
-import { MedicineTypeService } from '@medical/services';
 import {
   medicineTypeActions,
-  medicineTypeEffects,
-  medicineTypeReducer,
   medicineTypeStore
 } from '@medical/store';
-import { MedicalStoreConstants } from '@medical/store/constants';
+import { MedicineStoreModule } from '@medical/store/medicine-store.module';
 import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
-import { EffectsModule } from '@ngrx/effects';
-import { select, Store, StoreModule } from '@ngrx/store';
+import {
+  select,
+  Store
+} from '@ngrx/store';
 
 @Component({
   selector: 'app-medicine-type-container',
@@ -105,15 +112,6 @@ export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
 @NgModule({
   declarations: [MedicineTypeContainerComponent],
   exports: [MedicineTypeContainerComponent],
-  imports: [
-    CommonModule,
-    EffectsModule.forFeature([medicineTypeEffects.MedicineTypeEffects]),
-    MedicineTypeComponentModule,
-    StoreModule.forFeature(
-      MedicalStoreConstants.MedicineTypeStoreKey,
-      medicineTypeReducer.medicineTypeReducer
-    )
-  ],
-  providers: [MedicineTypeService]
+  imports: [CommonModule, MedicineTypeComponentModule, MedicineStoreModule]
 })
 export class MedicineTypeContainerComponentModule {}

@@ -1,6 +1,6 @@
 describe('Medical Transaction List', () => {
   beforeEach(() => {
-    cy.visit('medical/1');
+    cy.visit('medicine/1');
   });
 
   it.only(`should list the animal's medical transactions`, () => {
@@ -27,11 +27,11 @@ describe('Medical Transaction List', () => {
 
   it.only('should navigate to the medical transaction capture form when clicking the add button', () => {
     cy.contains('button', 'add').click();
-    cy.location('pathname').should('equal', '/medical/1/new');
+    cy.location('pathname').should('equal', '/medicine/1/new');
   });
 
   it.only('should navigate to the medical transaction detail view when clicking on an item link', () => {
     cy.contains('a', 'Antibiotics').click();
-    cy.location('pathname').should('match', /medical\/1\/edit\/[0-9]*/);
+    cy.location('pathname').should('match', /medicine\/1\/edit\/\d+/);
   });
 });

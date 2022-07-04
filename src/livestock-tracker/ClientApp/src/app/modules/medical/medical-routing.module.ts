@@ -4,9 +4,18 @@ import {
   Routes
 } from '@angular/router';
 
-import { MedicalTransactionDetailComponent } from './components/medical-transaction-detail/medical-transaction-detail.component';
-import { MedicalTransactionNewComponent } from './components/medical-transaction-new/medical-transaction-new.component';
-import { MedicalTransactionContainerComponent } from './components/medical-transaction/medical-transaction.container';
+import {
+  MedicalTransactionDetailComponent,
+  MedicalTransactionDetailComponentModule
+} from './components/medical-transaction-detail/medical-transaction-detail.component';
+import {
+  MedicalTransactionNewComponent,
+  MedicalTransactionNewComponentModule
+} from './components/medical-transaction-new/medical-transaction-new.component';
+import {
+  MedicalTransactionContainerComponent,
+  MedicalTransactionContainerComponentModule
+} from './components/medical-transaction/medical-transaction.container';
 import {
   MedicineTypeContainerComponent,
   MedicineTypeContainerComponentModule
@@ -16,7 +25,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '1'
+    component: MedicineTypeContainerComponent
   },
   {
     path: 'type',
@@ -43,7 +52,10 @@ const routes: Routes = [
 @NgModule({
   imports: [
     RouterModule.forChild(routes),
-    MedicineTypeContainerComponentModule
+    MedicineTypeContainerComponentModule,
+    MedicalTransactionContainerComponentModule,
+    MedicalTransactionNewComponentModule,
+    MedicalTransactionDetailComponentModule
   ],
   exports: [RouterModule]
 })
