@@ -1,17 +1,14 @@
 import { NgModule } from '@angular/core';
-import {
-  RouterModule,
-  Routes
-} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 import {
   MedicineTypeContainerComponent,
   MedicineTypeContainerComponentModule
 } from './components/medicine-type/medicine-type.container';
 import {
-  MedicalTransactionDetailComponent,
-  MedicalTransactionDetailComponentModule
-} from './pages/medical-transaction-detail/medical-transaction-detail.component';
+  MedicalTransactionDetailComponentModule,
+  MedicalTransactionDetailPage
+} from './pages/medical-transaction-detail/medical-transaction-detail.page';
 import {
   MedicalTransactionNewPage,
   MedicalTransactionNewPageModule
@@ -45,7 +42,7 @@ const routes: Routes = [
   {
     path: ':animalId/edit/:id',
     pathMatch: 'full',
-    component: MedicalTransactionDetailComponent
+    component: MedicalTransactionDetailPage
   }
 ];
 

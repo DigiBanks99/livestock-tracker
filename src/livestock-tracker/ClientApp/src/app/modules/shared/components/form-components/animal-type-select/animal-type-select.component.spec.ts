@@ -63,25 +63,23 @@ describe('AnimalTypeSelectComponent', () => {
   let hostComponent: TestComponent;
   let hostFixture: ComponentFixture<TestComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          AnimalTypeSelectComponent,
-          AnimalTypeSelectDisplayStubComponent,
-          TestComponent
-        ],
-        providers: [SvgService],
-        imports: [
-          NoopAnimationsModule,
-          FormsModule,
-          MatIconModule,
-          MatSelectModule,
-          ReactiveFormsModule
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AnimalTypeSelectComponent,
+        AnimalTypeSelectDisplayStubComponent,
+        TestComponent
+      ],
+      providers: [SvgService],
+      imports: [
+        NoopAnimationsModule,
+        FormsModule,
+        MatIconModule,
+        MatSelectModule,
+        ReactiveFormsModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AnimalTypeSelectComponent);

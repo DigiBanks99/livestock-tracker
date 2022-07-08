@@ -1,11 +1,5 @@
-import {
-  MedicalTransaction,
-  SaveState
-} from '@core/models';
-import {
-  animalTransactionReducer,
-  MedicalTransactionState
-} from '@core/store';
+import { MedicalTransaction, SaveState } from '@core/models';
+import { animalTransactionReducer, MedicalTransactionState } from '@core/store';
 import { environment } from '@env/environment';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';

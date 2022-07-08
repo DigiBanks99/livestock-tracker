@@ -14,7 +14,7 @@ interface TestState extends CrudState<TestEntity, number> {}
 
 const testKey = 'TEST';
 const entityAdapter = createEntityAdapter<TestEntity>();
-const testActions = crudActionsFactory<TestEntity, number>(testKey);
+const testActions = crudActionsFactory<TestEntity, number, number>(testKey);
 
 describe('Crud Reducers', () => {
   const testReducer = (s: TestState, a: Action): TestState =>

@@ -4,9 +4,8 @@ import { feedingTransactionAdapter } from '@feed/store/feeding-transaction.reduc
 import { Dictionary } from '@ngrx/entity';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-const getFeedingTransactionState = createFeatureSelector<
-  FeedingTransactionState
->('feedingTransactions');
+const getFeedingTransactionState =
+  createFeatureSelector<FeedingTransactionState>('feedingTransactions');
 
 const {
   selectAll: getAllFeedingTransactions,

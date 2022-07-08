@@ -84,18 +84,6 @@ describe('WeightTransactionFormComponent', () => {
     });
   });
 
-  it('should emit navigateBack when the back button is clicked', () => {
-    const backSpy = spyOn(component.navigateBack, 'emit');
-    const backButton = fixture.debugElement.query(By.css('button#back'));
-    const buttonEl: HTMLButtonElement = backButton.nativeElement;
-    buttonEl.dispatchEvent(new Event('click'));
-    component.navigateBack.subscribe();
-
-    fixture.detectChanges();
-
-    expect(backSpy).toHaveBeenCalledTimes(1);
-  });
-
   it('should update the animalId control on the form if animalId is set', () => {
     component.animalId = 5;
 

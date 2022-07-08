@@ -1,27 +1,14 @@
-import {
-  BehaviorSubject,
-  Observable,
-  Subject
-} from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import {
-  Component,
-  OnDestroy
-} from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AnimalState } from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
 import { environment } from '@env/environment';
-import {
-  select,
-  Store
-} from '@ngrx/store';
-import {
-  WeightState,
-  WeightTransaction
-} from '@weight/interfaces';
+import { select, Store } from '@ngrx/store';
+import { WeightState, WeightTransaction } from '@weight/interfaces';
 import { WeightStore } from '@weight/store';
 
 @Component({

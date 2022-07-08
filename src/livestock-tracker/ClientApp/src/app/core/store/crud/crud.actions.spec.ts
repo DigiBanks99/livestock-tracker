@@ -4,7 +4,7 @@ import { Update } from '@ngrx/entity';
 import { crudActionsFactory } from './crud.actions';
 
 describe('Crud Actions', () => {
-  const actions = crudActionsFactory<Unit, number>('TEST');
+  const actions = crudActionsFactory<Unit, number, number>('TEST');
 
   describe('addItem', () => {
     let item: Unit;

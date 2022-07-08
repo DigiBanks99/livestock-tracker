@@ -6,9 +6,8 @@ import { animalsAdapter } from './animal.reducers';
 
 export const getAnimalsState = animalState;
 
-export const {
-  selectEntities: getAnimalsEntities
-} = animalsAdapter.getSelectors(getAnimalsState);
+export const { selectEntities: getAnimalsEntities } =
+  animalsAdapter.getSelectors(getAnimalsState);
 
 export const fetchAnimalsPendingState = createSelector(
   getAnimalsState,

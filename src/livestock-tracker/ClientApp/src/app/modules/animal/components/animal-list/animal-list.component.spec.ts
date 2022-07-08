@@ -29,48 +29,46 @@ describe('Animal List Component', () => {
   let fixture: ComponentFixture<AnimalListComponent>;
   let spy: jasmine.SpyObj<AgeCalculatorService>;
 
-  beforeEach(
-    waitForAsync(() => {
-      spy = jasmine.createSpyObj('AgeCalculatorService', ['calculateAge']);
+  beforeEach(waitForAsync(() => {
+    spy = jasmine.createSpyObj('AgeCalculatorService', ['calculateAge']);
 
-      TestBed.configureTestingModule({
-        declarations: [AnimalListComponent],
-        providers: [
-          { provide: AgeCalculatorService, useValue: spy },
-          SvgService,
-          provideMockStore({
-            selectors: [
-              { selector: AnimalStore.selectors.getPageSize, value: 10 },
-              { selector: AnimalStore.selectors.getCurrentPage, value: 0 },
-              { selector: AnimalStore.selectors.getRecordCount, value: 0 }
-            ]
-          }),
-          { provide: LocationStrategy, useClass: MockLocationStrategy }
-        ],
-        imports: [
-          CommandButtonTestingModule,
-          MatIconModule,
-          MatToolbarModule,
-          MatDividerModule,
-          MatListModule,
-          ReactiveFormsModule,
-          MatFormFieldModule,
-          MatIconModule,
-          MatDatepickerModule,
-          MatInputModule,
-          MatSelectModule,
-          MatCheckboxModule,
-          NativeDateModule,
-          MatFormFieldModule,
-          MatInputModule,
-          MatTableModule,
-          RouterTestingModule,
-          MatSnackBarModule
-        ],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA]
-      }).compileComponents();
-    })
-  );
+    TestBed.configureTestingModule({
+      declarations: [AnimalListComponent],
+      providers: [
+        { provide: AgeCalculatorService, useValue: spy },
+        SvgService,
+        provideMockStore({
+          selectors: [
+            { selector: AnimalStore.selectors.getPageSize, value: 10 },
+            { selector: AnimalStore.selectors.getCurrentPage, value: 0 },
+            { selector: AnimalStore.selectors.getRecordCount, value: 0 }
+          ]
+        }),
+        { provide: LocationStrategy, useClass: MockLocationStrategy }
+      ],
+      imports: [
+        CommandButtonTestingModule,
+        MatIconModule,
+        MatToolbarModule,
+        MatDividerModule,
+        MatListModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatDatepickerModule,
+        MatInputModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        NativeDateModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTableModule,
+        RouterTestingModule,
+        MatSnackBarModule
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AnimalListComponent);

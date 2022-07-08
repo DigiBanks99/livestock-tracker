@@ -26,7 +26,8 @@ export class SelectFeedTransactionAction implements Action {
 }
 
 export class FetchSingleFeedTransactionAction
-  implements PayloadAction<FetchSingleFeedTransactionParams> {
+  implements PayloadAction<FetchSingleFeedTransactionParams>
+{
   readonly type = FeedingTranscationActionTypes.FetchSingleFeedTransaction;
   payload: FetchSingleFeedTransactionParams;
 
@@ -48,6 +49,8 @@ export class FetchFeedingTransactionAction implements Action {
   ) {}
 }
 
-export const actions = crudActionsFactory<FeedingTransaction, number>(
-  FeedingTransactionKey
-);
+export const actions = crudActionsFactory<
+  FeedingTransaction,
+  number,
+  FetchSingleFeedTransactionParams
+>(FeedingTransactionKey);

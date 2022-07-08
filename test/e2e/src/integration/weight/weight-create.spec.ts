@@ -13,7 +13,7 @@ describe('Weight Transaction Creation', () => {
     );
     cy.findFormField('Weight', 'input').should('exist');
 
-    cy.contains('button', 'Back').should('exist').should('be.enabled');
+    cy.contains('a', 'Back').should('exist');
     cy.contains('button', 'Cancel').should('exist').should('be.disabled');
     cy.contains('button', 'Save').should('exist').should('be.disabled');
   });

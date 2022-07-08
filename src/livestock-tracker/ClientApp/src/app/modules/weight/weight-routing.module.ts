@@ -7,7 +7,7 @@ import {
 } from '@weight/pages';
 
 const routes: Routes = [
-  { path: '', component: WeightTransactionsPage, pathMatch: 'full' },
+  { path: '', redirectTo: '1', pathMatch: 'full' },
   { path: ':animalId', component: WeightTransactionsPage, pathMatch: 'full' },
   { path: ':animalId/new', component: WeightTransactionsNewPage },
   { path: ':animalId/edit/:id', component: WeightTransactionsEditPage }

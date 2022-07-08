@@ -40,11 +40,10 @@ public class MedicalTransactionSearchService : IMedicalTransactionSearchService
             pagingOptions.PageSize, pagingOptions.PageNumber);
 
         return _livestockContext.MedicalTransactions
-            .AsNoTracking()
-            .SortByCriteria(t => t.TransactionDate, sortDirection)
+            //.AsNoTracking()
             .MapToMedicalTransactions()
             .FilterOnObject(filter)
-            .OrderByDescending(transaction => transaction.TransactionDate)
+            .SortByCriteria(t => t.TransactionDate, sortDirection)
             .Paginate(pagingOptions);
     }
 

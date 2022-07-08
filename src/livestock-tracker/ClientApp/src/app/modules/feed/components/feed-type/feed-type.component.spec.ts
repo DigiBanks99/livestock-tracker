@@ -18,28 +18,24 @@ describe('FeedTypeComponent', () => {
   let component: FeedTypeComponent;
   let fixture: ComponentFixture<FeedTypeComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [FeedTypeComponent, FeedTypeDetailComponent],
-        providers: [
-          { provide: FeedTypeService, useClass: MockFeedTypeService }
-        ],
-        imports: [
-          CommandButtonTestingModule,
-          NoopAnimationsModule,
-          ReactiveFormsModule,
-          MatToolbarModule,
-          MatDividerModule,
-          MatListModule,
-          MatPaginatorModule,
-          MatIconModule,
-          MatFormFieldModule,
-          MatTableModule
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [FeedTypeComponent, FeedTypeDetailComponent],
+      providers: [{ provide: FeedTypeService, useClass: MockFeedTypeService }],
+      imports: [
+        CommandButtonTestingModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        MatToolbarModule,
+        MatDividerModule,
+        MatListModule,
+        MatPaginatorModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatTableModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FeedTypeComponent);

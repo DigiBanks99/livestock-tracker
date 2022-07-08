@@ -29,7 +29,7 @@ import { WeightTransaction } from '@weight/interfaces';
         },
         display: {
           dateInput: 'P',
-          datetimeInput: 'Pp',
+          datetimeInput: 'yyyy/MM/dd, HH:mm',
           timeInput: 'p',
           monthInput: 'MMM yyyy',
           yearInput: 'yyyy',
@@ -46,7 +46,11 @@ import { WeightTransaction } from '@weight/interfaces';
   ]
 })
 export class WeightTransactionFormComponent {
-  @Input() public set animalId(value: number) {
+  @Input() public isLoading = false;
+  @Input() public isSaving = false;
+  @Input() public backLink = '../';
+  @Input()
+  public set animalId(value: number) {
     if (value == null) {
       return;
     }
@@ -55,19 +59,16 @@ export class WeightTransactionFormComponent {
       animalId: value
     });
   }
-  @Input() public set transaction(value: WeightTransaction) {
+  @Input()
+  public set transaction(value: WeightTransaction) {
     if (value == null) {
       return;
     }
 
     this.form.patchValue(value);
   }
-  @Input() public isLoading = false;
-  @Input() public isSaving = false;
 
-  @Output() public readonly navigateBack = new EventEmitter();
   @Output() public readonly save = new EventEmitter<WeightTransaction>();
-
   public readonly form: FormGroup = new FormGroup({
     id: new FormControl(0),
     animalId: new FormControl(0),
@@ -75,6 +76,8 @@ export class WeightTransactionFormComponent {
     weight: new FormControl(null, Validators.required)
   });
   public readonly gapSize = '16px';
+
+  constructor(private readonly _sanitizer: DomSanitizer) {}
 
   public get transactionDateCtrl(): FormControl {
     return <FormControl>this.form.controls.transactionDate;
@@ -97,12 +100,6 @@ export class WeightTransactionFormComponent {
     }
 
     return this._sanitizer.sanitize(SecurityContext.HTML, `<ul>${sb}</ul>`);
-  }
-
-  constructor(private readonly _sanitizer: DomSanitizer) {}
-
-  public onNavigateBack(): void {
-    this.navigateBack.emit();
   }
 
   public onReset(): void {

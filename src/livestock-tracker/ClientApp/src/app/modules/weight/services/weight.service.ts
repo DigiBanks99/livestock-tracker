@@ -1,10 +1,7 @@
 import { Observable } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import {
-  Inject,
-  Injectable
-} from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { BaseUrl } from '@core/di';
 import { PagedData } from '@core/models';
@@ -51,8 +48,8 @@ export class WeightService
     });
   }
 
-  public get(key: WeightTransaction): Observable<WeightTransaction> {
-    return this._http.get<WeightTransaction>(`${this._url}/${key}`);
+  public get(payload: WeightTransaction): Observable<WeightTransaction> {
+    return this._http.get<WeightTransaction>(`${this._url}/${payload.id}`);
   }
 
   public add(item: WeightTransaction): Observable<WeightTransaction> {

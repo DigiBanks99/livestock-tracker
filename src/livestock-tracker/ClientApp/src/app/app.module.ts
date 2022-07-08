@@ -12,6 +12,7 @@ import { MatNativeDateModule } from '@matheo/datepicker/core';
 import { EffectsModule } from '@ngrx/effects';
 import {
   NavigationActionTiming,
+  routerReducer,
   StoreRouterConnectingModule
 } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
@@ -43,6 +44,9 @@ import { AppComponent } from './app.component';
 
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
+    StoreModule.forRoot({
+      router: routerReducer
+    }),
     StoreRouterConnectingModule.forRoot({
       navigationActionTiming: NavigationActionTiming.PreActivation
     }),

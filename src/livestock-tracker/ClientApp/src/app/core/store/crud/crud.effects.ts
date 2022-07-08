@@ -95,14 +95,14 @@ export class CrudEffects<
   constructor(
     protected actions$: Actions,
     protected service: CrudService<TData, TKey, TFetchSinglePayload>,
-    protected typeActions: CrudActions<TData, TKey>,
+    protected typeActions: CrudActions<TData, TKey, TFetchSinglePayload>,
     protected typeName: string,
     private snackBar: MatSnackBar
   ) {}
 
   protected handleError(
     err: any,
-    actions: CrudActions<TData, TKey>
+    actions: CrudActions<TData, TKey, TFetchSinglePayload>
   ): Observable<PayloadAction<Error>> {
     let error: Error;
     if (err instanceof Error) error = err;

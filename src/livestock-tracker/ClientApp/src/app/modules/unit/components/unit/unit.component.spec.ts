@@ -16,25 +16,23 @@ describe('UnitComponent', () => {
   let component: UnitComponent;
   let fixture: ComponentFixture<UnitComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [UnitComponent, UnitDetailComponent],
-        providers: [{ provide: UnitService, useClass: MockUnitService }],
-        imports: [
-          CommandButtonTestingModule,
-          NoopAnimationsModule,
-          ReactiveFormsModule,
-          MatFormFieldModule,
-          MatToolbarModule,
-          MatListModule,
-          MatPaginatorModule,
-          MatIconModule,
-          MatTableModule
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [UnitComponent, UnitDetailComponent],
+      providers: [{ provide: UnitService, useClass: MockUnitService }],
+      imports: [
+        CommandButtonTestingModule,
+        NoopAnimationsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatToolbarModule,
+        MatListModule,
+        MatPaginatorModule,
+        MatIconModule,
+        MatTableModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(UnitComponent);

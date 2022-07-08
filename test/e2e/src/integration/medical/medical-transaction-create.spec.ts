@@ -17,7 +17,7 @@ describe('Medical Transaction Creation', () => {
     cy.findFormField('Dosage', 'input').should('exist');
     cy.findFormField('Unit', 'span.mat-select-min-line').should('exist');
 
-    cy.contains('button', 'Back').should('exist').should('be.enabled');
+    cy.contains('a', 'Back').should('exist');
     cy.contains('button', 'Cancel').should('exist').should('be.disabled');
     cy.contains('button', 'Save').should('exist').should('be.disabled');
   });
@@ -88,5 +88,16 @@ describe('Medical Transaction Creation', () => {
     );
     cy.contains('td', '32.5');
     cy.contains('td', 'kg');
+  });
+
+  it.only('should navigate back to the medical transaction list when clicking back', () => {
+    cy.get('app-animal-select')
+      .find('app-animal-select-display')
+      .find('span')
+      .should('have.text', '1 - Brahman');
+    cy.contains('a', 'Back')
+      .click()
+      .location('pathname')
+      .should('match', /medicine\/1$/);
   });
 });

@@ -35,4 +35,4 @@ export class FetchUnitsAction implements PaginationAction {
   }
 }
 
-export const actions = crudActionsFactory<Unit, number>(UnitKey);
+export const actions = crudActionsFactory<Unit, number, number>(UnitKey);

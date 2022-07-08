@@ -10,12 +10,11 @@ import {
 
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SelectAnimalAction } from '@animal/store/animal.actions';
 import { AnimalTransaction, PagedData } from '@core/models';
 import { AnimalTransactionService } from '@core/models/services';
-import { environment } from '@env/environment';
 import {
   Actions,
+  concatLatestFrom,
   createEffect,
   CreateEffectMetadata,
   ofType
@@ -29,21 +28,7 @@ import { FetchAnimalTransactionActions } from './fetch-animal-transaction.action
 
 export class FetchAnimalTransactionEffects<
   TData extends AnimalTransaction
-> extends CrudEffects<TData, number, TData> {
-  /**
-   * Fetches the transactions for the current active animal when the active
-   * animal changes.
-   */
-  public selectedAnimalChanged$: Observable<PayloadAction<PageEvent>> &
-    CreateEffectMetadata = createEffect(() =>
-    this.actions$.pipe(
-      ofType(`API_FETCH_SINGLE_ANIMAL`),
-      map((action: SelectAnimalAction) =>
-        this.transactionActions.fetchAnimalTransactions(0, environment.pageSize)
-      )
-    )
-  );
-
+> extends CrudEffects<TData, number, { id: number; animalId: number }> {
   /**
    * Retrieves the transactions for the active animal when a fetch transactions
    * action is fired.
@@ -77,6 +62,23 @@ export class FetchAnimalTransactionEffects<
         )
       ),
       catchError((error) => this.handleError(error, this.typeActions))
+    )
+  );
+
+  public transactionSelected$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(`SELECT_${this.typeName}`),
+      switchMap((action: PayloadAction<number>) =>
+        this.animalStore.select(getSelectedAnimalId).pipe(
+          filter((animalId: number | null) => animalId !== null),
+          map((animalId: number) =>
+            this.transactionActions.fetchSingle({
+              id: action.payload,
+              animalId
+            })
+          )
+        )
+      )
     )
   );
 
