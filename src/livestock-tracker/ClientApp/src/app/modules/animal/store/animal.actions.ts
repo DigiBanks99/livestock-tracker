@@ -40,11 +40,12 @@ export class UnarchiveAnimals implements Action {
   constructor(public animalIds: number[]) {}
 }
 
-const crudActions: CrudActions<Animal, number> = crudActionsFactory<
+const crudActions: CrudActions<Animal, number, number> = crudActionsFactory<
   Animal,
+  number,
   number
 >(AnimalKey);
 
-export const actions: CrudActions<Animal, number> = {
+export const actions: CrudActions<Animal, number, number> = {
   ...crudActions
 };

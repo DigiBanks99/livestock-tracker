@@ -10,3 +10,9 @@ export * from './medicine-type-state.interface';
 export * from './pagination/pagination-action.interface';
 export * from './pagination/pagination-state.interface';
 export * from './unit-state.interface';
+
+import * as RouterSelectors from './router.selectors';
+
+export const RouterStore = {
+  selectors: { ...RouterSelectors }
+};

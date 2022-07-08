@@ -46,16 +46,15 @@
 
       <div fxFill fxLayout="row" fxLayoutAlign="flex-start start">
         <div fxFlex fxLayoutAlign="start start">
-          <button
-            type="button"
+          <a
+            [disabled]="isSaving"
+            [routerLink]="backLink"
             id="back"
             mat-stroked-button
-            title="Back to the weight transaction list"
-            [disabled]="isSaving"
-            (click)="onNavigateBack()"
+            title="Back to the medical transaction list"
           >
             Back
-          </button>
+          </a>
         </div>
         <div fxFlex fxLayoutAlign="end start">
           <button

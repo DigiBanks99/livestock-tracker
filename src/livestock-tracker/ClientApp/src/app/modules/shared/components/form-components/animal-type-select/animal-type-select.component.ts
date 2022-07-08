@@ -47,7 +47,8 @@ export class AnimalTypeSelectComponent
     MatFormFieldControl<AnimalType>,
     ControlValueAccessor,
     OnDestroy,
-    OnInit {
+    OnInit
+{
   public static NextId = 0;
 
   @Input()

@@ -1,14 +1,8 @@
 import { SaveState } from '@core/models';
 import { PaginationState } from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
-import {
-  createFeatureSelector,
-  createSelector
-} from '@ngrx/store';
-import {
-  WeightState,
-  WeightTransaction
-} from '@weight/interfaces';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { WeightState, WeightTransaction } from '@weight/interfaces';
 
 import { weightTransactionAdapter } from './weight.adapter';
 import { Constants } from './weight.constants';

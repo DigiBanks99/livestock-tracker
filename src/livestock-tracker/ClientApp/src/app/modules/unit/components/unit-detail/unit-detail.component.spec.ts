@@ -11,35 +11,28 @@ describe('UnitDetailComponent', () => {
   let component: UnitDetailComponent;
   let fixture: ComponentFixture<UnitDetailComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [UnitDetailComponent],
-        providers: [{ provide: UnitService, useClass: MockUnitService }],
-        imports: [
-          ReactiveFormsModule,
-          BrowserAnimationsModule,
-          MatFormFieldModule,
-          MatInputModule,
-          MatIconModule
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [UnitDetailComponent],
+      providers: [{ provide: UnitService, useClass: MockUnitService }],
+      imports: [
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule
+      ]
+    }).compileComponents();
+  }));
 
-  beforeEach(
-    waitForAsync(() => {
-      fixture = TestBed.createComponent(UnitDetailComponent);
-      component = fixture.componentInstance;
-      component.unit = { description: 'Some stuff', id: 1 };
-      fixture.detectChanges();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    fixture = TestBed.createComponent(UnitDetailComponent);
+    component = fixture.componentInstance;
+    component.unit = { description: 'Some stuff', id: 1 };
+    fixture.detectChanges();
+  }));
 
-  it(
-    'should create',
-    waitForAsync(() => {
-      expect(component).toBeTruthy();
-    })
-  );
+  it('should create', waitForAsync(() => {
+    expect(component).toBeTruthy();
+  }));
 });

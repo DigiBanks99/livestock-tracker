@@ -8,5 +8,7 @@
   "supportFile": "src/support/index.js",
   "videosFolder": "result/videos",
   "nodeVersion": "system",
-  "projectId": "trfftf"
+  "projectId": "trfftf",
+  "viewportWidth": 1440,
+  "viewportHeight": 900
 }

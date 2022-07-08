@@ -29,7 +29,7 @@ const getAnimalIds = createSelector(
 
 export const getSelectedAnimalId = createSelector(
   animalState,
-  (state: AnimalState): number => state.selectedId
+  (state: AnimalState): number | null => state.selectedId ?? null
 );
 
 export const getAnimals = createSelector(

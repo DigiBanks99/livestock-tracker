@@ -7,7 +7,7 @@ import {
 } from '@core/store/crud';
 
 export interface FetchAnimalTransactionActions<TData extends AnimalTransaction>
-  extends CrudActions<TData, number> {
+  extends CrudActions<TData, number, { id: number; animalId: number }> {
   fetchAnimalTransactions: (
     pageNumber: number,
     pageSize: number

@@ -12,16 +12,16 @@ import {
   MedicineTestData
 } from '@test/medical';
 
-import { MedicalTransactionDetailComponent } from './medical-transaction-detail.component';
+import { MedicalTransactionDetailPage } from './medical-transaction-detail.page';
 
-describe('MedicalTransactionDetailComponent', () => {
-  let component: MedicalTransactionDetailComponent;
-  let fixture: ComponentFixture<MedicalTransactionDetailComponent>;
+describe('MedicalTransactionDetailPage', () => {
+  let component: MedicalTransactionDetailPage;
+  let fixture: ComponentFixture<MedicalTransactionDetailPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
-        MedicalTransactionDetailComponent,
+        MedicalTransactionDetailPage,
         MedicalTransactionFormStubComponent
       ],
       providers: [
@@ -58,7 +58,7 @@ describe('MedicalTransactionDetailComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MedicalTransactionDetailComponent);
+    fixture = TestBed.createComponent(MedicalTransactionDetailPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

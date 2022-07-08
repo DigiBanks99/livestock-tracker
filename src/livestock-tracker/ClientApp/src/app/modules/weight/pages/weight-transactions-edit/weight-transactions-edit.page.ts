@@ -11,11 +11,11 @@ import { WeightStore } from '@weight/store';
 
 @Component({
   template: `<app-weight-transaction-form
+    backLink="../.."
     [animalId]="animalId$ | async"
     [isLoading]="isFetching$ | async"
     [isSaving]="isSaving$ | async"
     [transaction]="transaction$ | async"
-    (navigateBack)="onNavigateBack()"
     (save)="onSave($event)"
   ></app-weight-transaction-form>`
 })
@@ -27,10 +27,7 @@ export class WeightTransactionsEditPage implements OnDestroy {
 
   private readonly _destroyed$ = new Subject<void>();
 
-  constructor(
-    private readonly _store: Store<WeightState>,
-    private readonly _router: Router
-  ) {
+  constructor(private readonly _store: Store<WeightState>) {
     this.animalId$ = this.setupAnimalId();
     this.isFetching$ = this.setupIsFetching();
     this.isSaving$ = this.setupIsSaving();
@@ -40,10 +37,6 @@ export class WeightTransactionsEditPage implements OnDestroy {
   public ngOnDestroy(): void {
     this._destroyed$.next();
     this._destroyed$.complete();
-  }
-
-  public onNavigateBack(): void {
-    this._router.navigate(['..']);
   }
 
   public onSave(transaction: WeightTransaction): void {

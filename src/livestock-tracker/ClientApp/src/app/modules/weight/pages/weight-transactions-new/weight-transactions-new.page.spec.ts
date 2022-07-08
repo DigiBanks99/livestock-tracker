@@ -19,7 +19,6 @@ describe('WeightTransactionsNewPage', () => {
   let component: WeightTransactionsNewPage;
   let store: MockStore<WeightState>;
   let dispatchSpy: jasmine.Spy;
-  let routerSpy: jasmine.SpyObj<Router>;
   let mockAnimalIdSelector: MemoizedSelector<
     AnimalState,
     number,
@@ -38,11 +37,10 @@ describe('WeightTransactionsNewPage', () => {
   let testScheduler: TestScheduler;
 
   beforeEach(async () => {
-    routerSpy = jasmine.createSpyObj<Router>(Router.name, ['navigate']);
     await TestBed.configureTestingModule({
       declarations: [WeightTransactionsNewPage],
       imports: [WeightTestingModule],
-      providers: [provideMockStore(), { provide: Router, useValue: routerSpy }]
+      providers: [provideMockStore()]
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
@@ -165,11 +163,5 @@ describe('WeightTransactionsNewPage', () => {
     expect(dispatchSpy).toHaveBeenCalledWith(
       WeightStore.actions.addItem(WeightTestData.SmallTransactionList[0])
     );
-  });
-
-  it('should dispatch a navigation request to the previous route when navigating back', () => {
-    component.onNavigateBack();
-
-    expect(routerSpy.navigate).toHaveBeenCalledOnceWith(['..']);
   });
 });

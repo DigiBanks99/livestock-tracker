@@ -1,13 +1,7 @@
-import {
-  Observable,
-  of
-} from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import {
-  Inject,
-  Injectable
-} from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { BaseUrl } from '@core/di/base-url.injection-token';
 import { MedicalTransaction } from '@core/models';
@@ -15,6 +9,10 @@ import { PagedData } from '@core/models/paged-data.model';
 import { AnimalTransactionService } from '@core/models/services';
 import { environment } from '@env/environment';
 import { FetchSingleMedicalTransactionParams } from '@medical/store/medical-transaction.actions';
+import { concatLatestFrom } from '@ngrx/effects';
+import { getSelectedAnimalId } from '@core/store/selectors';
+import { concatMap, map } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class MedicalTransactionService
@@ -24,6 +22,7 @@ export class MedicalTransactionService
 
   constructor(
     private readonly _http: HttpClient,
+    private readonly _store: Store,
     @Inject(BaseUrl) baseUrl: string
   ) {
     this._url = `${baseUrl}MedicalTransactions`;

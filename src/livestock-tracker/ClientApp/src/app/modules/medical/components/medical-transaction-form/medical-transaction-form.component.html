@@ -1,10 +1,10 @@
 <mat-card>
   <form
-    class="form"
+    (ngSubmit)="onSave()"
     [formGroup]="form"
+    class="form"
     fxLayout="column"
     fxLayoutAlign="space-around start center"
-    (ngSubmit)="onSave()"
   >
     <app-animal-select-container
       [disabled]="true"
@@ -21,25 +21,25 @@
     <mat-form-field fxFill>
       <mat-label>Transaction Date</mat-label>
       <input
-        id="transactionDate"
-        formControlName="transactionDate"
-        matInput
         [matDatepicker]="td"
+        formControlName="transactionDate"
+        id="transactionDate"
+        matInput
         placeholder="The date the medicine was administered"
       />
-      <mat-datepicker-toggle matSuffix [for]="td"></mat-datepicker-toggle>
+      <mat-datepicker-toggle [for]="td" matSuffix></mat-datepicker-toggle>
       <mat-datepicker #td type="datetime"></mat-datepicker>
     </mat-form-field>
     <mat-form-field fxFill>
       <mat-label>Dosage</mat-label>
       <input
-        id="dose"
-        name="dose"
-        type="number"
-        matInput
-        formControlName="dose"
         class="currency-input"
+        formControlName="dose"
+        id="dose"
+        matInput
+        name="dose"
         placeholder="The dose of the medication administered"
+        type="number"
       />
     </mat-form-field>
     <mat-form-field fxFill>
@@ -53,33 +53,32 @@
 
     <div fxFill fxLayout="row" fxLayoutAlign="flex-start start">
       <div fxFlex fxLayoutAlign="start start">
-        <button
-          type="button"
+        <a
+          [disabled]="isSaving"
+          [routerLink]="backLink"
           id="back"
           mat-stroked-button
           title="Back to the medical transaction list"
-          [disabled]="isSaving"
-          (click)="onNavigateBack()"
         >
           Back
-        </button>
+        </a>
       </div>
       <div fxFlex fxLayoutAlign="end start">
         <button
-          type="button"
+          (click)="onReset()"
+          [disabled]="!form.dirty"
           mat-button
           title="Reset changes"
-          [disabled]="!form.dirty"
-          (click)="onReset()"
+          type="button"
         >
           Cancel
         </button>
         <button
-          type="submit"
-          mat-raised-button
-          color="primary"
-          title="Submit changes"
           [disabled]="form.invalid || !form.dirty || isSaving"
+          color="primary"
+          mat-raised-button
+          title="Submit changes"
+          type="submit"
         >
           Save
         </button>

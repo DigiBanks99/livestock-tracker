@@ -1,9 +1,5 @@
 import { Observable } from 'rxjs';
-import {
-  filter,
-  map,
-  tap
-} from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 
 import { KeyValue } from '@angular/common';
 import { Injectable } from '@angular/core';
@@ -14,29 +10,25 @@ import {
   AnimalState,
   FetchAnimalTransactionEffects,
   NoopAction,
-  PayloadAction
+  PayloadAction,
+  RouterStore
 } from '@core/store';
-import {
-  Actions,
-  createEffect,
-  ofType
-} from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Update } from '@ngrx/entity';
 import {
   ROUTER_NAVIGATION,
   RouterNavigatedAction,
   SerializedRouterStateSnapshot
 } from '@ngrx/router-store';
-import {
-  Action,
-  Store
-} from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { WeightTransaction } from '@weight/interfaces';
 import { WeightService } from '@weight/services';
 import { WeightProviderModule } from '@weight/weight-provider.module';
 
 import { actions } from './weight.actions';
 import { Constants } from './weight.constants';
+import { PageEvent } from '@angular/material/paginator';
+import { environment } from '@env/environment.prod';
 
 @Injectable({
   providedIn: WeightProviderModule
@@ -48,19 +40,21 @@ export class WeightEffects extends FetchAnimalTransactionEffects<WeightTransacti
     this.actions$.pipe(
       ofType(ROUTER_NAVIGATION),
       filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
-        /weight\/[0-9]*\/edit/.test(action.payload.event.urlAfterRedirects)
+        /weight\/\d+\/edit\/\d+$/.test(action.payload.event.urlAfterRedirects)
       ),
-      map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
-        | PayloadAction<number>
-        | Action => {
-        const id = Number(
-          action.payload.routerState.root.firstChild.firstChild.params.id
-        );
-        if (Number.isNaN(id)) {
-          return NoopAction;
+      map(
+        (
+          action: RouterNavigatedAction<SerializedRouterStateSnapshot>
+        ): PayloadAction<number> | Action => {
+          const id = Number(
+            action.payload.routerState.root.firstChild.firstChild.params.id
+          );
+          if (Number.isNaN(id)) {
+            return NoopAction;
+          }
+          return this.transactionActions.selectItem(id);
         }
-        return this.transactionActions.selectItem(id);
-      })
+      )
     )
   );
 
@@ -69,22 +63,41 @@ export class WeightEffects extends FetchAnimalTransactionEffects<WeightTransacti
       this.actions$.pipe(
         ofType(ROUTER_NAVIGATION),
         filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
-          /weight\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
+          /weight\/\d+/.test(action.payload.event.urlAfterRedirects)
         ),
-        map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
-          | PayloadAction<number>
-          | Action => {
-          const id = Number(
-            action.payload.routerState.root.firstChild.firstChild.params
-              .animalId
-          );
-          if (Number.isNaN(id)) {
-            return NoopAction;
+        map(
+          (
+            action: RouterNavigatedAction<SerializedRouterStateSnapshot>
+          ): PayloadAction<number> | Action => {
+            const id = Number(
+              action.payload.routerState.root.firstChild.firstChild.params
+                .animalId
+            );
+            if (Number.isNaN(id)) {
+              return NoopAction;
+            }
+            return AnimalStore.actions.selectItem(id);
           }
-          return AnimalStore.actions.selectItem(id);
-        })
+        )
       )
     );
+
+  public fetchSelectedAnimalTransactions$: Observable<
+    PayloadAction<PageEvent>
+  > = createEffect(() =>
+    this.actions$.pipe(
+      ofType(`API_FETCH_SINGLE_ANIMAL`),
+      concatLatestFrom(() => this.store.select(RouterStore.selectors.url)),
+      filter(([, url]: [Action, string]) => /weight\/\d+$/.test(url)),
+      map(
+        (): PayloadAction<PageEvent> =>
+          this.transactionActions.fetchAnimalTransactions(
+            0,
+            environment.pageSize
+          )
+      )
+    )
+  );
 
   public transactionAdded$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
@@ -113,6 +126,7 @@ export class WeightEffects extends FetchAnimalTransactionEffects<WeightTransacti
   constructor(
     actions$: Actions,
     animalStore: Store<AnimalState>,
+    private readonly store: Store,
     weightService: WeightService,
     snackBar: MatSnackBar,
     private readonly router: Router

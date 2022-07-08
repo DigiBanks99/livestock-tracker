@@ -528,7 +528,7 @@ describe('weightReducer', () => {
     it('should set isPending to true', () => {
       // Arrange
       const state: WeightState = { ...initialState, isPending: false };
-      const action = WeightStore.actions.fetchSingle(1);
+      const action = WeightStore.actions.fetchSingle({ id: 1, animalId: 1 });
 
       // Act
       const result = WeightStore.reducers.weightReducer(state, action);
@@ -540,7 +540,7 @@ describe('weightReducer', () => {
     it('should set isFetching to true', () => {
       // Arrange
       const state: WeightState = { ...initialState, isFetching: false };
-      const action = WeightStore.actions.fetchSingle(1);
+      const action = WeightStore.actions.fetchSingle({ id: 1, animalId: 1 });
 
       // Act
       const result = WeightStore.reducers.weightReducer(state, action);
@@ -555,7 +555,7 @@ describe('weightReducer', () => {
         ...initialState,
         error: new Error('some error')
       };
-      const action = WeightStore.actions.fetchSingle(1);
+      const action = WeightStore.actions.fetchSingle({ id: 1, animalId: 1 });
 
       // Act
       const result = WeightStore.reducers.weightReducer(state, action);

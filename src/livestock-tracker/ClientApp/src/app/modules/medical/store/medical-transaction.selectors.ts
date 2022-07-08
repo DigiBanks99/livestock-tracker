@@ -1,17 +1,8 @@
-import {
-  MedicalTransaction,
-  SaveState
-} from '@core/models';
-import {
-  MedicalTransactionState,
-  PaginationState
-} from '@core/store';
+import { MedicalTransaction, SaveState } from '@core/models';
+import { MedicalTransactionState, PaginationState } from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
 import { Dictionary } from '@ngrx/entity';
-import {
-  createFeatureSelector,
-  createSelector
-} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 import { medicalTransactionAdapter } from './medical-transaction.reducer';
@@ -56,21 +47,8 @@ export const selectedMedicalTransactionId = createSelector(
 );
 
 export const selectedMedicalTransaction = createSelector(
-  medicalTransactionEntities,
-  selectedMedicalTransactionId,
-  (entities: Dictionary<MedicalTransaction>, id: number) => {
-    if (entities == null || id == null) {
-      return {
-        id: 0,
-        animalId: 0,
-        dose: null,
-        transactionDate: new Date(),
-        medicineId: null,
-        unitId: null
-      };
-    }
-    return entities[id];
-  }
+  medicalTransactionState,
+  (state: MedicalTransactionState) => state.entities[state.selectedId]
 );
 
 export const isFetching = createSelector(

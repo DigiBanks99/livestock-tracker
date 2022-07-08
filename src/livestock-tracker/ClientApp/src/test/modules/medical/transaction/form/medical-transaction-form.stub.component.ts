@@ -15,8 +15,10 @@ export class MedicalTransactionFormStubComponent {
     transactionDate: new Date(),
     unitId: null
   };
+  @Input() public isLoading = false;
   @Input() public medicineTypes: MedicineType[] = [];
   @Input() public units: Unit[] = [];
 
-  @Output() public save = new EventEmitter<MedicalTransaction>();
+  @Output() public readonly save = new EventEmitter<MedicalTransaction>();
+  @Output() public readonly navigateBack = new EventEmitter<void>();
 }

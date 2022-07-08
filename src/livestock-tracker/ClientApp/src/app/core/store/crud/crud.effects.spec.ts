@@ -18,14 +18,14 @@ import { CrudEffects } from './crud.effects';
 
 interface TestEntity extends KeyEntity<number> {}
 
-const testActions = crudActionsFactory<TestEntity, number>('TEST');
+const testActions = crudActionsFactory<TestEntity, number, number>('TEST');
 
 @Injectable()
-class TestService implements CrudService<TestEntity, number, TestEntity> {
+class TestService implements CrudService<TestEntity, number, number> {
   getAll(): Observable<PagedData<TestEntity>> {
     throw new Error('Method not implemented.');
   }
-  get(key: TestEntity): Observable<TestEntity> {
+  get(key: number): Observable<TestEntity> {
     throw new Error('Method not implemented.');
   }
   add(item: TestEntity): Observable<TestEntity> {
@@ -40,7 +40,7 @@ class TestService implements CrudService<TestEntity, number, TestEntity> {
 }
 
 @Injectable()
-class TestEffects extends CrudEffects<TestEntity, number, TestEntity> {
+class TestEffects extends CrudEffects<TestEntity, number, number> {
   constructor(
     protected actions$: Actions,
     service: TestService,

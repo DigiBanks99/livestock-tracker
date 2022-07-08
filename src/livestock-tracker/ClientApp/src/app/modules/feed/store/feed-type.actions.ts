@@ -36,4 +36,6 @@ export class FetchFeedTypesAction implements Action {
   }
 }
 
-export const actions = crudActionsFactory<FeedType, number>(FeedTypeKey);
+export const actions = crudActionsFactory<FeedType, number, number>(
+  FeedTypeKey
+);

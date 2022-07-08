@@ -9,7 +9,7 @@ const unitState = createFeatureSelector<UnitState>('units');
 const {
   selectEntities: getUnitEntities,
   selectIds: getUnitIds,
-  selectTotal: getUnitCount,
+  selectTotal: getUnitCount
 } = unitAdapter.getSelectors(unitState);
 
 const getUnits = createSelector(
@@ -47,5 +47,5 @@ export const unitSelectors = {
   getUnitError,
   getPageSize,
   getCurrentPage,
-  getRecordCount,
+  getRecordCount
 };

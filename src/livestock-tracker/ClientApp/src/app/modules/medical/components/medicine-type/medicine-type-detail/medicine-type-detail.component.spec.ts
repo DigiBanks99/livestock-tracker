@@ -15,23 +15,21 @@ describe('MedicineTypeDetailComponent', () => {
   let component: MedicineTypeDetailComponent;
   let fixture: ComponentFixture<MedicineTypeDetailComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [MedicineTypeDetailComponent],
-        providers: [
-          { provide: MedicineTypeService, useClass: MockMedicineTypeService }
-        ],
-        imports: [
-          ReactiveFormsModule,
-          BrowserAnimationsModule,
-          MatFormFieldModule,
-          MatInputModule,
-          MatIconModule
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [MedicineTypeDetailComponent],
+      providers: [
+        { provide: MedicineTypeService, useClass: MockMedicineTypeService }
+      ],
+      imports: [
+        ReactiveFormsModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MedicineTypeDetailComponent);

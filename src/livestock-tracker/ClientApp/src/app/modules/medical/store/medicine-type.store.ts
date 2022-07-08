@@ -1,10 +1,7 @@
 import { MedicineType } from '@core/models';
 import { MedicineTypeState } from '@core/store/medicine-type-state.interface';
 import { Dictionary } from '@ngrx/entity';
-import {
-  createFeatureSelector,
-  createSelector
-} from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 import { medicineTypeAdapter } from './medicine-type.reducer';

@@ -51,67 +51,64 @@ describe('FeedingTransactionDetailComponent', () => {
   let component: FeedingTransactionDetailComponent;
   let fixture: ComponentFixture<FeedingTransactionDetailComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          FeedingTransactionDetailComponent,
-          FeedingTransactionFormComponent
-        ],
-        providers: [
-          SvgService,
-          {
-            provide: FeedingTransactionService,
-            useClass: MockFeedingTransactionService
-          },
-          provideMockStore({
-            selectors: [
-              {
-                selector: getSelectedAnimalId,
-                value: 1
-              },
-              {
-                selector:
-                  feedingTransactionStore.selectors
-                    .getSelectedFeedingTransaction,
-                value: null
-              },
-              {
-                selector:
-                  feedingTransactionStore.selectors
-                    .getFeedingTransactionPendingState,
-                value: false
-              },
-              {
-                selector:
-                  feedingTransactionStore.selectors
-                    .getFeedingTransactionErrorState,
-                value: null
-              },
-              { selector: feedTypeStore.selectors.getFeedTypes, value: [] },
-              { selector: getUnits, value: [] }
-            ]
-          }),
-          { provide: LocationStrategy, useClass: MockLocationStrategy }
-        ],
-        imports: [
-          BrowserAnimationsModule,
-          FormsModule,
-          MatCardModule,
-          MatDatepickerModule,
-          MatFormFieldModule,
-          MatIconModule,
-          MatInputModule,
-          MatListModule,
-          MatMomentDateModule,
-          MatToolbarModule,
-          MomentDateModule,
-          ReactiveFormsModule,
-          RouterTestingModule
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        FeedingTransactionDetailComponent,
+        FeedingTransactionFormComponent
+      ],
+      providers: [
+        SvgService,
+        {
+          provide: FeedingTransactionService,
+          useClass: MockFeedingTransactionService
+        },
+        provideMockStore({
+          selectors: [
+            {
+              selector: getSelectedAnimalId,
+              value: 1
+            },
+            {
+              selector:
+                feedingTransactionStore.selectors.getSelectedFeedingTransaction,
+              value: null
+            },
+            {
+              selector:
+                feedingTransactionStore.selectors
+                  .getFeedingTransactionPendingState,
+              value: false
+            },
+            {
+              selector:
+                feedingTransactionStore.selectors
+                  .getFeedingTransactionErrorState,
+              value: null
+            },
+            { selector: feedTypeStore.selectors.getFeedTypes, value: [] },
+            { selector: getUnits, value: [] }
+          ]
+        }),
+        { provide: LocationStrategy, useClass: MockLocationStrategy }
+      ],
+      imports: [
+        BrowserAnimationsModule,
+        FormsModule,
+        MatCardModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatMomentDateModule,
+        MatToolbarModule,
+        MomentDateModule,
+        ReactiveFormsModule,
+        RouterTestingModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FeedingTransactionDetailComponent);

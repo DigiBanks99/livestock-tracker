@@ -9,15 +9,14 @@ import {
   SelectFeedTransactionAction
 } from './feeding-transaction.actions';
 
-export const feedingTransactionAdapter = createEntityAdapter<
-  FeedingTransaction
->({
-  selectId: (transaction: FeedingTransaction) => transaction.id,
-  sortComparer: false
-});
+export const feedingTransactionAdapter =
+  createEntityAdapter<FeedingTransaction>({
+    selectId: (transaction: FeedingTransaction) => transaction.id,
+    sortComparer: false
+  });
 
-export const initialState: FeedingTransactionState = feedingTransactionAdapter.getInitialState(
-  {
+export const initialState: FeedingTransactionState =
+  feedingTransactionAdapter.getInitialState({
     selectedId: null,
     isPending: false,
     isFetching: false,
@@ -26,8 +25,7 @@ export const initialState: FeedingTransactionState = feedingTransactionAdapter.g
     pageSize: 10,
     recordCount: 0,
     saveState: SaveState.New
-  }
-);
+  });
 
 export function feedingTransactionReducer(
   state: FeedingTransactionState = initialState,

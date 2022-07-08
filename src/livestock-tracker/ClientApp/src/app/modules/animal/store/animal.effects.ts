@@ -45,25 +45,28 @@ import { AnimalKey } from './constants';
   providedIn: AnimalProviderModule
 })
 export class AnimalEffects extends CrudEffects<Animal, number, number> {
-  public animalSelectedInRoute$: Observable<
-    PayloadAction<number> | Action
-  > = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ROUTER_NAVIGATED),
-      filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
-        /animal\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
-      ),
-      map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
-        | PayloadAction<number>
-        | Action => {
-        const id = Number(action.payload.routerState.root.firstChild.params.id);
-        if (Number.isNaN(id)) {
-          return NoopAction;
-        }
-        return actions.selectItem(id);
-      })
-    )
-  );
+  public animalSelectedInRoute$: Observable<PayloadAction<number> | Action> =
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(ROUTER_NAVIGATED),
+        filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
+          /animal\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
+        ),
+        map(
+          (
+            action: RouterNavigatedAction<SerializedRouterStateSnapshot>
+          ): PayloadAction<number> | Action => {
+            const id = Number(
+              action.payload.routerState.root.firstChild.params.id
+            );
+            if (Number.isNaN(id)) {
+              return NoopAction;
+            }
+            return actions.selectItem(id);
+          }
+        )
+      )
+    );
 
   public fetchSelectedAnimalDetail$: Observable<
     PayloadAction<number> | Action
@@ -75,12 +78,13 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
           withLatestFrom(this._store.pipe(select(getSelectedAnimal)))
         )
       ),
-      map(([action, animal]: [PayloadAction<number>, Animal]):
-        | PayloadAction<number>
-        | Action =>
-        animal == null || animal.batchNumber == null
-          ? actions.fetchSingle(action.payload)
-          : NoopAction
+      map(
+        ([action, animal]: [PayloadAction<number>, Animal]):
+          | PayloadAction<number>
+          | Action =>
+          animal == null || animal.batchNumber == null
+            ? actions.fetchSingle(action.payload)
+            : NoopAction
       )
     )
   );

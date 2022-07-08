@@ -2,10 +2,7 @@ import { NgModule } from '@angular/core';
 import { LivestockFormsModule } from '@shared/components/form-components/livestock-forms.module';
 import { AgeCalculatorService } from '@shared/services';
 
-import {
-  AnimalSelectModule,
-  CommandButtonComponentModule
-} from './components';
+import { AnimalSelectModule, CommandButtonComponentModule } from './components';
 import { LookupPipeModule } from './pipes/lookup.pipe';
 
 @NgModule({

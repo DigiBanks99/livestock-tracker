@@ -37,43 +37,41 @@ describe('FeedingTransactionComponent', () => {
   let component: FeedingTransactionComponent;
   let fixture: ComponentFixture<FeedingTransactionComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [
-          FeedingTransactionComponent,
-          AnimalSelectContainerComponent
-        ],
-        providers: [
-          SvgService,
-          {
-            provide: FeedingTransactionService,
-            useClass: MockFeedingTransactionService
-          },
-          {
-            provide: FeedTypeService,
-            useClass: MockFeedTypeService
-          },
-          { provide: UnitService, useClass: MockUnitService },
-          { provide: LocationStrategy, useClass: MockLocationStrategy }
-        ],
-        imports: [
-          BrowserAnimationsModule,
-          CommandButtonTestingModule,
-          MatButtonModule,
-          MatIconModule,
-          MatInputModule,
-          MatListModule,
-          MatOptionModule,
-          MatPaginatorModule,
-          MatSelectModule,
-          MatTableModule,
-          MatToolbarModule,
-          RouterTestingModule
-        ]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        FeedingTransactionComponent,
+        AnimalSelectContainerComponent
+      ],
+      providers: [
+        SvgService,
+        {
+          provide: FeedingTransactionService,
+          useClass: MockFeedingTransactionService
+        },
+        {
+          provide: FeedTypeService,
+          useClass: MockFeedTypeService
+        },
+        { provide: UnitService, useClass: MockUnitService },
+        { provide: LocationStrategy, useClass: MockLocationStrategy }
+      ],
+      imports: [
+        BrowserAnimationsModule,
+        CommandButtonTestingModule,
+        MatButtonModule,
+        MatIconModule,
+        MatInputModule,
+        MatListModule,
+        MatOptionModule,
+        MatPaginatorModule,
+        MatSelectModule,
+        MatTableModule,
+        MatToolbarModule,
+        RouterTestingModule
+      ]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FeedingTransactionComponent);

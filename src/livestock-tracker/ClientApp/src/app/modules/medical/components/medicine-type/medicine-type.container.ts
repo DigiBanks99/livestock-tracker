@@ -1,16 +1,8 @@
-import {
-  Observable,
-  Subject
-} from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  NgModule,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
+import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MedicineType } from '@core/models';
 import { MedicineTypeState } from '@core/store/medicine-type-state.interface';
@@ -18,10 +10,7 @@ import { MedicineTypeComponentModule } from '@medical/components/medicine-type/m
 import { MedicineStore } from '@medical/store';
 import { MedicineStoreModule } from '@medical/store/medicine-store.module';
 import { FetchMedicineTypesAction } from '@medical/store/medicine-type.actions';
-import {
-  select,
-  Store
-} from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-medicine-type-container',

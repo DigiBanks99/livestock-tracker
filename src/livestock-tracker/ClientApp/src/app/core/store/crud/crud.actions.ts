@@ -8,7 +8,11 @@ export interface PayloadAction<TData> extends Action {
   payload: TData;
 }
 
-export interface CrudActions<TData extends KeyEntity<TKey>, TKey> {
+export interface CrudActions<
+  TData extends KeyEntity<TKey>,
+  TKey,
+  TFetchSinglePayload
+> {
   addItem: (item: TData) => PayloadAction<TData>;
   apiAddItem: (item: TData) => PayloadAction<TData>;
   updateItem: (item: TData, key: TKey) => PayloadAction<KeyValue<TKey, TData>>;
@@ -19,7 +23,7 @@ export interface CrudActions<TData extends KeyEntity<TKey>, TKey> {
   deleteItem: (key: TKey) => PayloadAction<TKey>;
   apiDeleteItem: (key: TKey) => PayloadAction<TKey>;
   fetchItems: () => Action;
-  fetchSingle: (key: TKey) => PayloadAction<TKey>;
+  fetchSingle: (key: TFetchSinglePayload) => PayloadAction<TFetchSinglePayload>;
   apiFetchSingle: (item: TData) => PayloadAction<TData>;
   apiError: (error: Error) => PayloadAction<Error>;
   apiFetchItems: (data: PagedData<TData>) => PayloadAction<PagedData<TData>>;
@@ -142,9 +146,11 @@ function selectItem<TKey>(key: TKey, typeName: string): PayloadAction<TKey> {
   };
 }
 
-export function crudActionsFactory<TData extends KeyEntity<TKey>, TKey>(
-  typeName: string
-): CrudActions<TData, TKey> {
+export function crudActionsFactory<
+  TData extends KeyEntity<TKey>,
+  TKey,
+  TFetchSinglePayload
+>(typeName: string): CrudActions<TData, TKey, TFetchSinglePayload> {
   return {
     addItem: (item: TData): PayloadAction<TData> => addItem(item, typeName),
     apiAddItem: (item: TData): PayloadAction<TData> =>
@@ -162,7 +168,9 @@ export function crudActionsFactory<TData extends KeyEntity<TKey>, TKey>(
     apiDeleteItem: (key: TKey): PayloadAction<TKey> =>
       apiDeleteItem(key, typeName),
     fetchItems: (): Action => fetchItems(typeName),
-    fetchSingle: (key: TKey): PayloadAction<TKey> => fetchSingle(key, typeName),
+    fetchSingle: (
+      key: TFetchSinglePayload
+    ): PayloadAction<TFetchSinglePayload> => fetchSingle(key, typeName),
     apiFetchSingle: (item: TData): PayloadAction<TData> =>
       apiFetchSingle(item, typeName),
     apiFetchItems: (data: PagedData<TData>): PayloadAction<PagedData<TData>> =>

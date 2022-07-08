@@ -9,7 +9,7 @@ const getFeedTypeState = createFeatureSelector<FeedTypeState>('feedTypes');
 const {
   selectEntities: getFeedTypeEntities,
   selectIds: getFeedTypeIds,
-  selectTotal: getFeedTypeCount,
+  selectTotal: getFeedTypeCount
 } = feedTypeAdapter.getSelectors(getFeedTypeState);
 
 const getFeedTypes = createSelector(
@@ -66,5 +66,5 @@ export const selectors = {
   getFeedTypeError,
   getCurrentPage,
   getPageSize,
-  getRecordCount,
+  getRecordCount
 };

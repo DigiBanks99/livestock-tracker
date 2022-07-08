@@ -7,14 +7,12 @@ describe('CommandButtonComponent', () => {
   let component: CommandButtonComponent;
   let fixture: ComponentFixture<CommandButtonComponent>;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        declarations: [CommandButtonComponent],
-        imports: [MatIconModule]
-      }).compileComponents();
-    })
-  );
+  beforeEach(waitForAsync(() => {
+    TestBed.configureTestingModule({
+      declarations: [CommandButtonComponent],
+      imports: [MatIconModule]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(CommandButtonComponent);

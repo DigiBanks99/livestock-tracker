@@ -1,36 +1,34 @@
 import { Observable, Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
 import { Component, NgModule, OnDestroy } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import {
-  MedicalTransaction,
-  MedicineType,
-  SaveState,
-  Unit
-} from '@core/models';
+import { MedicalTransaction, MedicineType, Unit } from '@core/models';
 import { AppState } from '@core/store';
 import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
-import { MedicalTransactionFormComponentModule } from '@medical/components/medical-transaction-form/medical-transaction-form.component';
+import { MedicalTransactionFormComponentModule } from '@medical/components';
 import { MedicineStore } from '@medical/store';
 import { MedicineStoreModule } from '@medical/store/medicine-store.module';
 import { select, Store } from '@ngrx/store';
 
 @Component({
-  template: `<h1>New medical transaction</h1>
+  template: `<h1>Edit medical transaction</h1>
     <app-medical-transaction-form
-      backLink="../"
-      [animalId]="animalId$ | async"
+      backLink="../.."
+      [animalId]="selectedAnimalId$ | async"
+      [isLoading]="isFetching$ | async"
       [medicineTypes]="medicineTypes$ | async"
+      [transaction]="transaction$ | async"
       [units]="units$ | async"
       (save)="onSave($event)"
-    ></app-medical-transaction-form>`
+    >
+    </app-medical-transaction-form>`
 })
-export class MedicalTransactionNewPage implements OnDestroy {
-  public readonly animalId$: Observable<number>;
+export class MedicalTransactionDetailPage implements OnDestroy {
+  public readonly transaction$: Observable<MedicalTransaction>;
+  public readonly selectedAnimalId$: Observable<number>;
   public readonly isFetching$: Observable<boolean>;
-  public readonly isSaving$: Observable<boolean>;
   public readonly medicineTypes$: Observable<MedicineType[]>;
   public readonly units$: Observable<Unit[]>;
 
@@ -40,23 +38,33 @@ export class MedicalTransactionNewPage implements OnDestroy {
     private readonly _store: Store<AppState>,
     private readonly _router: Router
   ) {
-    this.animalId$ = this.setupAnimalId();
+    this.transaction$ = this.setupTransaction();
+    this.selectedAnimalId$ = this.setupAnimalId();
     this.isFetching$ = this.setupIsFetching();
-    this.isSaving$ = this.setupIsSaving();
     this.medicineTypes$ = this.setupMedicineTypes();
     this.units$ = this.setupUnits();
-  }
-
-  public onSave(transaction: MedicalTransaction): Promise<boolean> {
-    this._store.dispatch(
-      MedicineStore.Transactions.actions.addItem(transaction)
-    );
-    return this._router.navigate(['medicine']);
   }
 
   public ngOnDestroy(): void {
     this._destroyed$.next();
     this._destroyed$.complete();
+  }
+
+  public onSave(medicalTransaction: MedicalTransaction): Promise<boolean> {
+    this._store.dispatch(
+      MedicineStore.Transactions.actions.updateItem(
+        medicalTransaction,
+        medicalTransaction.id
+      )
+    );
+    return this._router.navigate(['medicine', medicalTransaction.animalId]);
+  }
+
+  private setupTransaction(): Observable<MedicalTransaction> {
+    return this._store.pipe(
+      select(MedicineStore.Transactions.selectors.selectedMedicalTransaction),
+      takeUntil(this._destroyed$)
+    );
   }
 
   private setupAnimalId(): Observable<number> {
@@ -69,14 +77,6 @@ export class MedicalTransactionNewPage implements OnDestroy {
   private setupIsFetching(): Observable<boolean> {
     return this._store.pipe(
       select(MedicineStore.Transactions.selectors.isFetching),
-      takeUntil(this._destroyed$)
-    );
-  }
-
-  private setupIsSaving(): Observable<boolean> {
-    return this._store.pipe(
-      select(MedicineStore.Transactions.selectors.saveState),
-      map((saveState: SaveState) => saveState === SaveState.Saving),
       takeUntil(this._destroyed$)
     );
   }
@@ -94,8 +94,8 @@ export class MedicalTransactionNewPage implements OnDestroy {
 }
 
 @NgModule({
-  declarations: [MedicalTransactionNewPage],
-  exports: [MedicalTransactionNewPage],
+  declarations: [MedicalTransactionDetailPage],
+  exports: [MedicalTransactionDetailPage],
   imports: [
     CommonModule,
     MedicineStoreModule,
@@ -103,4 +103,4 @@ export class MedicalTransactionNewPage implements OnDestroy {
     MedicalTransactionFormComponentModule
   ]
 })
-export class MedicalTransactionNewPageModule {}
+export class MedicalTransactionDetailComponentModule {}

@@ -42,7 +42,6 @@ describe('WeightTransactionsEditPage', () => {
     WeightTransaction,
     DefaultProjectorFn<WeightTransaction>
   >;
-  let routerSpy: jasmine.SpyObj<Router>;
   let testScheduler: TestScheduler;
 
   beforeEach(async () => {
@@ -50,14 +49,11 @@ describe('WeightTransactionsEditPage', () => {
       expect(actual).toEqual(expected);
     });
 
-    routerSpy = jasmine.createSpyObj<Router>(Router.name, ['navigate']);
-
     await TestBed.configureTestingModule({
       declarations: [WeightTransactionsEditPage],
       imports: [WeightTestingModule, RouterTestingModule],
       providers: [
         provideMockStore(),
-        { provide: Router, useValue: routerSpy },
         { provide: LocationStrategy, useClass: MockLocationStrategy }
       ]
     }).compileComponents();
@@ -101,12 +97,6 @@ describe('WeightTransactionsEditPage', () => {
         WeightTestData.SmallTransactionList[0].id
       )
     );
-  });
-
-  it('should dispatch a navigation request to the previous route when navigating back', () => {
-    component.onNavigateBack();
-
-    expect(routerSpy.navigate).toHaveBeenCalledOnceWith(['..']);
   });
 
   it('should listen to selectedAnimalId changes on the store', () => {
