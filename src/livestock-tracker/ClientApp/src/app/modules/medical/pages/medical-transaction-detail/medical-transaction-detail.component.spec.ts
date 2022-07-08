@@ -7,7 +7,10 @@ import { MedicalTransaction } from '@core/models';
 import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
 import { MedicineStore } from '@medical/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { MedicalTransactionFormStubComponent } from '@test/medical';
+import {
+  MedicalTransactionFormStubComponent,
+  MedicineTestData
+} from '@test/medical';
 
 import { MedicalTransactionDetailComponent } from './medical-transaction-detail.component';
 
@@ -24,15 +27,14 @@ describe('MedicalTransactionDetailComponent', () => {
       providers: [
         provideMockStore({
           selectors: [
-            { selector: getSelectedAnimalId, value: -1 },
+            { selector: getSelectedAnimalId, value: 1 },
             {
               selector: MedicineStore.Medicine.selectors.medicineTypes,
-              value: []
+              value: [...MedicineTestData.Medicine.SmallList]
             },
             {
               selector:
-                MedicineStore.Transactions.selectors
-                  .medicalTransactionsForAnimal,
+                MedicineStore.Transactions.selectors.selectedMedicalTransaction,
               value: <MedicalTransaction>{
                 animalId: 1,
                 dose: 4,
@@ -41,6 +43,10 @@ describe('MedicalTransactionDetailComponent', () => {
                 transactionDate: new Date(),
                 unitId: 1
               }
+            },
+            {
+              selector: MedicineStore.Transactions.selectors.isFetching,
+              value: false
             },
             { selector: getUnits, value: [] }
           ]

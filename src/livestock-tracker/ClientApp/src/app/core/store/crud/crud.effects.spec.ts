@@ -61,32 +61,26 @@ describe('Crud Effects', () => {
   let actions$: Observable<Action>;
   let testScheduler: TestScheduler;
 
-  beforeEach(
-    waitForAsync(() => {
-      TestBed.configureTestingModule({
-        providers: [
-          TestService,
-          TestEffects,
-          provideMockActions(() => actions$)
-        ],
-        imports: [MatSnackBarModule, NoopAnimationsModule]
-      });
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      providers: [TestService, TestEffects, provideMockActions(() => actions$)],
+      imports: [MatSnackBarModule, NoopAnimationsModule]
+    });
 
-      service = TestBed.inject(TestService);
-      getAllSpy = spyOn(service, 'getAll');
-      getSpy = spyOn(service, 'get');
-      addSpy = spyOn(service, 'add');
-      updateSpy = spyOn(service, 'update');
-      deleteSpy = spyOn(service, 'delete');
+    service = TestBed.inject(TestService);
+    getAllSpy = spyOn(service, 'getAll');
+    getSpy = spyOn(service, 'get');
+    addSpy = spyOn(service, 'add');
+    updateSpy = spyOn(service, 'update');
+    deleteSpy = spyOn(service, 'delete');
 
-      effects = TestBed.inject(TestEffects);
-      actions$ = TestBed.inject(Actions);
+    effects = TestBed.inject(TestEffects);
+    actions$ = TestBed.inject(Actions);
 
-      testScheduler = new TestScheduler((actual, expected) => {
-        expect(actual).toEqual(expected);
-      });
-    })
-  );
+    testScheduler = new TestScheduler((actual, expected) => {
+      expect(actual).toEqual(expected);
+    });
+  });
 
   it('should create', () => {
     expect(effects).toBeTruthy();
