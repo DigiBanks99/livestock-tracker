@@ -16,6 +16,8 @@ describe('Medical Transaction List', () => {
     cy.contains('td mat-icon', 'delete').should('be.visible');
     cy.contains('td mat-icon', 'delete').should('be.visible');
     cy.contains('td mat-icon', 'delete').should('be.visible');
+
+    cy.contains('span', '1 - Brahman');
   });
 
   it.only('should allow for pagination', () => {
@@ -26,11 +28,19 @@ describe('Medical Transaction List', () => {
   });
 
   it.only('should navigate to the medical transaction capture form when clicking the add button', () => {
-    cy.contains('button', 'add').click();
-    cy.location('pathname').should('equal', '/medicine/1/new');
+    cy.get('.medical-transaction-list').should('be.visible');
+
+    cy.contains('span', '1 - Brahman');
+    cy.contains('button', 'add')
+      .click()
+      .location('pathname')
+      .should('match', /medicine\/1\/new/);
   });
 
   it.only('should navigate to the medical transaction detail view when clicking on an item link', () => {
+    cy.get('.medical-transaction-list').should('be.visible');
+
+    cy.contains('span', '1 - Brahman');
     cy.contains('a', 'Antibiotics').click();
     cy.location('pathname').should('match', /medicine\/1\/edit\/\d+/);
   });
