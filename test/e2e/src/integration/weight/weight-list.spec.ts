@@ -31,7 +31,7 @@ describe('Weight Transaction List', () => {
   });
 
   it.only('should navigate to the weight transaction detail view when clicking on an item link', () => {
-    cy.contains('a', '13 January 2021, 18:00').click();
+    cy.contains('table tr td a', /13 January 2021, \d{2}:00/).click();
     cy.location('pathname').should('match', /weight\/1\/edit\/\d+/);
   });
 });
