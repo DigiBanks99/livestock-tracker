@@ -8,7 +8,7 @@ public class SearchingForMedicalTransactions
 {
     private readonly HttpClient _client;
 
-    public SearchingForMedicalTransactions(IntegrationTestFixture fixture)
+    public SearchingForMedicalTransactions(MedicineTestFixture fixture)
     {
         _client = fixture.Client;
     }

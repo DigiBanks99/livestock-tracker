@@ -7,9 +7,9 @@ namespace Given.A.MedicalTransactionAPI.When;
 [Collection(IntegrationTestFixture.CollectionName)]
 public class UpdatingAMedicalTransaction
 {
-    private readonly IntegrationTestFixture _fixture;
+    private readonly MedicineTestFixture _fixture;
 
-    public UpdatingAMedicalTransaction(IntegrationTestFixture fixture)
+    public UpdatingAMedicalTransaction(MedicineTestFixture fixture)
     {
         _fixture = fixture;
     }

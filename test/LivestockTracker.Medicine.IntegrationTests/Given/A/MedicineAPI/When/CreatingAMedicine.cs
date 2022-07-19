@@ -3,9 +3,9 @@
 [Collection(IntegrationTestFixture.CollectionName)]
 public class CreatingAMedicine
 {
-    private readonly IntegrationTestFixture _fixture;
+    private readonly MedicineTestFixture _fixture;
 
-    public CreatingAMedicine(IntegrationTestFixture fixture)
+    public CreatingAMedicine(MedicineTestFixture fixture)
     {
         _fixture = fixture;
     }
