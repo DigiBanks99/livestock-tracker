@@ -3,9 +3,9 @@ namespace Given.A.MedicalTransactionAPI.When;
 [Collection(IntegrationTestFixture.CollectionName)]
 public class CreatingAMedicalTransaction
 {
-    private readonly IntegrationTestFixture _fixture;
+    private readonly MedicineTestFixture _fixture;
 
-    public CreatingAMedicalTransaction(IntegrationTestFixture fixture)
+    public CreatingAMedicalTransaction(MedicineTestFixture fixture)
     {
         _fixture = fixture;
     }

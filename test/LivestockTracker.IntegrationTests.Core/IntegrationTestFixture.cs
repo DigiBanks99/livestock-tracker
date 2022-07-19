@@ -1,16 +1,15 @@
 using LivestockTracker;
 using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 
 namespace Given;
 
-public class IntegrationTestFixture : IAsyncLifetime
+public abstract class IntegrationTestFixture : IAsyncLifetime
 {
     public const string CollectionName = "Livestock Tests";
+    private readonly object _objLock = new();
 
     private HttpClient? _httpClient;
-    private readonly object objLock = new();
 
     public IntegrationTestFixture()
     {
@@ -25,22 +24,16 @@ public class IntegrationTestFixture : IAsyncLifetime
         IConfiguration config = configBuilder.Build();
         string? connectionString = config.GetConnectionString("DefaultConnection");
         SqliteConnectionStringBuilder connectionStringBuilder;
-        try
-        {
-            connectionStringBuilder = new(connectionString);
-        }
-        catch (FormatException)
-        {
-            // TODO: custom exception
-            throw;
-        }
+        connectionStringBuilder = new SqliteConnectionStringBuilder(connectionString);
 
         DatabaseConnection = new SqliteConnection(connectionStringBuilder.ConnectionString);
         _httpClient = null;
     }
 
-    public SqliteConnection DatabaseConnection { get; private set; }
-    public HttpClient Client => _httpClient ?? throw new InvalidOperationException($"The Host has not been initialized yet. Please ensure {nameof(InitializeAsync)} has been called.");
+    public SqliteConnection DatabaseConnection { get; }
+
+    public HttpClient Client => _httpClient ?? throw new InvalidOperationException(
+        $"The Host has not been initialized yet. Please ensure {nameof(InitializeAsync)} has been called.");
 
     public WebApplicationFactory<Startup> Factory { get; }
 
@@ -52,7 +45,7 @@ public class IntegrationTestFixture : IAsyncLifetime
 
     public Task InitializeAsync()
     {
-        lock (objLock)
+        lock (_objLock)
         {
             _httpClient = Factory.CreateTestClient();
         }
@@ -60,6 +53,3 @@ public class IntegrationTestFixture : IAsyncLifetime
         return Task.CompletedTask;
     }
 }
-
-[CollectionDefinition(IntegrationTestFixture.CollectionName)]
-public class LivestockTestCollection : ICollectionFixture<IntegrationTestFixture> { }

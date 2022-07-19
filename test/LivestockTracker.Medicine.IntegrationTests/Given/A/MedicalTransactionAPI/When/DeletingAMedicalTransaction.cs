@@ -5,9 +5,9 @@ namespace Given.A.MedicalTransactionAPI.When;
 [Collection(IntegrationTestFixture.CollectionName)]
 public class DeletingAMedicalTransaction
 {
-    private readonly IntegrationTestFixture _fixture;
+    private readonly MedicineTestFixture _fixture;
 
-    public DeletingAMedicalTransaction(IntegrationTestFixture fixture)
+    public DeletingAMedicalTransaction(MedicineTestFixture fixture)
     {
         _fixture = fixture;
     }

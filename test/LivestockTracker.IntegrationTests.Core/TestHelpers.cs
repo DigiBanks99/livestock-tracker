@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Given;
 
-internal static class TestHelpers
+public static class TestHelpers
 {
     public static HttpClient CreateTestClient()
     {
@@ -13,11 +13,8 @@ internal static class TestHelpers
 
     public static HttpClient CreateTestClient(this WebApplicationFactory<Startup>? factory)
     {
-        factory ??= new();
+        factory ??= new WebApplicationFactory<Startup>();
 
-        return factory.WithWebHostBuilder(builder =>
-        {
-            builder.UseEnvironment("Test");
-        }).CreateClient();
+        return factory.WithWebHostBuilder(builder => { builder.UseEnvironment("Test"); }).CreateClient();
     }
 }

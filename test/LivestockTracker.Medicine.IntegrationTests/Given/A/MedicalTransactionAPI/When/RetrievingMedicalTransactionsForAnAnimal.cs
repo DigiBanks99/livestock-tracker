@@ -5,7 +5,7 @@ public class RetrievingMedicalTransactionsForAnAnimal
 {
     private readonly HttpClient _client;
 
-    public RetrievingMedicalTransactionsForAnAnimal(IntegrationTestFixture fixture)
+    public RetrievingMedicalTransactionsForAnAnimal(MedicineTestFixture fixture)
     {
         _client = fixture.Client;
     }
