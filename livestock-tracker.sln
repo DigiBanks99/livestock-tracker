@@ -12,6 +12,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		scripts\clean.sh = scripts\clean.sh
 		README.md = README.md
 		scripts\restore.sh = scripts\restore.sh
+		.prettierrc.yml = .prettierrc.yml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "livestock-tracker.base", "src\livestock-tracker.base\livestock-tracker.base.csproj", "{E02D2A40-6988-4E78-B6B6-CAE4D3EE77FA}"
@@ -39,6 +40,21 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LivestockTracker.Feed.IntegrationTests", "test\LivestockTracker.Feed.IntegrationTests\LivestockTracker.Feed.IntegrationTests.csproj", "{E40E1053-65A5-48F2-8635-0BE503F9EEA8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LivestockTracker.IntegrationTests.Core", "test\LivestockTracker.IntegrationTests.Core\LivestockTracker.IntegrationTests.Core.csproj", "{7BE947E9-13BF-42CF-AEA5-314477F81BFA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{DB24E323-493D-4D8C-8360-10BB96C78C2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{8451B518-0F1E-47DA-A120-EC25F89100F3}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\angular.yml = .github\workflows\angular.yml
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
+		.github\workflows\end-to-end.yml = .github\workflows\end-to-end.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{EA51D54D-86C5-4B1B-96DC-941CDFBE2683}"
+	ProjectSection(SolutionItems) = preProject
+		.github\ISSUE_TEMPLATE\bug_report.md = .github\ISSUE_TEMPLATE\bug_report.md
+		.github\ISSUE_TEMPLATE\feature_request.md = .github\ISSUE_TEMPLATE\feature_request.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +145,8 @@ Global
 		{825EAB1E-4D9B-4D77-B3A6-F13C6CF90186} = {0C03D32C-973F-463E-926E-F562ABA1BF32}
 		{E40E1053-65A5-48F2-8635-0BE503F9EEA8} = {0C03D32C-973F-463E-926E-F562ABA1BF32}
 		{7BE947E9-13BF-42CF-AEA5-314477F81BFA} = {0C03D32C-973F-463E-926E-F562ABA1BF32}
+		{8451B518-0F1E-47DA-A120-EC25F89100F3} = {DB24E323-493D-4D8C-8360-10BB96C78C2B}
+		{EA51D54D-86C5-4B1B-96DC-941CDFBE2683} = {DB24E323-493D-4D8C-8360-10BB96C78C2B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {993AB101-CB97-410F-845B-BE6CDD87F426}
