@@ -3,9 +3,9 @@
 [Collection(IntegrationTestFixture.CollectionName)]
 public class RetrievingAMedicine
 {
-    private readonly MedicineTestFixture _fixture;
+    private readonly IntegrationTestFixture _fixture;
 
-    public RetrievingAMedicine(MedicineTestFixture fixture)
+    public RetrievingAMedicine(IntegrationTestFixture fixture)
     {
         _fixture = fixture;
     }
@@ -17,7 +17,8 @@ public class RetrievingAMedicine
         const string url = "/api/MedicineType/1";
 
         // Act
-        MedicineViewModel? medicineType = await _fixture.Client.GetFromJsonAsync<MedicineViewModel>(url).ConfigureAwait(false);
+        MedicineViewModel? medicineType =
+            await _fixture.Client.GetFromJsonAsync<MedicineViewModel>(url).ConfigureAwait(false);
 
         // Assert
         medicineType.ShouldNotBeNull();

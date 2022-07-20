@@ -3,9 +3,9 @@ namespace Given.A.FeedApi.When;
 [Collection(IntegrationTestFixture.CollectionName)]
 public class CreatingAFeedType
 {
-    private readonly FeedTypeTestFixture _fixture;
+    private readonly IntegrationTestFixture _fixture;
 
-    public CreatingAFeedType(FeedTypeTestFixture fixture)
+    public CreatingAFeedType(IntegrationTestFixture fixture)
     {
         _fixture = fixture;
     }

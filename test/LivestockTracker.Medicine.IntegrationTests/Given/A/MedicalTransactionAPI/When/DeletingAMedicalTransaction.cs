@@ -5,9 +5,9 @@ namespace Given.A.MedicalTransactionAPI.When;
 [Collection(IntegrationTestFixture.CollectionName)]
 public class DeletingAMedicalTransaction
 {
-    private readonly MedicineTestFixture _fixture;
+    private readonly IntegrationTestFixture _fixture;
 
-    public DeletingAMedicalTransaction(MedicineTestFixture fixture)
+    public DeletingAMedicalTransaction(IntegrationTestFixture fixture)
     {
         _fixture = fixture;
     }
@@ -17,7 +17,8 @@ public class DeletingAMedicalTransaction
     {
         // Arrange
         const string url = "/api/MedicalTransactions/1";
-        MedicalTransaction? transaction = await _fixture.Client.GetFromJsonAsync<MedicalTransaction>("/api/MedicalTransactions/1/1").ConfigureAwait(false);
+        MedicalTransaction? transaction = await _fixture.Client
+            .GetFromJsonAsync<MedicalTransaction>("/api/MedicalTransactions/1/1").ConfigureAwait(false);
 
         // Act
         HttpResponseMessage response = await _fixture.Client.DeleteAsync(url).ConfigureAwait(false);

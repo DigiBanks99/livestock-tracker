@@ -5,7 +5,7 @@ public class RetrievingMedicalTransactionsForAnAnimal
 {
     private readonly HttpClient _client;
 
-    public RetrievingMedicalTransactionsForAnAnimal(MedicineTestFixture fixture)
+    public RetrievingMedicalTransactionsForAnAnimal(IntegrationTestFixture fixture)
     {
         _client = fixture.Client;
     }
@@ -13,7 +13,7 @@ public class RetrievingMedicalTransactionsForAnAnimal
     [Theory]
     [InlineData(1, 1)]
     [InlineData(1, 8)]
-    [InlineData(3, 15 * 3 - 3)]
+    [InlineData(3, (15 * 3) - 3)]
     public async Task ItShouldOnlyReturnMedicalTransactionsForTheGivenAnimal(int animalId, int transactionId)
     {
         // Act
@@ -34,7 +34,7 @@ public class RetrievingMedicalTransactionsForAnAnimal
     public async Task AndTheTransactionDoesNotExistThenItShouldReturnNotFound()
     {
         // Act
-        HttpResponseMessage response = await _client.GetAsync($"/api/MedicalTransactions/1/9999999");
+        HttpResponseMessage response = await _client.GetAsync("/api/MedicalTransactions/1/9999999");
 
         // Assert
         response.StatusCode.ShouldBe((HttpStatusCode)StatusCodes.Status404NotFound);

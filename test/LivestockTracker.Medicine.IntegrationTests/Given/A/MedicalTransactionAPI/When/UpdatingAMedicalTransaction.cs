@@ -7,9 +7,9 @@ namespace Given.A.MedicalTransactionAPI.When;
 [Collection(IntegrationTestFixture.CollectionName)]
 public class UpdatingAMedicalTransaction
 {
-    private readonly MedicineTestFixture _fixture;
+    private readonly IntegrationTestFixture _fixture;
 
-    public UpdatingAMedicalTransaction(MedicineTestFixture fixture)
+    public UpdatingAMedicalTransaction(IntegrationTestFixture fixture)
     {
         _fixture = fixture;
     }
@@ -28,7 +28,8 @@ public class UpdatingAMedicalTransaction
             UnitId = 2
         };
         string url = $"/api/MedicalTransactions/{updateRequest.Id}";
-        MedicalTransaction savedTransaction = GetMedicalTransactionFromConnection(updateRequest.Id, _fixture.DatabaseConnection);
+        MedicalTransaction savedTransaction =
+            GetMedicalTransactionFromConnection(updateRequest.Id, _fixture.DatabaseConnection);
 
         // Act
         HttpResponseMessage response = await _fixture.Client.PutAsJsonAsync(url, updateRequest);
@@ -75,7 +76,9 @@ public class UpdatingAMedicalTransaction
         string content = await response.Content.ReadAsStringAsync();
         Dictionary<string, string[]>? keyValues = JsonConvert.DeserializeObject<Dictionary<string, string[]>>(content);
         keyValues.ShouldNotBeNull();
-        keyValues["AnimalId"][0].ShouldBe("A transaction cannot be moved to a different animal. Capture a new transaction for that animal and delete this one.");
+        keyValues["AnimalId"][0]
+            .ShouldBe(
+                "A transaction cannot be moved to a different animal. Capture a new transaction for that animal and delete this one.");
     }
 
     [Fact]

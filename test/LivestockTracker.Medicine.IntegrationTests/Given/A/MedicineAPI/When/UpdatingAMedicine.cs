@@ -7,9 +7,9 @@ namespace Given.A.MedicineAPI.When;
 [Collection(IntegrationTestFixture.CollectionName)]
 public class UpdatingAMedicine
 {
-    private readonly MedicineTestFixture _fixture;
+    private readonly IntegrationTestFixture _fixture;
 
-    public UpdatingAMedicine(MedicineTestFixture fixture)
+    public UpdatingAMedicine(IntegrationTestFixture fixture)
     {
         _fixture = fixture;
     }
@@ -37,7 +37,7 @@ public class UpdatingAMedicine
 
         // Clean-up
         UpdateMedicineViewModel cleanup = new(1, "Antibiotics");
-        await _fixture.Client.PutAsJsonAsync(url, medicineType);
+        await _fixture.Client.PutAsJsonAsync(url, cleanup);
     }
 
     [Fact]
