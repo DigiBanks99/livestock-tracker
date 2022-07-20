@@ -5,9 +5,9 @@ namespace Given.A.MedicineAPI.When;
 [Collection(IntegrationTestFixture.CollectionName)]
 public class SearchingForAMedicine
 {
-    private readonly MedicineTestFixture _fixture;
+    private readonly IntegrationTestFixture _fixture;
 
-    public SearchingForAMedicine(MedicineTestFixture fixture)
+    public SearchingForAMedicine(IntegrationTestFixture fixture)
     {
         _fixture = fixture;
     }

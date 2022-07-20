@@ -3,9 +3,9 @@ namespace Given.A.MedicalTransactionAPI.When;
 [Collection(IntegrationTestFixture.CollectionName)]
 public class CreatingAMedicalTransaction
 {
-    private readonly MedicineTestFixture _fixture;
+    private readonly IntegrationTestFixture _fixture;
 
-    public CreatingAMedicalTransaction(MedicineTestFixture fixture)
+    public CreatingAMedicalTransaction(IntegrationTestFixture fixture)
     {
         _fixture = fixture;
     }
@@ -34,7 +34,8 @@ public class CreatingAMedicalTransaction
         MedicalTransaction? createdTransaction = await response.Content.ReadFromJsonAsync<MedicalTransaction>();
         createdTransaction.ShouldNotBeNull();
         response.Headers.Location.ShouldNotBeNull();
-        Uri expectedUri = new($"http://localhost/api/MedicalTransactions/{createdTransaction.AnimalId}/{createdTransaction.Id}");
+        Uri expectedUri =
+            new($"http://localhost/api/MedicalTransactions/{createdTransaction.AnimalId}/{createdTransaction.Id}");
         response.Headers.Location.ShouldBe(expectedUri);
 
         createdTransaction.AnimalId.ShouldBe(createdTransaction.AnimalId);
@@ -45,7 +46,8 @@ public class CreatingAMedicalTransaction
         createdTransaction.Id.ShouldBeGreaterThan(45);
 
         _fixture.DatabaseConnection.Open();
-        using SqliteCommand cmd = new($"DELETE FROM MedicalTransactions WHERE ID = {createdTransaction.Id}", _fixture.DatabaseConnection);
+        using SqliteCommand cmd = new($"DELETE FROM MedicalTransactions WHERE ID = {createdTransaction.Id}",
+            _fixture.DatabaseConnection);
         try
         {
             cmd.ExecuteNonQuery();
@@ -82,7 +84,7 @@ public class CreatingAMedicalTransaction
         responseMessage.ShouldBe("\"A Medical Transaction with key 1 already exists.\"");
 
         _fixture.DatabaseConnection.Open();
-        await using SqliteCommand cmd = new($"SELECT COUNT(ID) FROM MedicalTransactions", _fixture.DatabaseConnection);
+        await using SqliteCommand cmd = new("SELECT COUNT(ID) FROM MedicalTransactions", _fixture.DatabaseConnection);
         try
         {
             object? count = cmd.ExecuteScalar();

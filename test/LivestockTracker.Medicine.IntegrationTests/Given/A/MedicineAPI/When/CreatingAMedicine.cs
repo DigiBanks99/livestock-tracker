@@ -3,9 +3,9 @@
 [Collection(IntegrationTestFixture.CollectionName)]
 public class CreatingAMedicine
 {
-    private readonly MedicineTestFixture _fixture;
+    private readonly IntegrationTestFixture _fixture;
 
-    public CreatingAMedicine(MedicineTestFixture fixture)
+    public CreatingAMedicine(IntegrationTestFixture fixture)
     {
         _fixture = fixture;
     }
@@ -17,7 +17,8 @@ public class CreatingAMedicine
         CreateMedicineViewModel medicine = new("New Medication");
 
         // Act
-        HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("/api/MedicineType", medicine).ConfigureAwait(false);
+        HttpResponseMessage response =
+            await _fixture.Client.PostAsJsonAsync("/api/MedicineType", medicine).ConfigureAwait(false);
 
         // Assert
         response.EnsureSuccessStatusCode();
@@ -34,7 +35,8 @@ public class CreatingAMedicine
         createdMedicine.Description.ShouldBe(medicine.Description);
 
         _fixture.DatabaseConnection.Open();
-        await using SqliteCommand cmd = new($"DELETE FROM MedicineTypes WHERE ID = {createdMedicine.Id}", _fixture.DatabaseConnection);
+        await using SqliteCommand cmd = new($"DELETE FROM MedicineTypes WHERE ID = {createdMedicine.Id}",
+            _fixture.DatabaseConnection);
         try
         {
             cmd.ExecuteNonQuery();
