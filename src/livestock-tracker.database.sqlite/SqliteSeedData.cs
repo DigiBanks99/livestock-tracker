@@ -1,9 +1,12 @@
+using System;
+using System.Linq;
 using LivestockTracker.Abstractions.Data;
+using LivestockTracker.Database.Models.Units;
+using LivestockTracker.Feed;
+using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Linq;
 
 namespace LivestockTracker.Database.Sqlite;
 
@@ -45,12 +48,12 @@ public class SqliteSeedData : ISeedData
         }
 
         context.Units.AddRange(
-            new()
+            new UnitModel
             {
                 Id = 1,
                 Description = "ℓ"
             },
-            new()
+            new UnitModel
             {
                 Id = 2,
                 Description = "kg"
@@ -65,17 +68,17 @@ public class SqliteSeedData : ISeedData
         }
 
         context.MedicineTypes.AddRange(
-            new()
+            new MedicineTypeModel
             {
                 Id = 1,
                 Description = "Antibiotics"
             },
-            new()
+            new MedicineTypeModel
             {
                 Id = 2,
                 Description = "Painkillers"
             },
-            new()
+            new MedicineTypeModel
             {
                 Id = 3,
                 Description = "Paracetamol",
@@ -91,15 +94,8 @@ public class SqliteSeedData : ISeedData
         }
 
         livestockContext.FeedTypes.AddRange(
-            new()
-            {
-                Id = 1,
-                Description = "Wheat"
-            },
-            new()
-            {
-                Id = 2,
-                Description = "Maze"
-            });
+            new FeedType(1, "Wheat", false),
+            new FeedType(2, "Maize", false),
+            new FeedType(3, "Pallets", true));
     }
 }

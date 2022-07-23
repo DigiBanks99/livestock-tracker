@@ -14,10 +14,7 @@ public class CreatingAFeedType
     public async Task ItShouldCreateANewFeedType()
     {
         // Arrange
-        FeedType feedType = new()
-        {
-            Description = "New Feed Type"
-        };
+        CreateFeedTypeViewModel feedType = new("New Feed Type");
 
         // Act
         HttpResponseMessage response =
@@ -28,7 +25,7 @@ public class CreatingAFeedType
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        FeedType? createdFeedType = await response.Content.ReadFromJsonAsync<FeedType>();
+        FeedTypeViewModel? createdFeedType = await response.Content.ReadFromJsonAsync<FeedTypeViewModel>();
         createdFeedType.ShouldNotBeNull();
         response.Headers.Location.ShouldNotBeNull();
         Uri expectedUri = new($"http://localhost/api/FeedType/{createdFeedType.Id}");

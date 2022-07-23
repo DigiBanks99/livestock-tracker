@@ -1,27 +1,21 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics;
-using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Enums;
 using LivestockTracker.Animals;
-using LivestockTracker.Database.Models.Weight;
 using LivestockTracker.Feed;
-using LivestockTracker.Medicine;
 
-namespace LivestockTracker.Database.Models.Animals;
+namespace LivestockTracker.Abstractions.Models.Animals;
 
 [DebuggerDisplay(
     "[{Id} - {Number}]{Archived ? \" A\" : string.Empty}: {BirthDate.ToString(\"o\")} - Sold: {Sold}, Deceased: {Deceased}")]
-[Table("Animals", Schema = "animal")]
-public class AnimalModel : IEntity<long>, IAnimal
+public class Animal : IAnimal
 {
     public bool Archived { get; set; }
 
-    public ICollection<MedicalTransactionModel> MedicalTransactions { get; set; } = new List<MedicalTransactionModel>();
-    public ICollection<FeedingTransaction> FeedingTransactions { get; } = new List<FeedingTransaction>();
-    public ICollection<WeightTransactionModel> WeightTransactions { get; } = new List<WeightTransactionModel>();
+    public IList<FeedingTransaction> FeedingTransactions { get; set; } = new List<FeedingTransaction>();
+    public long Id { get; set; }
 
     [Required] public AnimalType Type { get; set; }
 
@@ -39,19 +33,12 @@ public class AnimalModel : IEntity<long>, IAnimal
 
     [Required] public decimal ArrivalWeight { get; set; }
 
-    [Required] public bool Sold { get; set; }
+    [Required] public bool Sold { get; set; } = false;
 
     public decimal? SellPrice { get; set; }
     public DateTimeOffset? SellDate { get; set; }
 
-    [Required] public bool Deceased { get; set; }
+    [Required] public bool Deceased { get; set; } = false;
 
     public DateTimeOffset? DateOfDeath { get; set; }
-
-    [Column("ID")] [Key] public long Id { get; set; }
-
-    public long GetKey()
-    {
-        return Id;
-    }
 }

@@ -1,11 +1,13 @@
+using System;
+using System.Linq;
 using LivestockTracker.Abstractions.Data;
 using LivestockTracker.Abstractions.Enums;
 using LivestockTracker.Database.Models.Animals;
 using LivestockTracker.Database.Models.Weight;
+using LivestockTracker.Feed;
+using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 
 namespace LivestockTracker.Database;
 
@@ -13,7 +15,8 @@ public class DevSqliteSeedData : ISeedData
 {
     public void Seed(IServiceProvider serviceProvider)
     {
-        using var context = new LivestockContext(serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>());
+        using var context =
+            new LivestockContext(serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>());
         SeedAnimals(context);
         SeedMedicalTransactions(context);
         SeedFeedingTransactions(context);
@@ -22,13 +25,13 @@ public class DevSqliteSeedData : ISeedData
 
     private static void SeedAnimals(LivestockContext context)
     {
-        if (context.Animals == null || context.Animals.Any())
+        if (context.Animals.Any())
         {
             return;
         }
 
         context.Animals.AddRange(
-            new()
+            new AnimalModel
             {
                 Type = AnimalType.Cattle,
                 Subspecies = "Brahman",
@@ -42,7 +45,7 @@ public class DevSqliteSeedData : ISeedData
                 SellPrice = null,
                 Deceased = false
             },
-            new()
+            new AnimalModel
             {
                 Type = AnimalType.Cattle,
                 Archived = true,
@@ -53,7 +56,7 @@ public class DevSqliteSeedData : ISeedData
                 Number = 2,
                 PurchasePrice = 200m
             },
-            new()
+            new AnimalModel
             {
                 Type = AnimalType.Cattle,
                 ArrivalWeight = 30,
@@ -69,12 +72,12 @@ public class DevSqliteSeedData : ISeedData
 
     private static void SeedMedicalTransactions(LivestockContext context)
     {
-        if (context.MedicalTransactions == null || context.MedicalTransactions.Any())
+        if (context.MedicalTransactions.Any())
         {
             return;
         }
 
-        AnimalModel? animal = context.Animals.OrderBy(a => a.Number).First();
+        AnimalModel? animal = context.Animals.OrderBy(a => a.Number).FirstOrDefault();
         if (animal == null)
         {
             SeedAnimals(context);
@@ -86,7 +89,7 @@ public class DevSqliteSeedData : ISeedData
             {
                 int medicineTypeId = i % 2 == 0 ? 2 : 1;
                 animalEntity.MedicalTransactions.Add(
-                    new()
+                    new MedicalTransactionModel
                     {
                         MedicineId = medicineTypeId,
                         TransactionDate = animalEntity.PurchaseDate.AddDays(i),
@@ -106,7 +109,7 @@ public class DevSqliteSeedData : ISeedData
             return;
         }
 
-        AnimalModel? animal = livestockContext.Animals.OrderBy(a => a.Number).First();
+        AnimalModel? animal = livestockContext.Animals.OrderBy(a => a.Number).FirstOrDefault();
         if (animal == null)
         {
             SeedAnimals(livestockContext);
@@ -114,22 +117,16 @@ public class DevSqliteSeedData : ISeedData
         }
 
         livestockContext.FeedingTransactions.AddRange(
-            new()
-            {
-                AnimalId = animal.Id,
-                FeedTypeId = livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id,
-                Quantity = 0.5m,
-                TransactionDate = DateTimeOffset.Parse("2021-01-13T16:00:00Z"),
-                UnitId = livestockContext.Units.OrderBy(u => u.Description).First().Id
-            },
-            new()
-            {
-                AnimalId = animal.Id,
-                FeedTypeId = livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id,
-                Quantity = 1,
-                TransactionDate = DateTimeOffset.Parse("2021-01-12T16:00:00Z"),
-                UnitId = livestockContext.Units.OrderBy(u => u.Description).First().Id
-            });
+            new FeedingTransaction(animal.Id, livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id, 0.5m,
+                livestockContext.Units.OrderBy(u => u.Description).First().Id,
+                DateTimeOffset.Parse("2021-01-13T16:00:00Z")),
+            new FeedingTransaction(
+                animal.Id,
+                livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id,
+                1,
+                livestockContext.Units.OrderBy(u => u.Description).First().Id,
+                DateTimeOffset.Parse("2021-01-12T16:00:00Z")
+            ));
 
         livestockContext.SaveChanges();
     }
@@ -141,7 +138,7 @@ public class DevSqliteSeedData : ISeedData
             return;
         }
 
-        AnimalModel? animal = livestockContext.Animals.OrderBy(a => a.Number).First();
+        AnimalModel? animal = livestockContext.Animals.OrderBy(a => a.Number).FirstOrDefault();
         if (animal == null)
         {
             SeedAnimals(livestockContext);
@@ -149,7 +146,7 @@ public class DevSqliteSeedData : ISeedData
         }
 
         livestockContext.WeightTransactions.AddRange(
-            new WeightTransactionModel()
+            new WeightTransactionModel
             {
                 AnimalId = animal.Id,
                 TransactionDate = DateTimeOffset.Parse("2021-01-13T16:00:00Z"),
