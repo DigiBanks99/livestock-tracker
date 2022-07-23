@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Given;
 
-public abstract class IntegrationTestFixture : IAsyncLifetime
+public class IntegrationTestFixture : IAsyncLifetime
 {
     public const string CollectionName = "Livestock Tests";
     private readonly object _objLock = new();

@@ -1,4 +1,5 @@
-global using LivestockTracker.Models.Feed;
+global using LivestockTracker.Feed;
+global using LivestockTracker.Feed.ViewModels;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.Data.Sqlite;
 global using Shouldly;
