@@ -1,14 +1,6 @@
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using LivestockTracker.Abstractions.Models;
 using LivestockTracker.Controllers;
 using LivestockTracker.Feed.ViewModels;
-using LivestockTracker.Logic.Paging;
-using LivestockTracker.Models.Paging;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace LivestockTracker.Feed;
 
@@ -58,7 +50,7 @@ public class FeedTypeController : LivestockApiController
         PagingOptions pagingOptions = new(pageNumber, pageSize);
 
         IPagedData<FeedType> result = _feedTypeSearchService.Search(filter, pagingOptions);
-        PagedData<FeedTypeViewModel> response = new(result.Data.Select(feedType => feedType.ToFeedTypeViewModel()),
+        PagedData<FeedTypeViewModel> response = new(result.Data.Select(feedType => feedType.ToViewModel()),
             result.PageSize, result.CurrentPage, result.TotalRecordCount);
 
         return Ok(response);
@@ -81,7 +73,7 @@ public class FeedTypeController : LivestockApiController
             return BadRequest(ModelState);
         }
 
-        var item = _feedTypeSearchService.GetOne(id)?.ToFeedTypeViewModel();
+        FeedTypeViewModel? item = _feedTypeSearchService.GetOne(id)?.ToViewModel();
         return item == null
             ? NotFound()
             : Ok(item);
@@ -109,7 +101,7 @@ public class FeedTypeController : LivestockApiController
             FeedType addedItem = await _feedTypeManager.AddAsync(request.ToFeedType(), RequestAbortToken)
                 .ConfigureAwait(false);
 
-            return CreatedAtAction(nameof(Get), new { id = addedItem.Id }, addedItem.ToFeedTypeViewModel());
+            return CreatedAtAction(nameof(Get), new { id = addedItem.Id }, addedItem.ToViewModel());
         }
         catch (ItemAlreadyExistsException<int> ex)
         {
@@ -124,10 +116,10 @@ public class FeedTypeController : LivestockApiController
     /// <param name="feedType">The updates for the feed type.</param>
     /// <returns>The updated feed type.</returns>
     [HttpPut("{id}")]
-    [ProducesResponseType(typeof(FeedType), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(FeedTypeViewModel), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(int id, [Required] [FromBody] FeedType feedType)
+    public async Task<IActionResult> Update(int id, [Required] [FromBody] UpdateFeedTypeViewModel feedType)
     {
         Logger.LogInformation("Requesting updates to the feed type with ID {FeedTypeId}...", id);
 
@@ -143,10 +135,10 @@ public class FeedTypeController : LivestockApiController
 
         try
         {
-            FeedType updatedFeedType = await _feedTypeManager.UpdateAsync(feedType, RequestAbortToken)
+            FeedType updatedFeedType = await _feedTypeManager.UpdateAsync(feedType.ToFeedType(), RequestAbortToken)
                 .ConfigureAwait(false);
 
-            return Ok(updatedFeedType);
+            return Ok(updatedFeedType.ToViewModel());
         }
         catch (EntityNotFoundException<FeedType> ex)
         {
