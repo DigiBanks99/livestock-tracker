@@ -77,8 +77,7 @@ public class DevSqliteSeedData : ISeedData
             return;
         }
 
-        AnimalModel? animal = context.Animals.OrderBy(a => a.Number).FirstOrDefault();
-        if (animal == null)
+        if (!context.Animals.Any())
         {
             SeedAnimals(context);
         }
@@ -102,33 +101,29 @@ public class DevSqliteSeedData : ISeedData
         context.SaveChanges();
     }
 
-    private static void SeedFeedingTransactions(LivestockContext livestockContext)
+    private static void SeedFeedingTransactions(LivestockContext context)
     {
-        if (livestockContext.FeedingTransactions.Any())
+        if (context.FeedingTransactions.Any())
         {
             return;
         }
 
-        AnimalModel? animal = livestockContext.Animals.OrderBy(a => a.Number).FirstOrDefault();
-        if (animal == null)
+        if (!context.Animals.Any())
         {
-            SeedAnimals(livestockContext);
-            animal = livestockContext.Animals.OrderBy(a => a.Number).First();
+            SeedAnimals(context);
         }
 
-        livestockContext.FeedingTransactions.AddRange(
-            new FeedingTransaction(animal.Id, livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id, 0.5m,
-                livestockContext.Units.OrderBy(u => u.Description).First().Id,
-                DateTimeOffset.Parse("2021-01-13T16:00:00Z")),
-            new FeedingTransaction(
-                animal.Id,
-                livestockContext.FeedTypes.OrderBy(f => f.Description).First().Id,
-                1,
-                livestockContext.Units.OrderBy(u => u.Description).First().Id,
-                DateTimeOffset.Parse("2021-01-12T16:00:00Z")
-            ));
+        foreach (AnimalModel? animalEntity in context.Animals)
+        {
+            for (int i = 0; i < 15; i++)
+            {
+                int feedTypeId = i % 2 == 0 ? 2 : 1;
+                context.FeedingTransactions.Add(new FeedingTransaction(animalEntity.Id, feedTypeId, 0.5m, 1,
+                    animalEntity.PurchaseDate.AddDays(i)));
+            }
+        }
 
-        livestockContext.SaveChanges();
+        context.SaveChanges();
     }
 
     private static void SeedWeightTransactions(LivestockContext livestockContext)

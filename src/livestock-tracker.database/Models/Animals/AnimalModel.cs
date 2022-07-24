@@ -20,7 +20,6 @@ public class AnimalModel : IEntity<long>, IAnimal
     public bool Archived { get; set; }
 
     public ICollection<MedicalTransactionModel> MedicalTransactions { get; set; } = new List<MedicalTransactionModel>();
-    public ICollection<FeedingTransaction> FeedingTransactions { get; } = new List<FeedingTransaction>();
     public ICollection<WeightTransactionModel> WeightTransactions { get; } = new List<WeightTransactionModel>();
 
     [Required] public AnimalType Type { get; set; }

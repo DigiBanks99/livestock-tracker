@@ -1,195 +1,212 @@
-/*using LivestockTracker.Abstractions.Models;
-using LivestockTracker.Abstractions.Models.Feed;
-using LivestockTracker.Abstractions.Services.Feed;
-using LivestockTracker.Models.Feed;
-using LivestockTracker.Models.Paging;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
+using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Controllers;
+using LivestockTracker.Feed.ViewModels;
 
-namespace LivestockTracker.Controllers
+namespace LivestockTracker.Feed;
+
+/// <summary>
+///     Provides endpoints for interacting with feeding transactions.
+/// </summary>
+public class FeedingTransactionController : LivestockApiController
 {
+    private readonly IFeedingTransactionManager _feedingTransactionManager;
+    private readonly IFeedingTransactionSearchService _searchService;
+
     /// <summary>
-    /// Provides endpoints for interacting with feeding transactions.
+    ///     Constructor.
     /// </summary>
-    public class FeedingTransactionController : LivestockApiController
+    /// <param name="logger">The logger.</param>
+    /// <param name="feedingTransactionManager">Manages the storing, updating and removal of feeding transactions.</param>
+    /// <param name="searchService">Provides services for retrieving feeding transaction data.</param>
+    public FeedingTransactionController(ILogger<FeedingTransactionController> logger,
+        IFeedingTransactionManager feedingTransactionManager,
+        IFeedingTransactionSearchService searchService)
+        : base(logger)
     {
-        private readonly IFeedingTransactionCrudService _feedingTransactionService;
+        _feedingTransactionManager = feedingTransactionManager;
+        _searchService = searchService;
+    }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="logger">The logger.</param>
-        /// <param name="feedingTransactionService">Provides general services for feeding transactions.</param>
-        public FeedingTransactionController(ILogger<FeedingTransactionController> logger, IFeedingTransactionCrudService feedingTransactionService)
-            : base(logger)
+    /// <summary>
+    ///     Requests a paged list of feeding transactions that belong to an animal.
+    /// </summary>
+    /// <param name="animalIds">The animals that either need to be included or excluded.</param>
+    /// <param name="exclude">Whether the criteria should be used to include or exclude.</param>
+    /// <param name="feedTypeIds">The type of medicine to be included or excluded.</param>
+    /// <param name="pageNumber">The number of the page.</param>
+    /// <param name="pageSize">The size of each page.</param>
+    /// <returns>A paged list of feeding transaction for the animal.</returns>
+    [HttpGet]
+    [ProducesResponseType(typeof(PagedData<FeedingTransactionViewModel>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+    public IActionResult GetAll(
+        [FromQuery] long[]? animalIds = null,
+        [FromQuery] bool? exclude = null,
+        [FromQuery] int[]? feedTypeIds = null,
+        [FromQuery] int pageNumber = 0,
+        [FromQuery] int pageSize = 10)
+    {
+        if (!ModelState.IsValid)
         {
-            _feedingTransactionService = feedingTransactionService;
+            return BadRequest(ModelState);
         }
 
-        /// <summary>
-        /// Requests a paged list of feeding transactions that belong to an animal.
-        /// </summary>
-        /// <param name="animalId">The identifying key for the animal.</param>
-        /// <param name="pageNumber">The number of the page.</param>
-        /// <param name="pageSize">The size of each page.</param>
-        /// <returns>A paged list of feeding transaction for the animal.</returns>
-        [HttpGet("{animalId}")]
-        [ProducesResponseType(typeof(IPagedData<FeedingTransaction>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAll([Required] int animalId, int pageNumber = 0, int pageSize = 100)
+        FeedingTransactionFilter filter = new(
+            animalIds ?? Array.Empty<long>(),
+            feedTypeIds ?? Array.Empty<int>(),
+            exclude ?? false);
+        PagingOptions pagingOptions = new(pageNumber, pageSize);
+        Logger.LogInformation(
+            "Requesting {PageSize} feeding transactions from page {PageNumber} with filter: {@Filter}...",
+            pageSize,
+            pageNumber,
+            filter);
+
+        IPagedData<FeedingTransaction> result = _searchService.Search(filter, pagingOptions);
+        PagedData<FeedingTransactionViewModel> response = new(
+            result.Data.Select(transaction => transaction.ToViewModel()),
+            result.PageSize, result.CurrentPage, result.TotalRecordCount);
+        return Ok(response);
+    }
+
+    /// <summary>
+    ///     Find the detail of a feeding transaction with a given ID ensuring it belongs to the correct animal.
+    /// </summary>
+    /// <param name="animalId">The unique identifier of the animal.</param>
+    /// <param name="id">The unique identifier of the feeding transaction.</param>
+    /// <returns>The detail of the feeding transaction.</returns>
+    [HttpGet("{animalId:long}/{id:long}")]
+    [ProducesResponseType(typeof(FeedingTransactionViewModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    public IActionResult GetTransaction(long animalId, long id)
+    {
+        Logger.LogInformation(
+            "Requesting the detail for feeding transaction with ID {Id} for the animal with ID {AnimalId}...",
+            animalId,
+            id);
+        if (!ModelState.IsValid)
         {
-            Logger.LogInformation($"Requesting {pageSize} feeding transactions for animal with ID {animalId} from page {pageNumber}...");
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var feedingTransactions = await _feedingTransactionService.FindAsync(feedingTransaction => feedingTransaction.AnimalId == animalId,
-                                                                                 feedingTransaction => feedingTransaction.TransactionDate,
-                                                                                 ListSortDirection.Descending,
-                                                                                 new PagingOptions
-                                                                                 {
-                                                                                     PageNumber = pageNumber,
-                                                                                     PageSize = pageSize
-                                                                                 },
-                                                                                 RequestAbortToken)
-                                                                      .ConfigureAwait(false);
-            return Ok(feedingTransactions);
+            return BadRequest(ModelState);
         }
 
-        /// <summary>
-        /// Find the detail of a feeding transaction with a given ID ensuring it belongs to the correct animal.
-        /// </summary>
-        /// <param name="animalId">The unique identifier of the animal.</param>
-        /// <param name="id">The unique identifier of the feeding transaction.</param>
-        /// <returns>The detail of the feeding transaction.</returns>
-        [HttpGet("{animalId}/{id}")]
-        [ProducesResponseType(typeof(FeedingTransaction), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Get(int animalId, int id)
+        FeedingTransaction? transaction = _searchService.GetOne(id);
+        return transaction == null
+            ? NotFound()
+            : transaction.AnimalId != animalId
+                ? StatusCode(StatusCodes.Status500InternalServerError,
+                    "The data retrieval service did not respond as expected.")
+                : Ok(transaction.ToViewModel());
+    }
+
+    /// <summary>
+    ///     Requests the creation of a feeding transaction with the given details.
+    /// </summary>
+    /// <param name="request">The details of the feeding transaction to be created.</param>
+    /// <returns>The created feeding transaction.</returns>
+    [HttpPost]
+    [ProducesResponseType(typeof(FeedingTransactionViewModel), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> AddAsync(CreateFeedingTransactionViewModel request)
+    {
+        Logger.LogInformation("Requesting the creation of feeding transaction {@Request}", request);
+        if (!ModelState.IsValid)
         {
-            Logger.LogInformation($"Requesting the detail for feeding transaction with ID {id} for the animal with ID {animalId}...");
-
-            try
-            {
-                var transaction = await _feedingTransactionService.GetOneAsync(id, RequestAbortToken)
-                                                                  .ConfigureAwait(false);
-
-                if (transaction == null)
-                    return NotFound();
-
-                if (transaction.AnimalId != animalId)
-                    return BadRequest();
-
-                return Ok(transaction);
-            }
-            catch (EntityNotFoundException<IFeedingTransaction> ex)
-            {
-                return NotFound(ex.Message);
-            }
+            return BadRequest(ModelState);
         }
 
-        /// <summary>
-        /// Requests the creation of a feeding transaction with the given details.
-        /// </summary>
-        /// <param name="feedingTransaction">The details of the feeding transaction to be created.</param>
-        /// <returns>The created feeding transaction.</returns>
-        [HttpPost]
-        [ProducesResponseType(typeof(FeedingTransaction), StatusCodes.Status201Created)]
-        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Add([FromBody] FeedingTransaction feedingTransaction)
+        try
         {
-            Logger.LogInformation($"Requesting the creation of feeding transaction {feedingTransaction}");
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            FeedingTransaction addedTransaction = await _feedingTransactionManager
+                .AddAsync(request.ToFeedingTransaction(), RequestAbortToken)
+                .ConfigureAwait(false);
 
-            var addedTransaction = await _feedingTransactionService.AddAsync(feedingTransaction, RequestAbortToken)
-                                                                   .ConfigureAwait(false);
+            return CreatedAtAction(nameof(GetTransaction),
+                new
+                {
+                    id = addedTransaction.Id,
+                    animalId = addedTransaction.AnimalId
+                },
+                addedTransaction.ToViewModel());
+        }
+        catch (ItemAlreadyExistsException<long> ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 
-            return CreatedAtAction(nameof(Get), new { id = addedTransaction.Id, animalId = addedTransaction.AnimalId }, addedTransaction);
+    /// <summary>
+    ///     Requests the updating of an existing feeding transaction with the given detail.
+    /// </summary>
+    /// <param name="id">The unique identifier of the feeding transaction.</param>
+    /// <param name="request">The detail with which the feeding transaction must be updated.</param>
+    /// <returns>The updated feeding transaction.</returns>
+    [HttpPut("{id:long}")]
+    [ProducesResponseType(typeof(FeedingTransactionViewModel), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> UpdateAsync(long id, [Required] UpdateFeedingTransactionViewModel request)
+    {
+        Logger.LogInformation(
+            "Requesting the updating of feeding transaction with ID {FeedingTransactionId} with values {@DesiredValues}...",
+            id, request);
+
+        if (id != request.Id)
+        {
+            ModelState.AddModelError(nameof(request.Id),
+                "The id in the transaction body does match the id in the route.");
         }
 
-        /// <summary>
-        /// Requests the updating of an existing feeding transaction with the given detail.
-        /// </summary>
-        /// <param name="id">The unique identifier of the feeding transaction.</param>
-        /// <param name="feedingTransaction">The detail with which the feeding transaction must be updated.</param>
-        /// <returns>The updated feeding transaction.</returns>
-        [HttpPut("{id}")]
-        [ProducesResponseType(typeof(FeedingTransaction), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Update(int id, [Required][FromBody] FeedingTransaction feedingTransaction)
+        if (!ModelState.IsValid)
         {
-            Logger.LogInformation($"Requesting the updating of feeding transaction with ID {id} with values {feedingTransaction}...");
-
-            if (feedingTransaction == null)
-            {
-                ModelState.AddModelError(nameof(feedingTransaction), $"{nameof(feedingTransaction)} is required.");
-                return BadRequest(ModelState);
-            }
-
-            if (id != feedingTransaction.Id)
-            {
-                ModelState.AddModelError(nameof(feedingTransaction.Id), "The id in the transaction body does match the id in the route.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            try
-            {
-                var updatedTransaction = await _feedingTransactionService.UpdateAsync(feedingTransaction, RequestAbortToken)
-                                                                         .ConfigureAwait(false);
-                return Ok(updatedTransaction);
-            }
-            catch (EntityNotFoundException<IFeedingTransaction> ex)
-            {
-                return NotFound(ex.Message);
-            }
+            return BadRequest(ModelState);
         }
 
-        /// <summary>
-        /// Request the deletion of a feeding transaction with the given ID.
-        /// </summary>
-        /// <param name="id">The unique identifier of the feeding transaction.</param>
-        /// <returns>The ID of the removed feeding transaction.</returns>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Delete(int id)
+        try
         {
-            Logger.LogInformation($"Requesting the deletion of feeding transaction with ID {id}...");
+            FeedingTransaction updatedTransaction = await _feedingTransactionManager
+                .UpdateAsync(id, request.ToFeedingTransaction(), RequestAbortToken)
+                .ConfigureAwait(false);
+            return Ok(updatedTransaction.ToViewModel());
+        }
+        catch (ArgumentException ex)
+        {
+            ModelState.AddModelError(nameof(request.AnimalId), ex.Message);
+            return BadRequest(ModelState);
+        }
+        catch (EntityNotFoundException<FeedingTransaction> ex)
+        {
+            return NotFound(ex.Message);
+        }
+    }
 
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+    /// <summary>
+    ///     Request the deletion of a feeding transaction with the given ID.
+    /// </summary>
+    /// <param name="id">The unique identifier of the feeding transaction.</param>
+    /// <returns>The ID of the removed feeding transaction.</returns>
+    [HttpDelete("{id:long}")]
+    [ProducesResponseType(typeof(long), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> DeleteAsync(long id)
+    {
+        Logger.LogInformation("Requesting the deletion of feeding transaction with ID {Id}...", id);
 
-            try
-            {
-                var removedId = await _feedingTransactionService.RemoveAsync(id, RequestAbortToken)
-                                                                .ConfigureAwait(false);
-                return Ok(removedId);
-            }
-            catch (EntityNotFoundException<IFeedingTransaction> ex)
-            {
-                return NotFound(ex.Message);
-            }
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            long removedId = await _feedingTransactionManager.RemoveAsync(id, RequestAbortToken)
+                .ConfigureAwait(false);
+            return Ok(removedId);
+        }
+        catch (EntityNotFoundException<FeedingTransaction> ex)
+        {
+            return NotFound(ex.Message);
         }
     }
 }
-*/
-
-

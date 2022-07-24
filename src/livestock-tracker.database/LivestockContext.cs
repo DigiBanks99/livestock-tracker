@@ -24,6 +24,38 @@ public class LivestockContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ConfigureFeedModels()
+            .ConfigureMedicineModels()
+            .ConfigureWeightModels();
+
+        base.OnModelCreating(modelBuilder);
+
+        this.AdaptSqliteDates(modelBuilder);
+    }
+}
+
+internal static class ModelBuilderExtensions
+{
+    internal static ModelBuilder ConfigureFeedModels(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<FeedingTransaction>()
+            .HasOne(f => f.Animal)
+            .WithMany(a => a.FeedingTransactions)
+            .HasForeignKey(f => f.AnimalId);
+        modelBuilder.Entity<FeedingTransaction>()
+            .HasOne(m => m.UnitOfMeasurement)
+            .WithMany()
+            .HasForeignKey(m => m.UnitId);
+        modelBuilder.Entity<FeedingTransaction>()
+            .HasOne(m => m.Feed)
+            .WithMany()
+            .HasForeignKey(m => m.FeedTypeId);
+
+        return modelBuilder;
+    }
+
+    internal static ModelBuilder ConfigureMedicineModels(this ModelBuilder modelBuilder)
+    {
         modelBuilder.Entity<MedicalTransactionModel>()
             .HasOne(m => m.Animal)
             .WithMany(a => a.MedicalTransactions)
@@ -37,22 +69,6 @@ public class LivestockContext : DbContext
             .WithMany(t => t.MedicalTransactions)
             .HasForeignKey(m => m.MedicineId);
 
-        modelBuilder.Entity<FeedingTransaction>()
-            .HasOne(f => f.Animal)
-            .WithMany(a => a.FeedingTransactions)
-            .HasForeignKey(f => f.AnimalId);
-        modelBuilder.Entity<FeedingTransaction>()
-            .HasOne(m => m.UnitOfMeasurement)
-            .WithMany()
-            .HasForeignKey(m => m.UnitId);
-        modelBuilder.Entity<FeedingTransaction>()
-            .HasOne(m => m.Feed)
-            .WithMany()
-            .HasForeignKey(m => m.FeedTypeId);
-        modelBuilder.ConfigureWeightModels();
-
-        base.OnModelCreating(modelBuilder);
-
-        this.AdaptSqliteDates(modelBuilder);
+        return modelBuilder;
     }
 }
