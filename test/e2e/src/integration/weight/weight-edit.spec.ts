@@ -16,7 +16,7 @@ describe('Weight Transaction Update', () => {
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input').should(
       'exist'
     );
-    cy.findFormField('Weight', 'input').should('have.value', '63');
+    cy.findFormField('Weight', 'input').should('have.value', '32.5');
 
     cy.contains('a', 'Back').should('exist');
     cy.contains('button', 'Cancel').should('exist').should('be.disabled');
