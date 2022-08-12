@@ -18,7 +18,7 @@ public class UpdatingAMedicine
     public async Task ItShouldSaveTheMedicineWithTheUpdatedValues()
     {
         // Arrange
-        UpdateMedicineViewModel medicineType = new(1, "Changed", true);
+        UpdateMedicineViewModel medicineType = new(1, "Changed");
         const string url = "/api/MedicineType/1";
 
         // Act
@@ -33,11 +33,28 @@ public class UpdatingAMedicine
 
         updatedMedicine.Id.ShouldBe(medicineType.Id);
         updatedMedicine.Description.ShouldBe(medicineType.Description);
-        updatedMedicine.Deleted.ShouldBe(medicineType.Deleted);
+        updatedMedicine.Deleted.ShouldBeFalse();
 
         // Clean-up
         UpdateMedicineViewModel cleanup = new(1, "Antibiotics");
         await _fixture.Client.PutAsJsonAsync(url, cleanup);
+    }
+
+    [Fact]
+    public async Task ItShouldIndicateWhenTheTypeIsDeletedAndMakeNoChanges()
+    {
+        // Arrange
+        UpdateMedicineViewModel medicineType = new(3, "Changed");
+        const string url = "/api/MedicineType/3";
+
+        // Act
+        HttpResponseMessage response = await _fixture.Client.PutAsJsonAsync(url, medicineType);
+
+        // Assert
+        response.StatusCode.ShouldBe(HttpStatusCode.Locked);
+        response.Content.Headers.ContentType.ShouldNotBeNull().ToString().ShouldBe("application/json; charset=utf-8");
+        string content = await response.Content.ReadAsStringAsync();
+        content.ShouldBe("\"This medicine type is already deleted and cannot be modified.\"");
     }
 
     [Fact]
@@ -57,8 +74,8 @@ public class UpdatingAMedicine
         // It returns a problem descriptor. Need to try and see how I will handle that
         SerializableError? error = JsonConvert.DeserializeObject<SerializableError>(content);
         error.ShouldNotBeNull();
-        string? message = error["errors"].ToJToken()["medicineType"]?.Value<string>(0);
-        message.ShouldBe("The medicineType field is required.");
+        string? message = error["errors"].ToJToken()["desiredValues"]?.Value<string>(0);
+        message.ShouldBe("The desiredValues field is required.");
     }
 
     [Fact]

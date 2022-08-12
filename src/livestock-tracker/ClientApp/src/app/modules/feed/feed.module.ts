@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -17,39 +20,27 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import {
-  feedingTransactionEffects,
-  feedingTransactionReducer,
-  feedTypeEffects,
-  feedTypeReducer
-} from '@feed-store';
-import {
-  FeedingTransactionComponent,
-  FeedingTransactionContainerComponent,
   FeedingTransactionDetailComponent,
   FeedingTransactionFormComponent,
-  FeedingTransactionNewComponent,
-  FeedTypeComponent,
-  FeedTypeContainerComponent,
-  FeedTypeDetailComponent
+  FeedingTransactionNewComponent
 } from '@feed/components';
-import { FeedingTransactionService, FeedTypeService } from '@feed/services';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
+import {
+  FeedingTransactionService,
+  FeedTypeService
+} from '@feed/services';
 import { SharedModule } from '@shared/shared.module';
+
+import { FeedRoutingModule } from './feed-routing.module';
 
 @NgModule({
   declarations: [
-    FeedTypeComponent,
-    FeedTypeContainerComponent,
-    FeedTypeDetailComponent,
-    FeedingTransactionComponent,
-    FeedingTransactionContainerComponent,
     FeedingTransactionDetailComponent,
     FeedingTransactionFormComponent,
     FeedingTransactionNewComponent
   ],
   imports: [
     CommonModule,
+    FeedRoutingModule,
     FlexLayoutModule,
     FormsModule,
     MatButtonModule,
@@ -67,16 +58,7 @@ import { SharedModule } from '@shared/shared.module';
     MatToolbarModule,
     ReactiveFormsModule,
     RouterModule,
-    SharedModule,
-    StoreModule.forFeature('feedTypes', feedTypeReducer.feedTypeReducer),
-    StoreModule.forFeature(
-      'feedingTransactions',
-      feedingTransactionReducer.feedingTransactionReducer
-    ),
-    EffectsModule.forFeature([
-      feedTypeEffects.FeedTypeEffects,
-      feedingTransactionEffects.FeedingTransactionEffects
-    ])
+    SharedModule
   ],
   providers: [FeedTypeService, FeedingTransactionService]
 })

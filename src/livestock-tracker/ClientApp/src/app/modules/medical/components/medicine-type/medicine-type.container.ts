@@ -30,7 +30,6 @@ import { select, Store } from '@ngrx/store';
 export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
   public medicineTypes$: Observable<MedicineType[]>;
   public isPending$: Observable<boolean>;
-  public error$: Observable<Error>;
   public pageNumber$: Observable<number>;
   public pageSize$: Observable<number>;
   public recordCount$: Observable<number>;
@@ -44,10 +43,6 @@ export class MedicineTypeContainerComponent implements OnDestroy, OnInit {
     );
     this.isPending$ = this.store.pipe(
       select(MedicineStore.Medicine.selectors.isPending),
-      takeUntil(this.destroyed$)
-    );
-    this.error$ = this.store.pipe(
-      select(MedicineStore.Medicine.selectors.error),
       takeUntil(this.destroyed$)
     );
 

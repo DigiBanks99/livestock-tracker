@@ -1,11 +1,9 @@
-using System;
 using System.Collections.Generic;
-using LivestockTracker.Abstractions.Data;
+using LivestockTracker.Data;
 using LivestockTracker.Database;
 using LivestockTracker.Properties;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace LivestockTracker.Extensions;
 
@@ -49,6 +47,7 @@ public static class DataServiceExtensions
         {
             ILogger<Startup> logger = services.GetRequiredService<ILogger<Startup>>();
             logger.LogError(ex, Resources.SeedDatabaseFailed);
+            throw;
         }
     }
 }

@@ -1,9 +1,9 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
   NgModule,
-  OnInit,
   Output
 } from '@angular/core';
 import {
@@ -18,36 +18,30 @@ import { MedicineType } from '@core/models/medicine-type.model';
 
 @Component({
   selector: 'app-medicine-type-detail',
-  templateUrl: './medicine-type-detail.component.html'
+  templateUrl: './medicine-type-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MedicineTypeDetailComponent implements OnInit {
-  @Input() medicineType: MedicineType;
-  @Output() save = new EventEmitter<MedicineType>();
+export class MedicineTypeDetailComponent {
+  @Output() readonly save = new EventEmitter<MedicineType>();
+  public medicineTypeForm = new FormGroup({
+    id: new FormControl(null),
+    description: new FormControl(null, {
+      updateOn: 'blur',
+      validators: Validators.required
+    })
+  });
 
-  public medicineTypeForm: FormGroup;
-
-  constructor() {
-    this.medicineTypeForm = null;
-  }
-
-  public ngOnInit(): void {
-    this.initForm();
+  @Input() set medicineType(value: MedicineType) {
+    this.medicineTypeForm.patchValue({
+      id: value?.id ?? null,
+      description: value?.description ?? null
+    });
   }
 
   public onUpdate(): void {
     if (this.medicineTypeForm.valid) {
       this.save.emit(this.medicineTypeForm.value);
     }
-  }
-
-  private initForm(): void {
-    this.medicineTypeForm = new FormGroup({
-      id: new FormControl(this.medicineType.id),
-      description: new FormControl(this.medicineType.description, {
-        updateOn: 'blur',
-        validators: Validators.required
-      })
-    });
   }
 }
 

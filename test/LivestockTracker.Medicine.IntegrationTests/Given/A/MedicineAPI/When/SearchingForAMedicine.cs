@@ -1,4 +1,4 @@
-﻿using LivestockTracker.Logic.Paging;
+﻿using LivestockTracker.Pagination;
 
 namespace Given.A.MedicineAPI.When;
 
@@ -19,8 +19,9 @@ public class SearchingForAMedicine
         const string url = "/api/MedicineType";
 
         // Act
-        PagedData<MedicineViewModel>? medicineTypes =
-            await _fixture.Client.GetFromJsonAsync<PagedData<MedicineViewModel>>(url).ConfigureAwait(false);
+        PagedData<MedicineViewModel>? medicineTypes = await _fixture.Client
+            .GetFromJsonAsync<PagedData<MedicineViewModel>>(url)
+            .ConfigureAwait(false);
 
         // Assert
         medicineTypes.ShouldNotBeNull();
@@ -34,8 +35,9 @@ public class SearchingForAMedicine
         const string url = "/api/MedicineType?query=ant";
 
         // Act
-        PagedData<MedicineViewModel>? medicineTypes =
-            await _fixture.Client.GetFromJsonAsync<PagedData<MedicineViewModel>>(url).ConfigureAwait(false);
+        PagedData<MedicineViewModel>? medicineTypes = await _fixture.Client
+            .GetFromJsonAsync<PagedData<MedicineViewModel>>(url)
+            .ConfigureAwait(false);
 
         // Assert
         medicineTypes.ShouldNotBeNull();
@@ -52,16 +54,14 @@ public class SearchingForAMedicine
         const string url = "/api/MedicineType?includeDeleted=true";
 
         // Act
-        PagedData<MedicineViewModel>? medicineTypes =
-            await _fixture.Client.GetFromJsonAsync<PagedData<MedicineViewModel>>(url).ConfigureAwait(false);
+        PagedData<MedicineViewModel>? medicineTypes = await _fixture.Client
+            .GetFromJsonAsync<PagedData<MedicineViewModel>>(url)
+            .ConfigureAwait(false);
 
         // Assert
         medicineTypes.ShouldNotBeNull();
         medicineTypes.Data.Count().ShouldBe(3);
-        medicineTypes.Data.ShouldContain(medicine =>
-            medicine.Id == 3
-            && medicine.Deleted
-            && medicine.Description == "Paracetamol");
+        medicineTypes.Data.ShouldContain(medicine => IsParacetamol(medicine));
     }
 
     [Fact]
@@ -71,8 +71,9 @@ public class SearchingForAMedicine
         const string url = "/api/MedicineType?pageSize=1&pageNumber=1";
 
         // Act
-        PagedData<MedicineViewModel>? medicineTypes =
-            await _fixture.Client.GetFromJsonAsync<PagedData<MedicineViewModel>>(url).ConfigureAwait(false);
+        PagedData<MedicineViewModel>? medicineTypes = await _fixture.Client
+            .GetFromJsonAsync<PagedData<MedicineViewModel>>(url)
+            .ConfigureAwait(false);
 
         // Assert
         medicineTypes.ShouldNotBeNull();
@@ -80,9 +81,16 @@ public class SearchingForAMedicine
         medicineTypes.PageCount.ShouldBe(2);
         medicineTypes.PageSize.ShouldBe(1);
         medicineTypes.TotalRecordCount.ShouldBe(2);
-        medicineTypes.Data.ShouldContain(medicine =>
-            medicine.Id == 2
-            && !medicine.Deleted
-            && medicine.Description == "Painkillers");
+        medicineTypes.Data.ShouldContain(medicine => IsPainkillers(medicine));
+    }
+
+    private static bool IsPainkillers(MedicineViewModel medicine)
+    {
+        return medicine == new MedicineViewModel(2, "Painkillers");
+    }
+
+    private static bool IsParacetamol(MedicineViewModel medicine)
+    {
+        return medicine == new MedicineViewModel(3, "Paracetamol", true);
     }
 }

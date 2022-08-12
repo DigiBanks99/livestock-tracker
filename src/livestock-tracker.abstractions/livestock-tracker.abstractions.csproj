@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\Medical" />
+    <Folder Include="Paging" />
+    <Folder Include="Weight\Filters" />
   </ItemGroup>
 
 </Project>

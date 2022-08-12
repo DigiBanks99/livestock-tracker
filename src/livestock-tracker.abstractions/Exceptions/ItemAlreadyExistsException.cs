@@ -1,6 +1,6 @@
 using System.Runtime.Serialization;
 
-namespace LivestockTracker;
+namespace LivestockTracker.Exceptions;
 
 /// <summary>
 ///     An exception that indicates that an item already exists in the collection.

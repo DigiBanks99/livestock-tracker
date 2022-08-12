@@ -1,0 +1,13 @@
+<form [formGroup]="feedTypeForm">
+  <mat-form-field class="description">
+    <label for="description" hidden>Description</label>
+    <input
+      (ngModelChange)="onUpdate()"
+      formControlName="description"
+      id="description"
+      matInput
+      name="description"
+      type="text"
+    />
+  </mat-form-field>
+</form>

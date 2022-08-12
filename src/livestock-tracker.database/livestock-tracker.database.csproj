@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\livestock-tracker.abstractions\livestock-tracker.abstractions.csproj" />
     <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
-    <ProjectReference Include="..\livestock-tracker.models\livestock-tracker.models.csproj" />
   </ItemGroup>
 
 </Project>

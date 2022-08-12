@@ -1,11 +1,5 @@
 describe('Weight Transaction Update', () => {
   beforeEach(() => {
-    cy.visit('weight/1');
-    cy.get('app-animal-select')
-      .find('app-animal-select-display')
-      .find('span')
-      .should('have.text', '1 - Brahman');
-
     cy.visit('weight/1/edit/1');
 
     cy.location('pathname').should('match', /weight\/1\/edit\/1$/);
@@ -16,7 +10,7 @@ describe('Weight Transaction Update', () => {
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input').should(
       'exist'
     );
-    cy.findFormField('Weight', 'input').should('have.value', '32.5');
+    cy.findFormField('Weight', 'input').should('have.value', '63');
 
     cy.contains('a', 'Back').should('exist');
     cy.contains('button', 'Cancel').should('exist').should('be.disabled');

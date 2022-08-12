@@ -1,5 +1,5 @@
 using System.Text;
-using LivestockTracker.Logic.Paging;
+using LivestockTracker.Pagination;
 
 namespace Given.A.FeedingTransactionAPI.When;
 

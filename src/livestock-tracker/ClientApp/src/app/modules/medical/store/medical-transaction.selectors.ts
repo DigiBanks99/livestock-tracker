@@ -1,8 +1,17 @@
-import { MedicalTransaction, SaveState } from '@core/models';
-import { MedicalTransactionState, PaginationState } from '@core/store';
+import {
+  MedicalTransaction,
+  SaveState
+} from '@core/models';
+import {
+  MedicalTransactionState,
+  PaginationState
+} from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
 import { Dictionary } from '@ngrx/entity';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector
+} from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 import { medicalTransactionAdapter } from './medical-transaction.reducer';
@@ -53,7 +62,7 @@ export const selectedMedicalTransaction = createSelector(
 
 export const isFetching = createSelector(
   medicalTransactionState,
-  (state: MedicalTransactionState): boolean => state.isPending
+  (state: MedicalTransactionState): boolean => state.isFetching
 );
 
 export const isPendingTransactions = createSelector(

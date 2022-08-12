@@ -1,18 +1,39 @@
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import { Component, NgModule, OnDestroy } from '@angular/core';
+import {
+  Component,
+  NgModule,
+  OnDestroy
+} from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Router, RouterModule } from '@angular/router';
-import { MedicalTransaction, MedicineType, Unit } from '@core/models';
+import {
+  Router,
+  RouterModule
+} from '@angular/router';
+import {
+  MedicalTransaction,
+  MedicineType,
+  Unit
+} from '@core/models';
 import { AppState } from '@core/store';
-import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
+import {
+  getSelectedAnimalId,
+  getUnits
+} from '@core/store/selectors';
 import { environment } from '@env/environment';
 import { MedicalTransactionComponentModule } from '@medical/components/medical-transaction/medical-transaction.component';
 import { MedicineStore } from '@medical/store';
 import { MedicineStoreModule } from '@medical/store/medicine-store.module';
-import { select, Store } from '@ngrx/store';
+import {
+  select,
+  Store
+} from '@ngrx/store';
 
 @Component({
   template: `
@@ -24,8 +45,8 @@ import { select, Store } from '@ngrx/store';
       [pageSize]="pageSize$ | async"
       [recordCount]="recordCount$ | async"
       (addTransaction)="onAddTransaction()"
-      (pageChanged)="onPageChanged($event)"
       (deleteTransaction)="onDeleteTransaction($event)"
+      (pageChanged)="onPageChanged($event)"
     ></app-medical-transaction>
   `
 })

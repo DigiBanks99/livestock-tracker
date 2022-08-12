@@ -20,7 +20,7 @@ import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { Unit } from '@core/models/unit.model';
 import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
-import { feedingTransactionStore, feedTypeStore } from '@feed-store';
+import { FeedStore } from '@feed-store';
 import {
   FeedingTransactionService,
   MockFeedingTransactionService
@@ -71,22 +71,18 @@ describe('FeedingTransactionDetailComponent', () => {
             },
             {
               selector:
-                feedingTransactionStore.selectors.getSelectedFeedingTransaction,
+                FeedStore.Transactions.selectors.selectedFeedingTransaction,
               value: null
             },
             {
-              selector:
-                feedingTransactionStore.selectors
-                  .getFeedingTransactionPendingState,
+              selector: FeedStore.Transactions.selectors.isPendingTransaction,
               value: false
             },
             {
-              selector:
-                feedingTransactionStore.selectors
-                  .getFeedingTransactionErrorState,
+              selector: FeedStore.Transactions.selectors.error,
               value: null
             },
-            { selector: feedTypeStore.selectors.getFeedTypes, value: [] },
+            { selector: FeedStore.Feed.selectors.getFeedTypes, value: [] },
             { selector: getUnits, value: [] }
           ]
         }),
