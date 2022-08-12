@@ -1,3 +1,4 @@
+using LivestockTracker.Medicine.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NuGet.Protocol;
@@ -18,17 +19,9 @@ public class UpdatingAMedicalTransaction
     public async Task ItShouldSaveTheMedicalTransactionWithTheUpdatedValues()
     {
         // Arrange
-        MedicalTransaction updateRequest = new()
-        {
-            Id = 1,
-            AnimalId = 1,
-            Dose = 77,
-            MedicineId = 2,
-            TransactionDate = new DateTimeOffset(),
-            UnitId = 2
-        };
+        UpdateMedicalTransactionViewModel updateRequest = new(1, 1, 2, 77, 2, DateTimeOffset.Now);
         string url = $"/api/MedicalTransactions/{updateRequest.Id}";
-        MedicalTransaction savedTransaction =
+        MedicalTransactionViewModel savedTransaction =
             GetMedicalTransactionFromConnection(updateRequest.Id, _fixture.DatabaseConnection);
 
         // Act
@@ -39,7 +32,8 @@ public class UpdatingAMedicalTransaction
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        MedicalTransaction? updatedTransaction = await response.Content.ReadFromJsonAsync<MedicalTransaction>();
+        MedicalTransactionViewModel? updatedTransaction =
+            await response.Content.ReadFromJsonAsync<MedicalTransactionViewModel>();
         updatedTransaction.ShouldNotBeNull();
 
         updatedTransaction.Id.ShouldBe(savedTransaction.Id);
@@ -57,15 +51,7 @@ public class UpdatingAMedicalTransaction
     public async Task ItShouldReturnBadRequestWhenAttemptingToChangeTheAnimal()
     {
         // Arrange
-        MedicalTransaction updateRequest = new()
-        {
-            Id = 1,
-            AnimalId = 2,
-            Dose = 77,
-            MedicineId = 2,
-            TransactionDate = new DateTimeOffset(),
-            UnitId = 2
-        };
+        UpdateMedicalTransactionViewModel updateRequest = new(1, 2, 2, 77, 2, DateTimeOffset.Now);
         string url = $"/api/MedicalTransactions/{updateRequest.Id}";
 
         // Act
@@ -85,15 +71,7 @@ public class UpdatingAMedicalTransaction
     public async Task ItShouldReturnBadRequestWhenTheRouteAndBodyIdsDoNotMatch()
     {
         // Arrange
-        MedicalTransaction updateRequest = new()
-        {
-            Id = 2,
-            AnimalId = 2,
-            Dose = 77,
-            MedicineId = 2,
-            TransactionDate = new DateTimeOffset(),
-            UnitId = 2
-        };
+        UpdateMedicalTransactionViewModel updateRequest = new(2, 2, 2, 77, 2, DateTimeOffset.Now);
         const string url = "/api/MedicalTransactions/1";
 
         // Act
@@ -112,7 +90,7 @@ public class UpdatingAMedicalTransaction
     {
         // Arrange
         const string url = "/api/MedicalTransactions/1";
-        MedicalTransaction? updateRequest = null;
+        UpdateMedicalTransactionViewModel? updateRequest = null;
 
         // Act
         HttpResponseMessage response = await _fixture.Client.PutAsJsonAsync(url, updateRequest);
@@ -124,34 +102,35 @@ public class UpdatingAMedicalTransaction
         // It returns a problem descriptor. Need to try and see how I will handle that
         SerializableError? error = JsonConvert.DeserializeObject<SerializableError>(content);
         error.ShouldNotBeNull();
-        string? message = error["errors"].ToJToken()["medicalTransaction"]?.Value<string>(0);
-        message.ShouldBe("The medicalTransaction field is required.");
+        string? message = error["errors"].ToJToken()["desiredValues"]?.Value<string>(0);
+        message.ShouldBe("The desiredValues field is required.");
     }
 
-    private static MedicalTransaction GetMedicalTransactionFromConnection(long id, SqliteConnection databaseConnection)
+    private static MedicalTransactionViewModel GetMedicalTransactionFromConnection(long id,
+        SqliteConnection databaseConnection)
     {
         using SqliteCommand cmd = new(@$"
 SELECT
   ID
  ,AnimalID
- ,Dose
  ,MedicineID
  ,TransactionDate
+ ,Dose
  ,UnitID
 FROM MedicalTransactions WHERE ID = {id}", databaseConnection);
         databaseConnection.Open();
-        MedicalTransaction transaction = new();
+        MedicalTransactionViewModel transaction = MedicalTransactionViewModel.Null;
 
         using SqliteDataReader dataReader = cmd.ExecuteReader();
 
         while (dataReader.Read())
         {
-            transaction.Id = dataReader.GetFieldValue<long>(0);
-            transaction.AnimalId = dataReader.GetFieldValue<long>(1);
-            transaction.Dose = dataReader.GetFieldValue<decimal>(2);
-            transaction.MedicineId = dataReader.GetFieldValue<int>(3);
-            transaction.TransactionDate = dataReader.GetDateTimeOffsetFromOrdinal(4);
-            transaction.UnitId = dataReader.GetFieldValue<int>(5);
+            transaction = new(dataReader.GetFieldValue<long>(0),
+                dataReader.GetFieldValue<long>(1),
+                dataReader.GetFieldValue<int>(2),
+                dataReader.GetDateTimeOffsetFromOrdinal(3),
+                dataReader.GetFieldValue<decimal>(4),
+                dataReader.GetFieldValue<int>(5));
         }
 
         databaseConnection.Close();

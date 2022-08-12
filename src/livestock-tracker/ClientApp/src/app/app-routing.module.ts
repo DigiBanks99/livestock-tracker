@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { FeedingTransactionContainerComponent } from '@feed/components';
-import { FeedTypeContainerComponent } from '@feed/components/feed-type/feed-type.container';
+import { FeedTypePage } from '@feed/pages';
 import { FeedingTransactionDetailComponent } from '@feed/components/feeding-transaction-detail/feeding-transaction-detail.component';
 import { FeedingTransactionNewComponent } from '@feed/components/feeding-transaction-new/feeding-transaction-new.component';
 import { HomeComponent } from '@home/components/home.component';
@@ -15,11 +14,7 @@ const routes: Routes = [
   },
   { path: 'home', component: HomeComponent },
   { path: 'reports', component: ReportsComponent },
-  { path: 'feed-type', component: FeedTypeContainerComponent },
-  {
-    path: 'feeding-transaction',
-    component: FeedingTransactionContainerComponent
-  },
+  { path: 'feed-type', component: FeedTypePage },
   {
     path: 'feeding-transaction/:animalId/new',
     component: FeedingTransactionNewComponent
@@ -27,6 +22,11 @@ const routes: Routes = [
   {
     path: 'feeding-transaction/:animalId/:id/edit',
     component: FeedingTransactionDetailComponent
+  },
+  {
+    path: 'feed',
+    loadChildren: async () =>
+      (await import('./modules/feed/feed.module')).FeedModule
   },
   {
     path: 'medicine',

@@ -1,5 +1,6 @@
 using System.Text;
-using LivestockTracker.Logic.Paging;
+using LivestockTracker.Medicine.ViewModels;
+using LivestockTracker.Pagination;
 
 namespace Given.A.MedicalTransactionAPI.When;
 
@@ -34,8 +35,8 @@ public class SearchingForMedicalTransactions
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        PagedData<MedicalTransaction>? transactions =
-            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransactionViewModel>? transactions =
+            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransactionViewModel>>();
         transactions.ShouldNotBeNull();
         transactions.Data.Count().ShouldBe(10);
         transactions.TotalRecordCount.ShouldBe(AllRecordsCount);
@@ -58,8 +59,8 @@ public class SearchingForMedicalTransactions
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        PagedData<MedicalTransaction>? transactions =
-            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransactionViewModel>? transactions =
+            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransactionViewModel>>();
         transactions.ShouldNotBeNull();
         transactions.TotalRecordCount.ShouldBe(totalRecords);
         transactions.Data.ShouldAllBe(transaction => medicineTypeId == transaction.MedicineId);
@@ -80,8 +81,8 @@ public class SearchingForMedicalTransactions
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        PagedData<MedicalTransaction>? transactions =
-            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransactionViewModel>? transactions =
+            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransactionViewModel>>();
         transactions.ShouldNotBeNull();
         transactions.TotalRecordCount.ShouldBe(totalRecords);
         transactions.Data.ShouldAllBe(transaction => medicineTypeId != transaction.MedicineId);
@@ -114,8 +115,8 @@ public class SearchingForMedicalTransactions
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        PagedData<MedicalTransaction>? transactions =
-            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransactionViewModel>? transactions =
+            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransactionViewModel>>();
         transactions.ShouldNotBeNull();
         transactions!.TotalRecordCount.ShouldBe(animalIds.Length * AnimalMedicalTransactionCount);
         transactions.Data.ShouldAllBe(transaction => animalIds.Contains((int)transaction.AnimalId));
@@ -151,8 +152,8 @@ public class SearchingForMedicalTransactions
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        PagedData<MedicalTransaction>? transactions =
-            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransaction>>();
+        PagedData<MedicalTransactionViewModel>? transactions =
+            await response.Content.ReadFromJsonAsync<PagedData<MedicalTransactionViewModel>>();
         transactions.ShouldNotBeNull();
         transactions!.TotalRecordCount.ShouldBe(AllRecordsCount - (animalIds.Length * AnimalMedicalTransactionCount));
         transactions.Data.ShouldAllBe(transaction => !animalIds.Contains((int)transaction.AnimalId));

@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
-using LivestockTracker.Abstractions.Data;
-using LivestockTracker.Database.Models.Units;
+using LivestockTracker.Data;
 using LivestockTracker.Feed;
 using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace LivestockTracker.Database.Sqlite;
 
-public class SqliteSeedData : ISeedData
+internal sealed class SqliteSeedData : ISeedData
 {
     private readonly IHostEnvironment _env;
 
@@ -21,10 +20,9 @@ public class SqliteSeedData : ISeedData
 
     public void Seed(IServiceProvider serviceProvider)
     {
-        DbContextOptions<LivestockContext> options =
-            serviceProvider.GetRequiredService<DbContextOptions<LivestockContext>>();
-        using LivestockContext context = new(options);
-        if (_env.IsE2E())
+        DbContextOptions options = serviceProvider.GetRequiredService<DbContextOptions>();
+        using SqliteLivestockContext context = new(options);
+        if (_env.IsE2E() || _env.IsTest())
         {
             context.Database.EnsureCreated();
         }
@@ -36,8 +34,6 @@ public class SqliteSeedData : ISeedData
         SeedFeedTypes(context);
         SeedUnits(context);
         SeedMedicine(context);
-
-        context.SaveChanges();
     }
 
     private static void SeedUnits(LivestockContext context)
@@ -48,16 +44,11 @@ public class SqliteSeedData : ISeedData
         }
 
         context.Units.AddRange(
-            new UnitModel
-            {
-                Id = 1,
-                Description = "ℓ"
-            },
-            new UnitModel
-            {
-                Id = 2,
-                Description = "kg"
-            });
+            new("ℓ"),
+            new("kg")
+        );
+
+        context.SaveChanges();
     }
 
     private static void SeedMedicine(LivestockContext context)
@@ -68,34 +59,29 @@ public class SqliteSeedData : ISeedData
         }
 
         context.MedicineTypes.AddRange(
-            new MedicineTypeModel
-            {
-                Id = 1,
-                Description = "Antibiotics"
-            },
-            new MedicineTypeModel
-            {
-                Id = 2,
-                Description = "Painkillers"
-            },
-            new MedicineTypeModel
-            {
-                Id = 3,
-                Description = "Paracetamol",
-                Deleted = true
-            });
+            new MedicineType("Antibiotics"),
+            new MedicineType("Painkillers"),
+            new MedicineType("Paracetamol"));
+
+        context.MedicineTypes.Local.First(type => type.Description == "Paracetamol").Delete();
+
+        context.SaveChanges();
     }
 
-    private static void SeedFeedTypes(LivestockContext livestockContext)
+    private static void SeedFeedTypes(LivestockContext context)
     {
-        if (livestockContext.FeedTypes.Any())
+        if (context.FeedTypes.Any())
         {
             return;
         }
 
-        livestockContext.FeedTypes.AddRange(
-            new FeedType(1, "Wheat", false),
-            new FeedType(2, "Maize", false),
-            new FeedType(3, "Pallets", true));
+        FeedType wheat = new("Wheat");
+        FeedType maize = new("Maize");
+        FeedType pallets = new("Pallets");
+        pallets.Delete();
+
+        context.FeedTypes.AddRange(wheat, maize, pallets);
+
+        context.SaveChanges();
     }
 }

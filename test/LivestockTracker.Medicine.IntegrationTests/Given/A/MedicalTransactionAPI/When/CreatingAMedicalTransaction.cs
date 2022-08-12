@@ -1,3 +1,5 @@
+using LivestockTracker.Medicine.ViewModels;
+
 namespace Given.A.MedicalTransactionAPI.When;
 
 [Collection(IntegrationTestFixture.CollectionName)]
@@ -14,14 +16,7 @@ public class CreatingAMedicalTransaction
     public async Task ThenItShouldReturnTheLinkToTheCreatedTransactionWithTheTransactionDetails()
     {
         // Arrange
-        MedicalTransaction request = new()
-        {
-            AnimalId = 1,
-            Dose = 86,
-            MedicineId = 2,
-            TransactionDate = DateTimeOffset.Now,
-            UnitId = 1
-        };
+        CreateMedicalTransactionViewModel request = new(1, 2, DateTimeOffset.Now, 86, 1);
 
         // Act
         HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("/api/MedicalTransactions", request);
@@ -31,7 +26,8 @@ public class CreatingAMedicalTransaction
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        MedicalTransaction? createdTransaction = await response.Content.ReadFromJsonAsync<MedicalTransaction>();
+        MedicalTransactionViewModel? createdTransaction =
+            await response.Content.ReadFromJsonAsync<MedicalTransactionViewModel>();
         createdTransaction.ShouldNotBeNull();
         response.Headers.Location.ShouldNotBeNull();
         Uri expectedUri =
@@ -46,49 +42,11 @@ public class CreatingAMedicalTransaction
         createdTransaction.Id.ShouldBeGreaterThan(45);
 
         _fixture.DatabaseConnection.Open();
-        using SqliteCommand cmd = new($"DELETE FROM MedicalTransactions WHERE ID = {createdTransaction.Id}",
+        await using SqliteCommand cmd = new($"DELETE FROM MedicalTransactions WHERE ID = {createdTransaction.Id}",
             _fixture.DatabaseConnection);
         try
         {
             cmd.ExecuteNonQuery();
-        }
-        finally
-        {
-            _fixture.DatabaseConnection.Close();
-        }
-    }
-
-    [Fact]
-    public async Task ThenItShouldReturnBadRequestIfTheTransactionWithTheSameIdExists()
-    {
-        // Arrange
-        MedicalTransaction request = new()
-        {
-            Id = 1,
-            AnimalId = 1,
-            Dose = 86,
-            MedicineId = 2,
-            TransactionDate = DateTimeOffset.Now,
-            UnitId = 1
-        };
-
-        // Act
-        HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("/api/MedicalTransactions", request);
-
-        // Assert
-        response.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
-        response.Content.Headers.ContentType.ShouldNotBeNull();
-        response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
-
-        string responseMessage = await response.Content.ReadAsStringAsync();
-        responseMessage.ShouldBe("\"A Medical Transaction with key 1 already exists.\"");
-
-        _fixture.DatabaseConnection.Open();
-        await using SqliteCommand cmd = new("SELECT COUNT(ID) FROM MedicalTransactions", _fixture.DatabaseConnection);
-        try
-        {
-            object? count = cmd.ExecuteScalar();
-            count.ShouldBe(45);
         }
         finally
         {

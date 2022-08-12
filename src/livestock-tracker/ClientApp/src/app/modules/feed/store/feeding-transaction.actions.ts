@@ -1,10 +1,13 @@
-import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { crudActionsFactory, PayloadAction } from '@core/store';
+import { FeedingTransaction } from '@core/models';
+import {
+  fetchAnimalTransactionsActionFactory,
+  PayloadAction
+} from '@core/store';
 import { Action } from '@ngrx/store';
 
-import { FeedingTransactionKey } from './constants';
+import { FeedStoreConstants } from './constants';
 
-export enum FeedingTranscationActionTypes {
+export enum FeedingTransactionActionTypes {
   SelectFeedTransaction = 'SELECT_FEED_TRANSACTION',
   FetchSingleFeedTransaction = 'FETCH_SINGLE_FEED_TRANSACTION',
   FetchFeedTransaction = 'FETCH_FEED_TRANSACTION',
@@ -17,7 +20,7 @@ export interface FetchSingleFeedTransactionParams {
 }
 
 export class SelectFeedTransactionAction implements Action {
-  readonly type = FeedingTranscationActionTypes.SelectFeedTransaction;
+  readonly type = FeedingTransactionActionTypes.SelectFeedTransaction;
   transactionId: number;
 
   constructor(transactionId: number) {
@@ -28,7 +31,7 @@ export class SelectFeedTransactionAction implements Action {
 export class FetchSingleFeedTransactionAction
   implements PayloadAction<FetchSingleFeedTransactionParams>
 {
-  readonly type = FeedingTranscationActionTypes.FetchSingleFeedTransaction;
+  readonly type = FeedingTransactionActionTypes.FetchSingleFeedTransaction;
   payload: FetchSingleFeedTransactionParams;
 
   constructor(animalId: number, id: number) {
@@ -40,7 +43,7 @@ export class FetchSingleFeedTransactionAction
 }
 
 export class FetchFeedingTransactionAction implements Action {
-  readonly type = FeedingTranscationActionTypes.FetchFeedTransaction;
+  readonly type = FeedingTransactionActionTypes.FetchFeedTransaction;
 
   constructor(
     public animalId: number,
@@ -49,8 +52,8 @@ export class FetchFeedingTransactionAction implements Action {
   ) {}
 }
 
-export const actions = crudActionsFactory<
-  FeedingTransaction,
-  number,
-  FetchSingleFeedTransactionParams
->(FeedingTransactionKey);
+export const actions = {
+  ...fetchAnimalTransactionsActionFactory<FeedingTransaction>(
+    FeedStoreConstants.Transactions.ActionKey
+  )
+};

@@ -1,17 +1,30 @@
-import { Observable, Subject } from 'rxjs';
+import {
+  Observable,
+  Subject
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 import { Router } from '@angular/router';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { Unit } from '@core/models/unit.model';
 import { AppState } from '@core/store';
-import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
-import { feedingTransactionStore, feedTypeStore } from '@feed-store';
+import {
+  getSelectedAnimalId,
+  getUnits
+} from '@core/store/selectors';
+import { FeedStore } from '@feed-store';
 import { FetchFeedTypesAction } from '@feed/store/feed-type.actions';
 import { actions } from '@feed/store/feeding-transaction.actions';
-import { select, Store } from '@ngrx/store';
+import {
+  select,
+  Store
+} from '@ngrx/store';
 
 @Component({
   selector: 'app-feeding-transaction-new',
@@ -35,17 +48,15 @@ export class FeedingTransactionNewComponent implements OnDestroy, OnInit {
       takeUntil(this.destroyed$)
     );
     this.isPending$ = this.store.pipe(
-      select(
-        feedingTransactionStore.selectors.getFeedingTransactionPendingState
-      ),
+      select(FeedStore.Transactions.selectors.isPendingTransaction),
       takeUntil(this.destroyed$)
     );
     this.error$ = this.store.pipe(
-      select(feedingTransactionStore.selectors.getFeedingTransactionErrorState),
+      select(FeedStore.Transactions.selectors.error),
       takeUntil(this.destroyed$)
     );
     this.feedTypes$ = this.store.pipe(
-      select(feedTypeStore.selectors.getFeedTypes),
+      select(FeedStore.Feed.selectors.getFeedTypes),
       takeUntil(this.destroyed$)
     );
     this.unitTypes$ = this.store.pipe(

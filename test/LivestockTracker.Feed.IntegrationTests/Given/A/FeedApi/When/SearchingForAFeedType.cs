@@ -1,4 +1,4 @@
-﻿using LivestockTracker.Logic.Paging;
+﻿using LivestockTracker.Pagination;
 
 namespace Given.A.FeedApi.When;
 
@@ -68,7 +68,7 @@ public class SearchingForAFeedType
     public async Task ItShouldPageCorrectly()
     {
         // Arrange
-        const string url = "/api/FeedType?pageSize=1&pageNumber=1";
+        const string url = "/api/FeedType?pageSize=1&pageNumber=0";
 
         // Act
         PagedData<FeedTypeViewModel>? feedTypes =

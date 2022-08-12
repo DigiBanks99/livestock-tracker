@@ -1,48 +1,144 @@
 import { Observable } from 'rxjs';
-
-import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FeedingTransaction, PagedData } from '@core/models';
-import { CrudEffects } from '@core/store';
-import { FeedingTransactionService } from '@feed/services';
-import { Actions } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
-
-import { FeedingTransactionKey } from './constants';
 import {
-  actions as feedingTransactionActions,
-  FetchFeedingTransactionAction,
-  FetchSingleFeedTransactionParams
-} from './feeding-transaction.actions';
+  filter,
+  map,
+  tap
+} from 'rxjs/operators';
+
+import { KeyValue } from '@angular/common';
+import { Injectable } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { AnimalStore } from '@animal/store';
+import { FeedingTransaction } from '@core/models';
+import {
+  AnimalState,
+  FetchAnimalTransactionEffects,
+  NoopAction,
+  PayloadAction,
+  RouterStore
+} from '@core/store';
+import { environment } from '@env/environment';
+import { FeedingTransactionService } from '@feed/services';
+import {
+  Actions,
+  concatLatestFrom,
+  createEffect,
+  ofType
+} from '@ngrx/effects';
+import { Update } from '@ngrx/entity';
+import {
+  ROUTER_NAVIGATION,
+  RouterNavigatedAction,
+  SerializedRouterStateSnapshot
+} from '@ngrx/router-store';
+import {
+  Action,
+  Store
+} from '@ngrx/store';
+
+import { FeedStoreConstants } from './constants';
+import { actions } from './feeding-transaction.actions';
 
 @Injectable()
-export class FeedingTransactionEffects extends CrudEffects<
-  FeedingTransaction,
-  number,
-  FetchSingleFeedTransactionParams
-> {
+export class FeedingTransactionEffects extends FetchAnimalTransactionEffects<FeedingTransaction> {
+  public transactionSelectedInRoute$: Observable<
+    PayloadAction<number> | Action
+  > = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ROUTER_NAVIGATION),
+      filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
+        /feed\/\d+\/edit\/\d+$/.test(action.payload.event.urlAfterRedirects)
+      ),
+      map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
+        | PayloadAction<number>
+        | Action => {
+        const id = Number(
+          action.payload.routerState.root.firstChild.firstChild.params.id
+        );
+        if (Number.isNaN(id)) {
+          return NoopAction;
+        }
+        return this.transactionActions.selectItem(id);
+      })
+    )
+  );
+
+  public animalSelectedInRoute$: Observable<PayloadAction<number> | Action> =
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(ROUTER_NAVIGATION),
+        filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
+          /feed\/\d+/.test(action.payload.event.urlAfterRedirects)
+        ),
+        map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
+          | PayloadAction<number>
+          | Action => {
+          const id = Number(
+            action.payload.routerState.root.firstChild.firstChild.params
+              .animalId
+          );
+          if (Number.isNaN(id)) {
+            return NoopAction;
+          }
+          return AnimalStore.actions.selectItem(id);
+        })
+      )
+    );
+
+  public fetchSelectedAnimalTransactions$: Observable<
+    PayloadAction<PageEvent>
+  > = createEffect(() =>
+    this.actions$.pipe(
+      ofType(`API_FETCH_SINGLE_ANIMAL`),
+      concatLatestFrom(() => this.store.select(RouterStore.selectors.url)),
+      filter(([, url]: [Action, string]) => /feed\/\d+$/.test(url)),
+      map(
+        (): PayloadAction<PageEvent> =>
+          this.transactionActions.fetchAnimalTransactions(
+            0,
+            environment.pageSize
+          )
+      )
+    )
+  );
+
+  public transactionAdded$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(`API_ADD_${FeedStoreConstants.Transactions.StoreKey}`),
+      tap((action: PayloadAction<FeedingTransaction>) =>
+        this.router.navigate(['/feed', action.payload.animalId])
+      ),
+      map(() => this.transactionActions.resetSaveState())
+    )
+  );
+
+  public transactionUpdated$: Observable<Action> = createEffect(() =>
+    this.actions$.pipe(
+      ofType(`API_UPDATE_${FeedStoreConstants.Transactions.StoreKey}`),
+      tap(
+        (action: PayloadAction<KeyValue<number, Update<FeedingTransaction>>>) =>
+          this.router.navigate(['/feed', action.payload.value.changes.animalId])
+      ),
+      map(() => this.transactionActions.resetSaveState())
+    )
+  );
   constructor(
     protected actions$: Actions,
-    private feedingTransactionService: FeedingTransactionService,
-    snackBar: MatSnackBar
+    private readonly store: Store,
+    animalStore: Store<AnimalState>,
+    feedingTransactionService: FeedingTransactionService,
+    snackBar: MatSnackBar,
+    private readonly router: Router
   ) {
     super(
       actions$,
+      animalStore,
       feedingTransactionService,
-      feedingTransactionActions,
-      FeedingTransactionKey,
+      actions,
+      FeedStoreConstants.Transactions.ActionKey,
       snackBar
     );
   }
-
-  protected handleFetchAction$ = (
-    action: Action
-  ): Observable<PagedData<FeedingTransaction>> => {
-    const fetchAction = <FetchFeedingTransactionAction>action;
-    return this.feedingTransactionService.getAll(
-      fetchAction.animalId,
-      fetchAction.pageNumber,
-      fetchAction.pageSize
-    );
-  };
 }

@@ -1,3 +1,5 @@
+using LivestockTracker.Medicine.ViewModels;
+
 namespace Given.A.MedicalTransactionAPI.When;
 
 [Collection(IntegrationTestFixture.CollectionName)]
@@ -24,7 +26,8 @@ public class RetrievingMedicalTransactionsForAnAnimal
         response.Content.Headers.ContentType.ShouldNotBeNull();
         response.Content.Headers.ContentType.ToString().ShouldBe("application/json; charset=utf-8");
 
-        MedicalTransaction? transaction = await response.Content.ReadFromJsonAsync<MedicalTransaction>();
+        MedicalTransactionViewModel? transaction =
+            await response.Content.ReadFromJsonAsync<MedicalTransactionViewModel>();
         transaction.ShouldNotBeNull();
         transaction.AnimalId.ShouldBe(animalId);
         transaction.Id.ShouldBe(transactionId);

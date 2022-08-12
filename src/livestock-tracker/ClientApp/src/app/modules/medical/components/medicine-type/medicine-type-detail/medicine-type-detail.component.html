@@ -2,12 +2,12 @@
   <mat-form-field class="description">
     <label for="description" hidden>Description</label>
     <input
-      matInput
-      type="text"
-      id="description"
-      name="description"
-      formControlName="description"
       (ngModelChange)="onUpdate()"
+      formControlName="description"
+      id="description"
+      matInput
+      name="description"
+      type="text"
     />
   </mat-form-field>
 </form>

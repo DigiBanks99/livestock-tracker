@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using LivestockTracker.Medicine.ViewModels;
 
 namespace Given.A.MedicalTransactionAPI.When;
 
@@ -17,8 +18,8 @@ public class DeletingAMedicalTransaction
     {
         // Arrange
         const string url = "/api/MedicalTransactions/1";
-        MedicalTransaction? transaction = await _fixture.Client
-            .GetFromJsonAsync<MedicalTransaction>("/api/MedicalTransactions/1/1").ConfigureAwait(false);
+        MedicalTransactionViewModel? transaction = await _fixture.Client
+            .GetFromJsonAsync<MedicalTransactionViewModel>("/api/MedicalTransactions/1/1").ConfigureAwait(false);
 
         // Act
         HttpResponseMessage response = await _fixture.Client.DeleteAsync(url).ConfigureAwait(false);

@@ -11,7 +11,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FeedTypeService, MockFeedTypeService } from '@feed/services';
 import { CommandButtonTestingModule } from '@test/shared';
 
-import { FeedTypeDetailComponent } from '../feed-type-detail/feed-type-detail.component';
+import { FeedTypeDetailComponent } from './feed-type-detail/feed-type-detail.component';
 import { FeedTypeComponent } from './feed-type.component';
 
 describe('FeedTypeComponent', () => {

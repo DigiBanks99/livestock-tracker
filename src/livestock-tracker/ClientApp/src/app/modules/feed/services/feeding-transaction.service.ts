@@ -1,18 +1,28 @@
-import { Observable, of } from 'rxjs';
+import {
+  Observable,
+  of
+} from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import {
+  Inject,
+  Injectable
+} from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { BaseUrl } from '@core/di/base-url.injection-token';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { PagedData } from '@core/models/paged-data.model';
+import { AnimalTransactionService } from '@core/models/services';
 import { FetchSingleFeedTransactionParams } from '@feed/store/feeding-transaction.actions';
 
 @Injectable()
-export class FeedingTransactionService {
-  private readonly apiUrl: string;
+export class FeedingTransactionService
+  implements AnimalTransactionService<FeedingTransaction>
+{
+  private readonly _url: string;
 
-  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
-    this.apiUrl = baseUrl + 'feedingTransaction';
+  constructor(private _http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
+    this._url = baseUrl + 'FeedingTransaction';
   }
 
   public getAll(
@@ -20,8 +30,8 @@ export class FeedingTransactionService {
     pageNumber: number = 0,
     pageSize: number = 100
   ): Observable<PagedData<FeedingTransaction>> {
-    return this.http.get<PagedData<FeedingTransaction>>(
-      `${this.apiUrl}/${animalId}`,
+    return this._http.get<PagedData<FeedingTransaction>>(
+      `${this._url}/${animalId}`,
       {
         params: {
           pageSize: pageSize.toString(),
@@ -29,6 +39,26 @@ export class FeedingTransactionService {
         }
       }
     );
+  }
+
+  /**
+   * Fetches a paged collection of the weight transactions for the specified animal.
+   *
+   * @param animalId The animal for which the transactions should be returned.
+   * @param paginationParameters The parameters for retrieving the correct pagination data.
+   * @returns A paged collection of weight transactions.
+   */
+  public getAnimalTransactions(
+    animalId: number,
+    paginationParameters: PageEvent
+  ): Observable<PagedData<FeedingTransaction>> {
+    return this._http.get<PagedData<FeedingTransaction>>(`${this._url}`, {
+      params: {
+        animalIds: [String(animalId)],
+        pageSize: paginationParameters.pageSize.toString(),
+        pageNumber: paginationParameters.pageIndex.toString()
+      }
+    });
   }
 
   public get(
@@ -40,34 +70,34 @@ export class FeedingTransactionService {
   public getSingle(
     params: FetchSingleFeedTransactionParams
   ): Observable<FeedingTransaction> {
-    return this.http.get<FeedingTransaction>(
-      `${this.apiUrl}/${params.animalId}/${params.id}`
+    return this._http.get<FeedingTransaction>(
+      `${this._url}/${params.animalId}/${params.id}`
     );
   }
 
   public add(
     feedingTransaction: FeedingTransaction
   ): Observable<FeedingTransaction> {
-    return this.http.post<FeedingTransaction>(this.apiUrl, feedingTransaction);
+    return this._http.post<FeedingTransaction>(this._url, feedingTransaction);
   }
 
   public replace(
     feedingTransaction: FeedingTransaction
   ): Observable<FeedingTransaction> {
-    return this.http.put<FeedingTransaction>(this.apiUrl, feedingTransaction);
+    return this._http.put<FeedingTransaction>(this._url, feedingTransaction);
   }
 
   public update(
     feedingTransaction: FeedingTransaction
   ): Observable<FeedingTransaction> {
-    return this.http.put<FeedingTransaction>(
-      `${this.apiUrl}/${feedingTransaction.id}`,
+    return this._http.put<FeedingTransaction>(
+      `${this._url}/${feedingTransaction.id}`,
       feedingTransaction
     );
   }
 
   public delete(key: number): Observable<number> {
-    return this.http.delete<number>(this.apiUrl + key);
+    return this._http.delete<number>(this._url + key);
   }
 }
 

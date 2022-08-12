@@ -1,6 +1,8 @@
-using LivestockTracker.Abstractions.Models;
+using LivestockTracker.Abstractions.Pagination;
 using LivestockTracker.Controllers;
+using LivestockTracker.Exceptions;
 using LivestockTracker.Feed.ViewModels;
+using LivestockTracker.Pagination;
 
 namespace LivestockTracker.Feed;
 
@@ -135,7 +137,7 @@ public class FeedTypeController : LivestockApiController
 
         try
         {
-            FeedType updatedFeedType = await _feedTypeManager.UpdateAsync(feedType.ToFeedType(), RequestAbortToken)
+            FeedType updatedFeedType = await _feedTypeManager.UpdateAsync(id, feedType.ToFeedType(), RequestAbortToken)
                 .ConfigureAwait(false);
 
             return Ok(updatedFeedType.ToViewModel());

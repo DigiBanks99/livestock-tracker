@@ -5,15 +5,19 @@ import * as feedTypeStore from './feed-type.store';
 import * as feedingTransactionActions from './feeding-transaction.actions';
 import * as feedingTransactionEffects from './feeding-transaction.effect';
 import * as feedingTransactionReducer from './feeding-transaction.reducer';
-import * as feedingTransactionStore from './feeding-transaction.store';
+import * as feedingTransactionStore from './feeding-transaction.selectors';
 
-export {
-  feedTypeActions,
-  feedTypeEffects,
-  feedTypeReducer,
-  feedTypeStore,
-  feedingTransactionActions,
-  feedingTransactionEffects,
-  feedingTransactionReducer,
-  feedingTransactionStore
+export const FeedStore = {
+  Feed: {
+    actions: { ...feedTypeActions.actions },
+    effects: { ...feedTypeEffects },
+    reducers: { ...feedTypeReducer },
+    selectors: { ...feedTypeStore.selectors }
+  },
+  Transactions: {
+    actions: { ...feedingTransactionActions.actions },
+    effects: { ...feedingTransactionEffects },
+    reducers: { ...feedingTransactionReducer },
+    selectors: { ...feedingTransactionStore }
+  }
 };

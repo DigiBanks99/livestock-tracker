@@ -15,7 +15,7 @@ public class UpdatingAFeedType
     }
 
     [Fact]
-    public async Task ThenItShouldSaveTheMedicineWithTheUpdatedValues()
+    public async Task ThenItShouldSaveTheFeedTypeWithTheUpdatedValues()
     {
         // Arrange
         UpdateFeedTypeViewModel feed = new(1, "Changed");

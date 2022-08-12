@@ -1,51 +1,44 @@
-import { FeedingTransaction, SaveState } from '@core/models';
-import { crudReducer, FeedingTransactionState } from '@core/store';
+import {
+  FeedingTransaction,
+  SaveState
+} from '@core/models';
+import {
+  animalTransactionReducer,
+  FeedingTransactionState
+} from '@core/store';
+import { environment } from '@env/environment';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
-import { FeedingTransactionKey } from './constants';
-import {
-  FeedingTranscationActionTypes,
-  SelectFeedTransactionAction
-} from './feeding-transaction.actions';
+import { FeedStoreConstants } from './constants';
 
 export const feedingTransactionAdapter =
   createEntityAdapter<FeedingTransaction>({
     selectId: (transaction: FeedingTransaction) => transaction.id,
-    sortComparer: false
+    sortComparer: (transaction: FeedingTransaction) =>
+      transaction.transactionDate.valueOf()
   });
 
-export const initialState: FeedingTransactionState =
-  feedingTransactionAdapter.getInitialState({
-    selectedId: null,
-    isPending: false,
-    isFetching: false,
-    error: null,
-    pageNumber: 0,
-    pageSize: 10,
-    recordCount: 0,
-    saveState: SaveState.New
-  });
+export const initialState: FeedingTransactionState = {
+  ...feedingTransactionAdapter.getInitialState(),
+  isFetching: false,
+  isPending: false,
+  error: null,
+  selectedId: null,
+  pageNumber: 0,
+  pageSize: environment.pageSize,
+  recordCount: 0,
+  saveState: SaveState.New
+};
 
 export function feedingTransactionReducer(
   state: FeedingTransactionState = initialState,
   action: Action
 ): FeedingTransactionState {
-  switch (action.type) {
-    case FeedingTranscationActionTypes.SelectFeedTransaction:
-      return {
-        ...state,
-        selectedId: (<SelectFeedTransactionAction>action).transactionId
-      };
-    default:
-      return {
-        ...state,
-        ...crudReducer(
-          FeedingTransactionKey,
-          feedingTransactionAdapter,
-          state,
-          action
-        )
-      };
-  }
+  return animalTransactionReducer(
+    FeedStoreConstants.Transactions.ActionKey,
+    feedingTransactionAdapter,
+    state,
+    action
+  );
 }
