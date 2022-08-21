@@ -1,7 +1,7 @@
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgModule, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
@@ -15,6 +15,9 @@ import {
   FetchSingleFeedTransactionAction
 } from '@feed/store/feeding-transaction.actions';
 import { select, Store } from '@ngrx/store';
+import { CommonModule } from '@angular/common';
+
+import { FeedingTransactionFormComponentModule } from '../feeding-transaction-form/feeding-transaction-form.component';
 
 @Component({
   selector: 'app-feeding-transaction-detail',
@@ -94,3 +97,10 @@ export class FeedingTransactionDetailComponent implements OnInit, OnDestroy {
     this.router.navigate(['/feeding-transaction']);
   }
 }
+
+@NgModule({
+  declarations: [FeedingTransactionDetailComponent],
+  exports: [FeedingTransactionDetailComponent],
+  imports: [CommonModule, FeedingTransactionFormComponentModule]
+})
+export class FeedingTransactionDetailComponentModule {}

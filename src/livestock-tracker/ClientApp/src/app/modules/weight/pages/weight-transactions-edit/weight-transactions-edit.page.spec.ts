@@ -4,7 +4,6 @@ import { TestScheduler } from 'rxjs/testing';
 import { LocationStrategy } from '@angular/common';
 import { MockLocationStrategy } from '@angular/common/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SaveState } from '@core/models';
 import { AnimalState } from '@core/store';
@@ -99,7 +98,7 @@ describe('WeightTransactionsEditPage', () => {
     );
   });
 
-  it('should listen to selectedAnimalId changes on the store', () => {
+  it('should listen to animalId changes on the store', () => {
     testScheduler.run(({ expectObservable, flush }: RunHelpers) => {
       mockAnimalIdSelector.setResult(3);
 

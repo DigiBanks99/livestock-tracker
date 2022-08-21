@@ -70,6 +70,18 @@ export class MedicalTransactionFormComponent {
   @Input() public units: Unit[] = [];
   @Input() public isLoading = false;
   @Input() public isSaving = false;
+  @Output() public readonly save = new EventEmitter<MedicalTransaction>();
+  public readonly form = new FormGroup({
+    id: new FormControl(0),
+    animalId: new FormControl(0),
+    medicineId: new FormControl(null, Validators.required),
+    transactionDate: new FormControl(null, Validators.required),
+    dose: new FormControl(null, [Validators.required]),
+    unitId: new FormControl(null, [Validators.required])
+  });
+
+  constructor(private readonly _sanitizer: DomSanitizer) {}
+
   @Input()
   public set animalId(value: number) {
     if (value == null) {
@@ -80,17 +92,6 @@ export class MedicalTransactionFormComponent {
       animalId: value
     });
   }
-  @Input()
-  public set transaction(value: MedicalTransaction) {
-    if (value == null) {
-      return;
-    }
-
-    this._transaction = value;
-    this.form.patchValue(value);
-  }
-
-  @Output() public readonly save = new EventEmitter<MedicalTransaction>();
 
   public get transactionDateCtrl(): FormControl {
     return <FormControl>this.form.controls.transactionDate;
@@ -115,18 +116,17 @@ export class MedicalTransactionFormComponent {
     return this._sanitizer.sanitize(SecurityContext.HTML, `<ul>${sb}</ul>`);
   }
 
-  public readonly form = new FormGroup({
-    id: new FormControl(0),
-    animalId: new FormControl(0),
-    medicineId: new FormControl(null, Validators.required),
-    transactionDate: new FormControl(null, Validators.required),
-    dose: new FormControl(null, [Validators.required]),
-    unitId: new FormControl(null, [Validators.required])
-  });
-
   private _transaction: MedicalTransaction | null = null;
 
-  constructor(private readonly _sanitizer: DomSanitizer) {}
+  @Input()
+  public set transaction(value: MedicalTransaction) {
+    if (value == null) {
+      return;
+    }
+
+    this._transaction = value;
+    this.form.patchValue(value);
+  }
 
   public onReset(): void {
     this.form.reset();
@@ -135,7 +135,7 @@ export class MedicalTransactionFormComponent {
 
   public onSave(): void {
     if (this.form.valid) {
-      this.save.next(this.form.value);
+      this.save.emit(this.form.value);
     }
   }
 }

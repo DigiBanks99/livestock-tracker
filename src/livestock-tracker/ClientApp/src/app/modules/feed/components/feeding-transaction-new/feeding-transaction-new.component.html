@@ -1,11 +1,8 @@
 <app-feeding-transaction-form
-  [selectedAnimalId]="selectedAnimalId$ | async"
-  header="New feed transaction"
-  successMessage="Feed transaction created"
-  [feedTypes]="feedTypes$ | async"
-  [unitTypes]="unitTypes$ | async"
-  [isPending]="isPending$ | async"
-  [error]="error$ | async"
   (save)="onSave($event)"
-  (navigateBack)="onNavigateBack()"
+  [animalId]="animalId$ | async"
+  [feedTypes]="feedTypes$ | async"
+  [isLoading]="isFetching$ | async"
+  [units]="units$ | async"
+  backLink="../"
 ></app-feeding-transaction-form>

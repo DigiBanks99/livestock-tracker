@@ -40,13 +40,12 @@ export class FeedingTransactionsComponent {
   @Output() public readonly addTransaction = new EventEmitter<void>();
   @Output() public readonly deleteTransaction = new EventEmitter<number>();
   @Output() public readonly pageChanged = new EventEmitter<PageEvent>();
+  private readonly _dateFormat: string =
+    environment.myFormats.medium.display.datetimeInput;
 
   public get dateFormat(): string {
     return this._dateFormat;
   }
-
-  private readonly _dateFormat: string =
-    environment.myFormats.medium.display.datetimeInput;
 
   public onAdd(): void {
     this.addTransaction.emit();
