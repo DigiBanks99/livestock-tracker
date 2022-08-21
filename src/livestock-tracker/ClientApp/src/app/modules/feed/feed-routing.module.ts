@@ -8,6 +8,8 @@ import {
 } from '@feed/pages';
 import {
   FeedingTransactionDetailComponent,
+  FeedingTransactionDetailComponentModule,
+  FeedingTransactionFormComponentModule,
   FeedingTransactionNewComponent
 } from './components';
 
@@ -35,6 +37,8 @@ const routes: Routes = [
   imports: [
     FeedTypePageModule,
     FeedingTransactionsPageModule,
+    FeedingTransactionFormComponentModule,
+    FeedingTransactionDetailComponentModule,
     RouterModule.forChild(routes)
   ]
 })

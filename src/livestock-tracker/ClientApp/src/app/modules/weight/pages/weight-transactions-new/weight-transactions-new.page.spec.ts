@@ -2,7 +2,6 @@ import { RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { TestScheduler } from 'rxjs/testing';
 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Router } from '@angular/router';
 import { SaveState } from '@core/models';
 import { AnimalState } from '@core/store';
 import { getSelectedAnimalId } from '@core/store/selectors';
@@ -71,7 +70,7 @@ describe('WeightTransactionsNewPage', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should listen to selectedAnimalId changes on the store', () => {
+  it('should listen to animalId changes on the store', () => {
     testScheduler.run(({ expectObservable, flush }: RunHelpers) => {
       mockAnimalIdSelector.setResult(3);
 
