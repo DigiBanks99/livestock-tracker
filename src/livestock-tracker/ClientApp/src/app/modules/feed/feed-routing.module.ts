@@ -1,17 +1,21 @@
 ﻿import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import {
+  RouterModule,
+  Routes
+} from '@angular/router';
+
+import {
+  FeedingTransactionDetailComponent,
+  FeedingTransactionDetailComponentModule
+} from './components';
+import {
+  FeedingTransactionNewPage,
+  FeedingTransactionNewPageModule,
   FeedingTransactionsPage,
   FeedingTransactionsPageModule,
   FeedTypePage,
   FeedTypePageModule
-} from '@feed/pages';
-import {
-  FeedingTransactionDetailComponent,
-  FeedingTransactionDetailComponentModule,
-  FeedingTransactionFormComponentModule,
-  FeedingTransactionNewComponent
-} from './components';
+} from './pages';
 
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: '1' },
@@ -24,7 +28,7 @@ const routes: Routes = [
   {
     path: ':animalId/new',
     pathMatch: 'full',
-    component: FeedingTransactionNewComponent
+    component: FeedingTransactionNewPage
   },
   {
     path: ':animalId/edit/:id',
@@ -37,7 +41,7 @@ const routes: Routes = [
   imports: [
     FeedTypePageModule,
     FeedingTransactionsPageModule,
-    FeedingTransactionFormComponentModule,
+    FeedingTransactionNewPageModule,
     FeedingTransactionDetailComponentModule,
     RouterModule.forChild(routes)
   ]

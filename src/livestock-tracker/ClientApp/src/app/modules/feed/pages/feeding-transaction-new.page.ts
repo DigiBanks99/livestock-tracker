@@ -17,29 +17,36 @@ import {
   Router,
   RouterModule
 } from '@angular/router';
-import { SaveState } from '@core/models';
-import { FeedType } from '@core/models/feed-type.model';
-import { FeedingTransaction } from '@core/models/feeding-transaction.model';
-import { Unit } from '@core/models/unit.model';
+import {
+  FeedingTransaction,
+  FeedType,
+  SaveState,
+  Unit
+} from '@core/models';
 import { AppState } from '@core/store';
 import {
   getSelectedAnimalId,
   getUnits
 } from '@core/store/selectors';
 import { FeedStore } from '@feed-store';
-import { actions } from '@feed/store/feeding-transaction.actions';
 import {
   select,
   Store
 } from '@ngrx/store';
 
-import { FeedingTransactionFormComponentModule } from '../feeding-transaction-form/feeding-transaction-form.component';
+import { FeedingTransactionFormComponentModule } from '../components';
 
 @Component({
-  selector: 'app-feeding-transaction-new',
-  templateUrl: './feeding-transaction-new.component.html'
+  template: `<app-feeding-transaction-form
+    (save)="onSave($event)"
+    [animalId]="animalId$ | async"
+    [feedTypes]="feedTypes$ | async"
+    [isLoading]="isFetching$ | async"
+    [units]="units$ | async"
+    backLink="../"
+  ></app-feeding-transaction-form> `
 })
-export class FeedingTransactionNewComponent implements OnDestroy {
+export class FeedingTransactionNewPage implements OnDestroy {
   public readonly animalId$: Observable<number>;
   public readonly isFetching$: Observable<boolean>;
   public readonly isSaving$: Observable<boolean>;
@@ -65,7 +72,7 @@ export class FeedingTransactionNewComponent implements OnDestroy {
   }
 
   public onSave(transaction: FeedingTransaction) {
-    this._store.dispatch(actions.addItem(transaction));
+    this._store.dispatch(FeedStore.Transactions.actions.addItem(transaction));
     return this._router.navigate(['feed']);
   }
 
@@ -104,8 +111,8 @@ export class FeedingTransactionNewComponent implements OnDestroy {
 }
 
 @NgModule({
-  declarations: [FeedingTransactionNewComponent],
-  exports: [FeedingTransactionNewComponent],
+  declarations: [FeedingTransactionNewPage],
+  exports: [FeedingTransactionNewPage],
   imports: [CommonModule, FeedingTransactionFormComponentModule, RouterModule]
 })
-export class FeedingTransactionNewComponentModule {}
+export class FeedingTransactionNewPageModule {}
