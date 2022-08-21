@@ -46,6 +46,29 @@ export const Default: StoryFn<FeedingTransactionFormComponent> = Template.bind(
   {}
 );
 Default.args = {
+  feedingTransaction: null,
+  feedTypes: FeedTestData.Feed.SmallList,
+  units: UnitTestData.ShortList
+};
+
+export const IsLoading: StoryFn<FeedingTransactionFormComponent> =
+  Template.bind({});
+IsLoading.args = {
+  feedingTransaction: null,
+  isLoading: true
+};
+
+export const IsSaving: StoryFn<FeedingTransactionFormComponent> = Template.bind(
+  {}
+);
+IsSaving.args = {
+  feedingTransaction: null,
+  isSaving: true
+};
+
+export const ExistingTransaction: StoryFn<FeedingTransactionFormComponent> =
+  Template.bind({});
+ExistingTransaction.args = {
   feedingTransaction: FeedTestData.Transactions.SmallList[0],
   feedTypes: FeedTestData.Feed.SmallList,
   units: UnitTestData.ShortList
