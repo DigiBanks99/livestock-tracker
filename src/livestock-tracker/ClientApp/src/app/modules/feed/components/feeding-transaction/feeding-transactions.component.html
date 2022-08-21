@@ -1,80 +1,79 @@
 <app-loader *ngIf="isLoadingTransactions; else content"></app-loader>
 
 <ng-template #content>
-<h1>Feeding transactions</h1>
-<div class="feeding-transaction-list mat-elevation-z1">
-  <mat-toolbar fxFill>
-    <app-animal-select-container fxFill></app-animal-select-container>
-  </mat-toolbar>
-  <table
-    mat-table
-    [dataSource]="transactions"
-    class="feeding-transaction-list-table full-width-table"
-  >
-    <ng-container matColumnDef="feedType">
-      <th mat-header-cell *matHeaderCellDef>Feed type</th>
-      <td mat-cell *matCellDef="let feedingTransaction">
-        <a
-          [routerLink]="[
-            feedingTransaction.id,
-            'edit'
-          ]"
+  <h1>Feeding transactions</h1>
+  <div class="feeding-transaction-list mat-elevation-z1">
+    <mat-toolbar fxFill>
+      <app-animal-select-container fxFill></app-animal-select-container>
+    </mat-toolbar>
+    <table
+      [dataSource]="transactions"
+      class="feeding-transaction-list-table full-width-table"
+      mat-table
+    >
+      <ng-container matColumnDef="feedType">
+        <th *matHeaderCellDef mat-header-cell>Feed type</th>
+        <td *matCellDef="let feedingTransaction" mat-cell>
+          <a [routerLink]="['edit', feedingTransaction.id]">
+            {{ feedingTransaction.feedTypeId | lookup: feedTypes }}
+          </a>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th *matHeaderCellDef mat-header-cell>Date</th>
+        <td *matCellDef="let feedingTransaction" mat-cell>
+          {{ feedingTransaction.transactionDate | date: dateFormat }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="quantity">
+        <th *matHeaderCellDef mat-header-cell>Quantity</th>
+        <td *matCellDef="let feedingTransaction" mat-cell>
+          {{ feedingTransaction.quantity | number }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="unit">
+        <th *matHeaderCellDef mat-header-cell>Unit</th>
+        <td *matCellDef="let feedingTransaction" mat-cell>
+          {{ feedingTransaction.unitId | lookup: units }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="star" stickyEnd>
+        <th *matHeaderCellDef mat-header-cell></th>
+        <td
+          (click)="onDelete(feedingTransaction.id)"
+          *matCellDef="let feedingTransaction"
+          mat-cell
         >
-          {{ feedingTransaction.feedTypeId | lookup: feedTypes }}
-        </a>
-      </td>
-    </ng-container>
+          <mat-icon>delete</mat-icon>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="date">
-      <th mat-header-cell *matHeaderCellDef>Date</th>
-      <td mat-cell *matCellDef="let feedingTransaction">
-        {{ feedingTransaction.transactionDate | date: dateFormat }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="quantity">
-      <th mat-header-cell *matHeaderCellDef>Quantity</th>
-      <td mat-cell *matCellDef="let feedingTransaction">
-        {{ feedingTransaction.quantity | number }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="unit">
-      <th mat-header-cell *matHeaderCellDef>Unit</th>
-      <td mat-cell *matCellDef="let feedingTransaction">
-        {{ feedingTransaction.unitId | lookup: units }}
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="star" stickyEnd>
-      <th mat-header-cell *matHeaderCellDef></th>
-      <td
-        mat-cell
-        *matCellDef="let feedingTransaction"
-        (click)="onDelete(feedingTransaction.id)"
-      >
-        <mat-icon>delete</mat-icon>
-      </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="['feedType',
-    'date',
-    'quantity',
-    'unit',
-    'star']; sticky: true"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['feedType',
-    'date',
-    'quantity',
-    'unit',
-    'star']"></tr>
-  </table>
-  <mat-paginator
-    [pageIndex]="pageNumber"
-    [pageSize]="pageSize"
-    [pageSizeOptions]="[5, 10, 25, 50]"
-    [length]="recordCount"
-    (page)="onPage($event)"
-  ></mat-paginator>
-</div>
-<app-command-button (buttonClick)="onAdd()"></app-command-button>
+      <tr
+        *matHeaderRowDef="
+          ['feedType', 'date', 'quantity', 'unit', 'star'];
+          sticky: true
+        "
+        mat-header-row
+      ></tr>
+      <tr
+        *matRowDef="
+          let row;
+          columns: ['feedType', 'date', 'quantity', 'unit', 'star']
+        "
+        mat-row
+      ></tr>
+    </table>
+    <mat-paginator
+      (page)="onPage($event)"
+      [length]="recordCount"
+      [pageIndex]="pageNumber"
+      [pageSizeOptions]="[5, 10, 25, 50]"
+      [pageSize]="pageSize"
+    ></mat-paginator>
+  </div>
+  <app-command-button (buttonClick)="onAdd()"></app-command-button>
 </ng-template>

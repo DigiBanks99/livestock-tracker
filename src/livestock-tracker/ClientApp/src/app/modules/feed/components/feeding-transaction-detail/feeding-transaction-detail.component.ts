@@ -1,37 +1,20 @@
-import {
-  Observable,
-  Subject
-} from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import {
-  Component,
-  OnDestroy,
-  OnInit
-} from '@angular/core';
-import {
-  ActivatedRoute,
-  Params,
-  Router
-} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { Unit } from '@core/models/unit.model';
 import { AppState } from '@core/store';
-import {
-  getSelectedAnimalId,
-  getUnits
-} from '@core/store/selectors';
+import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
 import { FeedStore } from '@feed-store';
 import { FetchFeedTypesAction } from '@feed/store/feed-type.actions';
 import {
   actions,
   FetchSingleFeedTransactionAction
 } from '@feed/store/feeding-transaction.actions';
-import {
-  select,
-  Store
-} from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-feeding-transaction-detail',
@@ -82,7 +65,7 @@ export class FeedingTransactionDetailComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$)
     );
     this.feedTypes$ = this.store.pipe(
-      select(FeedStore.Feed.selectors.getFeedTypes),
+      select(FeedStore.Feed.selectors.feedTypes),
       takeUntil(this.destroyed$)
     );
     this.unitTypes$ = this.store.pipe(

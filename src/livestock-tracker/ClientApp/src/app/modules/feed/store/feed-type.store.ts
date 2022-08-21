@@ -4,67 +4,52 @@ import { feedTypeAdapter } from '@feed/store/feed-type.reducer';
 import { Dictionary } from '@ngrx/entity';
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-const getFeedTypeState = createFeatureSelector<FeedTypeState>('feedTypes');
+const feedTypeState = createFeatureSelector<FeedTypeState>('feedTypes');
 
 const {
-  selectEntities: getFeedTypeEntities,
-  selectIds: getFeedTypeIds,
-  selectTotal: getFeedTypeCount
-} = feedTypeAdapter.getSelectors(getFeedTypeState);
+  selectEntities: feedTypeEntities,
+  selectIds: feedTypeIds,
+  selectTotal: feedTypeCount
+} = feedTypeAdapter.getSelectors(feedTypeState);
 
-const getFeedTypes = createSelector(
-  getFeedTypeEntities,
-  getFeedTypeIds,
+export const feedTypes = createSelector(
+  feedTypeEntities,
+  feedTypeIds,
   (entities: Dictionary<FeedType>, ids: (string | number)[]) =>
     ids
       .map((id) => entities[id])
       .filter((feedType): feedType is FeedType => feedType !== null)
 );
 
-const getSelectedFeedTypeId = createSelector(
-  getFeedTypeState,
+export const selectedFeedTypeId = createSelector(
+  feedTypeState,
   (state) => state.selectedId
 );
 
-const getSelectedFeedType = createSelector(
-  getFeedTypeEntities,
-  getSelectedFeedTypeId,
+export const selectedFeedType = createSelector(
+  feedTypeEntities,
+  selectedFeedTypeId,
   (entities, id) => entities[id]
 );
 
-const getFeedTypePending = createSelector(
-  getFeedTypeState,
+export const isPending = createSelector(
+  feedTypeState,
   (state) => state.isPending
 );
 
-const getPageSize = createSelector(getFeedTypeState, (state) => state.pageSize);
+export const pageSize = createSelector(
+  feedTypeState,
+  (state) => state.pageSize
+);
 
-const getCurrentPage = createSelector(
-  getFeedTypeState,
+export const currentPage = createSelector(
+  feedTypeState,
   (state) => state.pageNumber
 );
 
-const getRecordCount = createSelector(
-  getFeedTypeState,
+export const recordCount = createSelector(
+  feedTypeState,
   (state) => state.recordCount
 );
 
-const getFeedTypeError = createSelector(
-  getFeedTypeState,
-  (state) => state.error
-);
-
-export const selectors = {
-  getFeedTypeState,
-  getFeedTypes,
-  getFeedTypeEntities,
-  getFeedTypeIds,
-  getFeedTypeCount,
-  getSelectedFeedTypeId,
-  getSelectedFeedType,
-  getFeedTypePending,
-  getFeedTypeError,
-  getCurrentPage,
-  getPageSize,
-  getRecordCount
-};
+export const error = createSelector(feedTypeState, (state) => state.error);

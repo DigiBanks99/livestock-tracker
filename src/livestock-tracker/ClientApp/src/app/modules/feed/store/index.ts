@@ -12,7 +12,7 @@ export const FeedStore = {
     actions: { ...feedTypeActions.actions },
     effects: { ...feedTypeEffects },
     reducers: { ...feedTypeReducer },
-    selectors: { ...feedTypeStore.selectors }
+    selectors: { ...feedTypeStore }
   },
   Transactions: {
     actions: { ...feedingTransactionActions.actions },

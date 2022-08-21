@@ -1,25 +1,15 @@
-import {
-  Observable,
-  Subject
-} from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  NgModule,
-  OnDestroy
-} from '@angular/core';
+import { Component, NgModule, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedTypeState } from '@core/store';
 import { FeedStore } from '@feed-store';
 import { FeedTypeComponentModule } from '@feed/components';
 import { FetchFeedTypesAction } from '@feed/store/feed-type.actions';
-import {
-  select,
-  Store
-} from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   template: `
@@ -45,27 +35,25 @@ export class FeedTypePage implements OnDestroy {
   private destroyed$ = new Subject<void>();
 
   constructor(private store: Store<FeedTypeState>) {
-    this.store.dispatch(FeedStore.Feed.actions.fetchItems());
-
     this.feedTypes$ = this.store.pipe(
-      select(FeedStore.Feed.selectors.getFeedTypes),
+      select(FeedStore.Feed.selectors.feedTypes),
       takeUntil(this.destroyed$)
     );
     this.isPending$ = this.store.pipe(
-      select(FeedStore.Feed.selectors.getFeedTypePending),
+      select(FeedStore.Feed.selectors.isPending),
       takeUntil(this.destroyed$)
     );
 
     this.pageSize$ = this.store.pipe(
-      select(FeedStore.Feed.selectors.getPageSize),
+      select(FeedStore.Feed.selectors.pageSize),
       takeUntil(this.destroyed$)
     );
     this.currentPage$ = this.store.pipe(
-      select(FeedStore.Feed.selectors.getCurrentPage),
+      select(FeedStore.Feed.selectors.currentPage),
       takeUntil(this.destroyed$)
     );
     this.recordCount$ = this.store.pipe(
-      select(FeedStore.Feed.selectors.getRecordCount),
+      select(FeedStore.Feed.selectors.recordCount),
       takeUntil(this.destroyed$)
     );
   }
