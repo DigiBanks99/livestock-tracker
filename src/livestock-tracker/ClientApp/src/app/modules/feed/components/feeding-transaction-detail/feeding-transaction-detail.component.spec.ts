@@ -82,7 +82,7 @@ describe('FeedingTransactionDetailComponent', () => {
               selector: FeedStore.Transactions.selectors.error,
               value: null
             },
-            { selector: FeedStore.Feed.selectors.getFeedTypes, value: [] },
+            { selector: FeedStore.Feed.selectors.feedTypes, value: [] },
             { selector: getUnits, value: [] }
           ]
         }),

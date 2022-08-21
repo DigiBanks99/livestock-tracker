@@ -1,40 +1,20 @@
-import {
-  BehaviorSubject,
-  Observable,
-  Subject
-} from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  NgModule,
-  OnDestroy
-} from '@angular/core';
+import { Component, NgModule, OnDestroy } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
-import {
-  Animal,
-  FeedingTransaction,
-  FeedType,
-  Unit
-} from '@core/models';
+import { Animal, FeedingTransaction, FeedType, Unit } from '@core/models';
 import { AppState } from '@core/store';
-import {
-  getSelectedAnimalId,
-  getUnits
-} from '@core/store/selectors';
+import { getSelectedAnimalId, getUnits } from '@core/store/selectors';
 import { environment } from '@env/environment';
 import { FeedStore } from '@feed-store';
 import { FeedingTransactionsComponentModule } from '@feed/components';
 import { FeedStoreModule } from '@feed/store/feed-store.module';
-import {
-  select,
-  Store
-} from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 
 @Component({
-  selector: 'app-feeding-transaction-container',
   template: `
     <app-feeding-transactions
       [transactions]="transactions$ | async"
@@ -94,7 +74,7 @@ export class FeedingTransactionsPage implements OnDestroy {
   }
 
   public onAddTransaction() {
-    this._router.navigate(['/feed', this._animalId, 'new']);
+    this._router.navigate(['feed', this._animalId, 'new']);
   }
 
   public onDelete(id: number) {
@@ -127,14 +107,14 @@ export class FeedingTransactionsPage implements OnDestroy {
 
   private setupTransactions(): Observable<FeedingTransaction[]> {
     return this._store.pipe(
-      select(FeedStore.Transactions.selectors.allFeedingTransactions),
+      select(FeedStore.Transactions.selectors.feedingTransactionsForAnimal),
       takeUntil(this._destroyed$)
     );
   }
 
   private setupFeedTypes(): Observable<FeedType[]> {
     return this._store.pipe(
-      select(FeedStore.Feed.selectors.getFeedTypes),
+      select(FeedStore.Feed.selectors.feedTypes),
       takeUntil(this._destroyed$)
     );
   }
