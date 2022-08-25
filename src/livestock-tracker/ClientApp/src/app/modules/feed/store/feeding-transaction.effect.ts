@@ -92,7 +92,7 @@ export class FeedingTransactionEffects extends FetchAnimalTransactionEffects<Fee
   > = createEffect(() =>
     this.actions$.pipe(
       ofType(`API_FETCH_SINGLE_ANIMAL`),
-      concatLatestFrom(() => this.store.select(RouterStore.selectors.url)),
+      concatLatestFrom(() => this._store.select(RouterStore.selectors.url)),
       filter(([, url]: [Action, string]) => /feed\/\d+$/.test(url)),
       map(
         (): PayloadAction<PageEvent> =>
@@ -106,9 +106,9 @@ export class FeedingTransactionEffects extends FetchAnimalTransactionEffects<Fee
 
   public transactionAdded$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
-      ofType(`API_ADD_${FeedStoreConstants.Transactions.StoreKey}`),
+      ofType(`API_ADD_${FeedStoreConstants.Transactions.ActionKey}`),
       tap((action: PayloadAction<FeedingTransaction>) =>
-        this.router.navigate(['/feed', action.payload.animalId])
+        this._router.navigate(['/feed', action.payload.animalId])
       ),
       map(() => this.transactionActions.resetSaveState())
     )
@@ -116,21 +116,24 @@ export class FeedingTransactionEffects extends FetchAnimalTransactionEffects<Fee
 
   public transactionUpdated$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
-      ofType(`API_UPDATE_${FeedStoreConstants.Transactions.StoreKey}`),
+      ofType(`API_UPDATE_${FeedStoreConstants.Transactions.ActionKey}`),
       tap(
         (action: PayloadAction<KeyValue<number, Update<FeedingTransaction>>>) =>
-          this.router.navigate(['/feed', action.payload.value.changes.animalId])
+          this._router.navigate([
+            '/feed',
+            action.payload.value.changes.animalId
+          ])
       ),
       map(() => this.transactionActions.resetSaveState())
     )
   );
   constructor(
-    protected actions$: Actions,
-    private readonly store: Store,
+    protected readonly actions$: Actions,
+    private readonly _store: Store,
     animalStore: Store<AnimalState>,
     feedingTransactionService: FeedingTransactionService,
     snackBar: MatSnackBar,
-    private readonly router: Router
+    private readonly _router: Router
   ) {
     super(
       actions$,

@@ -1,13 +1,14 @@
 describe('Feeding Transaction Update', () => {
   beforeEach(() => {
     cy.visit('feed/1/edit/1');
-  });
 
-  it.only('should have the required fields', () => {
     cy.get('app-animal-select')
       .find('app-animal-select-display')
       .find('span')
       .should('have.text', '1 - Brahman');
+  });
+
+  it.only('should have the required fields', () => {
     cy.findFormField('Feed Type', 'span.mat-select-min-line')
       .should('exist')
       .should('have.text', 'Maize');
@@ -27,11 +28,6 @@ describe('Feeding Transaction Update', () => {
   });
 
   it.only('should save the transaction with the changed values', () => {
-    cy.get('app-animal-select')
-      .find('app-animal-select-display')
-      .find('span')
-      .should('have.text', '1 - Brahman');
-
     cy.selectOption('Feed Type', 'Wheat');
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input')
       .invoke('val')
@@ -55,7 +51,7 @@ describe('Feeding Transaction Update', () => {
         cy.findFormField(
           'Transaction Date',
           'input.mat-datepicker-input'
-        ).should('have.value', '03/15/2021, 12:22 PM');
+        ).should('have.value', '2021/03/15, 12:22');
 
         // reset for other tests
         cy.selectOption('Feed Type', 'Maize');
@@ -64,18 +60,14 @@ describe('Feeding Transaction Update', () => {
           .type(transactionDate);
         cy.findFormField('Quantity', 'input').clear().type('0.5');
         cy.selectOption('Unit', 'ℓ');
+        cy.contains('button', 'Save').should('be.enabled').click();
       });
   });
 
   it.only('should reset the form to the default values when resetting', () => {
-    cy.visit('feed/1/edit/2');
-    cy.get('app-animal-select')
-      .find('app-animal-select-display')
-      .find('span')
-      .should('have.text', '1 - Brahman');
     cy.findFormField('Feed Type', 'span.mat-select-min-line')
       .should('exist')
-      .should('have.text', 'Wheat');
+      .should('have.text', 'Maize');
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input')
       .invoke('val')
       .then((transactionDate) => {
@@ -87,7 +79,7 @@ describe('Feeding Transaction Update', () => {
           .should('have.text', 'ℓ');
 
         // change values
-        cy.selectOption('Feed Type', 'Maize');
+        cy.selectOption('Feed Type', 'Wheat');
         cy.findFormField('Transaction Date', 'input.mat-datepicker-input')
           .clear()
           .type('2021/03/15, 12:22');
@@ -103,7 +95,7 @@ describe('Feeding Transaction Update', () => {
           .should('have.text', '1 - Brahman');
         cy.findFormField('Feed Type', 'span.mat-select-min-line')
           .should('exist')
-          .should('have.text', 'Wheat');
+          .should('have.text', 'Maize');
         cy.findFormField(
           'Transaction Date',
           'input.mat-datepicker-input'
@@ -118,10 +110,6 @@ describe('Feeding Transaction Update', () => {
   });
 
   it.only('should navigate back to the feeding transaction list when clicking back', () => {
-    cy.get('app-animal-select')
-      .find('app-animal-select-display')
-      .find('span')
-      .should('have.text', '1 - Brahman');
     cy.contains('a', 'Back')
       .click()
       .location('pathname')

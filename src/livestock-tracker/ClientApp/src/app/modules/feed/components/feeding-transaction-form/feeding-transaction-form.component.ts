@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,29 +8,34 @@ import {
   Output,
   SecurityContext
 } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import {
   FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators
 } from '@angular/forms';
-import { MAT_DATE_FORMATS, MatOptionModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import {
+  MAT_DATE_FORMATS,
+  MatOptionModule
+} from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import {
+  DomSanitizer,
+  SafeHtml
+} from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { FeedType } from '@core/models/feed-type.model';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { Unit } from '@core/models/unit.model';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDatepickerModule } from '@matheo/datepicker';
-import { AnimalSelectModule } from '@shared/components';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
-import { MatButtonModule } from '@angular/material/button';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { CommonModule } from '@angular/common';
-import { MatDateFnsModule } from '@matheo/datepicker/date-fns';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { environment } from '@env/environment';
-import { RouterModule } from '@angular/router';
+import { MatDatepickerModule } from '@matheo/datepicker';
+import { MatDateFnsModule } from '@matheo/datepicker/date-fns';
+import { AnimalSelectModule } from '@shared/components';
 
 @Component({
   selector: 'app-feeding-transaction-form',
@@ -47,7 +53,7 @@ import { RouterModule } from '@angular/router';
         },
         display: {
           dateInput: 'P',
-          datetimeInput: 'Pp',
+          datetimeInput: 'yyyy/MM/dd, HH:mm',
           timeInput: 'p',
           monthInput: 'MMM yyyy',
           yearInput: 'yyyy',
@@ -95,7 +101,7 @@ export class FeedingTransactionFormComponent {
   }
 
   @Input()
-  public set feedingTransaction(value: FeedingTransaction) {
+  public set transaction(value: FeedingTransaction) {
     if (value == null) {
       return;
     }

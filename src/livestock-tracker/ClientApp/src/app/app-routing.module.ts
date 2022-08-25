@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { FeedTypePage } from '@feed/pages';
-import { FeedingTransactionDetailComponent } from '@feed/components/feeding-transaction-detail/feeding-transaction-detail.component';
-import { FeedingTransactionNewComponent } from '@feed/components/feeding-transaction-new/feeding-transaction-new.component';
+import {
+  RouterModule,
+  Routes
+} from '@angular/router';
 import { HomeComponent } from '@home/components/home.component';
 import { ReportsComponent } from '@reports/components/reports.component';
 
@@ -14,15 +14,6 @@ const routes: Routes = [
   },
   { path: 'home', component: HomeComponent },
   { path: 'reports', component: ReportsComponent },
-  { path: 'feed-type', component: FeedTypePage },
-  {
-    path: 'feeding-transaction/:animalId/new',
-    component: FeedingTransactionNewComponent
-  },
-  {
-    path: 'feeding-transaction/:animalId/:id/edit',
-    component: FeedingTransactionDetailComponent
-  },
   {
     path: 'feed',
     loadChildren: async () =>

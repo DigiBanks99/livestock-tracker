@@ -1,19 +1,14 @@
 ﻿describe('Medical Transaction Update', () => {
   beforeEach(() => {
-    cy.visit('medicine/1');
+    cy.visit('medicine/1/edit/1');
+
     cy.get('app-animal-select')
       .find('app-animal-select-display')
       .find('span')
       .should('have.text', '1 - Brahman');
-
-    cy.visit('medicine/1/edit/1');
   });
 
   it.only('should have the required fields', () => {
-    cy.get('app-animal-select')
-      .find('app-animal-select-display')
-      .find('span')
-      .should('have.text', '1 - Brahman');
     cy.findFormField('Medicine Type', 'span.mat-select-min-line')
       .should('exist')
       .should('have.text', 'Painkillers');
@@ -33,11 +28,6 @@
   });
 
   it.only('should save the transaction with the changed values', () => {
-    cy.get('app-animal-select')
-      .find('app-animal-select-display')
-      .find('span')
-      .should('have.text', '1 - Brahman');
-
     cy.selectOption('Medicine Type', 'Antibiotics');
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input')
       .invoke('val')
@@ -61,7 +51,7 @@
         cy.findFormField(
           'Transaction Date',
           'input.mat-datepicker-input'
-        ).should('have.value', '03/15/2021, 12:22 PM');
+        ).should('have.value', '2021/03/15, 12:22');
 
         // reset for other tests
         cy.selectOption('Medicine Type', 'Painkillers');
@@ -70,18 +60,18 @@
           .type(transactionDate);
         cy.findFormField('Dosage', 'input').clear().type('0.5');
         cy.selectOption('Unit', 'ℓ');
+        cy.contains('button', 'Save').should('be.enabled').click();
       });
   });
 
   it.only('should reset the form to the default values when resetting', () => {
-    cy.visit('medicine/1/edit/2');
     cy.get('app-animal-select')
       .find('app-animal-select-display')
       .find('span')
       .should('have.text', '1 - Brahman');
     cy.findFormField('Medicine Type', 'span.mat-select-min-line')
       .should('exist')
-      .should('have.text', 'Antibiotics');
+      .should('have.text', 'Painkillers');
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input')
       .invoke('val')
       .then((transactionDate) => {
@@ -93,7 +83,7 @@
           .should('have.text', 'ℓ');
 
         // change values
-        cy.selectOption('Medicine Type', 'Painkillers');
+        cy.selectOption('Medicine Type', 'Antibiotics');
         cy.findFormField('Transaction Date', 'input.mat-datepicker-input')
           .clear()
           .type('2021/03/15, 12:22');
@@ -109,7 +99,7 @@
           .should('have.text', '1 - Brahman');
         cy.findFormField('Medicine Type', 'span.mat-select-min-line')
           .should('exist')
-          .should('have.text', 'Antibiotics');
+          .should('have.text', 'Painkillers');
         cy.findFormField(
           'Transaction Date',
           'input.mat-datepicker-input'
@@ -124,10 +114,6 @@
   });
 
   it.only('should navigate back to the medical transaction list when clicking back', () => {
-    cy.get('app-animal-select')
-      .find('app-animal-select-display')
-      .find('span')
-      .should('have.text', '1 - Brahman');
     cy.contains('a', 'Back')
       .click()
       .location('pathname')

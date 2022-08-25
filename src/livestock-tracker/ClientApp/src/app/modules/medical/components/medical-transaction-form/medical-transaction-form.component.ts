@@ -21,7 +21,11 @@ import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import {
+  DomSanitizer,
+  SafeHtml
+} from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
 import { MedicalTransaction } from '@core/models/medical-transaction.model';
 import { MedicineType } from '@core/models/medicine-type.model';
 import { Unit } from '@core/models/unit.model';
@@ -29,7 +33,6 @@ import { environment } from '@env/environment';
 import { MatDatepickerModule } from '@matheo/datepicker';
 import { MatDateFnsModule } from '@matheo/datepicker/date-fns';
 import { AnimalSelectModule } from '@shared/components';
-import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-medical-transaction-form',
@@ -47,7 +50,7 @@ import { RouterModule } from '@angular/router';
         },
         display: {
           dateInput: 'P',
-          datetimeInput: 'Pp',
+          datetimeInput: 'yyyy/MM/dd, HH:mm',
           timeInput: 'p',
           monthInput: 'MMM yyyy',
           yearInput: 'yyyy',
@@ -70,17 +73,16 @@ export class MedicalTransactionFormComponent {
   @Input() public units: Unit[] = [];
   @Input() public isLoading = false;
   @Input() public isSaving = false;
-  @Output() public readonly save = new EventEmitter<MedicalTransaction>();
-  public readonly form = new FormGroup({
-    id: new FormControl(0),
-    animalId: new FormControl(0),
-    medicineId: new FormControl(null, Validators.required),
-    transactionDate: new FormControl(null, Validators.required),
-    dose: new FormControl(null, [Validators.required]),
-    unitId: new FormControl(null, [Validators.required])
-  });
 
-  constructor(private readonly _sanitizer: DomSanitizer) {}
+  @Input()
+  public set transaction(value: MedicalTransaction) {
+    if (value == null) {
+      return;
+    }
+
+    this._transaction = value;
+    this.form.patchValue(value);
+  }
 
   @Input()
   public set animalId(value: number) {
@@ -92,6 +94,16 @@ export class MedicalTransactionFormComponent {
       animalId: value
     });
   }
+
+  @Output() public readonly save = new EventEmitter<MedicalTransaction>();
+  public readonly form = new FormGroup({
+    id: new FormControl(0),
+    animalId: new FormControl(0),
+    medicineId: new FormControl(null, Validators.required),
+    transactionDate: new FormControl(null, Validators.required),
+    dose: new FormControl(null, [Validators.required]),
+    unitId: new FormControl(null, [Validators.required])
+  });
 
   public get transactionDateCtrl(): FormControl {
     return <FormControl>this.form.controls.transactionDate;
@@ -118,15 +130,7 @@ export class MedicalTransactionFormComponent {
 
   private _transaction: MedicalTransaction | null = null;
 
-  @Input()
-  public set transaction(value: MedicalTransaction) {
-    if (value == null) {
-      return;
-    }
-
-    this._transaction = value;
-    this.form.patchValue(value);
-  }
+  constructor(private readonly _sanitizer: DomSanitizer) {}
 
   public onReset(): void {
     this.form.reset();
