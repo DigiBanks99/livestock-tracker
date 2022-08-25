@@ -1,13 +1,16 @@
 describe('Feeding Transaction Creation', () => {
-  beforeEach(() => cy.visit('feed/1/new'));
+  beforeEach(() => {
+    cy.visit('feed/1/new');
 
-  const date = new Date('2021-11-01T14:22:00.000Z');
-
-  it.only('should have the required fields', () => {
     cy.get('app-animal-select')
       .find('app-animal-select-display')
       .find('span')
       .should('have.text', '1 - Brahman');
+  });
+
+  const date = new Date('2021-11-01T14:22:00.000Z');
+
+  it.only('should have the required fields', () => {
     cy.findFormField('Feed Type', 'span.mat-select-min-line').should('exist');
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input').should(
       'exist'
@@ -89,10 +92,6 @@ describe('Feeding Transaction Creation', () => {
   });
 
   it.only('should navigate back to the feeding transaction list when clicking back', () => {
-    cy.get('app-animal-select')
-      .find('app-animal-select-display')
-      .find('span')
-      .should('have.text', '1 - Brahman');
     cy.contains('a', 'Back')
       .click()
       .location('pathname')

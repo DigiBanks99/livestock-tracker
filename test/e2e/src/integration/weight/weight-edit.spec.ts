@@ -3,10 +3,11 @@ describe('Weight Transaction Update', () => {
     cy.visit('weight/1/edit/1');
 
     cy.location('pathname').should('match', /weight\/1\/edit\/1$/);
+
+    cy.contains('span', '1 - Brahman');
   });
 
   it.only('should have the required fields', () => {
-    cy.contains('span', '1 - Brahman');
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input').should(
       'exist'
     );
@@ -18,7 +19,6 @@ describe('Weight Transaction Update', () => {
   });
 
   it.only('should save the weight transaction with the changed values', () => {
-    cy.contains('span', '1 - Brahman');
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input')
       .invoke('val')
       .then((transactionDate: string) => {

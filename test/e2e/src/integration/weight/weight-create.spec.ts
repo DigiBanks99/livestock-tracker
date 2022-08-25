@@ -1,13 +1,16 @@
 describe('Weight Transaction Creation', () => {
-  beforeEach(() => cy.visit('weight/1/new'));
+  beforeEach(() => {
+    cy.visit('weight/1/new');
 
-  const date = new Date('2021-11-01T14:22:00.000Z');
-
-  it.only('should have the required fields', () => {
     cy.get('app-animal-select')
       .find('app-animal-select-display')
       .find('span')
       .should('have.text', '1 - Brahman');
+  });
+
+  const date = new Date('2021-11-01T14:22:00.000Z');
+
+  it.only('should have the required fields', () => {
     cy.findFormField('Transaction Date', 'input.mat-datepicker-input').should(
       'exist'
     );

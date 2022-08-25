@@ -1,14 +1,18 @@
-﻿import { Meta, moduleMetadata, StoryFn } from '@storybook/angular';
+﻿import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterTestingModule } from '@angular/router/testing';
 import {
   FeedingTransactionFormComponent,
   FeedingTransactionFormComponentModule
 } from '@feed/components';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FeedTestData } from '@test/feed';
+import {
+  Meta,
+  moduleMetadata,
+  StoryFn
+} from '@storybook/angular';
 import { MockAnimalStoreModule } from '@test/animal';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { RouterTestingModule } from '@angular/router/testing';
+import { FeedTestData } from '@test/feed';
 import { UnitTestData } from '@test/unit';
 
 export default <Meta>{
@@ -46,7 +50,7 @@ export const Default: StoryFn<FeedingTransactionFormComponent> = Template.bind(
   {}
 );
 Default.args = {
-  feedingTransaction: null,
+  transaction: null,
   feedTypes: FeedTestData.Feed.SmallList,
   units: UnitTestData.ShortList
 };
@@ -54,7 +58,7 @@ Default.args = {
 export const IsLoading: StoryFn<FeedingTransactionFormComponent> =
   Template.bind({});
 IsLoading.args = {
-  feedingTransaction: null,
+  transaction: null,
   isLoading: true
 };
 
@@ -62,14 +66,14 @@ export const IsSaving: StoryFn<FeedingTransactionFormComponent> = Template.bind(
   {}
 );
 IsSaving.args = {
-  feedingTransaction: null,
+  transaction: null,
   isSaving: true
 };
 
 export const ExistingTransaction: StoryFn<FeedingTransactionFormComponent> =
   Template.bind({});
 ExistingTransaction.args = {
-  feedingTransaction: FeedTestData.Transactions.SmallList[0],
+  transaction: FeedTestData.Transactions.SmallList[0],
   feedTypes: FeedTestData.Feed.SmallList,
   units: UnitTestData.ShortList
 };

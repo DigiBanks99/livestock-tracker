@@ -5,10 +5,8 @@ import {
 } from '@angular/router';
 
 import {
-  FeedingTransactionDetailComponent,
-  FeedingTransactionDetailComponentModule
-} from './components';
-import {
+  FeedingTransactionDetailPage,
+  FeedingTransactionDetailPageModule,
   FeedingTransactionNewPage,
   FeedingTransactionNewPageModule,
   FeedingTransactionsPage,
@@ -33,16 +31,16 @@ const routes: Routes = [
   {
     path: ':animalId/edit/:id',
     pathMatch: 'full',
-    component: FeedingTransactionDetailComponent
+    component: FeedingTransactionDetailPage
   }
 ];
 
 @NgModule({
   imports: [
-    FeedTypePageModule,
-    FeedingTransactionsPageModule,
+    FeedingTransactionDetailPageModule,
     FeedingTransactionNewPageModule,
-    FeedingTransactionDetailComponentModule,
+    FeedingTransactionsPageModule,
+    FeedTypePageModule,
     RouterModule.forChild(routes)
   ]
 })

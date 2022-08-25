@@ -1,13 +1,16 @@
 describe('Medical Transaction Creation', () => {
-  beforeEach(() => cy.visit('medicine/1/new'));
+  beforeEach(() => {
+    cy.visit('medicine/1/new');
 
-  const date = new Date('2021-11-01T14:22:00.000Z');
-
-  it.only('should have the required fields', () => {
     cy.get('app-animal-select')
       .find('app-animal-select-display')
       .find('span')
       .should('have.text', '1 - Brahman');
+  });
+
+  const date = new Date('2021-11-01T14:22:00.000Z');
+
+  it.only('should have the required fields', () => {
     cy.findFormField('Medicine Type', 'span.mat-select-min-line').should(
       'exist'
     );
@@ -91,10 +94,6 @@ describe('Medical Transaction Creation', () => {
   });
 
   it.only('should navigate back to the medical transaction list when clicking back', () => {
-    cy.get('app-animal-select')
-      .find('app-animal-select-display')
-      .find('span')
-      .should('have.text', '1 - Brahman');
     cy.contains('a', 'Back')
       .click()
       .location('pathname')
