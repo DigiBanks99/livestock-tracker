@@ -3,6 +3,6 @@ module.exports = {
   addons: ['@storybook/addon-links', '@storybook/addon-essentials'],
   framework: '@storybook/angular',
   core: {
-    builder: 'webpack5'
+    builder: '@storybook/builder-webpack5'
   }
 };

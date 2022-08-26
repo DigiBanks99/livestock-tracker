@@ -226,7 +226,7 @@
             mat-stroked-button
             title="Back to animal list"
             [disabled]="isPending"
-            (click)="navigateBack.next()"
+            (click)="navigateBack.emit()"
           >
             Back
           </button>

@@ -1,6 +1,8 @@
-@use '~@angular/material' as mat;
+@use '@angular/material' as mat;
 @use 'variables';
-@use '~@matheo/datepicker/theming' as datepicker;
+@use '@matheo/datepicker/theming' as datepicker;
+
+mat.$theme-ignore-duplication-warnings: true;
 
 @include mat.core();
 
@@ -44,4 +46,4 @@ $theme: map-merge(
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
 @include mat.all-component-themes($theme);
-@include datepicker.mat-datepicker-theme($theme);
+@include datepicker.theme($theme);
