@@ -1,5 +1,5 @@
-@use '~@angular/material' as mat;
-@use 'theme/core-theme' as core;
+@use '@angular/material' as mat;
+@use 'core-theme' as core;
 
 .mat-card {
   background-color: mat.get-color-from-palette(

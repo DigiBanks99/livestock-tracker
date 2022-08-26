@@ -34,7 +34,10 @@
             "buildOptimizer": false,
             "sourceMap": true,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "stylePreprocessorOptions": {
+              "includePaths": ["node_modules"]
+            }
           },
           "configurations": {
             "production": {
@@ -96,14 +99,14 @@
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {
-            "browserTarget": "angular-cli:build",
+            "browserTarget": "livestock-tracker:build",
             "port": 6006
           }
         },
         "build-storybook": {
           "builder": "@storybook/angular:build-storybook",
           "options": {
-            "browserTarget": "angular-cli:build"
+            "browserTarget": "livestock-tracker:build"
           }
         }
       }
