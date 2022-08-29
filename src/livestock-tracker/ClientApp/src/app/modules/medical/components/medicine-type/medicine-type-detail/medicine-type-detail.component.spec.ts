@@ -1,35 +1,39 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {
+  ComponentFixture,
+  TestBed,
+  waitForAsync
+} from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MedicineTypeService,
   MockMedicineTypeService
 } from '@medical/services/medicine-type.service';
 
-import { MedicineTypeDetailComponent } from './medicine-type-detail.component';
+import {
+  MedicineTypeDetailComponent,
+  MedicineTypeDetailComponentModule
+} from './medicine-type-detail.component';
 
 describe('MedicineTypeDetailComponent', () => {
   let component: MedicineTypeDetailComponent;
   let fixture: ComponentFixture<MedicineTypeDetailComponent>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [MedicineTypeDetailComponent],
-      providers: [
-        { provide: MedicineTypeService, useClass: MockMedicineTypeService }
-      ],
-      imports: [
-        ReactiveFormsModule,
-        BrowserAnimationsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule
-      ]
-    }).compileComponents();
-  }));
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [MedicineTypeDetailComponent],
+        providers: [
+          { provide: MedicineTypeService, useClass: MockMedicineTypeService }
+        ],
+        imports: [
+          MedicineTypeDetailComponentModule,
+
+          // Testing modules
+          NoopAnimationsModule
+        ]
+      }).compileComponents();
+    })
+  );
 
   beforeEach(() => {
     fixture = TestBed.createComponent(MedicineTypeDetailComponent);

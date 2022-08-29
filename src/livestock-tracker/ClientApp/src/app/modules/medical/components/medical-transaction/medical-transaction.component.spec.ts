@@ -1,17 +1,13 @@
 import { LocationStrategy } from '@angular/common';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MockLocationStrategy } from '@angular/common/testing';
-import { Component, Input } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatOptionModule } from '@angular/material/core';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTableModule } from '@angular/material/table';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import {
+  Component,
+  Input
+} from '@angular/core';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -21,9 +17,16 @@ import {
   MockMedicalService
 } from '@medical/services';
 import { SvgService } from '@svg/services';
-import { CommandButtonTestingModule } from '@test/shared';
+import { MockAnimalStoreModule } from '@test/animal';
+import {
+  AnimalSelectTestingModule,
+  CommandButtonTestingModule
+} from '@test/shared';
 
-import { MedicalTransactionComponent } from './medical-transaction.component';
+import {
+  MedicalTransactionComponent,
+  MedicalTransactionComponentModule
+} from './medical-transaction.component';
 
 @Component({
   selector: 'app-animal-select-container',
@@ -60,18 +63,13 @@ describe('MedicalTransactionComponent', () => {
         { provide: LocationStrategy, useClass: MockLocationStrategy }
       ],
       imports: [
+        MedicalTransactionComponentModule,
+
+        // Testing modules
+        AnimalSelectTestingModule,
         CommandButtonTestingModule,
+        MockAnimalStoreModule,
         NoopAnimationsModule,
-        ReactiveFormsModule,
-        MatDatepickerModule,
-        MatListModule,
-        MatIconModule,
-        MatOptionModule,
-        MatPaginatorModule,
-        MatTableModule,
-        MatToolbarModule,
-        MatSelectModule,
-        HttpClientTestingModule,
         RouterTestingModule
       ]
     }).compileComponents();

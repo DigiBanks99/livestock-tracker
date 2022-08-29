@@ -1,12 +1,22 @@
 import { TestData } from 'test/modules/animal';
 import { LoaderTestingModule } from 'test/modules/shared/components/loader/loader.testing.module';
 
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import {
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing';
+import {
+  MatPaginatorModule,
+  PageEvent
+} from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { getAnimals, getSelectedAnimal } from '@core/store/selectors';
+import { RouterTestingModule } from '@angular/router/testing';
+import {
+  getAnimals,
+  getSelectedAnimal
+} from '@core/store/selectors';
 import { provideMockStore } from '@ngrx/store/testing';
 import { SharedModule } from '@shared/shared.module';
 
@@ -25,6 +35,7 @@ describe('WeightTransactionListComponent', () => {
         MatTableModule,
         MatToolbarModule,
         NoopAnimationsModule,
+        RouterTestingModule,
         SharedModule
       ],
       providers: [

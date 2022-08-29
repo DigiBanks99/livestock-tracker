@@ -1,7 +1,7 @@
 name: e2e tests
 
 on:
-  push:
+  pull_request:
     paths-ignore:
       - src/**/*.stories.ts
       - src/**/*.stories.spec.ts
