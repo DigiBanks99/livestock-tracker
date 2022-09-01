@@ -1,4 +1,7 @@
-import { combineLatest, Subject } from 'rxjs';
+import {
+  combineLatest,
+  Subject
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
@@ -14,9 +17,20 @@ import {
   FormGroup,
   Validators
 } from '@angular/forms';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS
+} from '@angular/material/core';
+import {
+  RecordAnimalDeath,
+  SellAnimal
+} from '@animal/events';
 import { LivestockTrackerDateAdapter } from '@core/dates';
-import { Animal, AnimalType, NullAnimal } from '@core/models';
+import {
+  Animal,
+  AnimalType,
+  NullAnimal
+} from '@core/models';
 import { environment } from '@env/environment';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 
@@ -62,10 +76,13 @@ export class AnimalFormComponent {
   @Input() public successMessage: string;
   @Input() public isPending = false;
   @Input() public error: Error = null;
-  @Output() public archive = new EventEmitter<number>();
-  @Output() public navigateBack = new EventEmitter();
-  @Output() public save = new EventEmitter<Animal>();
-  @Output() public unarchive = new EventEmitter<number>();
+  @Output() public readonly archive = new EventEmitter<number>();
+  @Output() public readonly navigateBack = new EventEmitter();
+  @Output() public readonly recordAnimalDeath =
+    new EventEmitter<RecordAnimalDeath>();
+  @Output() public readonly save = new EventEmitter<Animal>();
+  @Output() public readonly sellAnimal = new EventEmitter<SellAnimal>();
+  @Output() public readonly unarchive = new EventEmitter<number>();
 
   public form: FormGroup;
   public animalTypes = AnimalType;
@@ -78,8 +95,16 @@ export class AnimalFormComponent {
   private _currentAnimal: Animal = null;
   private readonly _destroyed$ = new Subject<void>();
 
+  public get animalIdCtrl(): FormControl {
+    return <FormControl>this.form.get(Constants.controls.id);
+  }
+
   public get birthDateCtrl(): FormControl {
     return <FormControl>this.form.get(Constants.controls.birthDate);
+  }
+
+  public get deceasedCtrl(): FormControl {
+    return <FormControl>this.form.get(Constants.controls.deceased);
   }
 
   public get dateOfDeathCtrl(): FormControl {
@@ -92,6 +117,10 @@ export class AnimalFormComponent {
 
   public get sellPriceCtrl(): FormControl {
     return <FormControl>this.form.get(Constants.controls.sellPrice);
+  }
+
+  public get soldCtrl(): FormControl {
+    return <FormControl>this.form.get(Constants.controls.sold);
   }
 
   public get sellDateCtrl(): FormControl {
@@ -112,6 +141,25 @@ export class AnimalFormComponent {
   public onSave(): void {
     if (this.form.valid) {
       this.save.emit(this.form.value);
+    }
+
+    if (this.soldCtrl.dirty) {
+      this.sellAnimal.emit(
+        new SellAnimal(
+          <number>this.animalIdCtrl.value,
+          <Date>this.sellDateCtrl.value,
+          <number>this.sellPriceCtrl.value
+        )
+      );
+    }
+
+    if (this.deceasedCtrl.dirty) {
+      this.recordAnimalDeath.emit(
+        new RecordAnimalDeath(
+          <number>this.animalIdCtrl.value,
+          <Date>this.dateOfDeathCtrl.value
+        )
+      );
     }
   }
 

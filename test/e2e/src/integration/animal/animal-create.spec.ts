@@ -50,37 +50,9 @@ describe('Animal Creation', () => {
     cy.findFormField('Purchase Date', 'input').should('exist');
     cy.findFormField('Purchase Price', 'input').should('exist');
     cy.findFormField('Arrival Weight', 'input').should('exist');
-    cy.contains('label', 'Sold')
-      .should('exist')
-      .parent('mat-checkbox')
-      .should('exist');
-    cy.findFormField('Sell Price', 'input')
-      .should('exist')
-      .should('be.disabled');
-    cy.findFormField('Sell Date', 'input')
-      .should('exist')
-      .should('be.disabled');
-    cy.contains('label', 'Deceased')
-      .should('exist')
-      .parent('mat-checkbox')
-      .should('exist');
-    cy.findFormField('Date of Death', 'input')
-      .should('exist')
-      .should('be.disabled');
     cy.contains('button', 'Back').should('exist').should('be.enabled');
     cy.contains('button', 'Cancel').should('exist').should('be.disabled');
     cy.contains('button', 'Save').should('exist');
-  });
-
-  it.only('should make sold fields available when marked sold', () => {
-    cy.contains('label', 'Sold').parent('mat-checkbox').click();
-    cy.findFormField('Sell Price', 'input').should('be.enabled');
-    cy.findFormField('Sell Date', 'input').should('be.enabled');
-  });
-
-  it.only('should make death fields available when marked deceased', () => {
-    cy.contains('label', 'Deceased').parent('mat-checkbox').click();
-    cy.findFormField('Date of Death', 'input').should('be.enabled');
   });
 
   it.only('should clear the form when cancel is clicked', () => {
@@ -113,23 +85,6 @@ describe('Animal Creation', () => {
     cy.findFormField('Purchase Date', 'input').should('be.empty');
     cy.findFormField('Purchase Price', 'input').should('be.empty');
     cy.findFormField('Arrival Weight', 'input').should('be.empty');
-    cy.contains('label', 'Sold')
-      .parent('mat-checkbox')
-      .find('input')
-      .should('not.be.checked');
-    cy.findFormField('Sell Price', 'input')
-      .should('be.empty')
-      .should('be.disabled');
-    cy.findFormField('Sell Date', 'input')
-      .should('be.empty')
-      .should('be.disabled');
-    cy.contains('label', 'Deceased')
-      .parent('mat-checkbox')
-      .find('input')
-      .should('not.be.checked');
-    cy.findFormField('Date of Death', 'input')
-      .should('be.empty')
-      .should('be.disabled');
     cy.contains('button', 'Back').should('exist').should('be.enabled');
     cy.contains('button', 'Cancel').should('exist').should('be.disabled');
     cy.contains('button', 'Save').should('exist');

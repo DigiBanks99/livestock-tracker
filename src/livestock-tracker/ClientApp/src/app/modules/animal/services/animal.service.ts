@@ -1,11 +1,25 @@
 import { Observable } from 'rxjs';
 
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import {
+  HttpClient,
+  HttpParams
+} from '@angular/common/http';
+import {
+  Inject,
+  Injectable
+} from '@angular/core';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { AnimalOrderType } from '@animal/enums';
+import {
+  RecordAnimalDeath,
+  SellAnimal
+} from '@animal/events';
 import { BaseUrl } from '@core/di';
-import { Animal, OrderOptions, PagedData } from '@core/models';
+import {
+  Animal,
+  OrderOptions,
+  PagedData
+} from '@core/models';
 import { CrudService } from '@core/models/services';
 import { Dictionary } from '@ngrx/entity';
 
@@ -58,4 +72,10 @@ export class AnimalService implements CrudService<Animal, number, number> {
 
   public unarchiveAnimals = (animalIds: number[]): Observable<void> =>
     this._http.post<void>(`${this._apiUrl}/Unarchive`, animalIds);
+
+  public recordDeath = (record: RecordAnimalDeath): Observable<void> =>
+    this._http.put<void>(`${this._apiUrl}/Death`, record);
+
+  public sell = (record: SellAnimal): Observable<void> =>
+    this._http.put<void>(`${this._apiUrl}/Sell`, record);
 }

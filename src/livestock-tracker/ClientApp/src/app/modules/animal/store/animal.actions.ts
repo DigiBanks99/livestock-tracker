@@ -1,7 +1,22 @@
 import { AnimalOrderType } from '@animal/enums';
-import { Animal, OrderOptions } from '@core/models';
-import { CrudActions, crudActionsFactory, PayloadAction } from '@core/store';
-import { Action } from '@ngrx/store';
+import {
+  RecordAnimalDeath,
+  SellAnimal
+} from '@animal/events';
+import {
+  Animal,
+  OrderOptions
+} from '@core/models';
+import {
+  CrudActions,
+  crudActionsFactory,
+  PayloadAction
+} from '@core/store';
+import {
+  Action,
+  createAction,
+  props
+} from '@ngrx/store';
 
 import { AnimalActionTypes } from './animal.action-types';
 import { AnimalKey } from './constants';
@@ -39,12 +54,17 @@ export class UnarchiveAnimals implements Action {
 
   constructor(public animalIds: number[]) {}
 }
+export const SellAnimalAction = createAction(
+  'Sell Animal',
+  props<SellAnimal>()
+);
+export const RecordAnimalDeathAction = createAction(
+  'Record Animal Death',
+  props<RecordAnimalDeath>()
+);
 
-const crudActions: CrudActions<Animal, number, number> = crudActionsFactory<
-  Animal,
-  number,
-  number
->(AnimalKey);
+const crudActions: CrudActions<Animal, number, number> =
+  crudActionsFactory<Animal, number, number>(AnimalKey);
 
 export const actions: CrudActions<Animal, number, number> = {
   ...crudActions
