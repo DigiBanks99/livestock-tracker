@@ -1,4 +1,7 @@
-import { Observable, Subject } from 'rxjs';
+import {
+  Observable,
+  Subject
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import {
@@ -6,27 +9,36 @@ import {
   EventEmitter,
   Input,
   OnDestroy,
-  Output,
-  ViewEncapsulation
+  Output
 } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import {
+  FormArray,
+  FormControl,
+  FormGroup
+} from '@angular/forms';
 import { MatListOption } from '@angular/material/list';
 import { PageEvent } from '@angular/material/paginator';
 import { Sort } from '@angular/material/sort';
 import { AnimalOrderType } from '@animal/enums';
 import { AnimalStore } from '@animal/store';
-import { Animal, AnimalType, OrderOptions } from '@core/models';
+import {
+  Animal,
+  AnimalType,
+  OrderOptions
+} from '@core/models';
 import { AppState } from '@core/store';
 import { OrderingUtils } from '@core/utils';
-import { select, Store } from '@ngrx/store';
+import {
+  select,
+  Store
+} from '@ngrx/store';
 import { AgeCalculatorService } from '@shared/services/age-calculator.service';
 import { SvgService } from '@svg/services/svg.service';
 
 @Component({
   selector: 'app-animal-list',
   templateUrl: './animal-list.component.html',
-  styleUrls: ['./animal-list.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./animal-list.component.scss']
 })
 export class AnimalListComponent implements OnDestroy {
   @Input() public set animals(value: Animal[]) {

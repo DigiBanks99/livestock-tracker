@@ -1,26 +1,45 @@
-import { BehaviorSubject, combineLatest, Observable, Subject } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  Observable,
+  Subject
+} from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { Component, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnDestroy
+} from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
 import { AnimalOrderType } from '@animal/enums';
 import { AnimalStore } from '@animal/store';
-import { actions, FetchAnimalsAction } from '@animal/store/animal.actions';
-import { Animal, OrderOptions } from '@core/models';
+import {
+  actions,
+  FetchAnimalsAction
+} from '@animal/store/animal.actions';
+import {
+  Animal,
+  OrderOptions
+} from '@core/models';
 import { AppState } from '@core/store';
-import { getAnimals, getSelectedAnimalId } from '@core/store/selectors';
+import {
+  getAnimals,
+  getSelectedAnimalId
+} from '@core/store/selectors';
 import { environment } from '@env/environment';
-import { select, Store } from '@ngrx/store';
+import {
+  select,
+  Store
+} from '@ngrx/store';
 
 @Component({
-  template: ` <div class="title">
+  template: ` <div class="animal-list--title">
       <h1 class="mat-h1">Animals</h1>
       <span>
         Include Archived
-        <mat-slide-toggle
-          (toggleChange)="onIncludeArchived()"
-        ></mat-slide-toggle>
+        <mat-slide-toggle (toggleChange)="onIncludeArchived()">
+        </mat-slide-toggle>
       </span>
     </div>
     <app-animal-list
@@ -32,7 +51,20 @@ import { select, Store } from '@ngrx/store';
       (pageChange)="onPageChanged($event)"
       (remove)="deleteAnimal($event)"
       (showDetail)="showDetail($event)"
-    ></app-animal-list>`
+    ></app-animal-list>`,
+  styles: [
+    `
+      .animal-list--title {
+        display: flex;
+        justify-content: baseline;
+        align-items: baseline;
+
+        span {
+          margin-left: 2rem;
+        }
+      }
+    `
+  ]
 })
 export class AnimalListPage implements OnDestroy {
   public readonly animals$: Observable<Animal[]>;

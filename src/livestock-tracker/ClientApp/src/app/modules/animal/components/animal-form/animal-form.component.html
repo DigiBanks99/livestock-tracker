@@ -139,85 +139,93 @@
         </mat-form-field>
       </div>
 
-      <div
-        fxFill
-        fxLayout="row"
-        fxLayout.lt-sm="column"
-        [fxLayoutGap.gt-xs]="gapSize"
-      >
-        <mat-checkbox
-          id="sold"
-          formControlName="sold"
-          labelPosition="before"
-          fxLayout="row"
-          fxLayoutAlign="space-between center"
-          (ngModelChange)="updateSoldCtrl($event)"
-        >
-          Sold
-        </mat-checkbox>
+      <ng-container *ngIf="form.controls.id.value > 0">
         <div
-          fxFlex
+          fxFill
           fxLayout="row"
           fxLayout.lt-sm="column"
           [fxLayoutGap.gt-xs]="gapSize"
         >
+          <mat-checkbox
+            id="sold"
+            formControlName="sold"
+            labelPosition="before"
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            (ngModelChange)="updateSoldCtrl($event)"
+          >
+            Sold
+          </mat-checkbox>
+          <div
+            fxFlex
+            fxLayout="row"
+            fxLayout.lt-sm="column"
+            [fxLayoutGap.gt-xs]="gapSize"
+          >
+            <mat-form-field appearance="fill" fxFlex>
+              <mat-label for="sellPrice">Sell Price</mat-label>
+              <input
+                type="number"
+                id="sellPrice"
+                formControlName="sellPrice"
+                matInput
+                placeholder="The price the animal was sold for"
+                class="currency-input"
+              />
+              <span matPrefix *ngIf="showPrefix(sellPriceCtrl.value)"
+                >R&nbsp;</span
+              >
+            </mat-form-field>
+            <mat-form-field appearance="fill" fxFlex>
+              <mat-label for="sellDate">Sell Date</mat-label>
+              <input
+                id="sellDate"
+                formControlName="sellDate"
+                matInput
+                [matDatepicker]="sd"
+                placeholder="The date the animal was sold"
+              />
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="sd"
+              ></mat-datepicker-toggle>
+              <mat-datepicker #sd></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div
+          fxFill
+          fxLayout="row"
+          fxLayout.lt-sm="column"
+          [fxLayoutGap.gt-xs]="gapSize"
+        >
+          <mat-checkbox
+            formControlName="deceased"
+            labelPosition="before"
+            fxLayout="row"
+            fxLayoutAlign="space-between center"
+            (ngModelChange)="updateDateOfDeathCtrl($event)"
+          >
+            Deceased
+          </mat-checkbox>
           <mat-form-field appearance="fill" fxFlex>
-            <mat-label for="sellPrice">Sell Price</mat-label>
+            <mat-label for="dateOfDeath">Date of Death</mat-label>
             <input
-              type="number"
-              id="sellPrice"
-              formControlName="sellPrice"
+              id="dateOfDeath"
+              formControlName="dateOfDeath"
               matInput
-              placeholder="The price the animal was sold for"
-              class="currency-input"
+              [matDatepicker]="dod"
+              placeholder="The date the animal died"
             />
-            <span matPrefix *ngIf="showPrefix(sellPriceCtrl.value)"
-              >R&nbsp;</span
-            >
-          </mat-form-field>
-          <mat-form-field appearance="fill" fxFlex>
-            <mat-label for="sellDate">Sell Date</mat-label>
-            <input
-              id="sellDate"
-              formControlName="sellDate"
-              matInput
-              [matDatepicker]="sd"
-              placeholder="The date the animal was sold"
-            />
-            <mat-datepicker-toggle matSuffix [for]="sd"></mat-datepicker-toggle>
-            <mat-datepicker #sd></mat-datepicker>
+            <mat-datepicker-toggle
+              matSuffix
+              [for]="dod"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #dod></mat-datepicker>
           </mat-form-field>
         </div>
-      </div>
-
-      <div
-        fxFill
-        fxLayout="row"
-        fxLayout.lt-sm="column"
-        [fxLayoutGap.gt-xs]="gapSize"
-      >
-        <mat-checkbox
-          formControlName="deceased"
-          labelPosition="before"
-          fxLayout="row"
-          fxLayoutAlign="space-between center"
-          (ngModelChange)="updateDateOfDeathCtrl($event)"
-        >
-          Deceased
-        </mat-checkbox>
-        <mat-form-field appearance="fill" fxFlex>
-          <mat-label for="dateOfDeath">Date of Death</mat-label>
-          <input
-            id="dateOfDeath"
-            formControlName="dateOfDeath"
-            matInput
-            [matDatepicker]="dod"
-            placeholder="The date the animal died"
-          />
-          <mat-datepicker-toggle matSuffix [for]="dod"></mat-datepicker-toggle>
-          <mat-datepicker #dod></mat-datepicker>
-        </mat-form-field>
-      </div>
+      </ng-container>
 
       <div fxFill fxLayout="row" fxLayoutAlign="flex-start start">
         <div fxFlex fxLayoutAlign="start start">

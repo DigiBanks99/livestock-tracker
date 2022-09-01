@@ -1,4 +1,8 @@
-import { Observable, of, throwError } from 'rxjs';
+import {
+  Observable,
+  of,
+  throwError
+} from 'rxjs';
 import {
   catchError,
   concatMap,
@@ -13,8 +17,15 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
+import {
+  RecordAnimalDeath,
+  SellAnimal
+} from '@animal/events';
 import { AnimalService } from '@animal/services';
-import { Animal, PagedData } from '@core/models';
+import {
+  Animal,
+  PagedData
+} from '@core/models';
 import {
   AnimalState,
   CrudEffects,
@@ -23,19 +34,29 @@ import {
 } from '@core/store';
 import { getSelectedAnimal } from '@core/store/selectors';
 import { environment } from '@env/environment';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {
+  Actions,
+  createEffect,
+  ofType
+} from '@ngrx/effects';
 import {
   ROUTER_NAVIGATED,
   RouterNavigatedAction,
   SerializedRouterStateSnapshot
 } from '@ngrx/router-store';
-import { Action, select, Store } from '@ngrx/store';
+import {
+  Action,
+  select,
+  Store
+} from '@ngrx/store';
 
 import { AnimalActionTypes } from './animal.action-types';
 import {
   actions,
   ArchiveAnimals,
   FetchAnimalsAction,
+  RecordAnimalDeathAction,
+  SellAnimalAction,
   UnarchiveAnimals
 } from './animal.actions';
 import * as AnimalSelectors from './animal.store';
@@ -52,19 +73,17 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
         filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
           /animal\/[0-9]*/.test(action.payload.event.urlAfterRedirects)
         ),
-        map(
-          (
-            action: RouterNavigatedAction<SerializedRouterStateSnapshot>
-          ): PayloadAction<number> | Action => {
-            const id = Number(
-              action.payload.routerState.root.firstChild.params.id
-            );
-            if (Number.isNaN(id)) {
-              return NoopAction;
-            }
-            return actions.selectItem(id);
+        map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
+          | PayloadAction<number>
+          | Action => {
+          const id = Number(
+            action.payload.routerState.root.firstChild.params.id
+          );
+          if (Number.isNaN(id)) {
+            return NoopAction;
           }
-        )
+          return actions.selectItem(id);
+        })
       )
     );
 
@@ -78,13 +97,12 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
           withLatestFrom(this._store.pipe(select(getSelectedAnimal)))
         )
       ),
-      map(
-        ([action, animal]: [PayloadAction<number>, Animal]):
-          | PayloadAction<number>
-          | Action =>
-          animal == null || animal.batchNumber == null
-            ? actions.fetchSingle(action.payload)
-            : NoopAction
+      map(([action, animal]: [PayloadAction<number>, Animal]):
+        | PayloadAction<number>
+        | Action =>
+        animal == null || animal.batchNumber == null
+          ? actions.fetchSingle(action.payload)
+          : NoopAction
       )
     )
   );
@@ -123,12 +141,41 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
           map(
             ([, params]: [void, { pageNumber: number; pageSize: number }]) =>
               new FetchAnimalsAction(params.pageNumber, params.pageSize)
-          ),
-          catchError((error: HttpErrorResponse) => throwError(error))
+          )
         )
       ),
       catchError((error: HttpErrorResponse) => this.handleError(error, actions))
     )
+  );
+
+  public recordAnimalDeath$: Observable<PayloadAction<number | Error>> =
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(RecordAnimalDeathAction),
+        concatMap((action: Action & RecordAnimalDeath) =>
+          this.animalService.recordDeath(action).pipe(
+            map(() => actions.fetchSingle(action.animalId)),
+            catchError((error: HttpErrorResponse) =>
+              this.handleError(error, actions)
+            )
+          )
+        )
+      )
+    );
+
+  public sellAnimal$: Observable<PayloadAction<number | Error>> = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(SellAnimalAction),
+        concatMap((action: Action & SellAnimal) =>
+          this.animalService.sell(action).pipe(
+            map(() => actions.fetchSingle(action.animalId)),
+            catchError((error: HttpErrorResponse) =>
+              this.handleError(error, actions)
+            )
+          )
+        )
+      )
   );
 
   protected get defaultFetchAction(): Action {

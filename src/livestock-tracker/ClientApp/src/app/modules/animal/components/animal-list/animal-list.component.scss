@@ -1,15 +1,5 @@
 @use '@angular/material' as mat;
 
-.title {
-  display: flex;
-  justify-content: baseline;
-  align-items: baseline;
-
-  span {
-    margin-left: 2rem;
-  }
-}
-
 .animal-list-type {
   display: flex;
   justify-content: flex-start;

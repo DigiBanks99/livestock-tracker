@@ -1,14 +1,39 @@
-import { EMPTY, Observable, Subject } from 'rxjs';
-import { filter, takeUntil } from 'rxjs/operators';
+import {
+  EMPTY,
+  Observable,
+  Subject
+} from 'rxjs';
+import {
+  filter,
+  takeUntil
+} from 'rxjs/operators';
 
-import { Component, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnDestroy
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { ArchiveAnimals, UnarchiveAnimals } from '@animal/store/animal.actions';
+import {
+  RecordAnimalDeath,
+  SellAnimal
+} from '@animal/events';
+import {
+  ArchiveAnimals,
+  RecordAnimalDeathAction,
+  SellAnimalAction,
+  UnarchiveAnimals
+} from '@animal/store/animal.actions';
 import { AnimalStore } from '@animal/store/index';
-import { Animal, SaveState } from '@core/models';
+import {
+  Animal,
+  SaveState
+} from '@core/models';
 import { AppState } from '@core/store';
 import { getSelectedAnimal } from '@core/store/selectors';
-import { select, Store } from '@ngrx/store';
+import {
+  select,
+  Store
+} from '@ngrx/store';
 
 @Component({
   template: `<app-animal-form
@@ -19,7 +44,9 @@ import { select, Store } from '@ngrx/store';
     successMessage="Animal saved."
     (archive)="onArchive($event)"
     (navigateBack)="onNavigateBack()"
+    (recordAnimalDeath)="onRecordAnimalDeath($event)"
     (save)="onSave($event)"
+    (sellAnimal)="onSellAnimal($event)"
     (unarchive)="onUnarchive($event)"
   ></app-animal-form>`
 })
@@ -62,8 +89,16 @@ export class AnimalDetailPage implements OnDestroy {
     this._store.dispatch(new ArchiveAnimals([id]));
   }
 
+  public onRecordAnimalDeath(deathRecord: RecordAnimalDeath): void {
+    this._store.dispatch(RecordAnimalDeathAction(deathRecord));
+  }
+
   public onSave(animal: Animal): void {
     this._store.dispatch(AnimalStore.actions.updateItem(animal, animal.id));
+  }
+
+  public onSellAnimal(sellAnimalEvent: SellAnimal): void {
+    this._store.dispatch(SellAnimalAction(sellAnimalEvent));
   }
 
   public onNavigateBack(): void {

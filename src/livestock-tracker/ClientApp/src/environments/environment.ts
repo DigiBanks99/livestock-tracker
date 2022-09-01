@@ -18,7 +18,7 @@ export const environment = {
       },
       display: {
         dateInput: 'P',
-        datetimeInput: 'Pp',
+        datetimeInput: 'yyyy/MM/dd, HH:mm',
         timeInput: 'p',
         monthInput: 'MMM yyyy',
         yearInput: 'yyyy',
