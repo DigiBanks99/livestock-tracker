@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-  RouterModule,
-  Routes
-} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from '@home/components/home.component';
 import { ReportsComponent } from '@reports/components/reports.component';
 
@@ -21,15 +18,18 @@ const routes: Routes = [
   },
   {
     path: 'medicine',
-    loadChildren: () =>
-      import('./modules/medical/medical.module').then(
-        (module) => module.MedicalModule
-      )
+    loadChildren: async () =>
+      (await import('./modules/medical/medical.module')).MedicalModule
   },
   {
     path: 'weight',
-    loadChildren: () =>
-      import('./modules/weight/weight.module').then((m) => m.WeightModule)
+    loadChildren: async () =>
+      (await import('./modules/weight/weight.module')).WeightModule
+  },
+  {
+    path: 'unit',
+    loadChildren: async () =>
+      (await import('./modules/unit/unit.module')).UnitModule
   }
 ];
 

@@ -26,8 +26,12 @@
             "tsConfig": "src/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "polyfills": "src/polyfills.ts",
-            "assets": ["src/assets"],
-            "styles": ["src/styles.scss"],
+            "assets": [
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -36,7 +40,9 @@
             "optimization": false,
             "namedChunks": true,
             "stylePreprocessorOptions": {
-              "includePaths": ["node_modules"]
+              "includePaths": [
+                "node_modules"
+              ]
             }
           },
           "configurations": {
@@ -55,11 +61,20 @@
                 }
               ]
             },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
             "serve": {
               "commonChunk": true,
               "verbose": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -68,9 +83,15 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "livestock-tracker:build:production"
+              "browserTarget": "livestock-tracker:build:production",
+              "proxyConfig": "proxy.conf.js"
+            },
+            "development": {
+              "browserTarget": "livestock-tracker:build:development",
+              "proxyConfig": "proxy.conf.js"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
@@ -86,17 +107,26 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
-            "styles": ["src/styles.scss"],
-            "assets": ["src/assets"],
+            "styles": [
+              "src/styles.scss"
+            ],
+            "assets": [
+              "src/assets"
+            ],
             "stylePreprocessorOptions": {
-              "includePaths": ["node_modules"]
+              "includePaths": [
+                "node_modules"
+              ]
             }
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         },
         "storybook": {

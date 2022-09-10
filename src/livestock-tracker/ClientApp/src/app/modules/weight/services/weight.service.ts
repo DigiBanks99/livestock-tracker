@@ -1,9 +1,8 @@
 import { Observable } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { BaseUrl } from '@core/di';
 import { PagedData } from '@core/models';
 import { AnimalTransactionService } from '@core/models/services';
 import { WeightTransaction } from '@weight/interfaces';
@@ -17,11 +16,8 @@ export class WeightService
 {
   private readonly _url: string;
 
-  constructor(
-    private readonly _http: HttpClient,
-    @Inject(BaseUrl) baseUrl: string
-  ) {
-    this._url = `${baseUrl}Weight`;
+  constructor(private readonly _http: HttpClient) {
+    this._url = `/api/Weight`;
   }
 
   public getAll(): Observable<PagedData<WeightTransaction>> {

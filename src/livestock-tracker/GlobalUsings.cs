@@ -1,4 +1,6 @@
-﻿global using Microsoft.AspNetCore.Http;
+﻿global using LivestockTracker;
+global using LivestockTracker.Extensions;
+global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.Extensions.Logging;
 global using System.ComponentModel.DataAnnotations;
