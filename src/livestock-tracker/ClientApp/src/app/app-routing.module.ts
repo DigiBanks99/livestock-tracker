@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from '@home/components/home.component';
+import {
+  RouterModule,
+  Routes
+} from '@angular/router';
 import { ReportsComponent } from '@reports/components/reports.component';
 
 const routes: Routes = [
@@ -9,7 +11,10 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full'
   },
-  { path: 'home', component: HomeComponent },
+  {
+    path: 'home',
+    loadChildren: async () => (await import('@home/home.module')).HomeModule
+  },
   { path: 'reports', component: ReportsComponent },
   {
     path: 'feed',

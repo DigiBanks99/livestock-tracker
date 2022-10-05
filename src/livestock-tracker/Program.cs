@@ -1,3 +1,5 @@
+using LivestockTracker.Animals;
+
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Scaffold
@@ -27,6 +29,7 @@ app.SeedLivestockDatabase()
     .UseRouting();
 
 app.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
+app.MapAnimalEndpoints();
 app.MapFallbackToFile("index.html");
 
 app.UseSwaggerMiddleware();

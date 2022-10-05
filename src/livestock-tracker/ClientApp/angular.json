@@ -8,6 +8,9 @@
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "af"
+      },
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -26,12 +29,8 @@
             "tsConfig": "src/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "polyfills": "src/polyfills.ts",
-            "assets": [
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.scss"
-            ],
+            "assets": ["src/assets"],
+            "styles": ["src/styles.scss"],
             "scripts": [],
             "vendorChunk": true,
             "extractLicenses": false,
@@ -40,9 +39,7 @@
             "optimization": false,
             "namedChunks": true,
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "node_modules"
-              ]
+              "includePaths": ["node_modules"]
             }
           },
           "configurations": {
@@ -107,26 +104,17 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [],
-            "styles": [
-              "src/styles.scss"
-            ],
-            "assets": [
-              "src/assets"
-            ],
+            "styles": ["src/styles.scss"],
+            "assets": ["src/assets"],
             "stylePreprocessorOptions": {
-              "includePaths": [
-                "node_modules"
-              ]
+              "includePaths": ["node_modules"]
             }
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         },
         "storybook": {

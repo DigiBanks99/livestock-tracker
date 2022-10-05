@@ -21,7 +21,9 @@ import {
   RecordAnimalDeath,
   SellAnimal
 } from '@animal/events';
+import { KraalStats } from '@animal/models';
 import { AnimalService } from '@animal/services';
+import { AnimalStatsService } from '@animal/services/animal-stats.service';
 import {
   Animal,
   PagedData
@@ -55,6 +57,8 @@ import {
   actions,
   ArchiveAnimals,
   FetchAnimalsAction,
+  FetchKraalStats,
+  FetchKraalStatsSuccess,
   RecordAnimalDeathAction,
   SellAnimalAction,
   UnarchiveAnimals
@@ -178,6 +182,22 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
       )
   );
 
+  public fetchKraalStats$: Observable<
+    (Action & KraalStats) | PayloadAction<Error>
+  > = createEffect(() =>
+    this.actions$.pipe(
+      ofType(FetchKraalStats),
+      concatMap(() =>
+        this._animalStatsService.getKraalStats().pipe(
+          map((stats) => FetchKraalStatsSuccess(stats)),
+          catchError((error: HttpErrorResponse) =>
+            this.handleError(error, actions)
+          )
+        )
+      )
+    )
+  );
+
   protected get defaultFetchAction(): Action {
     return new FetchAnimalsAction(0, environment.pageSize);
   }
@@ -186,7 +206,8 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
     private readonly _store: Store<AnimalState>,
     protected readonly actions$: Actions,
     protected readonly animalService: AnimalService,
-    private readonly _snackBar: MatSnackBar
+    private readonly _snackBar: MatSnackBar,
+    private readonly _animalStatsService: AnimalStatsService
   ) {
     super(actions$, animalService, actions, AnimalKey, _snackBar);
   }

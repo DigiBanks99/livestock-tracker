@@ -1,8 +1,4 @@
+<h1>Home</h1>
 <mat-grid-list cols="2" rowHeight="350px">
-  <mat-card>
-    <mat-card-header>Number of animals</mat-card-header>
-    <mat-card-content>
-      <div>As of today: {{ animalCount$ | async }}</div>
-    </mat-card-content>
-  </mat-card>
+  <app-kraal-stats></app-kraal-stats>
 </mat-grid-list>

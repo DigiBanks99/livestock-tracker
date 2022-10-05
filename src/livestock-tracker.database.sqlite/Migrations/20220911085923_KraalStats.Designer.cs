@@ -3,18 +3,21 @@ using System;
 using LivestockTracker.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+
+#nullable disable
 
 namespace LivestockTracker.Database.Migrations
 {
-    [DbContext(typeof(LivestockContext))]
-    partial class LivestockContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(SqliteLivestockContext))]
+    [Migration("20220911085923_KraalStats")]
+    partial class KraalStats
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.8");
 
             modelBuilder.Entity("LivestockTracker.Animals.Animal", b =>
                 {
@@ -68,46 +71,27 @@ namespace LivestockTracker.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Animals", "animal");
+                    b.ToTable("Animals", (string)null);
                 });
 
             modelBuilder.Entity("LivestockTracker.Animals.KraalStats", b =>
-            {
-                b.Property<int>("AnimalCount")
-                    .HasColumnType("INTEGER");
-
-                b.Property<decimal>("AverageAnimalCost")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("AverageSellPrice")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("AverageWeight")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("DeathRate")
-                    .HasColumnType("TEXT");
-
-                b.ToView("KraalStats");
-            });
-
-            modelBuilder.Entity("LivestockTracker.Feed.FeedingType", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
-                        .HasColumnName("ID");
-
-                    b.Property<bool>("Deleted")
+                    b.Property<int>("AnimalCount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
+                    b.Property<decimal>("AverageAnimalCost")
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<decimal>("AverageSellPrice")
+                        .HasColumnType("TEXT");
 
-                    b.ToTable("FeedTypes", "feed");
+                    b.Property<decimal>("AverageWeight")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("DeathRate")
+                        .HasColumnType("TEXT");
+
+                    b.ToTable("KraalStats");
                 });
 
             modelBuilder.Entity("LivestockTracker.Feed.FeedingTransaction", b =>
@@ -143,7 +127,26 @@ namespace LivestockTracker.Database.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("FeedingTransactions", "feed");
+                    b.ToTable("FeedingTransactions", (string)null);
+                });
+
+            modelBuilder.Entity("LivestockTracker.Feed.FeedType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("ID");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FeedTypes", (string)null);
                 });
 
             modelBuilder.Entity("LivestockTracker.Medicine.MedicalTransaction", b =>
@@ -179,7 +182,7 @@ namespace LivestockTracker.Database.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("MedicalTransactions", "medical");
+                    b.ToTable("MedicalTransactions", (string)null);
                 });
 
             modelBuilder.Entity("LivestockTracker.Medicine.MedicineType", b =>
@@ -198,7 +201,7 @@ namespace LivestockTracker.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MedicineTypes", "medical");
+                    b.ToTable("MedicineTypes", (string)null);
                 });
 
             modelBuilder.Entity("LivestockTracker.Units.Unit", b =>
@@ -217,17 +220,19 @@ namespace LivestockTracker.Database.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Units", "dbo");
+                    b.ToTable("Units", (string)null);
                 });
 
             modelBuilder.Entity("LivestockTracker.Weight.WeightTransaction", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("ID");
 
                     b.Property<long>("AnimalId")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("AnimalID");
 
                     b.Property<long>("TransactionDate")
                         .HasColumnType("INTEGER");
@@ -239,7 +244,7 @@ namespace LivestockTracker.Database.Migrations
 
                     b.HasIndex("AnimalId");
 
-                    b.ToTable("WeightTransactions");
+                    b.ToTable("WeightTransactions", (string)null);
                 });
 
             modelBuilder.Entity("LivestockTracker.Feed.FeedingTransaction", b =>
@@ -250,21 +255,21 @@ namespace LivestockTracker.Database.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LivestockTracker.Feed.FeedingType", "FeedType")
+                    b.HasOne("LivestockTracker.Feed.FeedType", "Feed")
                         .WithMany("FeedingTransactions")
                         .HasForeignKey("FeedTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LivestockTracker.Units.Unit", "UnitOfMeasurement")
-                        .WithMany("FeedingTransactions")
+                        .WithMany()
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Animal");
 
-                    b.Navigation("FeedType");
+                    b.Navigation("Feed");
 
                     b.Navigation("UnitOfMeasurement");
                 });
@@ -284,7 +289,7 @@ namespace LivestockTracker.Database.Migrations
                         .IsRequired();
 
                     b.HasOne("LivestockTracker.Units.Unit", "UnitOfMeasurement")
-                        .WithMany("MedicalTransactions")
+                        .WithMany()
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -316,20 +321,13 @@ namespace LivestockTracker.Database.Migrations
                     b.Navigation("WeightTransactions");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Feed.FeedingType", b =>
+            modelBuilder.Entity("LivestockTracker.Feed.FeedType", b =>
                 {
                     b.Navigation("FeedingTransactions");
                 });
 
             modelBuilder.Entity("LivestockTracker.Medicine.MedicineType", b =>
                 {
-                    b.Navigation("MedicalTransactions");
-                });
-
-            modelBuilder.Entity("LivestockTracker.Units.Unit", b =>
-                {
-                    b.Navigation("FeedingTransactions");
-
                     b.Navigation("MedicalTransactions");
                 });
 #pragma warning restore 612, 618

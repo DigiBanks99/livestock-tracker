@@ -6,7 +6,7 @@ using System;
 
 namespace LivestockTracker.Database.Migrations
 {
-  [DbContext(typeof(LivestockContext))]
+  [DbContext(typeof(SqliteLivestockContext))]
     [Migration("20180626184440_FeedingTransactionAnimal")]
     partial class FeedingTransactionAnimal
     {
