@@ -1,4 +1,4 @@
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 import { KeyValue } from '@angular/common';
@@ -18,8 +18,13 @@ export class CrudEffects<
   public getAll$: Observable<Action> = createEffect(() =>
     this.actions$.pipe(
       ofType(`FETCH_${this.typeName}`),
-      switchMap((action: Action) => this.handleFetchAction$(action)),
-      map((data: PagedData<TData>) => this.typeActions.apiFetchItems(data)),
+      switchMap((action: Action) =>
+        this.handleFetchAction$(action).pipe(
+          tap(console.log),
+          map((data: PagedData<TData>) => this.typeActions.apiFetchItems(data)),
+          catchError((error) => this.handleError(error, this.typeActions))
+        )
+      ),
       catchError((error) => this.handleError(error, this.typeActions))
     )
   );
@@ -28,8 +33,14 @@ export class CrudEffects<
     this.actions$.pipe(
       ofType(`FETCH_SINGLE_${this.typeName}`),
       map((action: PayloadAction<TFetchSinglePayload>) => action.payload),
-      switchMap((payload: TFetchSinglePayload) => this.service.get(payload)),
-      map((item: TData) => this.typeActions.apiFetchSingle(item)),
+      switchMap((payload: TFetchSinglePayload) =>
+        this.service.get(payload).pipe(
+          map((item: TData) => this.typeActions.apiFetchSingle(item)),
+          catchError((error: HttpErrorResponse) =>
+            this.handleError(error, this.typeActions)
+          )
+        )
+      ),
       catchError((error) => this.handleError(error, this.typeActions))
     )
   );
@@ -38,11 +49,17 @@ export class CrudEffects<
     this.actions$.pipe(
       ofType(`ADD_${this.typeName}`),
       map((action: PayloadAction<TData>) => action.payload),
-      switchMap((item: TData) => this.service.add(item)),
-      tap(() =>
-        this.snackBar.open('Added successfully.', undefined, { duration: 2500 })
+      switchMap((item: TData) =>
+        this.service.add(item).pipe(
+          tap(() =>
+            this.snackBar.open('Added successfully.', undefined, {
+              duration: 2500
+            })
+          ),
+          map((addedItem: TData) => this.typeActions.apiAddItem(addedItem)),
+          catchError((error) => this.handleError(error, this.typeActions))
+        )
       ),
-      map((item: TData) => this.typeActions.apiAddItem(item)),
       catchError((error) => this.handleError(error, this.typeActions))
     )
   );
@@ -52,17 +69,19 @@ export class CrudEffects<
       ofType(`UPDATE_${this.typeName}`),
       map((action: PayloadAction<KeyValue<TKey, TData>>) => action.payload),
       switchMap((payload: KeyValue<TKey, TData>) =>
-        this.service.update(payload.value, payload.key)
-      ),
-      tap(() =>
-        this.snackBar.open('Updated successfully.', undefined, {
-          duration: 2500
-        })
-      ),
-      map((item: TData) =>
-        this.typeActions.apiUpdateItem(
-          { changes: item, id: String(item.id) },
-          item.id
+        this.service.update(payload.value, payload.key).pipe(
+          tap(() =>
+            this.snackBar.open('Updated successfully.', undefined, {
+              duration: 2500
+            })
+          ),
+          map((item: TData) =>
+            this.typeActions.apiUpdateItem(
+              { changes: item, id: String(item.id) },
+              item.id
+            )
+          ),
+          catchError((error) => this.handleError(error, this.typeActions))
         )
       ),
       catchError((error) => this.handleError(error, this.typeActions))
@@ -73,13 +92,17 @@ export class CrudEffects<
     this.actions$.pipe(
       ofType(`DELETE_${this.typeName}`),
       map((action: PayloadAction<TKey>) => action.payload),
-      switchMap((id: TKey) => this.service.delete(id)),
-      tap(() =>
-        this.snackBar.open('Deleted successfully.', undefined, {
-          duration: 2500
-        })
+      switchMap((id: TKey) =>
+        this.service.delete(id).pipe(
+          tap(() =>
+            this.snackBar.open('Deleted successfully.', undefined, {
+              duration: 2500
+            })
+          ),
+          map((deletedId: TKey) => this.typeActions.apiDeleteItem(deletedId)),
+          catchError((error) => this.handleError(error, this.typeActions))
+        )
       ),
-      map((id: TKey) => this.typeActions.apiDeleteItem(id)),
       catchError((error) => this.handleError(error, this.typeActions))
     )
   );
@@ -118,6 +141,16 @@ export class CrudEffects<
   }
 
   protected handleFetchAction$ = (
-    action: Action
-  ): Observable<PagedData<TData>> => this.service.getAll();
+    action: Action,
+    retryCount = 0
+  ): Observable<PagedData<TData>> =>
+    this.service.getAll().pipe(
+      catchError((err: HttpErrorResponse): Observable<PagedData<TData>> => {
+        if (retryCount > 3) {
+          return throwError(() => err);
+        }
+
+        return this.handleFetchAction$(action, retryCount++);
+      })
+    );
 }

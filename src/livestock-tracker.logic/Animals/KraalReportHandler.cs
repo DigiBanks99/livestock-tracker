@@ -25,6 +25,10 @@ public sealed class KraalReportHandler
     {
         _logger.LogInformation("Fetching kraal  stats...");
 
-        return await _livestockContext.KraalStats.FirstAsync(cancellationToken).ConfigureAwait(false);
+        return await _livestockContext.KraalStats
+                   .AsNoTracking()
+                   .FirstOrDefaultAsync(cancellationToken)
+                   .ConfigureAwait(false)
+               ?? KraalStats.Null;
     }
 }

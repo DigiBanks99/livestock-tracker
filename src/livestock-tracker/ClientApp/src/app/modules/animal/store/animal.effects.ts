@@ -103,11 +103,14 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
       ),
       map(([action, animal]: [PayloadAction<number>, Animal]):
         | PayloadAction<number>
-        | Action =>
-        animal == null || animal.batchNumber == null
+        | Action => {
+        if (animal != null && animal.id === action.payload) {
+          return actions.apiFetchSingle(animal);
+        }
+        return animal == null || animal.batchNumber == null
           ? actions.fetchSingle(action.payload)
-          : NoopAction
-      )
+          : NoopAction;
+      })
     )
   );
 
@@ -213,14 +216,24 @@ export class AnimalEffects extends CrudEffects<Animal, number, number> {
   }
 
   protected handleFetchAction$ = (
-    action: Action
+    action: Action,
+    retryCount = 0
   ): Observable<PagedData<Animal>> => {
     const fetchAction = <FetchAnimalsAction>action;
-    return this.animalService.getAll(
-      fetchAction.pageSize,
-      fetchAction.pageNumber,
-      fetchAction.orderOptions,
-      fetchAction.includeArchived
-    );
+    return this.animalService
+      .getAll(
+        fetchAction.pageSize,
+        fetchAction.pageNumber,
+        fetchAction.orderOptions,
+        fetchAction.includeArchived
+      )
+      .pipe(
+        catchError((err: HttpErrorResponse): Observable<PagedData<Animal>> => {
+          if (retryCount > 3) {
+            return throwError(() => err);
+          }
+          return this.handleFetchAction$(action, retryCount++);
+        })
+      );
   };
 }

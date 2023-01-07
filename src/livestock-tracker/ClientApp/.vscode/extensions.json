@@ -7,7 +7,6 @@
     "dbaeumer.vscode-eslint",
     "streetsidesoftware.code-spell-checker",
     "christian-kohler.path-intellisense",
-    "mike-co.import-sorter",
-    "eg2.vscode-npm-script"
+    "mike-co.import-sorter"
   ]
 }

@@ -46,7 +46,7 @@ const imports: (unknown[] | ModuleWithProviders<unknown> | Type<unknown>)[] = [
   EffectsModule.forRoot([])
 ];
 
-if (environment.production) {
+if (!environment.production) {
   imports.push(
     StoreDevtoolsModule.instrument({
       maxAge: 25,
@@ -54,6 +54,7 @@ if (environment.production) {
     })
   );
 }
+
 @NgModule({
   declarations: [AppComponent],
   imports,

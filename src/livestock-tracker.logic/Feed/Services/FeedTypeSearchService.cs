@@ -22,14 +22,18 @@ public sealed class FeedTypeSearchService : IFeedTypeSearchService
     }
 
     /// <inheritdoc />
-    public IPagedData<FeedType> Search(IQueryableFilter<FeedType> filter, IPagingOptions pagingOptions)
+    public async Task<IPagedData<FeedType>> SearchAsync(IQueryableFilter<FeedType> filter,
+        IPagingOptions pagingOptions,
+        CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for feed types using filter {@Filter}...", filter);
 
-        return _dbContext.FeedTypes.AsNoTracking()
+        return await _dbContext.FeedTypes
+            .AsNoTracking()
             .OrderBy(type => type.Description)
             .FilterOnObject(filter)
-            .Paginate(pagingOptions);
+            .PaginateAsync(pagingOptions, cancellationToken)
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc />

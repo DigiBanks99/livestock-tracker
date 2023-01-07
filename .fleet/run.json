@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "type": "dotnet",
+            "name": "run",
+            "projectPath": "",
+            "exePath": "",
+            "args": [],
+        },
+
+    ]
+}

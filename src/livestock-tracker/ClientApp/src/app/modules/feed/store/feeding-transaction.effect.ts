@@ -10,11 +10,16 @@ import { Injectable } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AnimalStore } from '@animal/store';
+import {
+  AnimalActionTypes,
+  AnimalStore
+} from '@animal/store';
+import { SelectAnimalAction } from '@animal/store/animal.actions';
 import { FeedingTransaction } from '@core/models';
 import {
   AnimalState,
   FetchAnimalTransactionEffects,
+  getSelectedAnimalId,
   NoopAction,
   PayloadAction,
   RouterStore
@@ -65,6 +70,27 @@ export class FeedingTransactionEffects extends FetchAnimalTransactionEffects<Fee
     )
   );
 
+  public animalSelected$: Observable<PayloadAction<number> | Action> =
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(AnimalActionTypes.SelectAnimal),
+        concatLatestFrom(() => this._store.select(RouterStore.selectors.url)),
+        filter(([action, url]: [SelectAnimalAction, string]) => {
+          const matches = url.match(/feed\/(?<animalId>\d+)/);
+          console.log('f', matches);
+          if (matches === null) {
+            return false;
+          }
+          const urlAnimalId = matches.groups.animalId;
+          return String(action.payload) !== urlAnimalId;
+        }),
+        map(([action]: [SelectAnimalAction, string]): Action => {
+          this._router.navigate(['feed', String(action.payload)]);
+          return NoopAction;
+        })
+      )
+    );
+
   public animalSelectedInRoute$: Observable<PayloadAction<number> | Action> =
     createEffect(() =>
       this.actions$.pipe(
@@ -72,18 +98,22 @@ export class FeedingTransactionEffects extends FetchAnimalTransactionEffects<Fee
         filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
           /feed\/\d+/.test(action.payload.event.urlAfterRedirects)
         ),
-        map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
-          | PayloadAction<number>
-          | Action => {
-          const id = Number(
-            action.payload.routerState.root.firstChild.firstChild.params
-              .animalId
-          );
-          if (Number.isNaN(id)) {
-            return NoopAction;
+        concatLatestFrom(() => this._store.select(getSelectedAnimalId)),
+        map(
+          ([action, selectedAnimalId]: [
+            RouterNavigatedAction<SerializedRouterStateSnapshot>,
+            number
+          ]): PayloadAction<number> | Action => {
+            const id = Number(
+              action.payload.routerState.root.firstChild.firstChild.params
+                .animalId
+            );
+            if (Number.isNaN(id) || id === selectedAnimalId) {
+              return NoopAction;
+            }
+            return AnimalStore.actions.selectItem(id);
           }
-          return AnimalStore.actions.selectItem(id);
-        })
+        )
       )
     );
 

@@ -54,4 +54,9 @@ public sealed class KraalStats
     ///     <remarks>Ranges from 0 to 1.</remarks>
     /// </summary>
     public decimal DeathRate { get; init; }
+
+    /// <summary>
+    ///     The default instance of <see cref="KraalStats" />.
+    /// </summary>
+    public static KraalStats Null { get; } = new(0, 0, 0, 0, 0);
 }
