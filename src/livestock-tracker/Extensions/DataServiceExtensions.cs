@@ -45,7 +45,7 @@ public static class DataServiceExtensions
         }
         catch (Exception ex)
         {
-            ILogger<Startup> logger = services.GetRequiredService<ILogger<Startup>>();
+            ILogger logger = services.GetRequiredService<ILoggerFactory>().CreateLogger("DataSeed");
             logger.LogError(ex, Resources.SeedDatabaseFailed);
             throw;
         }

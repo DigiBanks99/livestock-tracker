@@ -1,4 +1,3 @@
-using LivestockTracker;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.Configuration;
 
@@ -13,7 +12,7 @@ public class IntegrationTestFixture : IAsyncLifetime
 
     public IntegrationTestFixture()
     {
-        Factory = new WebApplicationFactory<Startup>();
+        Factory = new WebApplicationFactory<Program>();
 
         IConfigurationBuilder? configBuilder = new ConfigurationBuilder()
             .AddInMemoryCollection()
@@ -35,7 +34,7 @@ public class IntegrationTestFixture : IAsyncLifetime
     public HttpClient Client => _httpClient ?? throw new InvalidOperationException(
         $"The Host has not been initialized yet. Please ensure {nameof(InitializeAsync)} has been called.");
 
-    public WebApplicationFactory<Startup> Factory { get; }
+    public WebApplicationFactory<Program> Factory { get; }
 
     public Task DisposeAsync()
     {

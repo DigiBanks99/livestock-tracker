@@ -9,7 +9,6 @@
       *ngFor="let animalOption of animals; let i = index"
       [value]="animalOption.id"
     >
-      {{option.value}}
       <app-animal-select-display [animal]="animalOption">
       </app-animal-select-display>
     </mat-option>

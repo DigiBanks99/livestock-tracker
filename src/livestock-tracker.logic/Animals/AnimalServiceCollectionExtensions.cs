@@ -7,7 +7,8 @@ internal static class AnimalServiceCollectionExtensions
     internal static IServiceCollection AddAnimalServices(this IServiceCollection services)
     {
         services.AddScoped<IAnimalManager, AnimalManager>()
-            .AddScoped<IAnimalSearchService, AnimalSearchService>();
+            .AddScoped<IAnimalSearchService, AnimalSearchService>()
+            .AddScoped<KraalReportHandler>();
 
         return services;
     }

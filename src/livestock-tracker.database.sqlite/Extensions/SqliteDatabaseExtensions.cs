@@ -139,6 +139,8 @@ internal static class ModelBuilderExtensions
             config.Property(animal => animal.Id).HasColumnName("ID");
         });
 
+        modelBuilder.Entity<KraalStats>(entity => { entity.HasNoKey(); });
+
         return modelBuilder;
     }
 

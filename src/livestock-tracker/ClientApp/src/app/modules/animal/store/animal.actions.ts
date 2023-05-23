@@ -3,6 +3,7 @@ import {
   RecordAnimalDeath,
   SellAnimal
 } from '@animal/events';
+import { KraalStats } from '@animal/models';
 import {
   Animal,
   OrderOptions
@@ -63,9 +64,17 @@ export const RecordAnimalDeathAction = createAction(
   props<RecordAnimalDeath>()
 );
 
+export const FetchKraalStats = createAction(`[${AnimalKey}] Fetch Kraal Stats`);
+export const FetchKraalStatsSuccess = createAction(
+  `[${AnimalKey}] Fetch Kraal Stats - Success`,
+  props<KraalStats>()
+);
+
 const crudActions: CrudActions<Animal, number, number> =
   crudActionsFactory<Animal, number, number>(AnimalKey);
 
-export const actions: CrudActions<Animal, number, number> = {
-  ...crudActions
+export const actions = {
+  ...crudActions,
+  FetchKraalStats,
+  FetchKraalStatsSuccess
 };

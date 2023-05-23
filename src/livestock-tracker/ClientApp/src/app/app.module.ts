@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
+import {
+  ModuleWithProviders,
+  NgModule,
+  Type
+} from '@angular/core';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AnimalModule } from '@animal/animal.module';
-import { BaseUrlProvider } from '@core/di/base-url.injection-token';
-import { FeedModule } from '@feed/feed.module';
 import { HeaderModule } from '@header/header.module';
-import { HomeModule } from '@home/home.module';
 import { MatNativeDateModule } from '@matheo/datepicker/core';
 import { EffectsModule } from '@ngrx/effects';
 import {
@@ -25,38 +25,40 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-@NgModule({
-  declarations: [AppComponent],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    MatNativeDateModule,
+const imports: (unknown[] | ModuleWithProviders<unknown> | Type<unknown>)[] = [
+  BrowserAnimationsModule,
+  AppRoutingModule,
+  MatNativeDateModule,
 
-    SharedModule,
+  SharedModule,
 
-    AnimalModule,
-    FeedModule,
-    HeaderModule,
-    HomeModule,
-    ReportsModule,
-    UnitModule,
+  AnimalModule,
+  HeaderModule,
+  ReportsModule,
+  UnitModule,
 
-    StoreModule.forRoot({}),
-    EffectsModule.forRoot([]),
-    StoreModule.forRoot({
-      router: routerReducer
-    }),
-    StoreRouterConnectingModule.forRoot({
-      navigationActionTiming: NavigationActionTiming.PreActivation
-    }),
+  StoreModule.forRoot({
+    router: routerReducer
+  }),
+  StoreRouterConnectingModule.forRoot({
+    navigationActionTiming: NavigationActionTiming.PreActivation
+  }),
+  EffectsModule.forRoot([])
+];
+
+if (!environment.production) {
+  imports.push(
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production
     })
-  ],
+  );
+}
+
+@NgModule({
+  declarations: [AppComponent],
+  imports,
   providers: [
-    BaseUrlProvider,
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: { appearance: 'outline' }

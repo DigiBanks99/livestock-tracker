@@ -1,15 +1,8 @@
-import {
-  Observable,
-  of
-} from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import {
-  Inject,
-  Injectable
-} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { BaseUrl } from '@core/di/base-url.injection-token';
 import { FeedingTransaction } from '@core/models/feeding-transaction.model';
 import { PagedData } from '@core/models/paged-data.model';
 import { AnimalTransactionService } from '@core/models/services';
@@ -21,8 +14,8 @@ export class FeedingTransactionService
 {
   private readonly _url: string;
 
-  constructor(private _http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
-    this._url = baseUrl + 'FeedingTransaction';
+  constructor(private _http: HttpClient) {
+    this._url = '/api/FeedingTransaction';
   }
 
   public getAll(

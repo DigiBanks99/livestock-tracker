@@ -1,8 +1,7 @@
 import { Observable, of } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { BaseUrl } from '@core/di';
+import { Injectable } from '@angular/core';
 import { PagedData, Unit } from '@core/models';
 import { CrudService } from '@core/models/services';
 
@@ -12,8 +11,8 @@ import { CrudService } from '@core/models/services';
 export class UnitService implements CrudService<Unit, number, number> {
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
-    this.apiUrl = baseUrl + 'unit';
+  constructor(private http: HttpClient) {
+    this.apiUrl = '/api/Unit';
   }
 
   public getAll(
@@ -57,18 +56,22 @@ export class MockUnitService implements CrudService<Unit, number, number> {
       totalRecordCount: 0
     });
   }
+
   get(key: number): Observable<Unit> {
     return of({
       id: key,
       description: 'New'
     });
   }
+
   add(unit: Unit): Observable<Unit> {
     throw new Error('Method not implemented.');
   }
+
   update(unit: Unit): Observable<Unit> {
     throw new Error('Method not implemented.');
   }
+
   delete(key: number): Observable<number> {
     throw new Error('Method not implemented.');
   }

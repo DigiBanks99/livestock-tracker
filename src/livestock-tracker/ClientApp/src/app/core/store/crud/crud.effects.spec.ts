@@ -3,7 +3,7 @@ import { RunHelpers } from 'rxjs/internal/testing/TestScheduler';
 import { TestScheduler } from 'rxjs/testing';
 
 import { Injectable } from '@angular/core';
-import { TestBed, waitForAsync } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { KeyEntity, PagedData } from '@core/models';
@@ -23,6 +23,7 @@ const testActions = crudActionsFactory<TestEntity, number, number>('TEST');
 @Injectable()
 class TestService implements CrudService<TestEntity, number, number> {
   getAll(): Observable<PagedData<TestEntity>> {
+    console.log('getAll');
     throw new Error('Method not implemented.');
   }
   get(key: number): Observable<TestEntity> {

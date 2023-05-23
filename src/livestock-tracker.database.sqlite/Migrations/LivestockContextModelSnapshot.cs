@@ -16,7 +16,7 @@ namespace LivestockTracker.Database.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.9");
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Animals.AnimalModel", b =>
+            modelBuilder.Entity("LivestockTracker.Animals.Animal", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,7 +71,27 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("Animals", "animal");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Feed.FeedTypeModel", b =>
+            modelBuilder.Entity("LivestockTracker.Animals.KraalStats", b =>
+            {
+                b.Property<int>("AnimalCount")
+                    .HasColumnType("INTEGER");
+
+                b.Property<decimal>("AverageAnimalCost")
+                    .HasColumnType("TEXT");
+
+                b.Property<decimal>("AverageSellPrice")
+                    .HasColumnType("TEXT");
+
+                b.Property<decimal>("AverageWeight")
+                    .HasColumnType("TEXT");
+
+                b.Property<decimal>("DeathRate")
+                    .HasColumnType("TEXT");
+
+                b.ToView("KraalStats");
+            });
+
+            modelBuilder.Entity("LivestockTracker.Feed.FeedingType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -90,7 +110,7 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("FeedTypes", "feed");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Feed.FeedingTransactionModel", b =>
+            modelBuilder.Entity("LivestockTracker.Feed.FeedingTransaction", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,7 +146,7 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("FeedingTransactions", "feed");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Medical.MedicalTransactionModel", b =>
+            modelBuilder.Entity("LivestockTracker.Medicine.MedicalTransaction", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -162,7 +182,7 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("MedicalTransactions", "medical");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Medical.MedicineTypeModel", b =>
+            modelBuilder.Entity("LivestockTracker.Medicine.MedicineType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -181,7 +201,7 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("MedicineTypes", "medical");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Units.UnitModel", b =>
+            modelBuilder.Entity("LivestockTracker.Units.Unit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -200,7 +220,7 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("Units", "dbo");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Weight.WeightTransactionModel", b =>
+            modelBuilder.Entity("LivestockTracker.Weight.WeightTransaction", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -222,21 +242,21 @@ namespace LivestockTracker.Database.Migrations
                     b.ToTable("WeightTransactions");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Feed.FeedingTransactionModel", b =>
+            modelBuilder.Entity("LivestockTracker.Feed.FeedingTransaction", b =>
                 {
-                    b.HasOne("LivestockTracker.Database.Models.Animals.AnimalModel", "Animal")
+                    b.HasOne("LivestockTracker.Animals.Animal", "Animal")
                         .WithMany("FeedingTransactions")
                         .HasForeignKey("AnimalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LivestockTracker.Database.Models.Feed.FeedTypeModel", "FeedType")
+                    b.HasOne("LivestockTracker.Feed.FeedingType", "FeedType")
                         .WithMany("FeedingTransactions")
                         .HasForeignKey("FeedTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LivestockTracker.Database.Models.Units.UnitModel", "UnitOfMeasurement")
+                    b.HasOne("LivestockTracker.Units.Unit", "UnitOfMeasurement")
                         .WithMany("FeedingTransactions")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -249,21 +269,21 @@ namespace LivestockTracker.Database.Migrations
                     b.Navigation("UnitOfMeasurement");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Medical.MedicalTransactionModel", b =>
+            modelBuilder.Entity("LivestockTracker.Medicine.MedicalTransaction", b =>
                 {
-                    b.HasOne("LivestockTracker.Database.Models.Animals.AnimalModel", "Animal")
+                    b.HasOne("LivestockTracker.Animals.Animal", "Animal")
                         .WithMany("MedicalTransactions")
                         .HasForeignKey("AnimalId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LivestockTracker.Database.Models.Medical.MedicineTypeModel", "Medicine")
+                    b.HasOne("LivestockTracker.Medicine.MedicineType", "Medicine")
                         .WithMany("MedicalTransactions")
                         .HasForeignKey("MedicineId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LivestockTracker.Database.Models.Units.UnitModel", "UnitOfMeasurement")
+                    b.HasOne("LivestockTracker.Units.Unit", "UnitOfMeasurement")
                         .WithMany("MedicalTransactions")
                         .HasForeignKey("UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -276,9 +296,9 @@ namespace LivestockTracker.Database.Migrations
                     b.Navigation("UnitOfMeasurement");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Weight.WeightTransactionModel", b =>
+            modelBuilder.Entity("LivestockTracker.Weight.WeightTransaction", b =>
                 {
-                    b.HasOne("LivestockTracker.Database.Models.Animals.AnimalModel", "Animal")
+                    b.HasOne("LivestockTracker.Animals.Animal", "Animal")
                         .WithMany("WeightTransactions")
                         .HasForeignKey("AnimalId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -287,7 +307,7 @@ namespace LivestockTracker.Database.Migrations
                     b.Navigation("Animal");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Animals.AnimalModel", b =>
+            modelBuilder.Entity("LivestockTracker.Animals.Animal", b =>
                 {
                     b.Navigation("FeedingTransactions");
 
@@ -296,17 +316,17 @@ namespace LivestockTracker.Database.Migrations
                     b.Navigation("WeightTransactions");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Feed.FeedTypeModel", b =>
+            modelBuilder.Entity("LivestockTracker.Feed.FeedingType", b =>
                 {
                     b.Navigation("FeedingTransactions");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Medical.MedicineTypeModel", b =>
+            modelBuilder.Entity("LivestockTracker.Medicine.MedicineType", b =>
                 {
                     b.Navigation("MedicalTransactions");
                 });
 
-            modelBuilder.Entity("LivestockTracker.Database.Models.Units.UnitModel", b =>
+            modelBuilder.Entity("LivestockTracker.Units.Unit", b =>
                 {
                     b.Navigation("FeedingTransactions");
 

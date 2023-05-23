@@ -40,7 +40,8 @@ public class FeedTypeController : LivestockApiController
     [HttpGet]
     [ProducesResponseType(typeof(IPagedData<FeedTypeViewModel>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(SerializableError), StatusCodes.Status400BadRequest)]
-    public IActionResult GetAll(string? query, int pageNumber = 0, int pageSize = 100, bool includeDeleted = false)
+    public async Task<IActionResult> GetAllAsync(string? query, int pageNumber = 0, int pageSize = 100,
+        bool includeDeleted = false)
     {
         Logger.LogInformation("Requesting {PageSize} feed types from page {PageNumber}...", pageSize, pageNumber);
         if (includeDeleted)
@@ -51,9 +52,14 @@ public class FeedTypeController : LivestockApiController
         FeedTypeFilter filter = new(query, includeDeleted);
         PagingOptions pagingOptions = new(pageNumber, pageSize);
 
-        IPagedData<FeedType> result = _feedTypeSearchService.Search(filter, pagingOptions);
-        PagedData<FeedTypeViewModel> response = new(result.Data.Select(feedType => feedType.ToViewModel()),
-            result.PageSize, result.CurrentPage, result.TotalRecordCount);
+        IPagedData<FeedType> result = await _feedTypeSearchService
+            .SearchAsync(filter, pagingOptions, RequestAbortToken)
+            .ConfigureAwait(false);
+        PagedData<FeedTypeViewModel> response = new(
+            result.Data.Select(feedType => feedType.ToViewModel()),
+            result.PageSize,
+            result.CurrentPage,
+            result.TotalRecordCount);
 
         return Ok(response);
     }

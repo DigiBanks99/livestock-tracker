@@ -1,8 +1,7 @@
 import { Observable, of, Subject } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { BaseUrl } from '@core/di';
+import { Injectable } from '@angular/core';
 import { FeedType, PagedData } from '@core/models';
 import { CrudService } from '@core/models/services';
 
@@ -10,8 +9,8 @@ import { CrudService } from '@core/models/services';
 export class FeedTypeService implements CrudService<FeedType, number, number> {
   private readonly apiUrl: string;
 
-  constructor(private http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
-    this.apiUrl = baseUrl + 'feedType';
+  constructor(private http: HttpClient) {
+    this.apiUrl = '/api/feedType';
   }
 
   public getAll = (
@@ -74,12 +73,15 @@ export class MockFeedTypeService {
   getFromServer(id: number): Observable<FeedType> {
     throw new Error('Method not implemented.');
   }
+
   add(feedType: FeedType): Observable<FeedType> {
     throw new Error('Method not implemented.');
   }
+
   update(feedType: FeedType): Observable<FeedType> {
     throw new Error('Method not implemented.');
   }
+
   delete(id: number): Observable<number> {
     throw new Error('Method not implemented.');
   }

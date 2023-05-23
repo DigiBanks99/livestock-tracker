@@ -1,30 +1,45 @@
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
+using LivestockTracker.Animals;
 
-namespace LivestockTracker
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+// Scaffold
+builder.Services.AddControllersWithViews();
+builder.Services.AddLivestockTrackerSqliteDatabase(builder.Configuration, builder.Environment)
+    .AddLivestockTrackerLogic()
+    .AddSwaggerGen();
+
+// Build
+WebApplication app = builder.Build();
+
+// Configure Middleware
+if (builder.Environment.IsDev())
 {
-    /// <summary>
-    /// Starts up the application.
-    /// </summary>
-    public static class Program
-    {
-        /// <summary>
-        /// The main application entry-point
-        /// </summary>
-        /// <param name="args">
-        /// Arguments passed in from the command-line or application bootstrap.
-        /// </param>
-        public static async Task Main(string[] args)
-        {
-            await CreateWebHostBuilder(args).Build()
-                                            .RunAsync()
-                                            .ConfigureAwait(true);
-        }
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
 
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                   .UseStartup<Startup>();
-    }
+app.SeedLivestockDatabase()
+    .UseHttpsRedirection()
+    .UseStaticFiles()
+    .UseRouting();
+
+app.MapControllerRoute("default", "{controller}/{action=Index}/{id?}");
+app.MapAnimalEndpoints();
+app.MapFallbackToFile("index.html");
+
+app.UseSwaggerMiddleware();
+
+// Start
+await app.RunAsync().ConfigureAwait(false);
+
+/// <summary>
+///     Visible for testing libraries
+/// </summary>
+public partial class Program
+{
 }

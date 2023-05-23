@@ -87,11 +87,14 @@ internal sealed class AnimalManager : IAnimalManager
     }
 
     /// <inheritdoc />
-    public Task<Animal?> GetOneAsync(long id, CancellationToken cancellationToken)
+    public async Task<Animal?> GetOneAsync(long id, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Retrieving the information of animal with ID {AnimalId}", id);
 
-        return _dbContext.Animals.AsNoTracking().FirstOrDefaultAsync(animal => animal.Id == id, cancellationToken);
+        return await _dbContext.Animals
+            .AsNoTracking()
+            .FirstOrDefaultAsync(animal => animal.Id == id, cancellationToken)
+            .ConfigureAwait(false);
     }
 
     /// <inheritdoc />

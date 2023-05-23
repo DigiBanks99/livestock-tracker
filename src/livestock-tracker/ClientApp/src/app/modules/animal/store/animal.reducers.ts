@@ -1,10 +1,20 @@
-import { Animal, SaveState } from '@core/models';
-import { AnimalState, crudReducer } from '@core/store';
+import { KraalStats } from '@animal/models';
+import {
+  Animal,
+  SaveState
+} from '@core/models';
+import {
+  AnimalState,
+  crudReducer
+} from '@core/store';
 import { createEntityAdapter } from '@ngrx/entity';
 import { Action } from '@ngrx/store';
 
 import { AnimalActionTypes } from './animal.action-types';
-import { SelectAnimalAction } from './animal.actions';
+import {
+  actions,
+  SelectAnimalAction
+} from './animal.actions';
 import { AnimalKey } from './constants';
 
 export const animalsAdapter = createEntityAdapter<Animal>({
@@ -17,6 +27,7 @@ export const initialState: AnimalState = animalsAdapter.getInitialState({
   error: null,
   isFetching: false,
   isPending: false,
+  kraalStats: new KraalStats(),
   pageNumber: 0,
   pageSize: 10,
   recordCount: 0,
@@ -25,13 +36,23 @@ export const initialState: AnimalState = animalsAdapter.getInitialState({
 
 export function animalsReducer(
   state: AnimalState = initialState,
-  action: Action
+  action: Action | (Action & KraalStats)
 ): AnimalState {
   switch (action.type) {
     case AnimalActionTypes.SelectAnimal:
       return {
         ...state,
         selectedId: selectAnimal(state.selectedId, <SelectAnimalAction>action)
+      };
+    case actions.FetchKraalStats.type:
+      return {
+        ...state,
+        kraalStats: { ...initialState.kraalStats }
+      };
+    case actions.FetchKraalStatsSuccess.type:
+      return {
+        ...state,
+        kraalStats: { ...(<KraalStats>action) }
       };
     default:
       return {
