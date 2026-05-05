@@ -1,0 +1,13 @@
+.kraal-stats {
+  > section {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  app-stats-card {
+    display: flex;
+    flex: 1 0 19%;
+  }
+}

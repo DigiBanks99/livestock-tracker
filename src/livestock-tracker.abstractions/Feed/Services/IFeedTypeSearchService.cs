@@ -13,8 +13,11 @@ public interface IFeedTypeSearchService
     /// </summary>
     /// <param name="filter">Provides the filtering logic.</param>
     /// <param name="pagingOptions">Provides the parameters for returning the correct subset of data.</param>
+    /// <param name="cancellationToken">A token that can be used to cancel the fetch task.</param>
     /// <returns>The subset of feed types that matches filter according to the pagination information.</returns>
-    IPagedData<FeedType> Search(IQueryableFilter<FeedType> filter, IPagingOptions pagingOptions);
+    Task<IPagedData<FeedType>> SearchAsync(IQueryableFilter<FeedType> filter,
+        IPagingOptions pagingOptions,
+        CancellationToken cancellationToken);
 
     /// <summary>
     ///     Returns the detail of a feed type that matches the given unique identifier.

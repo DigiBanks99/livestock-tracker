@@ -15,11 +15,12 @@ public class LivestockContext : DbContext
     }
 
     public DbSet<Animal> Animals { get; set; } = null!;
+    public DbSet<FeedType> FeedTypes { get; set; } = null!;
+    public DbSet<FeedingTransaction> FeedingTransactions { get; set; } = null!;
+    public DbSet<KraalStats> KraalStats { get; protected set; } = null!;
     public DbSet<MedicalTransaction> MedicalTransactions { get; set; } = null!;
     public DbSet<MedicineType> MedicineTypes { get; set; } = null!;
     public DbSet<Unit> Units { get; set; } = null!;
-    public DbSet<FeedType> FeedTypes { get; set; } = null!;
-    public DbSet<FeedingTransaction> FeedingTransactions { get; set; } = null!;
     public DbSet<WeightTransaction> WeightTransactions { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -39,6 +40,8 @@ internal static class ModelBuilderExtensions
     internal static ModelBuilder ConfigureAnimalModels(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Animal>().HasKey(transaction => transaction.Id);
+
+        modelBuilder.Entity<KraalStats>(entity => { entity.HasNoKey(); });
 
         return modelBuilder;
     }

@@ -1,25 +1,11 @@
 import { Observable } from 'rxjs';
 
-import {
-  HttpClient,
-  HttpParams
-} from '@angular/common/http';
-import {
-  Inject,
-  Injectable
-} from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { AnimalProviderModule } from '@animal/animal-provider.module';
 import { AnimalOrderType } from '@animal/enums';
-import {
-  RecordAnimalDeath,
-  SellAnimal
-} from '@animal/events';
-import { BaseUrl } from '@core/di';
-import {
-  Animal,
-  OrderOptions,
-  PagedData
-} from '@core/models';
+import { RecordAnimalDeath, SellAnimal } from '@animal/events';
+import { Animal, OrderOptions, PagedData } from '@core/models';
 import { CrudService } from '@core/models/services';
 import { Dictionary } from '@ngrx/entity';
 
@@ -29,8 +15,8 @@ import { Dictionary } from '@ngrx/entity';
 export class AnimalService implements CrudService<Animal, number, number> {
   private readonly _apiUrl: string;
 
-  constructor(private _http: HttpClient, @Inject(BaseUrl) baseUrl: string) {
-    this._apiUrl = baseUrl + 'animal';
+  constructor(private _http: HttpClient) {
+    this._apiUrl = '/api/animal';
   }
 
   public archiveAnimals = (animalIds: number[]): Observable<any> =>

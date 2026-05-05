@@ -36,11 +36,12 @@ import { UnitRoutingModule } from '@unit/unit-routing.module';
     MatToolbarModule,
     ReactiveFormsModule,
     SharedModule,
+    UnitRoutingModule,
+
     StoreModule.forFeature('units', unitReducers.unitReducer),
-    EffectsModule.forFeature([unitEffects.UnitEffects]),
-    UnitRoutingModule
+    EffectsModule.forFeature([unitEffects.UnitEffects])
   ],
   providers: [UnitService],
-  exports: [UnitContainerComponent, UnitRoutingModule]
+  exports: [UnitContainerComponent]
 })
 export class UnitModule {}

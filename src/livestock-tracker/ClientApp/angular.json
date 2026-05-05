@@ -8,6 +8,9 @@
       "sourceRoot": "src",
       "projectType": "application",
       "prefix": "app",
+      "i18n": {
+        "sourceLocale": "af"
+      },
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -55,11 +58,20 @@
                 }
               ]
             },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
             "serve": {
               "commonChunk": true,
               "verbose": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -68,9 +80,15 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "livestock-tracker:build:production"
+              "browserTarget": "livestock-tracker:build:production",
+              "proxyConfig": "proxy.conf.js"
+            },
+            "development": {
+              "browserTarget": "livestock-tracker:build:development",
+              "proxyConfig": "proxy.conf.js"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",

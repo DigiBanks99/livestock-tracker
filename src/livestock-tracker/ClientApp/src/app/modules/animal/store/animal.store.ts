@@ -1,8 +1,12 @@
+import { KraalStats } from '@animal/models';
 import { AnimalState } from '@core/store';
 import { animalState } from '@core/store/selectors';
 import { createSelector } from '@ngrx/store';
 
-import { animalsAdapter } from './animal.reducers';
+import {
+  animalsAdapter,
+  initialState
+} from './animal.reducers';
 
 export const getAnimalsState = animalState;
 
@@ -50,4 +54,10 @@ export const getAnimalsError = createSelector(
 export const getSaveState = createSelector(
   getAnimalsState,
   (state: AnimalState) => state.saveState
+);
+
+export const kraalStats = createSelector(
+  getAnimalsState,
+  (state: AnimalState): KraalStats =>
+    state.kraalStats ?? initialState.kraalStats
 );

@@ -1,4 +1,3 @@
-using LivestockTracker;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
 
@@ -11,9 +10,9 @@ public static class TestHelpers
         return CreateTestClient(null);
     }
 
-    public static HttpClient CreateTestClient(this WebApplicationFactory<Startup>? factory)
+    public static HttpClient CreateTestClient(this WebApplicationFactory<Program>? factory)
     {
-        factory ??= new WebApplicationFactory<Startup>();
+        factory ??= new();
 
         return factory.WithWebHostBuilder(builder => { builder.UseEnvironment("Test"); }).CreateClient();
     }

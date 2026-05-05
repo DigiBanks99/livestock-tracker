@@ -1,23 +1,22 @@
-import { Observable } from 'rxjs';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  NgModule
+} from '@angular/core';
+import { MatGridListModule } from '@angular/material/grid-list';
 
-import { Component } from '@angular/core';
-import { AnimalStore } from '@animal/store';
-import { FetchAnimalsAction } from '@animal/store/animal.actions';
-import { AppState } from '@core/store';
-import { select, Store } from '@ngrx/store';
+import { KraalStatsModule } from './stats';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html'
+  templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent {
-  public readonly animalCount$: Observable<number>;
+export class HomeComponent {}
 
-  constructor(private store: Store<AppState>) {
-    this.animalCount$ = this.store.pipe(
-      select(AnimalStore.selectors.getRecordCount)
-    );
-
-    store.dispatch(new FetchAnimalsAction());
-  }
-}
+@NgModule({
+  declarations: [HomeComponent],
+  exports: [HomeComponent],
+  imports: [KraalStatsModule, MatGridListModule]
+})
+export class HomeComponentModule {}

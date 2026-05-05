@@ -4,6 +4,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -13,15 +14,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AnimalListComponent } from '@animal/components/animal-list/animal-list.component';
 import { AnimalStore } from '@animal/store';
-import { BaseUrl } from '@core/di/base-url.injection-token';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { LoaderModule } from '@shared/components';
 import { AgeCalculatorService } from '@shared/services';
 import { SharedModule } from '@shared/shared.module';
-import { moduleMetadata, Story } from '@storybook/angular';
+import {
+  moduleMetadata,
+  Story
+} from '@storybook/angular';
 import { SvgService } from '@svg/services';
-import { MatButtonModule } from '@angular/material/button';
 
 export default {
   title: 'Animal/List',
@@ -50,7 +52,6 @@ export default {
       providers: [
         SvgService,
         AgeCalculatorService,
-        { provide: BaseUrl, useValue: '' },
         { provide: APP_BASE_HREF, useValue: '/' }
       ]
     })

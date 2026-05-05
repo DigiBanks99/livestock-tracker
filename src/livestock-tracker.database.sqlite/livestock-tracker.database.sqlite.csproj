@@ -8,21 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj"/>
-    <ProjectReference Include="..\livestock-tracker.database\livestock-tracker.database.csproj"/>
+    <ProjectReference Include="..\livestock-tracker.base\livestock-tracker.base.csproj" />
+    <ProjectReference Include="..\livestock-tracker.database\livestock-tracker.database.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4"/>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5"/>
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0"/>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Migrations\"/>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

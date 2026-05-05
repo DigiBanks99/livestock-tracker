@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LivestockTracker.Database.Migrations
 {
-    [DbContext(typeof(LivestockContext))]
+    [DbContext(typeof(SqliteLivestockContext))]
     [Migration("20200426123719_CleanArchitecture")]
     partial class CleanArchitecture
     {

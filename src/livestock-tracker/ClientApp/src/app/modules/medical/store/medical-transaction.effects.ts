@@ -1,33 +1,50 @@
 import { Observable } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
+import {
+  filter,
+  map,
+  tap
+} from 'rxjs/operators';
 
 import { KeyValue } from '@angular/common';
 import { Injectable } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AnimalStore } from '@animal/store';
+import {
+  AnimalActionTypes,
+  AnimalStore
+} from '@animal/store';
+import { SelectAnimalAction } from '@animal/store/animal.actions';
 import { MedicalTransaction } from '@core/models';
 import {
   AnimalState,
   FetchAnimalTransactionEffects,
+  getSelectedAnimalId,
   NoopAction,
   PayloadAction,
   RouterStore
 } from '@core/store';
+import { environment } from '@env/environment.prod';
 import { MedicalTransactionService } from '@medical/services';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import {
+  Actions,
+  concatLatestFrom,
+  createEffect,
+  ofType
+} from '@ngrx/effects';
 import { Update } from '@ngrx/entity';
 import {
   ROUTER_NAVIGATION,
   RouterNavigatedAction,
   SerializedRouterStateSnapshot
 } from '@ngrx/router-store';
-import { Action, Store } from '@ngrx/store';
+import {
+  Action,
+  Store
+} from '@ngrx/store';
 
 import { MedicalStoreConstants } from './constants';
 import { actions } from './medical-transaction.actions';
-import { PageEvent } from '@angular/material/paginator';
-import { environment } from '@env/environment.prod';
 
 @Injectable()
 export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<MedicalTransaction> {
@@ -39,21 +56,40 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
       filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
         /medicine\/\d+\/edit\/\d+$/.test(action.payload.event.urlAfterRedirects)
       ),
-      map(
-        (
-          action: RouterNavigatedAction<SerializedRouterStateSnapshot>
-        ): PayloadAction<number> | Action => {
-          const id = Number(
-            action.payload.routerState.root.firstChild.firstChild.params.id
-          );
-          if (Number.isNaN(id)) {
-            return NoopAction;
-          }
-          return this.transactionActions.selectItem(id);
+      map((action: RouterNavigatedAction<SerializedRouterStateSnapshot>):
+        | PayloadAction<number>
+        | Action => {
+        const id = Number(
+          action.payload.routerState.root.firstChild.firstChild.params.id
+        );
+        if (Number.isNaN(id)) {
+          return NoopAction;
         }
-      )
+        return this.transactionActions.selectItem(id);
+      })
     )
   );
+
+  public animalSelected$: Observable<PayloadAction<number> | Action> =
+    createEffect(() =>
+      this.actions$.pipe(
+        ofType(AnimalActionTypes.SelectAnimal),
+        concatLatestFrom(() => this._store.select(RouterStore.selectors.url)),
+        filter(([action, url]: [SelectAnimalAction, string]) => {
+          const matches = url.match(/medicine\/(?<animalId>\d+)/);
+          console.log('m', matches);
+          if (matches === null) {
+            return false;
+          }
+          const urlAnimalId = matches.groups.animalId;
+          return String(action.payload) !== urlAnimalId;
+        }),
+        map(([action]: [SelectAnimalAction, string]): Action => {
+          this._router.navigate(['medicine', String(action.payload)]);
+          return NoopAction;
+        })
+      )
+    );
 
   public animalSelectedInRoute$: Observable<PayloadAction<number> | Action> =
     createEffect(() =>
@@ -62,15 +98,17 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
         filter((action: RouterNavigatedAction<SerializedRouterStateSnapshot>) =>
           /medicine\/\d+/.test(action.payload.event.urlAfterRedirects)
         ),
+        concatLatestFrom(() => this._store.select(getSelectedAnimalId)),
         map(
-          (
-            action: RouterNavigatedAction<SerializedRouterStateSnapshot>
-          ): PayloadAction<number> | Action => {
+          ([action, selectedAnimalId]: [
+            RouterNavigatedAction<SerializedRouterStateSnapshot>,
+            number
+          ]): PayloadAction<number> | Action => {
             const id = Number(
               action.payload.routerState.root.firstChild.firstChild.params
                 .animalId
             );
-            if (Number.isNaN(id)) {
+            if (Number.isNaN(id) || id === selectedAnimalId) {
               return NoopAction;
             }
             return AnimalStore.actions.selectItem(id);
@@ -84,7 +122,7 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
   > = createEffect(() =>
     this.actions$.pipe(
       ofType(`API_FETCH_SINGLE_ANIMAL`),
-      concatLatestFrom(() => this.store.select(RouterStore.selectors.url)),
+      concatLatestFrom(() => this._store.select(RouterStore.selectors.url)),
       filter(([, url]: [Action, string]) => /medicine\/\d+$/.test(url)),
       map(
         (): PayloadAction<PageEvent> =>
@@ -100,7 +138,7 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
     this.actions$.pipe(
       ofType(`API_ADD_${MedicalStoreConstants.Transactions.StoreKey}`),
       tap((action: PayloadAction<MedicalTransaction>) =>
-        this.router.navigate(['/medicine', action.payload.animalId])
+        this._router.navigate(['/medicine', action.payload.animalId])
       ),
       map(() => this.transactionActions.resetSaveState())
     )
@@ -111,7 +149,7 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
       ofType(`API_UPDATE_${MedicalStoreConstants.Transactions.StoreKey}`),
       tap(
         (action: PayloadAction<KeyValue<number, Update<MedicalTransaction>>>) =>
-          this.router.navigate([
+          this._router.navigate([
             '/medicine',
             action.payload.value.changes.animalId
           ])
@@ -122,11 +160,11 @@ export class MedicalTransactionEffects extends FetchAnimalTransactionEffects<Med
 
   constructor(
     actions$: Actions,
-    private readonly store: Store,
+    private readonly _store: Store,
     animalStore: Store<AnimalState>,
     medicalTransactionService: MedicalTransactionService,
     snackBar: MatSnackBar,
-    private readonly router: Router
+    private readonly _router: Router
   ) {
     super(
       actions$,

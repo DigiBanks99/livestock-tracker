@@ -2,7 +2,10 @@ import { FeedType } from '@core/models/feed-type.model';
 import { FeedTypeState } from '@core/store';
 import { feedTypeAdapter } from '@feed/store/feed-type.reducer';
 import { Dictionary } from '@ngrx/entity';
-import { createFeatureSelector, createSelector } from '@ngrx/store';
+import {
+  createFeatureSelector,
+  createSelector
+} from '@ngrx/store';
 
 const feedTypeState = createFeatureSelector<FeedTypeState>('feedTypes');
 
@@ -16,9 +19,9 @@ export const feedTypes = createSelector(
   feedTypeEntities,
   feedTypeIds,
   (entities: Dictionary<FeedType>, ids: (string | number)[]) =>
-    ids
-      .map((id) => entities[id])
-      .filter((feedType): feedType is FeedType => feedType !== null)
+    (ids ?? [])
+      .map((id) => (entities ?? {})[id])
+      .filter((feedType: FeedType | null | undefined) => feedType != null) ?? []
 );
 
 export const selectedFeedTypeId = createSelector(

@@ -9,6 +9,7 @@ export * from './medical-transaction-state.interface';
 export * from './medicine-type-state.interface';
 export * from './pagination/pagination-action.interface';
 export * from './pagination/pagination-state.interface';
+export * from './selectors';
 export * from './unit-state.interface';
 
 import * as RouterSelectors from './router.selectors';
