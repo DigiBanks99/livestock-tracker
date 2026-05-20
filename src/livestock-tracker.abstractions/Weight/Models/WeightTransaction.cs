@@ -20,7 +20,7 @@ public class WeightTransaction : IAnimalTransaction
         Id = 0;
         AnimalId = animalId;
         Weight = weight;
-        TransactionDate = transactionDate;
+        TransactionDate = transactionDate.TrimToMilliseconds();
     }
 
     /// <summary>
@@ -64,6 +64,6 @@ public class WeightTransaction : IAnimalTransaction
         }
 
         Weight = desiredValues.Weight;
-        TransactionDate = desiredValues.TransactionDate;
+        TransactionDate = desiredValues.TransactionDate.TrimToMilliseconds();
     }
 }

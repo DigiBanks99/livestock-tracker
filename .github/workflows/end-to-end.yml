@@ -33,7 +33,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          cache-dependency-path: ./src/livestock-tracker/ClientApp
+          cache-dependency-path: |
+            ./src/livestock-tracker/ClientApp/package-lock.json
+            ./test/e2e/package-lock.json
       - name: Install packages
         run: npm ci
         working-directory: ./src/livestock-tracker/ClientApp

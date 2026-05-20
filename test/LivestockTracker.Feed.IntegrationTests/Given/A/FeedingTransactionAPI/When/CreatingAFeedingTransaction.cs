@@ -1,3 +1,6 @@
+using LivestockTracker;
+using LivestockTracker.Feed.ViewModels;
+
 namespace Given.A.FeedingTransactionAPI.When;
 
 [Collection(IntegrationTestFixture.CollectionName)]
@@ -14,7 +17,7 @@ public class CreatingAFeedingTransaction
     public async Task ThenItShouldReturnTheLinkToTheCreatedTransactionWithTheTransactionDetails()
     {
         // Arrange
-        CreateFeedingTransactionViewModel request = new(1, 2, 86, 1, DateTimeOffset.Now);
+        CreateFeedingTransactionViewModel request = new(1, 2, 86, 1, DateTimeOffset.Now.TrimToMilliseconds());
 
         // Act
         HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("/api/FeedingTransaction", request);

@@ -30,7 +30,7 @@ public class FeedingTransaction : IAnimalTransaction
         FeedTypeId = feedTypeId;
         Quantity = quantity;
         UnitId = unitId;
-        TransactionDate = transactionDate;
+        TransactionDate = transactionDate.TrimToMilliseconds();
     }
 
     /// <summary>
@@ -95,6 +95,6 @@ public class FeedingTransaction : IAnimalTransaction
         FeedTypeId = desiredValues.FeedTypeId;
         UnitId = desiredValues.UnitId;
         Quantity = desiredValues.Quantity;
-        TransactionDate = desiredValues.TransactionDate;
+        TransactionDate = desiredValues.TransactionDate.TrimToMilliseconds();
     }
 }

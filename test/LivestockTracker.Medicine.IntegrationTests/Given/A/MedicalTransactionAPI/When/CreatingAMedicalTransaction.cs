@@ -1,3 +1,4 @@
+using LivestockTracker;
 using LivestockTracker.Medicine.ViewModels;
 
 namespace Given.A.MedicalTransactionAPI.When;
@@ -16,7 +17,7 @@ public class CreatingAMedicalTransaction
     public async Task ThenItShouldReturnTheLinkToTheCreatedTransactionWithTheTransactionDetails()
     {
         // Arrange
-        CreateMedicalTransactionViewModel request = new(1, 2, DateTimeOffset.Now, 86, 1);
+        CreateMedicalTransactionViewModel request = new(1, 2, DateTimeOffset.Now.TrimToMilliseconds(), 86, 1);
 
         // Act
         HttpResponseMessage response = await _fixture.Client.PostAsJsonAsync("/api/MedicalTransactions", request);

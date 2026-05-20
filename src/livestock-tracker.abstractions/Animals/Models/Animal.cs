@@ -40,8 +40,8 @@ public class Animal : IAnimal
         Subspecies = subspecies;
         Number = number;
         BatchNumber = batchNumber;
-        BirthDate = birthDate;
-        PurchaseDate = purchaseDate;
+        BirthDate = birthDate.TrimToMilliseconds();
+        PurchaseDate = purchaseDate.TrimToMilliseconds();
         PurchasePrice = purchasePrice;
         ArrivalWeight = arrivalWeight;
 
@@ -168,10 +168,10 @@ public class Animal : IAnimal
 
         Type = desiredValues.Type;
         Subspecies = desiredValues.Subspecies;
-        BirthDate = desiredValues.BirthDate;
+        BirthDate = desiredValues.BirthDate.TrimToMilliseconds();
         Number = desiredValues.Number;
         BatchNumber = desiredValues.BatchNumber;
-        PurchaseDate = desiredValues.PurchaseDate;
+        PurchaseDate = desiredValues.PurchaseDate.TrimToMilliseconds();
         PurchasePrice = desiredValues.PurchasePrice;
         ArrivalWeight = desiredValues.ArrivalWeight;
     }
@@ -204,7 +204,7 @@ public class Animal : IAnimal
 
         Sold = true;
         SellPrice = price;
-        SellDate = sellDate ?? DateTimeOffset.UtcNow;
+        SellDate = (sellDate ?? DateTimeOffset.UtcNow).TrimToMilliseconds();
     }
 
     /// <summary>
@@ -227,7 +227,7 @@ public class Animal : IAnimal
         }
 
         Deceased = true;
-        DateOfDeath = dateOfDeath;
+        DateOfDeath = dateOfDeath.TrimToMilliseconds();
     }
 
     /// <summary>

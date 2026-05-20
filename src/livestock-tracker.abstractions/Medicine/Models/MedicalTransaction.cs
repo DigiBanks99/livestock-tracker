@@ -21,7 +21,7 @@ public class MedicalTransaction : IAnimalTransaction
     {
         AnimalId = animalId;
         MedicineId = medicineId;
-        TransactionDate = transactionDate;
+        TransactionDate = transactionDate.TrimToMilliseconds();
         Dose = dose;
         UnitId = unitId;
     }
@@ -88,7 +88,7 @@ public class MedicalTransaction : IAnimalTransaction
 
         MedicineId = desiredValues.MedicineId;
         Dose = desiredValues.Dose;
-        TransactionDate = desiredValues.TransactionDate;
+        TransactionDate = desiredValues.TransactionDate.TrimToMilliseconds();
         UnitId = desiredValues.UnitId;
     }
 }
