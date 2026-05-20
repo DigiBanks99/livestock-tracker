@@ -10,10 +10,7 @@ describe('Feed Transaction List', () => {
     cy.contains('th', 'Feed type').should('be.visible');
     cy.contains('th', 'Unit').should('be.visible');
 
-    cy.contains('td', 'delete').should('be.visible');
-    cy.contains('td mat-icon', 'delete').should('be.visible');
-    cy.contains('td mat-icon', 'delete').should('be.visible');
-    cy.contains('td mat-icon', 'delete').should('be.visible');
+    cy.get('td mat-icon').contains('delete').should('be.visible');
   });
 
   it.only('should allow for pagination', () => {
