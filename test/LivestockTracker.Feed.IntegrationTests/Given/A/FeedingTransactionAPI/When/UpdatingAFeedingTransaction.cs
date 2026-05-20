@@ -1,3 +1,4 @@
+using LivestockTracker;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NuGet.Protocol;
@@ -18,7 +19,7 @@ public class UpdatingAFeedingTransaction
     public async Task ItShouldSaveTheMedicalTransactionWithTheUpdatedValues()
     {
         // Arrange
-        UpdateFeedingTransactionViewModel updateRequest = new(1, 1, 2, 77, 2, DateTimeOffset.Now);
+        UpdateFeedingTransactionViewModel updateRequest = new(1, 1, 2, 77, 2, DateTimeOffset.Now.TrimToMilliseconds());
         string url = $"/api/FeedingTransaction/{updateRequest.Id}";
         FeedingTransactionViewModel savedTransaction =
             GetFeedingTransactionFromConnection(updateRequest.Id, _fixture.DatabaseConnection);
@@ -50,7 +51,7 @@ public class UpdatingAFeedingTransaction
     public async Task ItShouldReturnBadRequestWhenAttemptingToChangeTheAnimal()
     {
         // Arrange
-        UpdateFeedingTransactionViewModel updateRequest = new(1, 2, 2, 77, 2, DateTimeOffset.Now);
+        UpdateFeedingTransactionViewModel updateRequest = new(1, 2, 2, 77, 2, DateTimeOffset.Now.TrimToMilliseconds());
         ;
         string url = $"/api/FeedingTransaction/{updateRequest.Id}";
 
@@ -71,7 +72,7 @@ public class UpdatingAFeedingTransaction
     public async Task ItShouldReturnBadRequestWhenTheRouteAndBodyIdsDoNotMatch()
     {
         // Arrange
-        UpdateFeedingTransactionViewModel updateRequest = new(2, 2, 2, 77, 2, DateTimeOffset.Now);
+        UpdateFeedingTransactionViewModel updateRequest = new(2, 2, 2, 77, 2, DateTimeOffset.Now.TrimToMilliseconds());
         ;
         const string url = "/api/FeedingTransaction/1";
 
