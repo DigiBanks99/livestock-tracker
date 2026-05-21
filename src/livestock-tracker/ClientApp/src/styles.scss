@@ -1,82 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
-@use 'app-theme';
+@use '@angular/material' as mat;
 
-@font-face {
-  font-family: 'Material Icons';
-  font-style: normal;
-  font-weight: 400;
-  src: url('assets/material-icons/MaterialIcons-Regular.eot');
-  src: local('Material Icons'), local('MaterialIcons-Regular'),
-    url('assets/material-icons/MaterialIcons-Regular.woff2') format('woff2'),
-    url('assets/material-icons/MaterialIcons-Regular.woff') format('woff'),
-    url('assets/material-icons/MaterialIcons-Regular.ttf') format('truetype');
-}
-
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 400;
-  src: url('assets/roboto/roboto-v18-latin-regular.eot');
-  src: local('Roboto'), local('Roboto-Regular'),
-    url('assets/roboto/roboto-v18-latin-regular.eot?#iefix')
-      format('embedded-opentype'),
-    url('assets/roboto/roboto-v18-latin-regular.woff2') format('woff2'),
-    url('assets/roboto/roboto-v18-latin-regular.woff') format('woff'),
-    url('assets/roboto/roboto-v18-latin-regular.ttf') format('truetype'),
-    url('assets/roboto/roboto-v18-latin-regular.svg#Roboto') format('svg');
-}
-
-.material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
-
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-
-  -moz-osx-font-smoothing: grayscale;
-
-  font-feature-settings: 'liga';
-}
-
-html,
-body {
+html, body {
   height: 100%;
-  font-size: 16px;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
+
+@include mat.core();
+
+$livestock-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$green-palette,
+    tertiary: mat.$orange-palette,
+  ),
+  density: (
+    scale: 0,
+  ),
+));
 
 html {
-  overflow: hidden;
+  @include mat.all-component-themes($livestock-theme);
 }
 
-body {
-  padding: 0;
-  margin: 0;
-  font-family: Roboto, Arial, sans-serif;
-}
-
-.container {
-  margin: 2rem;
-
-  @media (max-width: 599px) {
-    margin: 0;
-  }
-}
-
-.full-width-table {
-  width: 100%;
-}
-
-td.mat-column-star {
-  width: 20px;
-  padding-right: 8px;
-  cursor: pointer;
+a {
+  color: inherit;
+  text-decoration: none;
 }

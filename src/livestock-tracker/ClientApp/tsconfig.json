@@ -1,87 +1,40 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "strictNullChecks": false,
-    "downlevelIteration": true,
-    "importHelpers": true,
-    "module": "es2020",
     "outDir": "./dist/out-tsc",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
+    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
+    "moduleResolution": "bundler",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "lib": ["ES2022", "dom"],
+    "skipLibCheck": true,
     "baseUrl": "src",
     "paths": {
-      "@env/*": [
-        "environments/*"
-      ],
-      "@core/*": [
-        "app/core/*"
-      ],
-      "@store": [
-        "app/core/store/*"
-      ],
-      "@feed-store": [
-        "app/modules/feed/store/index"
-      ],
-      "@animal/*": [
-        "app/modules/livestock/*",
-        "app/modules/animal/*"
-      ],
-      "@admin/*": [
-        "app/modules/admin/*"
-      ],
-      "@feed/*": [
-        "app/modules/feed/*"
-      ],
-      "@home/*": [
-        "app/modules/home/*"
-      ],
-      "@header/*": [
-        "app/modules/header/*"
-      ],
-      "@medical/*": [
-        "app/modules/medical/*"
-      ],
-      "@reports/*": [
-        "app/modules/reports/*"
-      ],
-      "@shared/*": [
-        "app/modules/shared/*"
-      ],
-      "@svg/*": [
-        "app/modules/svg/*"
-      ],
-      "@unit/*": [
-        "app/modules/unit/*"
-      ],
-      "@unit-store/*": [
-        "app/modules/unit/store/*"
-      ],
-      "@weight/*": [
-        "app/modules/weight/*"
-      ],
-      "@test/*": [
-        "test/modules/*"
-      ]
-    },
-    "newLine": "LF",
-    "charset": "UTF-8"
+      "@env/*": ["environments/*"],
+      "@core/*": ["app/core/*"],
+      "@animal/*": ["app/features/animal/*"],
+      "@feed/*": ["app/features/feed/*"],
+      "@home/*": ["app/features/home/*"],
+      "@header/*": ["app/features/header/*"],
+      "@medical/*": ["app/features/medical/*"],
+      "@reports/*": ["app/features/reports/*"],
+      "@shared/*": ["app/shared/*"],
+      "@unit/*": ["app/features/unit/*"],
+      "@weight/*": ["app/features/weight/*"]
+    }
   },
   "angularCompilerOptions": {
-    "enableIvy": true,
-    "fullTemplateTypeCheck": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
     "strictTemplates": true
   }
 }

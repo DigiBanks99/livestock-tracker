@@ -1,5 +1,5 @@
 {
   "appHost": {
-    "path": "livestock_tracker.AppHost.csproj"
+    "path": "livestock-tracker.AppHost.csproj"
   }
 }
