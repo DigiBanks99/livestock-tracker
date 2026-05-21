@@ -5,6 +5,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Aspire.Hosting.Browsers" />
     <PackageReference Include="Aspire.Hosting.JavaScript" />
   </ItemGroup>
 
