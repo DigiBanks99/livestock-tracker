@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using LivestockTracker.Exceptions;
 using LivestockTracker.Feed;
 using LivestockTracker.Medicine;
@@ -26,6 +27,7 @@ public class Animal : IAnimal
     /// <param name="purchaseDate">The date the animal was purchased.</param>
     /// <param name="purchasePrice">The price at which the animal was purchased.</param>
     /// <param name="arrivalWeight">The weight of the animal on arrival.</param>
+    [JsonConstructor]
     public Animal(AnimalType type,
         string? subspecies,
         int number,
@@ -83,7 +85,6 @@ public class Animal : IAnimal
     /// <summary>
     ///     The type of animal.
     /// </summary>
-    [Required]
     public AnimalType Type { get; private set; }
 
     /// <summary>
@@ -95,43 +96,36 @@ public class Animal : IAnimal
     /// <summary>
     ///     The unique number for the animal as defined by the tenant.
     /// </summary>
-    [Required]
     public int Number { get; private set; }
 
     /// <summary>
     ///     The unique batch the animal is associated with.
     /// </summary>
-    [Required]
     public int BatchNumber { get; private set; }
 
     /// <summary>
     ///     The date the animal was born.
     /// </summary>
-    [Required]
     public DateTimeOffset BirthDate { get; private set; }
 
     /// <summary>
     ///     The date the animal was purchased.
     /// </summary>
-    [Required]
     public DateTimeOffset PurchaseDate { get; private set; }
 
     /// <summary>
     ///     The price for which the animal was purchased.
     /// </summary>
-    [Required]
     public decimal PurchasePrice { get; private set; }
 
     /// <summary>
     ///     The animal's weight on arrival.
     /// </summary>
-    [Required]
     public decimal ArrivalWeight { get; private set; }
 
     /// <summary>
     ///     A flag to indicate if the animal was sold.
     /// </summary>
-    [Required]
     public bool Sold { get; private set; }
 
     /// <summary>
@@ -147,7 +141,6 @@ public class Animal : IAnimal
     /// <summary>
     ///     A flag that indicates if the animal is deceased.
     /// </summary>
-    [Required]
     public bool Deceased { get; private set; }
 
     /// <summary>

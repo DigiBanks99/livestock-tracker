@@ -5,31 +5,16 @@ using LivestockTracker.Feed;
 using LivestockTracker.Medicine;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace LivestockTracker.Database.Sqlite;
 
 internal sealed class SqliteSeedData : ISeedData
 {
-    private readonly IHostEnvironment _env;
-
-    public SqliteSeedData(IHostEnvironment env)
-    {
-        _env = env;
-    }
-
     public void Seed(IServiceProvider serviceProvider)
     {
         DbContextOptions options = serviceProvider.GetRequiredService<DbContextOptions>();
         using SqliteLivestockContext context = new(options);
-        if (_env.IsE2E() || _env.IsTest())
-        {
-            context.Database.EnsureCreated();
-        }
-        else
-        {
-            context.Database.Migrate();
-        }
+        context.Database.EnsureCreated();
 
         SeedFeedTypes(context);
         SeedUnits(context);

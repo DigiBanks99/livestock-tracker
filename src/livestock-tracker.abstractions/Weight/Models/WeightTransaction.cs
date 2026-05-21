@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using LivestockTracker.Animals;
 
 namespace LivestockTracker.Weight;
@@ -15,6 +16,7 @@ public class WeightTransaction : IAnimalTransaction
     /// <param name="animalId">The animal's unique identifier for which this weight was captured.</param>
     /// <param name="weight">The weight value in kilograms.</param>
     /// <param name="transactionDate">The date the weight was taken.</param>
+    [JsonConstructor]
     public WeightTransaction(long animalId, decimal weight, DateTimeOffset transactionDate)
     {
         Id = 0;

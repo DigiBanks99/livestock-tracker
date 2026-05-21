@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using NuGet.Protocol;
+using Newtonsoft.Json.Linq;
 
 namespace Given.A.MedicineAPI.When;
 
@@ -74,7 +74,7 @@ public class UpdatingAMedicine
         // It returns a problem descriptor. Need to try and see how I will handle that
         SerializableError? error = JsonConvert.DeserializeObject<SerializableError>(content);
         error.ShouldNotBeNull();
-        string? message = error["errors"].ToJToken()["desiredValues"]?.Value<string>(0);
+        string? message = JToken.FromObject(error["errors"]!)["desiredValues"]?.Value<string>(0);
         message.ShouldBe("The desiredValues field is required.");
     }
 

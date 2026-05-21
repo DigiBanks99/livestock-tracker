@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace LivestockTracker.Feed;
 
@@ -13,6 +14,7 @@ public class FeedType
     ///     Creates a new instance in the desired state with a 0 ID to mark it as a new item.
     /// </summary>
     /// <param name="description">The friendly display of the feed.</param>
+    [JsonConstructor]
     public FeedType(string description)
     {
         Id = 0;

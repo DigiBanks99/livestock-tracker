@@ -52,7 +52,7 @@ namespace LivestockTracker.Updater
       DownloadableVersionModel latestVersion = null;
       foreach (var version in versions)
       {
-        if (latestVersion == null || version.Version.CompareTo(latestVersion.Version) > 0)
+        if (latestVersion == null || version.Version.CompareSortOrderTo(latestVersion.Version) > 0)
           latestVersion = version;
       }
 

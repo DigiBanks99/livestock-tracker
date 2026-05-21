@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using NuGet.Protocol;
+using Newtonsoft.Json.Linq;
 
 namespace Given.A.FeedApi.When;
 
@@ -57,7 +57,7 @@ public class UpdatingAFeedType
         // It returns a problem descriptor. Need to try and see how I will handle that
         SerializableError? error = JsonConvert.DeserializeObject<SerializableError>(content);
         error.ShouldNotBeNull();
-        string? message = error["errors"].ToJToken()["feedType"]?.Value<string>(0);
+        string? message = JToken.FromObject(error["errors"]!)["feedType"]?.Value<string>(0);
         message.ShouldBe("The feedType field is required.");
     }
 
