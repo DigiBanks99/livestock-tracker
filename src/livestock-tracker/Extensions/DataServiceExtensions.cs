@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using LivestockTracker.Data;
 using LivestockTracker.Database;
 using LivestockTracker.Properties;
@@ -21,10 +20,7 @@ public static class DataServiceExtensions
     /// </returns>
     public static IApplicationBuilder SeedLivestockDatabase(this IApplicationBuilder app)
     {
-        if (app == null)
-        {
-            throw new ArgumentNullException(nameof(app));
-        }
+        ArgumentNullException.ThrowIfNull(app);
 
         app.ApplicationServices.SeedDatabase();
 
@@ -45,7 +41,7 @@ public static class DataServiceExtensions
         }
         catch (Exception ex)
         {
-            ILogger<Startup> logger = services.GetRequiredService<ILogger<Startup>>();
+            ILogger<WebApplication> logger = services.GetRequiredService<ILogger<WebApplication>>();
             logger.LogError(ex, Resources.SeedDatabaseFailed);
             throw;
         }

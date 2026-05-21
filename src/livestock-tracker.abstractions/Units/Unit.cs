@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 
 namespace LivestockTracker.Units;
@@ -14,6 +13,7 @@ public class Unit
     ///     Creates a new instance of <see cref="Unit" />.
     /// </summary>
     /// <param name="description"></param>
+    [JsonConstructor]
     public Unit(string description)
     {
         Id = 0;
@@ -29,7 +29,6 @@ public class Unit
     /// <summary>
     ///     The user friendly description of the unit of measurement.
     /// </summary>
-    [Required]
     public string Description { get; private set; }
 
     /// <summary>

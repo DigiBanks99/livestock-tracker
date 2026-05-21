@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using LivestockTracker.Animals;
 
 namespace LivestockTracker.Medicine;
@@ -17,6 +18,7 @@ public class MedicalTransaction : IAnimalTransaction
     /// <param name="transactionDate">The date of the medicine administration.</param>
     /// <param name="dose">The dosage of the medicine that was administered.</param>
     /// <param name="unitId">The unique identifier of the unit of measurement for the dosage.</param>
+    [JsonConstructor]
     public MedicalTransaction(long animalId, int medicineId, DateTimeOffset transactionDate, decimal dose, int unitId)
     {
         AnimalId = animalId;

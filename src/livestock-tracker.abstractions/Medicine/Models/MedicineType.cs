@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 using LivestockTracker.Exceptions;
 
 namespace LivestockTracker.Medicine;
@@ -14,6 +15,7 @@ public class MedicineType
     ///     Creates a new instance of <see cref="MedicineType" />.
     /// </summary>
     /// <param name="description">The unique description of the medicine.</param>
+    [JsonConstructor]
     public MedicineType(string description)
     {
         Id = 0;

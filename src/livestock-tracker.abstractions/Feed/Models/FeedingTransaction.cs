@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text.Json.Serialization;
 using LivestockTracker.Animals;
 
 namespace LivestockTracker.Feed;
@@ -18,6 +19,7 @@ public class FeedingTransaction : IAnimalTransaction
     /// <param name="quantity">The amount of feed that was given to the animal measured in <paramref name="unitId" />.</param>
     /// <param name="unitId">The unique identifier of the unit of measurement for the feed that was given to the animal.</param>
     /// <param name="transactionDate">The day and time the feeding happened.</param>
+    [JsonConstructor]
     public FeedingTransaction(
         long animalId,
         int feedTypeId,

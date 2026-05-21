@@ -1,30 +1,47 @@
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
+using LivestockTracker;
+using LivestockTracker.Extensions;
+using Scalar.AspNetCore;
 
-namespace LivestockTracker
+var builder = WebApplication.CreateBuilder(args);
+
+builder.AddServiceDefaults();
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddLivestockTrackerSqliteDatabase(builder.Configuration, builder.Environment)
+    .AddLivestockTrackerLogic()
+    .AddLivestockTrackerOpenApi();
+
+var app = builder.Build();
+
+if (app.Environment.IsDev())
 {
-    /// <summary>
-    /// Starts up the application.
-    /// </summary>
-    public static class Program
-    {
-        /// <summary>
-        /// The main application entry-point
-        /// </summary>
-        /// <param name="args">
-        /// Arguments passed in from the command-line or application bootstrap.
-        /// </param>
-        public static async Task Main(string[] args)
-        {
-            await CreateWebHostBuilder(args).Build()
-                                            .RunAsync()
-                                            .ConfigureAwait(true);
-        }
-
-        private static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-                   .UseStartup<Startup>();
-    }
+    app.UseDeveloperExceptionPage();
 }
+else
+{
+    app.UseExceptionHandler("/Error");
+    app.UseHsts();
+}
+
+app.SeedLivestockDatabase()
+    .UseHttpsRedirection()
+    .UseStaticFiles();
+
+app.UseRouting();
+
+app.MapControllerRoute(name: "default", pattern: "{controller}/{action=Index}/{id?}");
+
+app.MapOpenApi();
+app.MapScalarApiReference();
+
+app.MapFallbackToFile("index.html");
+
+app.MapDefaultEndpoints();
+
+app.Run();
+
+/// <summary>
+/// Partial class to support WebApplicationFactory in integration tests.
+/// </summary>
+public partial class Program;
+

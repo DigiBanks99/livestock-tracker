@@ -1,6 +1,5 @@
 using LivestockTracker.Updater.Exceptions;
 using Semver;
-using System;
 
 namespace LivestockTracker.Updater
 {
@@ -27,52 +26,44 @@ namespace LivestockTracker.Updater
 
     private SemVersion Parse(string version)
     {
-      bool parsed = SemVersion.TryParse(version, out SemVersion semVersion);
+      bool parsed = SemVersion.TryParse(version, SemVersionStyles.Any, out SemVersion? semVersion);
       if (parsed)
       {
-        return semVersion;
+        return semVersion!;
       }
-      else
+
+      string[] parts = version.Split('.');
+      if (parts == null || parts.Length == 0)
       {
-        string[] parts = version.Split('.');
-        if (parts == null || parts.Length == 0)
-        {
-          throw new VersionNotSupportedException(version);
-        }
-
-        bool majorParsed = int.TryParse(parts[0], out int major);
-
-        if (majorParsed)
-        {
-          semVersion = new SemVersion(major);
-          int minor = 0;
-          bool minorParsed = parts.Length > 1 && int.TryParse(parts[1], out minor);
-          if (minorParsed)
-          {
-            semVersion = new SemVersion(major, minor);
-            int patch = 0;
-            bool patchParsed = parts.Length > 2 && int.TryParse(parts[2], out patch);
-            if (patchParsed)
-            {
-              semVersion = new SemVersion(major, minor, patch);
-
-              if (parts.Length > 4)
-              {
-                semVersion = new SemVersion(major, minor, patch, parts[3], parts[4]);
-              }
-              else if (parts.Length > 3)
-              {
-                semVersion = new SemVersion(major, minor, patch, parts[3]);
-              }
-            }
-          }
-        }
-        else
-        {
-          throw new VersionNotSupportedException(version);
-        }
-        return semVersion;
+        throw new VersionNotSupportedException(version);
       }
+
+      bool majorParsed = int.TryParse(parts[0], out int major);
+
+      if (!majorParsed)
+      {
+        throw new VersionNotSupportedException(version);
+      }
+
+      int minor = 0;
+      if (parts.Length > 1)
+        int.TryParse(parts[1], out minor);
+
+      int patch = 0;
+      if (parts.Length > 2)
+        int.TryParse(parts[2], out patch);
+
+      string prerelease = parts.Length > 3 ? parts[3] : "";
+      string metadata = parts.Length > 4 ? parts[4] : "";
+
+      // Build version string and parse with lenient styles
+      string rebuilt = $"{major}.{minor}.{patch}";
+      if (!string.IsNullOrEmpty(prerelease))
+        rebuilt += $"-{prerelease}";
+      if (!string.IsNullOrEmpty(metadata))
+        rebuilt += $"+{metadata}";
+
+      return SemVersion.Parse(rebuilt, SemVersionStyles.Any);
     }
   }
 }
