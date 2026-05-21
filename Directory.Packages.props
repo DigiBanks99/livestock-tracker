@@ -4,6 +4,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Entity Framework Core -->
+    <PackageVersion Include="Aspire.Hosting.Browsers" Version="13.3.5-preview.1.26270.6" />
     <PackageVersion Include="Aspire.Hosting.JavaScript" Version="13.3.5" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.8" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.8" />
