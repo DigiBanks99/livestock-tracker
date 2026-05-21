@@ -14,7 +14,7 @@ import { LoaderComponent } from '@shared/components/loader.component';
     <app-animal-form
       [animal]="state.selectedAnimal()"
       (save)="onSave($event)"
-      (cancel)="onCancel()"
+      (cancelled)="onCancel()"
     />
   `,
 })

@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
-import { WeightTransaction, Unit } from '@core/models';
+import { WeightTransaction } from '@core/models';
 import { WeightStateService } from '../services/weight-state.service';
 import { UnitStateService } from '../../unit/services/unit-state.service';
 

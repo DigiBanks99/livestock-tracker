@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 
-import { AnimalSelectStubContainer } from './animal-select.stub.container';
+import { AnimalSelectStubComponent } from './animal-select.stub.container';
 
 @NgModule({
-  declarations: [AnimalSelectStubContainer],
-  exports: [AnimalSelectStubContainer]
+  declarations: [AnimalSelectStubComponent],
+  exports: [AnimalSelectStubComponent]
 })
 export class AnimalSelectTestingModule {}
