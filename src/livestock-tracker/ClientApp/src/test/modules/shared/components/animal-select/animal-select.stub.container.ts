@@ -4,6 +4,6 @@ import { Component, Input } from '@angular/core';
   selector: 'app-animal-select-container',
   template: ''
 })
-export class AnimalSelectStubContainer {
+export class AnimalSelectStubComponent {
   @Input() public disabled = false;
 }

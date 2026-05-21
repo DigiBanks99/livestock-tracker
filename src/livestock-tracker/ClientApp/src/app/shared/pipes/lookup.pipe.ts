@@ -8,6 +8,6 @@ export class LookupPipe implements PipeTransform {
   transform(id: number | null | undefined, items: { id: number; description: string }[], field: string = 'description'): string {
     if (id == null || !items) return '';
     const item = items.find((i) => i.id === id);
-    return item ? (item as any)[field] ?? '' : '';
+    return item ? (item as Record<string, unknown>)[field] as string ?? '' : '';
   }
 }

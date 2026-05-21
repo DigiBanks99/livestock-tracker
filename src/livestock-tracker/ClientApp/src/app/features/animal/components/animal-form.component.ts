@@ -76,7 +76,7 @@ import { Animal, AnimalType } from '@core/models';
         <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
           Save
         </button>
-        <button mat-button type="button" (click)="cancel.emit()">Cancel</button>
+        <button mat-button type="button" (click)="cancelled.emit()">Cancel</button>
       </div>
     </form>
   `,
@@ -102,7 +102,7 @@ export class AnimalFormComponent {
 
   readonly animal = input<Animal | null>(null);
   readonly save = output<Partial<Animal>>();
-  readonly cancel = output<void>();
+  readonly cancelled = output<void>();
 
   readonly animalTypes = [
     { value: AnimalType.Cattle, label: 'Cattle' },
