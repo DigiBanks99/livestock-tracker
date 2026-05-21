@@ -1,7 +1,7 @@
 <Project Sdk="Aspire.AppHost.Sdk/13.3.5">
 
   <ItemGroup>
-    <ProjectReference Include="..\src\livestock-tracker\livestock-tracker.csproj" />
+    <ProjectReference Include="..\livestock-tracker\livestock-tracker.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
