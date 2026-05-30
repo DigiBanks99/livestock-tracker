@@ -1,9 +1,7 @@
-import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { HeaderContainer } from './header/header.container';
 import { HomeContainer } from './home/home.container';
 import Main from './main/main';
-
 import './app.scss';
 
 function App() {

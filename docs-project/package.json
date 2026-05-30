@@ -26,8 +26,12 @@
     "not IE 11"
   ],
   "devDependencies": {
+    "@types/node": "^22.15.30",
+    "@types/react": "^19.1.6",
+    "@types/react-dom": "^19.1.5",
     "@vitejs/plugin-react": "^4.5.2",
     "sass": "^1.89.0",
+    "typescript": "^5.8.3",
     "vite": "^6.3.5"
   }
 }
