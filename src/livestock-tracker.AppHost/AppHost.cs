@@ -8,7 +8,9 @@ var api = builder.AddProject<Projects.livestock_tracker>("api")
 var frontend = builder
     .AddViteApp("frontend", "../livestock-tracker/ClientApp")
     .WithBrowserLogs()
-    .WithReference(api);
+    .WithReference(api)
+    .WaitFor(api)
+    .WithExternalHttpEndpoints();
 #pragma warning restore ASPIREBROWSERLOGS001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
 
 api.PublishWithContainerFiles(frontend, "./wwwroot");
