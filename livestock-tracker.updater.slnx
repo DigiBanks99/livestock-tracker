@@ -1,0 +1,16 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Debug Updater" />
+    <BuildType Name="Release" />
+  </Configurations>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Project Path="src/livestock-tracker.base/livestock-tracker.base.csproj" />
+  <Project Path="src/livestock-tracker.process-manager/livestock-tracker.process-manager.csproj" />
+  <Project Path="src/livestock-tracker.updater.windows/livestock-tracker.updater.windows.csproj">
+    <BuildType Solution="Debug Updater|*" Project="Debug" />
+  </Project>
+  <Project Path="src/livestock-tracker.updater/livestock-tracker.updater.csproj" />
+</Solution>
