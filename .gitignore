@@ -255,3 +255,6 @@ localhost.conf
 localhost.crt
 localhost.key
 localhost.pfx
+
+# Playwright CLI session files
+.playwright-cli/
