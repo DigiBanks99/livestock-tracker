@@ -1,0 +1,65 @@
+<Solution>
+  <Configurations>
+    <BuildType Name="Debug" />
+    <BuildType Name="Debug Updater" />
+    <BuildType Name="Release" />
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Folder Name="/.github/" />
+  <Folder Name="/.github/ISSUE_TEMPLATE/">
+    <File Path=".github/ISSUE_TEMPLATE/bug_report.md" />
+    <File Path=".github/ISSUE_TEMPLATE/feature_request.md" />
+  </Folder>
+  <Folder Name="/.github/Workflows/">
+    <File Path=".github/workflows/angular.yml" />
+    <File Path=".github/workflows/dotnet.yml" />
+    <File Path=".github/workflows/end-to-end.yml" />
+  </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitattributes" />
+    <File Path=".gitignore" />
+    <File Path=".prettierrc.yml" />
+    <File Path="README.md" />
+    <File Path="scripts/build.sh" />
+    <File Path="scripts/clean.sh" />
+    <File Path="scripts/restore.sh" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/livestock-tracker.abstractions/livestock-tracker.abstractions.csproj">
+      <BuildType Solution="Debug Updater|Any CPU" Project="Debug" />
+    </Project>
+    <Project Path="src/livestock-tracker.AppHost/livestock-tracker.AppHost.csproj">
+      <BuildType Solution="Debug Updater|*" Project="Debug" />
+    </Project>
+    <Project Path="src/livestock-tracker.base/livestock-tracker.base.csproj" />
+    <Project Path="src/livestock-tracker.database.sqlite/livestock-tracker.database.sqlite.csproj">
+      <BuildType Solution="Debug Updater|Any CPU" Project="Debug" />
+    </Project>
+    <Project Path="src/livestock-tracker.database/livestock-tracker.database.csproj">
+      <BuildType Solution="Debug Updater|Any CPU" Project="Debug" />
+    </Project>
+    <Project Path="src/livestock-tracker.logic/livestock-tracker.logic.csproj">
+      <BuildType Solution="Debug Updater|Any CPU" Project="Debug" />
+    </Project>
+    <Project Path="src/livestock-tracker.ServiceDefaults/livestock-tracker.ServiceDefaults.csproj">
+      <BuildType Solution="Debug Updater|*" Project="Debug" />
+    </Project>
+    <Project Path="src/livestock-tracker/livestock-tracker.csproj">
+      <BuildType Solution="Debug Updater|Any CPU" Project="Debug" />
+    </Project>
+  </Folder>
+  <Folder Name="/test/">
+    <Project Path="test/LivestockTracker.Feed.IntegrationTests/LivestockTracker.Feed.IntegrationTests.csproj">
+      <BuildType Solution="Debug Updater|Any CPU" Project="Debug" />
+    </Project>
+    <Project Path="test/LivestockTracker.IntegrationTests.Core/LivestockTracker.IntegrationTests.Core.csproj">
+      <BuildType Solution="Debug Updater|Any CPU" Project="Debug" />
+    </Project>
+    <Project Path="test/LivestockTracker.Medicine.IntegrationTests/LivestockTracker.Medicine.IntegrationTests.csproj">
+      <BuildType Solution="Debug Updater|Any CPU" Project="Debug" />
+    </Project>
+  </Folder>
+</Solution>
