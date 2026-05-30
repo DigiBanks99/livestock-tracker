@@ -1,5 +1,6 @@
 {
   "appHost": {
+    "path": "src/livestock-tracker.AppHost/livestock-tracker.AppHost.csproj",
     "language": "csharp"
   }
 }
