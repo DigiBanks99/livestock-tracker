@@ -15,7 +15,7 @@
     "@angular/animations": "^22.0.1",
     "@angular/cdk": "^21.2.12",
     "@angular/common": "^22.0.1",
-    "@angular/compiler": "^21.2.14",
+    "@angular/compiler": "^22.0.1",
     "@angular/core": "^22.0.1",
     "@angular/forms": "^22.0.1",
     "@angular/material": "^21.2.12",
@@ -30,7 +30,7 @@
   "devDependencies": {
     "@angular/build": "^22.0.1",
     "@angular/cli": "^21.2.12",
-    "@angular/compiler-cli": "^21.2.14",
+    "@angular/compiler-cli": "^22.0.1",
     "angular-eslint": "^19.5.0",
     "eslint": "^9.18.0",
     "typescript": "~5.9.0",
